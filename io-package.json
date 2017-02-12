@@ -1,0 +1,83 @@
+{
+    "common": {
+        "name":                     "discovery",
+        "version":                  "0.1.0",
+        "news": {
+            "1.2.0": {
+                "en": "initial commit",
+                "de": "initial commit",
+                "ru": "initial commit"
+            }
+        },
+        "title":                    "Discovery Adapter",
+        "desc":                     {
+            "en": "This adapter tries to discover all known devices.",
+            "de": "Adapter fersucht alle bekannte Geräte automatisch zu finden",
+            "ru": "Драйвер пытается найти все известные устройства"
+        },
+        "authors": [
+            "bluefox <dogafox@gmail.com>"
+        ],
+        "license":                  "MIT",
+        "platform":                 "Javascript/Node.js",
+        "mode":                     "daemon",
+		"enabled":                  true,
+        "readme":                   "https://github.com/ioBroker/ioBroker.discovery/blob/master/README.md",
+        "loglevel":                 "info",
+        "icon":                     "discovery.png",
+        "keywords":                 ["poll", "discovery", "ip"],
+        "extIcon":                  "https://raw.githubusercontent.com/ioBroker/ioBroker.discovery/master/admin/discovery.png",
+		"type":                     "common adapters"
+    },
+    "native": {
+        "pingTimeout":       1000,
+        "pingBlock":         20
+    },
+    "objects": [
+        {
+            "_id": "system.discovery",
+            "common": {
+                "name": "Information about found devices"
+            },
+            "native": {
+                "devices": {},
+                "lastScan": 0,
+                "newDevices": {},
+                "possibleAdapters": {}
+            },
+            "type": "config"
+        }
+    ],
+    "instanceObjects": [
+        {
+            "_id":  "devicesProgress",
+            "type": "state",
+            "common": {
+                "role":  "value",
+                "name":  "Find devices progress",
+                "min":   0,
+                "max":   100,
+                "type":  "number",
+                "unit": "%",
+                "read":  true,
+                "write": false
+            },
+            "native": {}
+        },
+        {
+            "_id":  "servicesProgress",
+            "type": "state",
+            "common": {
+                "role":  "value",
+                "name":  "Find services on devices progress",
+                "min":   0,
+                "max":   100,
+                "type":  "number",
+                "unit": "%",
+                "read":  true,
+                "write": false
+            },
+            "native": {}
+        }
+    ]
+}
