@@ -1,0 +1,174 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="../../lib/css/themes/jquery-ui/redmond/jquery-ui.min.css"/>
+<link rel="stylesheet" type="text/css" href="../../lib/css/jqGrid/ui.jqgrid-4.5.4.css"/>
+<link rel="stylesheet" type="text/css" href="../../lib/css/jquery.multiselect-1.13.css"/>
+<script type="text/javascript" src="../../lib/js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="../../socket.io/socket.io.js"></script>
+<script type="text/javascript" src="../../lib/js/jquery-ui-1.10.3.full.min.js"></script>
+<script type="text/javascript" src="../../lib/js/jqGrid/jquery.jqGrid-4.5.4.min.js"></script>
+<script type="text/javascript" src="../../lib/js/jqGrid/grid.locale-all.js"></script>
+
+<link rel="stylesheet" type="text/css" href="../../css/adapter.css"/>
+<script type="text/javascript" src="../../js/translate.js"></script>
+<script type="text/javascript" src="../../js/adapter-settings.js"></script>
+
+<script type="text/javascript">
+    systemDictionary = {
+        "PING adapter settings": {"en": "PING adapter settings", "de": "PING Adapter-Einstellungen", "ru": "Настройки драйвера PING"},
+        "Ping settings":         {"en": "Ping settings",         "de": "PING Einstellungen",         "ru": "Настройки PING"},
+        "Ping addresses":        {"en": "IP addresses to discover",  "de": "IP Adresse für Monitoring",  "ru": "Список IP адресов для мониторинга"},
+        "Interval[ms]:":         {"en": "Ping interval[ms]",     "de": "Ping Intervall[ms]",         "ru": "Интервал опроса[мс]:"},
+        "Room":                  {"en": "Room",                  "de": "Raum",                       "ru": "Комната"},
+        "Name":                  {"en": "Name",                  "de": "Name",                       "ru": "Имя"},
+        "IP Address":            {"en": "IP Address",            "de": "IP Adresse",                 "ru": "IP Адрес"}
+    };
+
+    function showStep(step) {
+        currentStep = step;
+        $('#container').html($('.wizard-page[data-step="' + step + '"]').html());
+
+    }
+    var currentStep = null;
+    var newInstances;
+    var existingInstances;
+    var devices;
+
+    function step0() {
+
+    }
+
+    function getExistingInstances(callback) {
+        socket.emit('getObjectView', 'system', 'instance', {startkey: 'system.adapter.', endkey: 'system.adapter.\u9999'}, function (err, doc) {
+            if (err) {
+                if (callback) callback ([]);
+            } else {
+                if (doc.rows.length === 0) {
+                    if (callback) callback ([]);
+                } else {
+                    var res = [];
+                    for (var i = 0; i < doc.rows.length; i++) {
+                        res.push(doc.rows[i].value);
+                    }
+                    if (callback) callback (res);
+                }
+            }
+        });
+    }
+    // show list of found instances
+    function step1() {
+        getExistingInstances(function (res) {
+            existingInstances = res;
+            var $instances = $('#instances');
+            var text = '';
+            for (var i = 0; i < newInstances.length; i++) {
+                text += '<tr>';
+                text += '<td><input type="checkbox" data-id="' + i + '" /></td>';
+                text += '<td>' + newInstances[i]._id.substring('system.adapter.'.length) + '</td>';
+                text += '<td>' + (isNew ? _('new') : _('update')) + '</td>';
+            }
+            $instances.html(text);
+        });
+    }
+
+    function load(settings, onChange) {
+        // step 0
+        var $step0 = $('#step0_discover');
+        $step0.button().click(function () {
+            sendTo(null, 'browse', null, function (result) {
+                if (result.error) {
+                    showMessage(result.error, _('Error'), 'alert');
+                } else {
+                    newInstances = result.newInstances;
+                    devices = result.devices;
+                    showStep(currentStep + 1);
+                }
+            });
+        });
+
+        $('.bottom-next').each(function () {
+            $(this).button({
+                label: $(this).data('title')
+            }).click(function () {
+                showStep(currentStep + 1);
+            });
+        });
+
+        $('#step0_next').button('disable');
+
+        getIsAdapterAlive(function (isAlive) {
+            $step0.button('disable');
+        });
+        showStep(0);
+
+        socket.emit('getObject', 'system.discovery', function (err, obj) {
+            if (obj && obj.native.newInstances) {
+                newInstances = obj.native.newInstances;
+            }
+            if (obj && obj.native.devices) {
+                devices = obj.native.devices;
+            }
+            var found = true;
+            for (var d in devices) {
+                if (devices.hasOwnProperty(d)) {
+                    found = true;
+                    break;
+                }
+            }
+            for (var n in newInstances) {
+                if (newInstances.hasOwnProperty(n)) {
+                    found = true;
+                    break;
+                }
+            }
+            if (found) {
+                $('#step0_next').button('enable');
+            }
+        });
+    }
+
+
+
+    function save(callback) {
+        // do nothing
+    }
+</script>
+</head>
+<body>
+    <div style="width: 100%; height: 100%" id="container">
+
+    </div>
+    <div data-step="0" class="wizard-page" style="display: none">
+        <div class="header">
+            <h1 class="translate">Discover all possible devices</h1>
+        </div>
+        <div class="content">
+            blablabla
+        </div>
+        <div class="footer">
+            <button id="step0_discover" class="bottom-buttons" data-title="Discover"></button>
+            <button id="step0_next" class="bottom-buttons bottom-next" data-title="Next"></button>
+        </div>
+    </div>
+    <div data-step="1" class="wizard-page" style="display: none">
+        <div class="header">
+            <h1 class="translate">Create instances automatically</h1>
+        </div>
+        <table class="content">
+            <thead>
+                <tr>
+                    <th class="translate">Use</th>
+                    <th class="translate">Instance</th>
+                    <th class="translate"></th>
+                </tr>
+            </thead>
+            <tbody id="instances">
+
+            </tbody>
+        </table>
+        <div class="footer">
+            <button id="step1_next" class="bottom-buttons bottom-next" data-title="Create instances"></button>
+        </div>
+    </div>
+</body>
+</html>
