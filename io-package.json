@@ -22,6 +22,7 @@
         "platform":                 "Javascript/Node.js",
         "mode":                     "daemon",
 		"enabled":                  true,
+        "singletonHost":            true,
         "readme":                   "https://github.com/ioBroker/ioBroker.discovery/blob/master/README.md",
         "loglevel":                 "info",
         "icon":                     "discovery.png",

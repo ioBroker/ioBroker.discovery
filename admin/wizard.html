@@ -55,20 +55,39 @@
             }
         });
     }
+
+    function buildComment(comment) {
+        if (!comment) {
+            return _('new');
+        }
+        if (typeof comment === 'string') return comment;
+        var text = '';
+        if (comment.add) {
+            text += _('new');
+        }
+        if (comment.changed) {
+            text += (text ? ', ' : '') + _('changed:') + ' ' + comment.changed;
+        }
+        if (comment.extended) {
+            text += (text ? ', ' : '') + _('extended:') + ' ' + comment.extended;
+        }
+        if (comment.text) {
+            text += (text ? ', ' : '') + comment.text;
+        }
+        return text;
+    }
+
     // show list of found instances
     function step1() {
-        getExistingInstances(function (res) {
-            existingInstances = res;
-            var $instances = $('#instances');
-            var text = '';
-            for (var i = 0; i < newInstances.length; i++) {
-                text += '<tr>';
-                text += '<td><input type="checkbox" data-id="' + i + '" /></td>';
-                text += '<td>' + newInstances[i]._id.substring('system.adapter.'.length) + '</td>';
-                text += '<td>' + (isNew ? _('new') : _('update')) + '</td>';
-            }
-            $instances.html(text);
-        });
+        var $instances = $('#instances');
+        var text = '';
+        for (var i = 0; i < newInstances.length; i++) {
+            text += '<tr>';
+            text += '<td><input type="checkbox" data-id="' + i + '" /></td>';
+            text += '<td>' + newInstances[i]._id.substring('system.adapter.'.length) + '</td>';
+            text += '<td>' + buildComment(newInstances[i].comment) + '</td>';
+        }
+        $instances.html(text);
     }
 
     function load(settings, onChange) {
@@ -76,6 +95,9 @@
         var $step0 = $('#step0_discover');
         $step0.button().click(function () {
             sendTo(null, 'browse', null, function (result) {
+                $('#step0_text').hide();
+                $('#step0_progressbar').hide();
+                
                 if (result.error) {
                     showMessage(result.error, _('Error'), 'alert');
                 } else {
@@ -125,9 +147,19 @@
                 $('#step0_next').button('enable');
             }
         });
+
+        socket.emit('subscribeStates',  'discovery.' + instance + '.*');
+        socket.on('stateChange', function (id, state) {
+            if (state && state.ack && id === 'discovery.' + instance + '.devicesProgress') {
+                $('#step0_text').show().html(_('Lookup devices'));
+                $('#step0_progressbar').show().progressbar({value: state.val});
+            }
+            if (state && state.ack && id === 'discovery.' + instance + '.servicesProgress') {
+                $('#step0_text').show().html(_('Lookup services'));
+                $('#step0_progressbar').show().progressbar({value: state.val});
+            }
+        });
     }
-
-
 
     function save(callback) {
         // do nothing
@@ -143,7 +175,8 @@
             <h1 class="translate">Discover all possible devices</h1>
         </div>
         <div class="content">
-            blablabla
+            <div id="step0_text" style="display: none"></div>
+            <div id="step0_progressbar" style="display: none"></div>
         </div>
         <div class="footer">
             <button id="step0_discover" class="bottom-buttons" data-title="Discover"></button>
@@ -159,7 +192,7 @@
                 <tr>
                     <th class="translate">Use</th>
                     <th class="translate">Instance</th>
-                    <th class="translate"></th>
+                    <th class="translate">Description</th>
                 </tr>
             </thead>
             <tbody id="instances">

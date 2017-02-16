@@ -12,7 +12,7 @@
 /* jslint node: true */
 'use strict';
 var utils    = require(__dirname + '/lib/utils'); // Get common adapter utils
-var adapter  = new utils.Adapter('discover');
+var adapter  = new utils.Adapter('discovery');
 var fs       = require('fs');
 var adapters = null;
 var methods  = null;
@@ -70,10 +70,10 @@ function processMessage(obj) {
     switch (obj.command) {
         case 'browse': {
             if (obj.callback && obj.message) {
-                browse(obj.message, function (err, devices, foundAdapters) {
+                browse(obj.message, function (err, newInstances, devices) {
                     adapter.sendTo(obj.from, obj.command, {
                         devices: devices,
-                        foundAdapters: foundAdapters
+                        newInstances: newInstances
                     }, obj.callback);
                 });
             }
@@ -190,41 +190,29 @@ function discoveryEnd(devices, callback) {
         };
         analyseDevices(devices, options, 0, function (err) {
             adapter.log.info('Discovery finished. Found new or modified ' + options.newInstances.length + ' instances');
-
-            if (typeof callback === 'function') callback(null, devices, options.newInstances);
             
             // add this information to system.discovery.host
-            /*adapter.getForeignObject('system.discovery', function (err, obj) {
+            adapter.getForeignObject('system.discovery', function (err, obj) {
                 if (!obj) {
                     obj = {
                         common: {
-                            name: 'Information about found devices'
+                            name: 'prepared update of discovery'
                         },
                         native: {},
                         type: 'config'
                     }
                 }
 
-                obj.native.possibleAdapters = [];
-
-                for (var i = 0; i < devices.length; i++) {
-                    for (var a in devices[i]) {
-                        if (devices[i].hasOwnProperty(a) && a[0] !== '_' && obj.native.possibleAdapters.indexOf(a) === -1) {
-                            obj.native.possibleAdapters.push(a);
-                        }
-                    }
-                }
-
-                obj.native.possibleAdapters.sort();
+                obj.native.newInstances = options.newInstances;
                 obj.native.devices = devices;
-
+                
                 adapter.setForeignObject('system.discovery', obj, function (err) {
                     isRunning = false;
                     if (err) adapter.log.error('Cannot update system.discovery: ' + err);
                     adapter.log.info('Discovery finished');
-                    if (typeof callback === 'function') callback(null, devices, obj.native.possibleAdapters);
+                    if (typeof callback === 'function') callback(null, options.newInstances, devices);
                 });
-            });*/
+            });
         });
     });
 }
@@ -284,5 +272,5 @@ function main() {
     adapter.config.pingTimeout = parseInt(adapter.config.pingTimeout, 10) || 1000;
     adapter.config.pingBlock  = parseInt(adapter.config.pingBlock, 10) || 20;
 
-    browse();
+    //browse();
 }
