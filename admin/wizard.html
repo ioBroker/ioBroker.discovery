@@ -15,18 +15,15 @@
 
 <script type="text/javascript">
     systemDictionary = {
-        "PING adapter settings": {"en": "PING adapter settings", "de": "PING Adapter-Einstellungen", "ru": "Настройки драйвера PING"},
-        "Ping settings":         {"en": "Ping settings",         "de": "PING Einstellungen",         "ru": "Настройки PING"},
-        "Ping addresses":        {"en": "IP addresses to discover",  "de": "IP Adresse für Monitoring",  "ru": "Список IP адресов для мониторинга"},
-        "Interval[ms]:":         {"en": "Ping interval[ms]",     "de": "Ping Intervall[ms]",         "ru": "Интервал опроса[мс]:"},
-        "Room":                  {"en": "Room",                  "de": "Raum",                       "ru": "Комната"},
-        "Name":                  {"en": "Name",                  "de": "Name",                       "ru": "Имя"},
-        "IP Address":            {"en": "IP Address",            "de": "IP Adresse",                 "ru": "IP Адрес"}
+        "PING adapter settings": {"en": "PING adapter settings", "de": "PING Adapter-Einstellungen", "ru": "Настройки драйвера PING"}
     };
 
     function showStep(step) {
         currentStep = step;
-        $('#container').html($('.wizard-page[data-step="' + step + '"]').html());
+        if (steps[step]) steps[step]();
+        var $container = $('#container');
+        $container.find('.wizard-page').hide();
+        $('.wizard-page[data-step="' + step + '"]').show();
 
     }
     var currentStep = null;
@@ -35,7 +32,64 @@
     var devices;
 
     function step0() {
+        var $step0 = $('#step0_discover');
+        $('#step0_help').show();
 
+        $step0.button({
+            label:  $step0.data('title'),
+            icons: {
+                primary: ' ui-icon-search'
+            }
+        }).click(function () {
+            $step0.button('disable');
+            $('#step0_help').hide();
+            sendTo(null, 'browse', null, function (result) {
+                $('#step0_text').hide();
+                $('#step0_progressbar').hide();
+                $step0.button('enable');
+                if (result.error) {
+                    showMessage(result.error, _('Error'), 'alert');
+                } else {
+                    newInstances = result.newInstances;
+                    devices = result.devices;
+                    showStep(currentStep + 1);
+                }
+            });
+        });
+
+        $('#step0_next').button('disable');
+
+        getIsAdapterAlive(function (isAlive) {
+            if (!isAlive) $step0.button('disable');
+        });
+        socket.emit('getObject', 'system.discovery', function (err, obj) {
+            if (obj && obj.native.newInstances) {
+                newInstances = obj.native.newInstances;
+            }
+            if (obj && obj.native.devices) {
+                devices = obj.native.devices;
+            }
+            var found = false;
+            if (devices) {
+                for (var d in devices) {
+                    if (devices.hasOwnProperty(d)) {
+                        found = true;
+                        break;
+                    }
+                }
+            }
+            if (newInstances) {
+                for (var n in newInstances) {
+                    if (newInstances.hasOwnProperty(n)) {
+                        found = true;
+                        break;
+                    }
+                }
+            }
+            if (found) {
+                $('#step0_next').button('enable');
+            }
+        });
     }
 
     function getExistingInstances(callback) {
@@ -79,7 +133,7 @@
 
     // show list of found instances
     function step1() {
-        var $instances = $('#instances');
+        var $instances = $('#step1_instances');
         var text = '';
         for (var i = 0; i < newInstances.length; i++) {
             text += '<tr>';
@@ -91,62 +145,21 @@
     }
 
     function load(settings, onChange) {
+        $('.header').hide();
         // step 0
-        var $step0 = $('#step0_discover');
-        $step0.button().click(function () {
-            sendTo(null, 'browse', null, function (result) {
-                $('#step0_text').hide();
-                $('#step0_progressbar').hide();
-                
-                if (result.error) {
-                    showMessage(result.error, _('Error'), 'alert');
-                } else {
-                    newInstances = result.newInstances;
-                    devices = result.devices;
-                    showStep(currentStep + 1);
-                }
-            });
-        });
 
         $('.bottom-next').each(function () {
             $(this).button({
-                label: $(this).data('title')
+                label: $(this).data('title'),
+                icons: {
+                    primary: 'ui-icon-seek-next'
+                }
             }).click(function () {
                 showStep(currentStep + 1);
             });
         });
 
-        $('#step0_next').button('disable');
-
-        getIsAdapterAlive(function (isAlive) {
-            $step0.button('disable');
-        });
         showStep(0);
-
-        socket.emit('getObject', 'system.discovery', function (err, obj) {
-            if (obj && obj.native.newInstances) {
-                newInstances = obj.native.newInstances;
-            }
-            if (obj && obj.native.devices) {
-                devices = obj.native.devices;
-            }
-            var found = true;
-            for (var d in devices) {
-                if (devices.hasOwnProperty(d)) {
-                    found = true;
-                    break;
-                }
-            }
-            for (var n in newInstances) {
-                if (newInstances.hasOwnProperty(n)) {
-                    found = true;
-                    break;
-                }
-            }
-            if (found) {
-                $('#step0_next').button('enable');
-            }
-        });
 
         socket.emit('subscribeStates',  'discovery.' + instance + '.*');
         socket.on('stateChange', function (id, state) {
@@ -159,49 +172,98 @@
                 $('#step0_progressbar').show().progressbar({value: state.val});
             }
         });
+
+        onChange(false);
     }
 
     function save(callback) {
         // do nothing
     }
+
+    var steps = [
+        step0,
+        step1
+    ];
 </script>
+<style>
+    .wizard-header {
+        width: calc(100% - 6px - 1rem);
+        position: absolute;
+        top: 0;
+        height: 3rem;
+        padding-left: 1rem;
+    }
+    .wizard-content {
+        width: calc(100% - 26px);
+        position: absolute;
+        top: 3rem;
+        height: calc(100% - 6rem - 20px);
+        padding: 10px;
+    }
+    .wizard-footer {
+        width: calc(100% - 16px);
+        position: absolute;
+        bottom: 0;
+        height: calc(3rem - 10px);
+        padding: 5px;
+        background: black;
+        text-align: right;
+    }
+    .wizard-table {
+        width: 100%;
+    }
+    .wizard-table th {
+        background: #338ce6;
+        color: white;
+        text-align: left;
+    }
+    .wizard-table tr:nth-child(even) {
+        background: #CCC;
+    }
+    .wizard-table tr:nth-child(odd) {
+        background: #FFF;
+    }
+</style>
 </head>
 <body>
     <div style="width: 100%; height: 100%" id="container">
+        <div data-step="0" class="wizard-page" style="display: none">
+            <div class="wizard-header ui-widget-header">
+                <h3 class="translate">Step1 - Discover all possible devices</h3>
+            </div>
+            <div class="wizard-content">
+                <div id="step0_help" class="translate">Press "Discover" to find devices in your network</div>
+                <div id="step0_text" style="display: none"></div>
+                <div id="step0_progressbar" style="display: none"></div>
+            </div>
+            <div class="wizard-footer">
+                <button id="step0_discover" class="bottom-buttons" data-title="Discover"></button>
+                <button id="step0_next" class="bottom-buttons bottom-next" data-title="Next"></button>
+            </div>
+        </div>
+        <div data-step="1" class="wizard-page" style="display: none">
+            <div class="wizard-header ui-widget-header">
+                <h3 class="translate">Create instances automatically</h3>
+            </div>
+            <div class="wizard-content">
+                <table class="wizard-table">
+                    <thead>
+                    <tr>
+                        <th class="translate">Use</th>
+                        <th class="translate">Instance</th>
+                        <th class="translate">Description</th>
+                    </tr>
+                    </thead>
+                    <tbody id="step1_instances">
 
-    </div>
-    <div data-step="0" class="wizard-page" style="display: none">
-        <div class="header">
-            <h1 class="translate">Discover all possible devices</h1>
+                    </tbody>
+                </table>
+            </div>
+            <div class="wizard-footer">
+                <button id="step1_next" class="bottom-buttons bottom-next" data-title="Create instances"></button>
+            </div>
         </div>
-        <div class="content">
-            <div id="step0_text" style="display: none"></div>
-            <div id="step0_progressbar" style="display: none"></div>
-        </div>
-        <div class="footer">
-            <button id="step0_discover" class="bottom-buttons" data-title="Discover"></button>
-            <button id="step0_next" class="bottom-buttons bottom-next" data-title="Next"></button>
-        </div>
-    </div>
-    <div data-step="1" class="wizard-page" style="display: none">
-        <div class="header">
-            <h1 class="translate">Create instances automatically</h1>
-        </div>
-        <table class="content">
-            <thead>
-                <tr>
-                    <th class="translate">Use</th>
-                    <th class="translate">Instance</th>
-                    <th class="translate">Description</th>
-                </tr>
-            </thead>
-            <tbody id="instances">
 
-            </tbody>
-        </table>
-        <div class="footer">
-            <button id="step1_next" class="bottom-buttons bottom-next" data-title="Create instances"></button>
-        </div>
     </div>
 </body>
 </html>

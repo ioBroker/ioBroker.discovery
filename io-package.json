@@ -23,6 +23,7 @@
         "mode":                     "daemon",
 		"enabled":                  true,
         "singletonHost":            true,
+        "messagebox":               true,
         "readme":                   "https://github.com/ioBroker/ioBroker.discovery/blob/master/README.md",
         "loglevel":                 "info",
         "icon":                     "discovery.png",
@@ -34,17 +35,16 @@
         "pingTimeout":       1000,
         "pingBlock":         20
     },
-    "objects": [
+    "_objects": [
         {
             "_id": "system.discovery",
             "common": {
                 "name": "Information about found devices"
             },
             "native": {
-                "devices": {},
+                "devices": [],
                 "lastScan": 0,
-                "newDevices": {},
-                "possibleAdapters": {}
+                "newInstances": []
             },
             "type": "config"
         }

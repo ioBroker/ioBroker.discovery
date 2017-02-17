@@ -69,8 +69,10 @@ function processMessage(obj) {
     if (!obj || !obj.command) return;
     switch (obj.command) {
         case 'browse': {
-            if (obj.callback && obj.message) {
+            if (obj.callback) {
+                adapter.log.info('Received "browse" event');
                 browse(obj.message, function (err, newInstances, devices) {
+                    adapter.log.info('Browse finished');
                     adapter.sendTo(obj.from, obj.command, {
                         devices: devices,
                         newInstances: newInstances
@@ -147,8 +149,10 @@ function analyseDevices(devices, options, index, callback) {
         index = callback;
         index = 0;
     }
+    adapter.setState('servicesProgress', Math.round((index / devices.length) * 100), true);
 
     if (!devices || index >= devices.length) {
+        adapter.setState('servicesProgress', 100, true);
         callback(null);
         return;
     }
@@ -160,7 +164,7 @@ function analyseDevices(devices, options, index, callback) {
 }
 
 function getInstances(callback) {
-    socket.emit('getObjectView', 'system', 'instance', {startkey: 'system.adapter.', endkey: 'system.adapter.\u9999'}, function (err, doc) {
+    adapter.objects.getObjectView('system', 'instance', {startkey: 'system.adapter.', endkey: 'system.adapter.\u9999'}, function (err, doc) {
         if (err) {
             if (callback) callback ([]);
         } else {
@@ -179,6 +183,12 @@ function getInstances(callback) {
 
 function discoveryEnd(devices, callback) {
     adapter.log.info('Found ' + devices.length + ' addresses');
+
+    devices.push({
+        _addr: '127.0.0.1',
+        _name: 'localhost',
+        _type: 'ip'
+    });
 
     // analyse every IP address
     if (!adapters) enumAdapters();
@@ -200,11 +210,12 @@ function discoveryEnd(devices, callback) {
                         },
                         native: {},
                         type: 'config'
-                    }
+                    };
                 }
 
                 obj.native.newInstances = options.newInstances;
                 obj.native.devices = devices;
+                obj.native.lastScan = new Date().getTime();
                 
                 adapter.setForeignObject('system.discovery', obj, function (err) {
                     isRunning = false;
