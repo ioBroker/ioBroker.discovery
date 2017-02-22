@@ -12,6 +12,12 @@ ioBroker Discover Adapter
 This is special adapters, that tries to find all possible devices, that can be reachable from host.
 Just now it can detect via ping, UPnP (serial planned).
 
+## Actually supported
+
+- ping
+- hm-rpc
+- hm-rega
+
 ## Changelog
 ### 0.1.0 (2017-02-12)
 * (bluefox) initial commit

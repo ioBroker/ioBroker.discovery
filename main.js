@@ -16,6 +16,7 @@ var adapter  = new utils.Adapter('discovery');
 var fs       = require('fs');
 var adapters = null;
 var methods  = null;
+
 function enumAdapters() {
     var dir = fs.readdirSync(__dirname + '/lib/adapters');
     adapters = {};
@@ -93,36 +94,11 @@ function processMessages() {
     });
 }
 
-// addr can be IP address (192.168.1.1) or serial port name (/dev/ttyUSB0, COM1)
-function analyseDevice(device, options, callback) {
+function analyseDeviceDependencies(device, options, callback) {
     var count = 0;
 
-    adapter.log.debug('Test ' + device._addr);
-    
-    var a;
-
-    // try all found adapter types (first without dependencies)
-    for (a in adapters) {
-        if (!adapters.hasOwnProperty(a)) continue;
-        if (adapters[a].type !== device._type) continue;
-        if (adapters[a].dependencies) continue;
-
-        count++;
-        (function (adpr) {
-            adapter.log.debug('Test ' + device._addr + ' ' + adpr);
-
-            // expected, that detect method will add to _instances one instance of specific type or extend existing one
-            adapters[a].detect(device._addr, device, options, function (err, isFound, addr) {
-                if (isFound) {
-                    adapter.log.debug('Test ' + device._addr + ' ' + adpr + ' DETECTED!');
-                }
-                if (!--count) callback(err);
-            })
-        })(a);
-    }
-
     // try all found adapter types (with dependencies)
-    for (a in adapters) {
+    for (var a in adapters) {
         if (!adapters.hasOwnProperty(a)) continue;
         if (adapters[a].type !== device._type) continue;
         if (!adapters[a].dependencies) continue;
@@ -142,6 +118,39 @@ function analyseDevice(device, options, callback) {
     }
 
     if (!count) callback(null);
+}
+
+// addr can be IP address (192.168.1.1) or serial port name (/dev/ttyUSB0, COM1)
+function analyseDevice(device, options, callback) {
+    var count = 0;
+
+    adapter.log.debug('Test ' + device._addr);
+
+    if (device._addr === '192.168.1.5') {
+        console.log('t');
+    }
+
+    // try all found adapter types (first without dependencies)
+    for (var a in adapters) {
+        if (!adapters.hasOwnProperty(a)) continue;
+        if (adapters[a].type !== device._type) continue;
+        if (adapters[a].dependencies) continue;
+
+        count++;
+        (function (adpr) {
+            adapter.log.debug('Test ' + device._addr + ' ' + adpr);
+
+            // expected, that detect method will add to _instances one instance of specific type or extend existing one
+            adapters[a].detect(device._addr, device, options, function (err, isFound, addr) {
+                if (isFound) {
+                    adapter.log.debug('Test ' + device._addr + ' ' + adpr + ' DETECTED!');
+                }
+                if (!--count) analyseDeviceDependencies(device, options, callback);
+            })
+        })(a);
+    }
+
+    if (!count) analyseDeviceDependencies(device, options, callback);
 }
 
 function analyseDevices(devices, options, index, callback) {
@@ -196,7 +205,21 @@ function discoveryEnd(devices, callback) {
     getInstances(function (instances) {
         var options = {
             existingInstances: instances,
-            newInstances: []
+            newInstances: [],
+            log: {
+                debug: function (text) {
+                    adapter.log.debug(text);
+                },
+                warn: function (text) {
+                    adapter.log.warn(text);
+                },
+                error: function (text) {
+                    adapter.log.error(text);
+                },
+                info: function (text) {
+                    adapter.log.info(text);
+                }
+            }
         };
         analyseDevices(devices, options, 0, function (err) {
             adapter.log.info('Discovery finished. Found new or modified ' + options.newInstances.length + ' instances');
