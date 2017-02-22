@@ -28,6 +28,11 @@
         var repos = {};
         var hosts = [];
 
+        var currentInstallId;
+        var $stdout = null;
+        var stdout = '';
+        var cmdCallback = null;
+
         function step0() {
             var $step0 = $('#step0_discover');
             $('#step0_help1').show();
@@ -38,7 +43,7 @@
                 icons: {
                     primary: ' ui-icon-pencil'
                 }
-            }).click(function () {
+            }).unbind('click').click(function () {
                 document.location = 'settings.html' + document.location.search;
             });
 
@@ -47,7 +52,7 @@
                 icons: {
                     primary: ' ui-icon-search'
                 }
-            }).click(function () {
+            }).unbind('click').click(function () {
                 $step0.button('disable');
                 $('#step0_next').button('disable');
                 $('#step0_help1').hide();
@@ -76,6 +81,7 @@
                     $step0.button('disable');
                 }
             });
+
             socket.emit('getObject', 'system.discovery', function (err, obj) {
                 if (obj && obj.native.newInstances) {
                     newInstances = obj.native.newInstances;
@@ -207,7 +213,7 @@
                 icons: {
                     primary: 'ui-icon-check'
                 }
-            }).click(function () {
+            }).unbind('click').click(function () {
                 $('.step1-allow').each(function () {
                     $(this).prop('checked', true);
                 });
@@ -219,7 +225,7 @@
                 icons: {
                     primary: 'ui-icon-minus'
                 }
-            }).click(function () {
+            }).unbind('click').click(function () {
                 $('.step1-allow').each(function () {
                     $(this).prop('checked', false);
                 });
@@ -379,6 +385,10 @@
             });
         }
 
+        function step2_getAdapterInfo(host, name, callback) {
+            socket.emit('sendToHost', host, 'getInstalledAdapter', name, callback);
+        }
+
         function step2_addInstance(template, obj, callback) {
             template._id = obj._id;
             template.common.enabled = true;
@@ -435,28 +445,28 @@
              $stdout.val(stdout);
              // genereate the unique id to coordinate the outputs
              cmdCallback = callback;*/
-            var activeCmdId = Math.floor(Math.random() * 0xFFFFFFE) + 1;
-            socket.emit('cmdExec', host, activeCmdId, cmd, function (err) {
+            currentInstallId = Math.floor(Math.random() * 0xFFFFFFE) + 1;
+            cmdCallback = callback;
+
+            socket.emit('cmdExec', host, currentInstallId, cmd, function (err) {
                 if (err) {
-                    /*stdout += '\n' + _(err);
-                     $stdout.val(stdout);
-                     cmdCallback = null;*/
-                    callback(err);
+                    cmdCallback && cmdCallback(err);
+                    stdout += '\n' + _(err);
+                    if ($stdout) $stdout.val(stdout);
+                    cmdCallback = null;
                 } else {
-                    if (callback) callback();
+                    if (cmdCallback) cmdCallback();
                 }
             });
         }
 
         function step2_addAdapter(host, name, callback) {
-            step2_getAdaptersInfo(host, false, false, function (repo, installed) {
+            step2_getAdaptersInfo(host, function (repo, installed) {
                 var _obj = repo[name];
 
                 if (!_obj) _obj = installed[name];
 
-                if (!_obj) return;
-
-                if (_obj.license && _obj.license !== 'MIT') {
+                if (_obj && _obj.license && _obj.license !== 'MIT') {
                     // Show license dialog!
                     step2_showLicenseDialog(_obj, function (isAgree) {
                         if (isAgree) {
@@ -476,6 +486,8 @@
         }
 
         function step2_processInstance(task, callback) {
+            $('.step2-progress[data-id="' + task._id + '"]').html(_('Install package'));
+
             // get Object
             socket.emit('getObject', task._id, function (err, obj) {
                 if (obj && task.comment.add) {
@@ -496,15 +508,31 @@
                             if (template) {
                                 step2_addInstance(template, task, callback);
                             } else {
-                                // add adapter
-                                step2_addAdapter(task.common.host, name, function (err) {
-                                    if (err) {
-                                        $('.step2-progress[data-id="' + task._id + '"]').html(_('Error: %s', err)).addClass('error');
-                                        callback && callback();
-                                    } else {
-                                        step2_processInstance(task, callback);
-                                    }
-                                });
+                                name = name.substring('system.adapter.'.length);
+                                if (repos && repos[task.common.host] && repos[task.common.host].curInstalled[name]) {
+                                    template = JSON.parse(JSON.stringify(repos[task.common.host].curInstalled[name]));
+                                    step2_addInstance(template, task, callback);
+                                } else {
+                                    // add adapter
+                                    step2_addAdapter(task.common.host, name, function (err) {
+                                        if (err) {
+                                            $('.step2-progress[data-id="' + task._id + '"]').html(_('Error: %s', err)).addClass('error');
+                                            callback && callback();
+                                        } else {
+                                            repos[task.common.host] = null;
+                                            step2_getAdapterInfo(task.common.host, name, function (template) {
+                                                if (template) {
+                                                    if (template.instanceObjects) delete template.instanceObjects;
+                                                    if (template.objects) delete template.objects;
+                                                    step2_addInstance(template, task, callback);
+                                                } else {
+                                                    $('.step2-progress[data-id="' + task._id + '"]').html(_('No io-package.json found', err)).addClass('error');
+                                                    callback && callback();
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
                             }
                         });
                     }
@@ -529,6 +557,19 @@
             var text = '';
             var instances = [];
             $('#step2_prev').button('disable');
+            var $details = $('#step2_show_details');
+            $details.button({
+                label: _($details.data('title')),
+                icons: {
+                    primary: 'ui-icon-comment'
+                }
+            }).unbind('click').click(function () {
+                if ($stdout.is(':visible')) {
+                    $stdout.hide();
+                } else {
+                    $stdout.show();
+                }
+            });
 
             $('.step1-allow').each(function () {
                 if ($(this).prop('checked')) {
@@ -587,6 +628,7 @@
                 });
             });
             showStep(0);
+            $stdout = $('#stdout');
 
             socket.emit('subscribeStates',  'discovery.' + instance + '.*');
             socket.on('stateChange', function (id, state) {
@@ -597,6 +639,39 @@
                 if (state && state.ack && id === 'discovery.' + instance + '.servicesProgress') {
                     $('#step0_text').show().html(_('Lookup services') + ' - ' + state.val + '%');
                     $('#step0_progressbar').show().progressbar({value: state.val});
+                }
+            });
+
+            socket.on('cmdStdout', function (_id, text) {
+                if (currentInstallId === _id) {
+                    stdout += '\n' + text;
+                    $stdout.val(stdout);
+                    $stdout.scrollTop($stdout[0].scrollHeight - $stdout.height());
+                }
+            });
+
+            socket.on('cmdStderr', function (_id, text) {
+                if (currentInstallId === _id) {
+                    stdout += '\nERROR: ' + text;
+                    if ($stdout) {
+                        $stdout.val(stdout);
+                        $stdout.scrollTop($stdout[0].scrollHeight - $stdout.height());
+                    }
+                }
+            });
+
+            socket.on('cmdExit', function (_id, exitCode) {
+                if (currentInstallId === _id) {
+                    exitCode = parseInt(exitCode, 10);
+                    stdout += '\n' + (exitCode !== 0 ? 'ERROR: ' : '') + 'process exited with code ' + exitCode;
+                    if ($stdout) {
+                        $stdout.val(stdout);
+                        $stdout.scrollTop($stdout[0].scrollHeight - $stdout.height());
+                    }
+                    if (cmdCallback) {
+                        cmdCallback(exitCode);
+                        cmdCallback = null;
+                    }
                 }
             });
 
@@ -729,9 +804,10 @@
                 </tr>
                 </thead>
                 <tbody id="step2_instances">
-
                 </tbody>
             </table>
+            <button id="step2_show_details" data-title="Details"></button>
+            <textarea style="font-family: courier, monospace; font-size: 11px; resize: none; display: none" id="stdout" disabled="disabled" cols="120" rows="10"></textarea>
         </div>
         <div class="wizard-footer">
             <button id="step2_prev"  class="bottom-buttons bottom-prev"  data-title="Back"></button>

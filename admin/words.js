@@ -10,6 +10,8 @@ systemDictionary = {
     "Install adapters": {"en": "Install adapters",          "de": "Install adapters",       "ru": "Установить драйвера"},
     "Progress":         {"en": "Progress",                  "de": "Progress",               "ru": "Процесс"},
     "Select language":  {"en": "Select language",           "de": "Sprache:",               "ru": "Язык:"},
+    "Select all":       {"en": "Select all",                "de": "Alle selektieren",       "ru": "Отметить все"},
+    "Deselect all":     {"en": "Deselect all",              "de": "Alle unsekeltieren",     "ru": "Снять отметку у всех"},
     "License terms":    {"en": "License terms",             "de": "Lizenzbedingungen",      "ru": "Содержание лицензии"},
     "license agreement": {"en": "license agreement",        "de": "Lizenzvertrag",          "ru": "Лицензионное соглашение"},
     "license_checkbox": {
@@ -27,10 +29,12 @@ systemDictionary = {
     "Discover":             {"en": "Discover",              "de": "Suche",                  "ru": "Поиск"},
     "permissionError":      {"en": "Permission error",      "de": "Zugriffsfehler",         "ru": "Ошибка доступа"},
     "Error":                {"en": "Error",                 "de": "Fehler",                 "ru": "Ошибка"},
-    "started":              {"en": "started",               "de": "gestarted",              "ru": "запущен"},
+    "started":              {"en": "started",               "de": "gestartet",              "ru": "запущен"},
     "wait till installed":  {"en": "installation...",       "de": "Installation...",        "ru": "установка..."},
     "new":                  {"en": "new",                   "de": "neu",                    "ru": "новый"},
     "create instance":      {"en": "pending",               "de": "warten",                 "ru": "ожидание очереди"},
+    "Details":              {"en": "Details",               "de": "Details",                "ru": "Детали"},
+    "Install package":      {"en": "install package...",    "de": "installiere von npm...", "ru": "Установка пакета..."},
     "Discovery adapter settings": {
         "en": "Discovery adapter settings",
         "de": "Discovery Einstellungen",
