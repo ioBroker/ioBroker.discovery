@@ -17,9 +17,10 @@ Just now it can detect via ping, UPnP (serial planned).
 - ping
 - hm-rpc
 - hm-rega
+- sonos
 
 ## Changelog
-### 0.1.0 (2017-02-12)
+### 0.1.0 (2017-02-23)
 * (bluefox) initial commit
 
 ## License

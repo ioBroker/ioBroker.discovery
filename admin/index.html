@@ -1,13 +1,10 @@
 <html>
 <head>
     <link rel="stylesheet" type="text/css" href="../../lib/css/themes/jquery-ui/redmond/jquery-ui.min.css"/>
-    <link rel="stylesheet" type="text/css" href="../../lib/css/jqGrid/ui.jqgrid-4.5.4.css"/>
-    <link rel="stylesheet" type="text/css" href="../../lib/css/jquery.multiselect-1.13.css"/>
     <script type="text/javascript" src="../../lib/js/jquery-1.11.1.min.js"></script>
     <script type="text/javascript" src="../../socket.io/socket.io.js"></script>
     <script type="text/javascript" src="../../lib/js/jquery-ui-1.10.3.full.min.js"></script>
-    <script type="text/javascript" src="../../lib/js/jqGrid/jquery.jqGrid-4.5.4.min.js"></script>
-    <script type="text/javascript" src="../../lib/js/jqGrid/grid.locale-all.js"></script>
+
 
     <link rel="stylesheet" type="text/css" href="../../css/adapter.css"/>
     <script type="text/javascript" src="../../js/translate.js"></script>
@@ -141,37 +138,48 @@
             var text = '';
             if (comment.add) {
                 text += _('new');
+                if (typeof comment.add === 'object' &&  + comment.add.length !== undefined) {
+                    text += ': ';
+                    if (comment.add.length <= 5) {
+                        text += comment.add.join(', ');
+                    } else {
+                        text += _('%s devices', comment.add.length);
+                    }
+                } else if (typeof comment.add === 'string' || typeof comment.add === 'number') {
+                    text += ': ';
+                    text += comment.add;
+                }
             }
             if (comment.changed) {
-                text += (text ? ', ' : '') + _('changed: ') + ' ';
+                text += (text ? ', ' : '') + _('changed') + ' ';
                 if (typeof comment.changed === 'object' &&  + comment.changed.length !== undefined) {
-                    if (comment.changed.length < 5) {
+                    text += ': ';
+                    if (comment.changed.length <= 5) {
                         text += comment.changed.join(', ');
                     } else {
                         text += _('%s devices', comment.changed.length);
                     }
-                } else {
+                } else if (typeof comment.changed === 'string' || typeof comment.changed === 'number') {
+                    text += ': ';
                     text += comment.changed;
                 }
             }
             if (comment.extended) {
-                text += (text ? ', ' : '') + _('extended: ') + ' ';
+                text += (text ? ', ' : '') + _('extended') + ' ';
                 if (typeof comment.extended === 'object' &&  + comment.extended.length !== undefined) {
-                    if (comment.extended.length < 5) {
+                    text += ': ';
+                    if (comment.extended.length <= 5) {
                         text += comment.extended.join(', ');
                     } else {
                         text += _('%s devices', comment.extended.length);
                     }
-                } else {
+                } else if (typeof comment.extended === 'string' || typeof comment.extended === 'number') {
+                    text += ': ';
                     text += comment.extended;
                 }
             }
             if (comment.text) {
-                if (comment.add) {
-                    text += (text ? ': ' : '') + comment.text;
-                } else {
-                    text += (text ? ', ' : '') + comment.text;
-                }
+                text += (text ? ', ' : '') + comment.text;
             }
             return text;
         }
@@ -761,7 +769,7 @@
         </div>
         <div class="wizard-footer">
             <button id="step0_settings" class="bottom-buttons" data-title="Settings"></button>
-            <button id="step0_discover" class="bottom-buttons" data-title="Discover"></button>
+            <button id="step0_discover" class="bottom-buttons ui-state-active" data-title="Discover"></button>
             <button id="step0_next" class="bottom-buttons bottom-next" data-title="Next"></button>
             <button id="step0_close" class="bottom-buttons bottom-close" data-title="Close"></button>
         </div>
@@ -789,7 +797,7 @@
         </div>
         <div class="wizard-footer">
             <button id="step1_prev"  class="bottom-buttons bottom-prev"  data-title="Back"></button>
-            <button id="step1_next"  class="bottom-buttons bottom-next"  data-title="Create instances"></button>
+            <button id="step1_next"  class="bottom-buttons bottom-next ui-state-active"  data-title="Create instances"></button>
             <button id="step1_close" class="bottom-buttons bottom-close" data-title="Close"></button>
         </div>
     </div>
@@ -813,7 +821,7 @@
         </div>
         <div class="wizard-footer">
             <button id="step2_prev"  class="bottom-buttons bottom-prev"  data-title="Back"></button>
-            <button id="step2_close" class="bottom-buttons bottom-close" data-title="Finish"></button>
+            <button id="step2_close" class="bottom-buttons bottom-close ui-state-active" data-title="Finish"></button>
         </div>
     </div>
 </div>
