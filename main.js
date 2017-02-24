@@ -187,10 +187,6 @@ function getInstances(callback) {
     });
 }
 
-function getEnums() {
-
-}
-
 function discoveryEnd(devices, callback) {
     adapter.log.info('Found ' + devices.length + ' addresses');
 
