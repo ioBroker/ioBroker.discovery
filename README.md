@@ -18,6 +18,8 @@ Just now it can detect via ping, UPnP (serial planned).
 - hm-rpc
 - hm-rega
 - sonos
+- nut
+- tr-064
 
 ## Changelog
 ### 0.1.0 (2017-02-23)

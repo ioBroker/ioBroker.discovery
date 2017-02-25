@@ -196,7 +196,19 @@ function discoveryEnd(devices, callback) {
         _type: 'ip'
     });
 
-    // analyse every IP address
+    // try to find names for all IPs
+    for (var d = 0; d < devices.length; d++) {
+        if (!devices[d]._name) {
+            for (var dd = 0; dd < devices.length; dd++) {
+                if (devices[dd]._name && devices[d]._addr === devices[dd]._addr) {
+                    devices[d]._name = devices[dd]._name;
+                    break;
+                }
+            }
+        }
+    }
+
+    // Get the list of adapters with auto-discovery
     if (!adapters) enumAdapters();
 
     getInstances(function (instances) {
@@ -220,6 +232,7 @@ function discoveryEnd(devices, callback) {
                     }
                 }
             };
+            // analyse every IP address
             analyseDevices(devices, options, 0, function (err) {
                 adapter.log.info('Discovery finished. Found new or modified ' + options.newInstances.length + ' instances');
 

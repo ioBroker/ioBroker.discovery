@@ -14,6 +14,7 @@ systemDictionary = {
     "Deselect all":     {"en": "Deselect all",              "de": "Alle unsekeltieren",     "ru": "Снять отметку у всех"},
     "License terms":    {"en": "License terms",             "de": "Lizenzbedingungen",      "ru": "Содержание лицензии"},
     "license agreement": {"en": "license agreement",        "de": "Lizenzvertrag",          "ru": "Лицензионное соглашение"},
+    "extended":         {"en": "extended",                  "de": "erweitert",              "ru": "расширено"},
     "license_checkbox": {
         "en": "I am agree shown license agreement.",
         "de": "Ich bin einverstanden.",
@@ -35,6 +36,20 @@ systemDictionary = {
     "create instance":      {"en": "pending",               "de": "warten",                 "ru": "ожидание очереди"},
     "Details":              {"en": "Details",               "de": "Details",                "ru": "Детали"},
     "Install package":      {"en": "install package...",    "de": "installiere von npm...", "ru": "Установка пакета..."},
+    "canceled":             {"en": "canceled by user",      "de": "vom Anwender abgebrochen", "ru": "отменено пользователем"},
+    "Ok":                   {"en": "Ok",                    "de": "Ok",                     "ru": "Ok"},
+    "Cancel":               {"en": "Cancel",                "de": "Abbrechen",              "ru": "Отмена"},
+    "check parameters":     {"en": "check parameters",      "de": "Einstellungen überprüfen", "ru": "проверка параметров"},
+    "Edit parameters for %s": {
+        "en": "Required parameters for %s",
+        "de": "Einstellungen für %s",
+        "ru": "Необходимые настройки для %s"
+    },
+    "Passwords does not match": {
+        "en": "Passwords does not match",
+        "de": "Kennwort und Kennwortswiederholung sind unterschiedlich",
+        "ru": "Пароль и повтор пароля не совпадают"
+    },
     "Discovery adapter settings": {
         "en": "Discovery adapter settings",
         "de": "Discovery Einstellungen",
@@ -59,5 +74,23 @@ systemDictionary = {
         "en": "Create instances automatically",
         "de": "Erzeuge Instanzen",
         "ru": "Создать всё автоматически"
+    },
+    // used in tr-064
+    'user': {
+        de: 'Anwendername',
+        en: 'Username',
+        ru: 'Имя пользователя'
+    },
+    // used in tr-064
+    'password': {
+        de: 'Kennwort',
+        en: 'Password',
+        ru: 'Пароль'
+    },
+    // used in tr-064
+    'passwordRepeat': {
+        de: 'Kennwort wiederholen',
+        en: 'Passwort repeat',
+        ru: 'Повтор пароля'
     }
 };

@@ -151,7 +151,7 @@
                 }
             }
             if (comment.changed) {
-                text += (text ? ', ' : '') + _('changed') + ' ';
+                text += (text ? ', ' : '') + _('changed');
                 if (typeof comment.changed === 'object' &&  + comment.changed.length !== undefined) {
                     text += ': ';
                     if (comment.changed.length <= 5) {
@@ -165,7 +165,7 @@
                 }
             }
             if (comment.extended) {
-                text += (text ? ', ' : '') + _('extended') + ' ';
+                text += (text ? ', ' : '') + _('extended');
                 if (typeof comment.extended === 'object' &&  + comment.extended.length !== undefined) {
                     text += ': ';
                     if (comment.extended.length <= 5) {
@@ -403,6 +403,7 @@
             template._id = obj._id;
             template.common.enabled = true;
             template.type = 'instance';
+            template.comment = obj.comment;
 
             for (var c in obj.common) {
                 if (obj.common.hasOwnProperty(c)) template.common[c] = obj.common[c];
@@ -410,42 +411,143 @@
             for (var n in obj.native) {
                 if (obj.native.hasOwnProperty(n)) template.native[n] = obj.native[n];
             }
+            var $text = $('.step2-progress[data-id="' + obj._id + '"]');
+            $text.html(_('check parameters')).addClass('warn');
+            step2_askParameters(template, function (err, template) {
+                if (!template) {
+                    $text.html(_('canceled')).addClass('warn');
+                    callback && callback();
+                    return;
+                }
+                $text.html(_('wait till installed')).addClass('warn');
+                template = JSON.parse(JSON.stringify(template));
+                if (template.comment) delete template.comment;
 
-            $('.step2-progress[data-id="' + obj._id + '"]').html(_('wait till installed')).addClass('warn');
-
-            socket.emit('setObject', template._id, template, function (err) {
-                step2_waitTillInstalled(obj._id + '.alive', 20000, function (err) {
-                    if (err) {
-                        $('.step2-progress[data-id="' + obj._id + '"]').html(_('timeout by install')).addClass('error');
-                        callback && callback();
-                    } else {
-                        // Remove it from list
-                        socket.emit('getObject', 'system.discovery', function (err, discObj) {
-                            var changed = false;
-                            if (discObj && discObj.native.newInstances) {
-                                // remove obj.native.newInstances
-                                for (var i = 0; i < discObj.native.newInstances.length; i++) {
-                                    if (template._id === discObj.native.newInstances[i]._id) {
-                                        discObj.native.newInstances.splice(i, 1);
-                                        changed = true;
-                                        break;
+                socket.emit('setObject', template._id, template, function (err) {
+                    step2_waitTillInstalled(obj._id + '.alive', 20000, function (err) {
+                        if (err) {
+                            $text.html(_('timeout by install')).addClass('error');
+                            callback && callback();
+                        } else {
+                            // Remove it from list
+                            socket.emit('getObject', 'system.discovery', function (err, discObj) {
+                                var changed = false;
+                                if (discObj && discObj.native.newInstances) {
+                                    // remove obj.native.newInstances
+                                    for (var i = 0; i < discObj.native.newInstances.length; i++) {
+                                        if (template._id === discObj.native.newInstances[i]._id) {
+                                            discObj.native.newInstances.splice(i, 1);
+                                            changed = true;
+                                            break;
+                                        }
                                     }
                                 }
-                            }
-                            if (changed) {
-                                newInstances = discObj.native.newInstances;
-                                socket.emit('setObject', 'system.discovery', discObj, function (err) {
-                                    $('.step2-progress[data-id="' + obj._id + '"]').html(_('started')).addClass('success').removeClass('warn');
+                                if (changed) {
+                                    newInstances = discObj.native.newInstances;
+                                    socket.emit('setObject', 'system.discovery', discObj, function (err) {
+                                        $text.html(_('started')).addClass('success').removeClass('warn');
+                                        callback && callback();
+                                    });
+                                } else {
+                                    $text.html(_('started')).addClass('success').removeClass('warn');
                                     callback && callback();
-                                });
-                            } else {
-                                $('.step2-progress[data-id="' + obj._id + '"]').html(_('started')).addClass('success').removeClass('warn');
-                                callback && callback();
-                            }
-                        });
-                    }
+                                }
+                            });
+                        }
+                    });
                 });
             });
+        }
+
+        function getParam(name, obj) {
+            var parts = name.split('.');
+            do {
+                var attr = parts.shift();
+                if (typeof obj === 'object') {
+                    obj = obj[attr];
+                } else {
+                    obj = undefined;
+                    break;
+                }
+            } while (parts.length);
+
+            return obj;
+        }
+
+        function setParam(name, obj, value) {
+            var parts = name.split('.');
+            if (parts.length === 1) {
+                obj[name] = value;
+                return;
+            }
+
+            do {
+                var attr = parts.shift();
+                if (!parts.length) {
+                    obj[attr] = value;
+                    break;
+                }
+                if (typeof obj === 'object') {
+                    obj = obj[attr];
+                } else {
+                    obj = {};
+                    break;
+                }
+            } while (parts.length);
+        }
+
+        function step2_askParameters(obj, callback) {
+            if (obj.comment && obj.comment.inputs) {
+                // check if all required parameters are set
+                var params = [];
+                for (var p = 0; p < obj.comment.inputs.length; p++) {
+                    var name = obj.comment.inputs[p].name;
+                    var val = getParam(obj.comment.inputs[p].name, obj);
+                    if (val === undefined || val === obj.comment.inputs[p].def) {
+                        params.push(obj.comment.inputs[p]);
+                    }
+                }
+
+                if (params.length) {
+                    var text = '<table>';
+                    var text = '<tr class="param-line"><td>' + _('Description') + '</td><td>' + buildComment(obj.comment) + '</td></tr>';
+
+                    for (var pp = 0; pp < params.length; pp++) {
+                        text += '<tr class="param-line">';
+                        text += '<td>' + _(params[pp].title) + ': </td><td>';
+                        if (params[pp].type === 'password') {
+                            text += '<input data-name="' + params[pp].name + '" value="' + (params[pp].def !== undefined ? params[pp].def : '') + '" class="params" type="password"/></td>';
+                            text += '</tr><tr class="param-line"><td>' + _('passwordRepeat') + '</td>';
+                            text += '<td><input data-name="' + params[pp].name + '" value="' + (params[pp].def !== undefined ? params[pp].def : '') + '" class="passRepeat" type="password"/>';
+                        } else if (params[pp].type === 'checkbox') {
+                            text += '<input data-name="' + params[pp].name + '" type="checkbox" ' + (params[pp].def ? 'checked' : '') + ' class="params" />';
+                        } else if (params[pp].type === 'select') {
+                            text += '<select data-name="' + params[pp].name + '" class="params">';
+                            for (var op in params[pp].options) {
+                                if (!params[pp].options.hasOwnProperty(op)) continue;
+                                text += '<option value="' + op + '" ' + (params[pp].def === op ? 'selected' : '') + '>' + (params[pp].options[op] || op) + '</option>';
+                            }
+                            text += '</select>';
+                        } else{
+                            text += '<input data-name="' + params[pp].name + '" value="' + (params[pp].def !== undefined ? params[pp].def : '') + '" class="params" />';
+                        }
+                        text += '</td></tr>';
+                    }
+                    text += '</table>';
+                    var $dialog = $('#dialog-parameters');
+                    $dialog.html(text);
+                    $dialog.dialog('option', 'title', _('Edit parameters for %s', obj._id.substring('system.adapter.'.length)));
+                    //$dialog.dialog('option', 'height', 150 + params.length * 40);
+                    //$('.ui-dialog[aria-describedby="dialog-parameters"]').css('height', '90%');
+                    $dialog.data('callback', callback);
+                    $dialog.data('obj', obj);
+                    $dialog.dialog('open');
+                } else {
+                    callback(null, obj);
+                }
+            } else {
+                callback(null, obj);
+            }
         }
 
         function step2_cmdExec(host, cmd, callback) {
@@ -532,8 +634,9 @@
                                             repos[task.common.host] = null;
                                             step2_getAdapterInfo(task.common.host, name, function (template) {
                                                 if (template) {
-                                                    if (template.instanceObjects) delete template.instanceObjects;
-                                                    if (template.objects) delete template.objects;
+                                                    if (template.instanceObjects !== undefined) delete template.instanceObjects;
+                                                    if (template.objects !== undefined) delete template.objects;
+                                                    if (template._existing !== undefined) delete template._existing;
                                                     step2_addInstance(template, task, callback);
                                                 } else {
                                                     $('.step2-progress[data-id="' + task._id + '"]').html(_('No io-package.json found', err)).addClass('error');
@@ -568,18 +671,81 @@
             var instances = [];
             $('#step2_prev').button('disable');
             var $details = $('#step2_show_details');
-            $details.button({
-                label: _($details.data('title')),
-                icons: {
-                    primary: 'ui-icon-comment'
-                }
-            }).unbind('click').click(function () {
-                if ($stdout.is(':visible')) {
-                    $stdout.hide();
-                } else {
-                    $stdout.show();
-                }
-            });
+
+            if (!$details.data('inited')) {
+                $details.data('inited', true);
+                $details.button({
+                    label: _($details.data('title')),
+                    icons: {
+                        primary: 'ui-icon-comment'
+                    }
+                }).unbind('click').click(function () {
+                    if ($stdout.is(':visible')) {
+                        $stdout.hide();
+                    } else {
+                        $stdout.show();
+                    }
+                });
+                var $dialog = $('#dialog-parameters');
+                $dialog.dialog({
+                    autoOpen:   false,
+                    modal:      true,
+                    width:      '80%',
+//                    height:     '90%',
+                    open:       function (event) {
+                        $(event.target).parent().find('.ui-dialog-titlebar-close .ui-button-text').html('');
+                    },
+                    buttons:    [
+                        {
+                            text: _('Ok'),
+                            click: function () {
+                                var $dialog = $('#dialog-parameters');
+                                var obj = $dialog.data('obj');
+                                var error = false;
+                                $dialog.find('.params').each(function () {
+                                    var name = $(this).data('name');
+                                    var val;
+                                    if ($(this).attr('type') === 'checkbox') {
+                                        val = $(this).prop('checked');
+                                    } else {
+                                        val = $(this).val();
+                                    }
+                                    if ($(this).prop('type') === 'password') {
+                                        if (val !== $dialog.find('.passRepeat[data-name="' + name + '"]').val()) {
+                                            showMessage(_('Passwords does not match'), _('Error'), 'alert');
+                                            error = true;
+                                            return;
+                                        }
+                                    }
+
+                                    setParam(name, obj, val);
+                                });
+                                if (!error) {
+                                    $dialog.dialog('close');
+                                    var callback = $dialog.data('callback');
+                                    if (callback && typeof callback === 'function') {
+                                        $dialog.data('callback', null);
+                                        $dialog.data('obj', null);
+                                        callback(null, obj);
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            text: _('Cancel'),
+                            click: function () {
+                                var $dialog = $('#dialog-parameters');
+                                $dialog.dialog('close');
+                                var callback = $dialog.data('callback');
+                                if (callback && typeof callback === 'function') {
+                                    $dialog.data('callback', null);
+                                    callback(null, null);
+                                }
+                            }
+                        }
+                    ]
+                });
+            }
 
             $('.step1-allow').each(function () {
                 if ($(this).prop('checked')) {
@@ -614,6 +780,7 @@
                     showStep(currentStep + 1);
                 });
             });
+
             $('.bottom-prev').each(function () {
                 $(this).button({
                     label: _($(this).data('title')),
@@ -624,6 +791,7 @@
                     showStep(currentStep - 1);
                 });
             });
+
             $('.bottom-close').each(function () {
                 $(this).button({
                     label: _($(this).data('title')),
@@ -637,6 +805,7 @@
                     }
                 });
             });
+
             showStep(0);
             $stdout = $('#stdout');
 
@@ -753,7 +922,13 @@
         #step0_settings {
             float: left;
         }
-    </style>
+        .param-line {
+            height: 27px;
+        }
+        .param-line input {
+            margin-bottom: 2px;
+        }
+</style>
 </head>
 <body>
 <div style="width: 100%; height: 100%" id="container">
@@ -837,5 +1012,9 @@
     <h3 id="license_terms" class="translate">License terms</h3>
     <div id="license_text" style="width: 100%"></div>
 </div>
+
+<div id="dialog-parameters" style="display: none; z-index: 102">
+</div>
+
 </body>
 </html>
