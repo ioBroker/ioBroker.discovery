@@ -13,6 +13,9 @@
     "discovery",
     "home automation"
   ],
+  "optionalDependencies": {
+    "serialport": "^4.0.7"
+  },
   "dependencies": {
     "node-ssdp": "^3.1.0",
     "netmask": "^1.0.6"
