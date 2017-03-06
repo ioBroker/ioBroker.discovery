@@ -301,11 +301,11 @@ function browse(options, callback) {
                 progress[name] = _progress;
                 updateFindProgress(progress);
             },
-            function (err, _result, source) {
+            function (err, _result, source, type) {
                 if (_result) {
                     for (var r = 0; r < _result.length; r++) {
                         _result[r]._source = source;
-                        _result[r]._type = methods[m].type;
+                        _result[r]._type = type;
                     }
                     result = result.concat(_result);
                 }
