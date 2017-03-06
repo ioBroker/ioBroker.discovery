@@ -20,6 +20,7 @@ Just now it can detect via ping, UPnP (serial planned).
 - sonos
 - nut
 - tr-064
+- fronius
 
 ## Changelog
 ### 0.1.0 (2017-02-23)
