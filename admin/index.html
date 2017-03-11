@@ -184,9 +184,43 @@
             return text;
         }
 
+        function disableDependencies(id) {
+            var recheck = false;
+            // disable all that depends on it
+            for (var ii = 0; ii < newInstances.length; ii++) {
+                if (newInstances[ii].comment.required && newInstances[ii].comment.required.indexOf(id) !== -1) {
+                    var $check = $('.step1-allow[data-id="' + ii + '"]');
+                    if ($check.prop('checked')) {
+                        $check.prop('checked', false);
+                        recheck = true;
+                        disableDependencies(newInstances[ii]._id);
+                    }
+                }
+            }
+            return recheck;
+        }
         function step1CheckNextAllow() {
             var allow = false;
-            $('.step1-allow').each(function() {
+            var $allow = $('.step1-allow');
+            var recheck = false;
+            var index = $(this).data('id');
+            if ($(this).prop('checked')) {
+                if (newInstances[index].comment && newInstances[index].comment.required) {
+                    if (typeof newInstances[index].comment.required === 'string') newInstances[index].comment.required = [newInstances[index].comment.required];
+                    for (var r = 0; r < newInstances[index].comment.required.length; r++) {
+                        for (var i = 0; i < newInstances.length; i++) {
+                            if (newInstances[i]._id === newInstances[index].comment.required[r]) {
+                                $('.step1-allow[data-id="' + i + '"]').prop('checked', true);
+                            }
+                        }
+                    }
+                }
+            } else {
+                // disable all that depends on it
+                disableDependencies(newInstances[index]._id);
+            }
+
+            $allow.each(function () {
                 if ($(this).prop('checked')) {
                     allow = true;
                     return false;
@@ -216,39 +250,108 @@
             }
         }
 
+        function step1_showHideInstaces() {
+            $('.step1-instance').show();
+
+            if (!$('#step1-show-acknowledged').hasClass('discovery-state-active')) {
+                $('.step1-instance-acknowledged').hide();
+            }
+            if (!$('#step1-show-suggested').hasClass('discovery-state-active')) {
+                $('.step1-instance-suggested').hide();
+            }
+        }
         // show list of found instances
         function step1() {
-            $('#step1_selectall').button({
-                text: false,
-                icons: {
-                    primary: 'ui-icon-check'
-                }
-            }).unbind('click').click(function () {
-                $('.step1-allow').each(function () {
-                    $(this).prop('checked', true);
-                });
-                step1CheckNextAllow();
-            }).attr('title', _('Select all'));
+            var $step1_selectall = $('#step1_selectall');
+            if (!$step1_selectall.data('inited')) {
+                $step1_selectall.data('inited', true);
+                $step1_selectall.button({
+                    text: false,
+                    icons: {
+                        primary: 'ui-icon-check'
+                    }
+                }).unbind('click').click(function () {
+                    $('.step1-allow').each(function () {
+                        $(this).prop('checked', true);
+                    });
+                    step1CheckNextAllow();
+                }).attr('title', _('Select all'));
 
-            $('#step1_deselectall').button({
-                text: false,
-                icons: {
-                    primary: 'ui-icon-minus'
+                $('#step1_deselectall').button({
+                    text: false,
+                    icons: {
+                        primary: 'ui-icon-minus'
+                    }
+                }).unbind('click').click(function () {
+                    $('.step1-allow').each(function () {
+                        $(this).prop('checked', false);
+                    });
+                    step1CheckNextAllow();
+                }).attr('title', _('Deselect all'));
+
+
+
+                $('#step1-show-acknowledged').button({
+                    label: _('Show not only new'),
+                    icons: {
+                        primary: 'ui-icon-circle-zoomin'
+                    }
+                }).click(function () {
+                    var isShow = $(this).hasClass('discovery-state-active');
+                    if (isShow) {
+                        $(this).removeClass('discovery-state-active');
+                    } else {
+                        $(this).addClass('discovery-state-active');
+                    }
+                    step1_showHideInstaces();
+                    if (typeof storage !== 'undefined') {
+                        storage.set('wizard.show.acknowledged', $(this).hasClass('discovery-state-active'));
+                    }
+                }).attr('title', _('Show all instances'));
+
+                $('#step1-show-suggested').button({
+                    label: _('Show not only new'),
+                    icons: {
+                        primary: 'ui-icon-notice'
+                    }
+                }).click(function () {
+                    var isShow = $(this).hasClass('discovery-state-active');
+                    if (isShow) {
+                        $(this).removeClass('discovery-state-active');
+                    } else {
+                        $(this).addClass('discovery-state-active');
+                    }
+                    step1_showHideInstaces();
+                    if (typeof storage !== 'undefined') {
+                        storage.set('wizard.show.suggested', $(this).hasClass('discovery-state-active'));
+                    }
+                }).attr('title', _('Show suggested'));
+
+                if (typeof storage !== 'undefined') {
+                    if (storage.get('wizard.show.acknowledged')) {
+                        $('#step1-show-acknowledged').addClass('discovery-state-active');
+                    }
+                    if (storage.get('wizard.show.suggested')) {
+                        $('#step1-show-suggested').addClass('discovery-state-active');
+                    }
                 }
-            }).unbind('click').click(function () {
-                $('.step1-allow').each(function () {
-                    $(this).prop('checked', false);
-                });
-                step1CheckNextAllow();
-            }).attr('title', _('Deselect all'));
+            }
 
             step1_getHosts(function () {
                 var $instances = $('#step1_instances');
 
                 var text = '';
+                var hasSuggested = false;
+                var hasAcknowledged = false;
                 if (newInstances) {
                     for (var i = 0; i < newInstances.length; i++) {
-                        text += '<tr>';
+                        if (newInstances[i].comment.ack) hasAcknowledged = true;
+                        if (newInstances[i].comment.advice) hasSuggested = true;
+
+                        text += '<tr data-id="' + i + '" class="step1-instance ' +
+                            (newInstances[i].comment.ack ? 'step1-instance-acknowledged' : '') +
+                            (newInstances[i].comment.advice ? 'step1-instance-suggested' : '') +
+                            '">';
                         text += '<td><input type="checkbox" data-id="' + i + '" class="step1-allow"/></td>';
                         text += '<td>' + newInstances[i]._id.substring('system.adapter.'.length) + '</td>';
                         if (hosts.length > 1) {
@@ -261,12 +364,62 @@
                             text += '<td><select class="step1-host" data-id="' + i + '" disabled><option value="' + hosts[0] + '" selected>' + hosts[0] + '</option></select></td>';
                         }
                         text += '<td>' + buildComment(newInstances[i].comment) + '</td>';
+                        text += '<td><input type="checkbox" data-id="' + i + '" ' + (newInstances[i].comment.ack ? 'disabled checked' : '') + ' class="step1-ack"/></td>';
                         text += '</tr>';
                     }
                 }
 
                 $instances.html(text);
+
+                var $acknowledged = $('#step1-show-acknowledged');
+                var $suggested    = $('#step1-show-suggested');
+                if (!hasAcknowledged) {
+                    $acknowledged.hide();
+                } else {
+                    $acknowledged.show();
+                }
+                if (!hasSuggested) {
+                    $suggested.hide();
+                } else {
+                    $suggested.show();
+                }
+                if (!$acknowledged.hasClass('discovery-state-active')) {
+                    $('.step1-instance-acknowledged').hide();
+                }
+                if (!$suggested.hasClass('discovery-state-active')) {
+                    $('.step1-instance-suggested').hide();
+                }
                 $('.step1-allow').change(step1CheckNextAllow);
+                $('.step1-ack').change(function () {
+                    var isShow = $('.step1-show-acknowledged').hasClass('discovery-state-active');
+                    var i = $(this).data('id');
+                    newInstances[i].comment.ack = true;
+                    var $instance = $('.step1-instance[data-id="' + i + '"]');
+                    if (!isShow) $instance.hide();
+
+                    $instance.addClass('step1-instance-acknowledged');
+
+                    socket.emit('getObject', 'system.discovery', function (err, obj) {
+                        var found = false;
+                        if (obj && obj.native && obj.native.newInstances) {
+                            for (var n = 0; n < obj.native.newInstances.length; n++) {
+                                if (obj.native.newInstances[n]._id === newInstances[i]._id) {
+                                    found = true;
+                                    obj.native.newInstances[n].comment.ack = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if (found) {
+                            socket.emit('setObject', 'system.discovery', obj, function (err) {
+                                if (err) console.error(err);
+                            });
+                        } else {
+                            showMessage(_('Please close dialog and open it anew!'), _('Unknown error'), 'alert');
+                        }
+                    });
+                });
+
                 step1CheckNextAllow();
             });
         }
@@ -869,6 +1022,9 @@
         ];
     </script>
     <style>
+        .discovery-state-active {
+            background: lightgreen;
+        }
         .wizard-header {
             width: calc(100% - 6px - 1rem);
             position: absolute;
@@ -954,8 +1110,10 @@
             <h3 class="translate">Create instances automatically</h3>
         </div>
         <div class="wizard-content">
-            <button style="display: inline-block" data-title="Select all" id="step1_selectall"></button>
-            <button style="display: inline-block" data-title="Deselect all" id="step1_deselectall"></button>
+            <button style="display: inline-block; height: 24px;" data-title="Select all" id="step1_selectall"></button>
+            <button style="display: inline-block; height: 24px;" data-title="Deselect all" id="step1_deselectall"></button>
+            <button style="display: inline-block; height: 24px; font-size: 12px;" data-title="Show all" id="step1-show-acknowledged"></button>
+            <button style="display: inline-block; height: 24px; font-size: 12px;" data-title="Show all" id="step1-show-suggested"></button>
             <table class="wizard-table">
                 <thead>
                 <tr>
@@ -963,6 +1121,7 @@
                     <th class="translate">Instance</th>
                     <th class="translate">Host</th>
                     <th class="translate">Description</th>
+                    <th class="translate translateT" title="Do not show this instance any more">Ack</th>
                 </tr>
                 </thead>
                 <tbody id="step1_instances">

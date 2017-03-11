@@ -1,3 +1,7 @@
+if (typeof module !== 'undefined' && module.parent) {
+    var systemDictionary;
+}
+
 systemDictionary = {
     "Lookup services":  {"en": "Lookup services",           "de": "Suche Dienste",          "ru": "Поиск сервисов на устройствах"},
     "Lookup devices":   {"en": "Lookup devices",            "de": "Suche Geräte",           "ru": "Поиск устройств"},
@@ -40,6 +44,15 @@ systemDictionary = {
     "Ok":                   {"en": "Ok",                    "de": "Ok",                     "ru": "Ok"},
     "Cancel":               {"en": "Cancel",                "de": "Abbrechen",              "ru": "Отмена"},
     "check parameters":     {"en": "check parameters",      "de": "Einstellungen überprüfen", "ru": "проверка параметров"},
+    "Ack":                  {"en": "Hide",                  "de": "Ack", "ru": "Скрыть"},
+    "Show not only new":    {"en": "Show not only new",     "de": "Show not only new",      "ru": "Show not only new"},
+    "Show all instances":   {"en": "Show all instances",    "de": "Show all instances",     "ru": "Show all instances"},
+    "Please close dialog and open it anew!": {
+        "en": "Please close dialog and open it anew!",
+        "de": "Please close dialog and open it anew!",
+        "ru": "Please close dialog and open it anew!"
+    },
+    "Unknown error":        {"en": "Unknown error",         "de": "Unbekannter Fehler",     "ru": "Неизвестная ошибка"},
     "Edit parameters for %s": {
         "en": "Required parameters for %s",
         "de": "Einstellungen für %s",
@@ -94,3 +107,18 @@ systemDictionary = {
         ru: 'Повтор пароля'
     }
 };
+
+if (typeof module !== 'undefined' && module.parent) {
+    function translate(lang, word, arg1, arg2) {
+        if (systemDictionary[word]) {
+            word = systemDictionary[word][lang] || systemDictionary[word].en || word;
+        }
+        word = word.replace('%s', arg1);
+        word = word.replace('%s', arg2);
+        return word;
+    }
+    module.exports = {
+        words:    systemDictionary,
+        translate: translate
+    };
+}

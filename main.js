@@ -137,13 +137,18 @@ function analyseDevice(device, options, callback) {
         (function (adpr) {
             adapter.log.debug('Test ' + device._addr + ' ' + adpr);
 
-            // expected, that detect method will add to _instances one instance of specific type or extend existing one
-            adapters[a].detect(device._addr, device, options, function (err, isFound, addr) {
-                if (isFound) {
-                    adapter.log.debug('Test ' + device._addr + ' ' + adpr + ' DETECTED!');
-                }
+            try {
+                // expected, that detect method will add to _instances one instance of specific type or extend existing one
+                adapters[adpr].detect(device._addr, device, options, function (err, isFound, addr) {
+                    if (isFound) {
+                        adapter.log.debug('Test ' + device._addr + ' ' + adpr + ' DETECTED!');
+                    }
+                    if (!--count) analyseDeviceDependencies(device, options, callback);
+                });
+            } catch (e) {
+                options.log.error('Cannot detect "' + adpr + '" on "' + device._addr + '": ' + e);
                 if (!--count) analyseDeviceDependencies(device, options, callback);
-            })
+            }
         })(a);
     }
 
@@ -158,8 +163,40 @@ function analyseDevices(devices, options, index, callback) {
     adapter.setState('servicesProgress', Math.round((index / devices.length) * 100), true);
 
     if (!devices || index >= devices.length) {
-        adapter.setState('servicesProgress', 100, true);
-        callback(null);
+        var count = 0;
+        for (var aa in adapters) {
+            if (!adapters.hasOwnProperty(aa)) continue;
+            if (adapters[aa].type !== 'advice') continue;
+
+            count++;
+        }
+        // add suggested adapters
+        for (var a in adapters) {
+            if (!adapters.hasOwnProperty(a)) continue;
+            if (adapters[a].type !== 'advice') continue;
+
+            try {
+                // expected, that detect method will add to _instances one instance of specific type or extend existing one
+                adapters[a].detect(null, null, options, function (err, isFound, name) {
+                    if (isFound) {
+                        adapter.log.debug('Added suggested adapter: ' + name);
+                    }
+                    if (!--count && callback) {
+                        adapter.setState('servicesProgress', 100, true);
+                        callback && callback(null);
+                        callback =  null;
+                    }
+                });
+            } catch (e) {
+                adapter.log.error('Cannot detect suggested adapter: ' + e);
+                count--;
+            }
+        }
+        if (!count && callback) {
+            adapter.setState('servicesProgress', 100, true);
+            callback && callback(null);
+            callback =  null;
+        }
         return;
     }
 
@@ -213,50 +250,54 @@ function discoveryEnd(devices, callback) {
 
     getInstances(function (instances) {
         adapter.getEnums(null, function (err, enums) {
-            var options = {
-                existingInstances: instances,
-                newInstances: [],
-                enums: enums,
-                log: {
-                    debug: function (text) {
-                        adapter.log.debug(text);
-                    },
-                    warn: function (text) {
-                        adapter.log.warn(text);
-                    },
-                    error: function (text) {
-                        adapter.log.error(text);
-                    },
-                    info: function (text) {
-                        adapter.log.info(text);
+            // read language
+            adapter.getForeignObject('system.config', function (err, obj) {
+                var options = {
+                    existingInstances: instances,
+                    newInstances: [],
+                    enums: enums,
+                    language: obj ? obj.common.language : 'en',
+                    log: {
+                        debug: function (text) {
+                            adapter.log.debug(text);
+                        },
+                        warn: function (text) {
+                            adapter.log.warn(text);
+                        },
+                        error: function (text) {
+                            adapter.log.error(text);
+                        },
+                        info: function (text) {
+                            adapter.log.info(text);
+                        }
                     }
-                }
-            };
-            // analyse every IP address
-            analyseDevices(devices, options, 0, function (err) {
-                adapter.log.info('Discovery finished. Found new or modified ' + options.newInstances.length + ' instances');
+                };
+                // analyse every IP address
+                analyseDevices(devices, options, 0, function (err) {
+                    adapter.log.info('Discovery finished. Found new or modified ' + options.newInstances.length + ' instances');
 
-                // add this information to system.discovery.host
-                adapter.getForeignObject('system.discovery', function (err, obj) {
-                    if (!obj) {
-                        obj = {
-                            common: {
-                                name: 'prepared update of discovery'
-                            },
-                            native: {},
-                            type: 'config'
-                        };
-                    }
+                    // add this information to system.discovery.host
+                    adapter.getForeignObject('system.discovery', function (err, obj) {
+                        if (!obj) {
+                            obj = {
+                                common: {
+                                    name: 'prepared update of discovery'
+                                },
+                                native: {},
+                                type: 'config'
+                            };
+                        }
 
-                    obj.native.newInstances = options.newInstances;
-                    obj.native.devices = devices;
-                    obj.native.lastScan = new Date().getTime();
+                        obj.native.newInstances = options.newInstances;
+                        obj.native.devices = devices;
+                        obj.native.lastScan = new Date().getTime();
 
-                    adapter.setForeignObject('system.discovery', obj, function (err) {
-                        isRunning = false;
-                        if (err) adapter.log.error('Cannot update system.discovery: ' + err);
-                        adapter.log.info('Discovery finished');
-                        if (typeof callback === 'function') callback(null, options.newInstances, devices);
+                        adapter.setForeignObject('system.discovery', obj, function (err) {
+                            isRunning = false;
+                            if (err) adapter.log.error('Cannot update system.discovery: ' + err);
+                            adapter.log.info('Discovery finished');
+                            if (typeof callback === 'function') callback(null, options.newInstances, devices);
+                        });
                     });
                 });
             });
