@@ -80,6 +80,30 @@
                 "write": false
             },
             "native": {}
+        },
+        {
+            "_id":  "instancesFound",
+            "type": "state",
+            "common": {
+                "role":  "value",
+                "name":  "Found services",
+                "type":  "number",
+                "read":  true,
+                "write": false
+            },
+            "native": {}
+        },
+        {
+            "_id":  "devicesFound",
+            "type": "state",
+            "common": {
+                "role":  "value",
+                "name":  "Found devices",
+                "type":  "number",
+                "read":  true,
+                "write": false
+            },
+            "native": {}
         }
     ]
 }

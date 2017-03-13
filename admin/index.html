@@ -8,6 +8,7 @@
 
     <link rel="stylesheet" type="text/css" href="../../css/adapter.css"/>
     <script type="text/javascript" src="../../js/translate.js"></script>
+    <script type="text/javascript" src="../../lib/js/loStorage.js"></script>
     <script type="text/javascript" src="../../js/adapter-settings.js"></script>
     <script type="text/javascript" src="words.js"></script>
     <script type="text/javascript">
@@ -152,24 +153,26 @@
                 }
             }
             socket.emit('getObject', 'system.config', function (err, obj) {
+                var changed = false;
                 if (!obj || !obj.common) {
+                    // must be never active, but...
                     systemConfig = {
                         type: 'config',
                         common: {
                             name: 'system.config',
-                            city: '',           // City for weather
-                            country: '',           // Country for weather
-                            longitude: '',           // longitude for javascript
-                            latitude: '',           // longitude for javascript
-                            language: '',           // Default language for adapters. Adapters can use different values.
-                            tempUnit: '°C',         // Default temperature units.
-                            currency: '€',          // Default currency sign.
-                            dateFormat: 'DD.MM.YYYY', // Default date format.
-                            isFloatComma: true,         // Default float divider ('.' - false, ',' - true)
-                            licenseConfirmed: false,        // If license agreement confirmed,
-                            defaultHistory: '',           // Default history instance
-                            wizard: false,                 // flag is wizard was opened
-                            tabs: [                         // Show by default only these tabs
+                            city: '',                  // City for weather
+                            country: '',               // Country for weather
+                            longitude: '',             // longitude for javascript
+                            latitude: '',              // longitude for javascript
+                            language: '',              // Default language for adapters. Adapters can use different values.
+                            tempUnit: '°C',            // Default temperature units.
+                            currency: '',              // Default currency sign.
+                            dateFormat: 'DD.MM.YYYY',  // Default date format.
+                            isFloatComma: true,        // Default float divider ('.' - false, ',' - true)
+                            licenseConfirmed: false,   // If license agreement confirmed,
+                            defaultHistory: '',        // Default history instance
+                            wizard: false,             // flag is wizard was opened
+                            tabs: [                    // Show by default only these tabs
                                 'tab-adapters',
                                 'tab-instances',
                                 'tab-objects',
@@ -180,8 +183,7 @@
                             ]
                         }
                     };
-                    $('#step0_save').button('enable');
-                    $('#step0_next').button('disable');
+                    changed = true;
                 } else {
                     systemConfig = obj;
                     systemConfig.common.city      = systemConfig.common.city      || '';
@@ -189,6 +191,18 @@
                     systemConfig.common.longitude = systemConfig.common.longitude || '';
                     systemConfig.common.latitude  = systemConfig.common.latitude  || '';
                 }
+
+                if (!systemConfig.common.currency) {
+                    if (systemConfig.common.language === 'ru') {
+                        systemConfig.common.currency = '₽';
+                    } else if (systemConfig.common.language === 'de') {
+                        systemConfig.common.currency = '€';
+                    } else {
+                        systemConfig.common.currency = '$';
+                    }
+                    changed = true;
+                }
+
                 for (var attr in systemConfig.common) {
                     if (systemConfig.common.hasOwnProperty(attr)) {
                         $('#system_' + attr).val(systemConfig.common[attr]).change(function () {
@@ -199,9 +213,14 @@
                         });
                     }
                 }
+                if (!changed) {
+                    $('#step0_save').button('disable');
+                    $('#step0_next').button('enable');
+                } else {
+                    $('#step0_save').button('enable');
+                    $('#step0_next').button('disable');
+                }
 
-                $('#step0_save').button('disable');
-                $('#step0_next').button('enable');
                 if (isFirst) {
                     isFirst = false;
                     if (systemConfig.common.wizard) {
@@ -229,6 +248,7 @@
             var $step1 = $('#step1_discover');
             $('#step1_help1').show();
             $('#step1_text').hide();
+            $('#step1_result').hide();
             $('#step1_progressbar').hide();
 
             var $settings = $('#step1_settings');
@@ -254,6 +274,7 @@
 
                 sendTo(null, 'browse', null, function (result) {
                     $('#step1_text').hide();
+                    $('#step1_result').hide();
                     $('#step1_progressbar').hide();
                     $('#step1_next').button('enable');
                     $step1.button('enable');
@@ -394,26 +415,29 @@
             }
             return recheck;
         }
+
         function step2CheckNextAllow() {
             var allow = false;
             var $allow = $('.step2-allow');
-            var recheck = false;
-            var index = $(this).data('id');
-            if ($(this).prop('checked')) {
-                if (newInstances[index].comment && newInstances[index].comment.required) {
-                    if (typeof newInstances[index].comment.required === 'string') newInstances[index].comment.required = [newInstances[index].comment.required];
-                    for (var r = 0; r < newInstances[index].comment.required.length; r++) {
-                        for (var i = 0; i < newInstances.length; i++) {
-                            if (newInstances[i]._id === newInstances[index].comment.required[r]) {
-                                $('.step2-allow[data-id="' + i + '"]').prop('checked', true);
+            if (this !== window) {
+                var index = $(this).data('id');
+                if ($(this).prop('checked')) {
+                    if (newInstances[index].comment && newInstances[index].comment.required) {
+                        if (typeof newInstances[index].comment.required === 'string') newInstances[index].comment.required = [newInstances[index].comment.required];
+                        for (var r = 0; r < newInstances[index].comment.required.length; r++) {
+                            for (var i = 0; i < newInstances.length; i++) {
+                                if (newInstances[i]._id === newInstances[index].comment.required[r]) {
+                                    $('.step2-allow[data-id="' + i + '"]').prop('checked', true);
+                                }
                             }
                         }
                     }
+                } else {
+                    // disable all that depends on it
+                    disableDependencies(newInstances[index]._id);
                 }
-            } else {
-                // disable all that depends on it
-                disableDependencies(newInstances[index]._id);
             }
+
 
             $allow.each(function () {
                 if ($(this).prop('checked')) {
@@ -445,7 +469,7 @@
             }
         }
 
-        function step2_showHideInstaces() {
+        function step2_showHideInstances() {
             $('.step2-instance').show();
 
             if (!$('#step2-show-acknowledged').hasClass('discovery-state-active')) {
@@ -455,6 +479,7 @@
                 $('.step2-instance-suggested').hide();
             }
         }
+
         // show list of found instances
         function step2() {
             var $step2_selectall = $('#step2_selectall');
@@ -498,7 +523,7 @@
                     } else {
                         $(this).addClass('discovery-state-active');
                     }
-                    step2_showHideInstaces();
+                    step2_showHideInstances();
                     if (typeof storage !== 'undefined') {
                         storage.set('wizard.show.acknowledged', $(this).hasClass('discovery-state-active'));
                     }
@@ -516,17 +541,17 @@
                     } else {
                         $(this).addClass('discovery-state-active');
                     }
-                    step2_showHideInstaces();
+                    step2_showHideInstances();
                     if (typeof storage !== 'undefined') {
                         storage.set('wizard.show.suggested', $(this).hasClass('discovery-state-active'));
                     }
                 }).attr('title', _('Show suggested'));
 
                 if (typeof storage !== 'undefined') {
-                    if (storage.get('wizard.show.acknowledged')) {
+                    if (storage.get('wizard.show.acknowledged') !== false) {
                         $('#step2-show-acknowledged').addClass('discovery-state-active');
                     }
-                    if (storage.get('wizard.show.suggested')) {
+                    if (storage.get('wizard.show.suggested') !== false) {
                         $('#step2-show-suggested').addClass('discovery-state-active');
                     }
                 }
@@ -651,7 +676,9 @@
 
                     if (!error && body) {
                         $dialogLicense.css({'z-index': 200});
-                        $('#license_text').html('<pre>' + body + '</pre>');
+                        body = body.replace(/\r\n/g, '<br>');
+                        body = body.replace(/\n/g, '<br>');
+                        $('#license_text').html(body);
                         $dialogLicense.dialog({
                             autoOpen: true,
                             modal: true,
@@ -659,6 +686,7 @@
                             height: 400,
                             open: function (event) {
                                 $(event.target).parent().find('.ui-dialog-titlebar-close .ui-button-text').html('');
+                                $("#not-agree").focus();
                             },
                             buttons: [
                                 {
@@ -669,6 +697,7 @@
                                     }
                                 },
                                 {
+                                    id: 'not-agree',
                                     text: _('not agree'),
                                     click: function () {
                                         $dialogLicense.dialog('close');
@@ -681,7 +710,8 @@
                             }
                         });
                     } else {
-                        callback(true);
+                        showMessage(_('Cannot get license agreement'), _('No internet'), 'alert');
+                        callback(false);
                     }
                 }
             });
@@ -747,11 +777,37 @@
             socket.emit('sendToHost', host, 'getInstalledAdapter', name, callback);
         }
 
-        function step3_addInstance(template, obj, callback) {
-            template._id = obj._id;
+        function step3_addInstance(template, obj, wasInstalled, callback) {
+            template._id     = obj._id;
             template.common.enabled = true;
-            template.type = 'instance';
+            template.type    = 'instance';
             template.comment = obj.comment;
+            if (!wasInstalled) {
+                if (template && template.common.license && template.common.license !== 'MIT') {
+                    if (!template.common.licenseUrl) {
+                        template.common.licenseUrl = 'https://raw.githubusercontent.com/ioBroker/ioBroker.' + template.common.name + '/master/LICENSE'
+                    }
+                    if (typeof template.common.licenseUrl === 'object') {
+                        template.common.licenseUrl = template.common.licenseUrl[systemLang] || template.common.licenseUrl.en;
+                    }
+                    // Workaround
+                    // https://github.com/ioBroker/ioBroker.vis/blob/master/LICENSE =>
+                    // https://raw.githubusercontent.com/ioBroker/ioBroker.vis/master/LICENSE
+                    if (template.common.licenseUrl.indexOf('github.com') !== -1) {
+                        template.common.licenseUrl = template.common.licenseUrl.replace('github.com', 'raw.githubusercontent.com').replace('/blob/', '/');
+                    }
+                    // Show license dialog!
+                    step3_showLicenseDialog(template.common, function (isAgree) {
+                        if (isAgree) {
+                            step3_addInstance(template, obj, true, callback);
+                        } else {
+                            $('.step3-progress[data-id="' + template._id + '"]').html(_('license not agree')).addClass('error');
+                            callback && callback(_('license not agree'));
+                        }
+                    });
+                    return;
+                }
+            }
 
             for (var c in obj.common) {
                 if (obj.common.hasOwnProperty(c)) template.common[c] = obj.common[c];
@@ -844,14 +900,26 @@
             } while (parts.length);
         }
 
+        /*
+            Types of parameters:
+             - type=password, def=default value
+             - type=checkbox, def=default value
+             - type=select, options={value1: TextValule1, value2=TextValue2}
+             - type=link, def = URL
+             - type=comment, style="CSS style", def=text
+             - type=text
+
+             - name = Name of attribute like "native.ip" or "native.port"
+             - title = Title of input
+         */
         function step3_askParameters(obj, callback) {
             if (obj.comment && obj.comment.inputs) {
                 // check if all required parameters are set
                 var params = [];
                 for (var p = 0; p < obj.comment.inputs.length; p++) {
                     var name = obj.comment.inputs[p].name;
-                    var val = getParam(obj.comment.inputs[p].name, obj);
-                    if (val === undefined || val === obj.comment.inputs[p].def) {
+                    var val = name ? getParam(obj.comment.inputs[p].name, obj) : '';
+                    if (name === undefined || val === undefined || val === obj.comment.inputs[p].def) {
                         params.push(obj.comment.inputs[p]);
                     }
                 }
@@ -862,7 +930,7 @@
 
                     for (var pp = 0; pp < params.length; pp++) {
                         text += '<tr class="param-line">';
-                        text += '<td>' + _(params[pp].title) + ': </td><td>';
+                        text += '<td>' + _(params[pp].title) + (params[pp].title ? ':' : '') + ' </td><td>';
                         if (params[pp].type === 'password') {
                             text += '<input data-name="' + params[pp].name + '" value="' + (params[pp].def !== undefined ? params[pp].def : '') + '" class="params" type="password"/></td>';
                             text += '</tr><tr class="param-line"><td>' + _('passwordRepeat') + '</td>';
@@ -873,9 +941,13 @@
                             text += '<select data-name="' + params[pp].name + '" class="params">';
                             for (var op in params[pp].options) {
                                 if (!params[pp].options.hasOwnProperty(op)) continue;
-                                text += '<option value="' + op + '" ' + (params[pp].def === op ? 'selected' : '') + '>' + (params[pp].options[op] || op) + '</option>';
+                                text += '<option value="' + op + '" ' + (params[pp].def === op ? 'selected' : '') + '>' + (params[pp].options[op] !== null ? params[pp].options[op] : op) + '</option>';
                             }
                             text += '</select>';
+                        } else if (params[pp].type === 'link') {
+                            text += '<a href="' + (params[pp].link || params[pp].def) + '" target="' + params[pp].title.replace(/\s/g, '_') + '">' + (params[pp].link || params[pp].def) + '</a>';
+                        } else if (params[pp].type === 'comment') {
+                            text += '<span style="' + (params[pp].style || '') + '">' + (params[pp].comment || params[pp].def) + '</span>';
                         } else{
                             text += '<input data-name="' + params[pp].name + '" value="' + (params[pp].def !== undefined ? params[pp].def : '') + '" class="params" />';
                         }
@@ -956,7 +1028,7 @@
                 } else {
                     if (obj) {
                         // we changing the existing instance
-                        step3_addInstance(obj, task, callback);
+                        step3_addInstance(obj, task, false, callback);
                     } else {
                         // try to get system.adapter.NAME
                         var name = task._id.split('.');
@@ -966,12 +1038,12 @@
                         // if adapter installed or not
                         socket.emit('getObject', name, function (err, template) {
                             if (template) {
-                                step3_addInstance(template, task, callback);
+                                step3_addInstance(template, task, false, callback);
                             } else {
                                 name = name.substring('system.adapter.'.length);
                                 if (repos && repos[task.common.host] && repos[task.common.host].curInstalled[name]) {
                                     template = JSON.parse(JSON.stringify(repos[task.common.host].curInstalled[name]));
-                                    step3_addInstance(template, task, callback);
+                                    step3_addInstance(template, task, false, callback);
                                 } else {
                                     // add adapter
                                     step3_addAdapter(task.common.host, name, function (err) {
@@ -985,7 +1057,7 @@
                                                     if (template.instanceObjects !== undefined) delete template.instanceObjects;
                                                     if (template.objects !== undefined) delete template.objects;
                                                     if (template._existing !== undefined) delete template._existing;
-                                                    step3_addInstance(template, task, callback);
+                                                    step3_addInstance(template, task, true, callback);
                                                 } else {
                                                     $('.step3-progress[data-id="' + task._id + '"]').html(_('No io-package.json found', err)).addClass('error');
                                                     callback && callback();
@@ -1109,6 +1181,15 @@
 
             $('#step3_instances').html(text);
 
+            // move instances with input dialogs and licences to begin
+            instances.sort(function (a, b) {
+                var isInputA = !!(a.comment.license || a.comment.inputs);
+                var isInputB = !!(b.comment.license || b.comment.inputs);
+                if (isInputA && !isInputB) return 1;
+                if (isInputB && !isInputA) return -1;
+                return 0;
+            });
+
             step3_processInstances(instances, function () {
                 $('#step3_prev').button('enable');
             });
@@ -1159,14 +1240,23 @@
 
             socket.emit('subscribeStates',  'discovery.' + instance + '.*');
             socket.on('stateChange', function (id, state) {
-                if (state && state.ack && id === 'discovery.' + instance + '.devicesProgress') {
-                    $('#step1_text').show().html(_('Lookup devices') + ' - ' + state.val + '%');
-                    $('#step1_progressbar').show().progressbar({value: state.val});
+                if (state && state.ack) {
+                    if (id === 'discovery.' + instance + '.devicesProgress') {
+                        $('#step1_text').show().html(_('Lookup devices') + ' - ' + state.val + '%');
+                        $('#step1_progressbar').show().progressbar({value: state.val});
+                    } else
+                    if (id === 'discovery.' + instance + '.servicesProgress') {
+                        $('#step1_text').show().html(_('Lookup services') + ' - ' + state.val + '%');
+                        $('#step1_progressbar').show().progressbar({value: state.val});
+                    } else
+                    if (id === 'discovery.' + instance + '.instancesFound') {
+                        $('#step1_result').show().html(state.val + ' ' + _('Found services'));
+                    } else
+                    if (id === 'discovery.' + instance + '.devicesFound') {
+                        $('#step1_result').show().html(state.val + ' ' + _('Found devices'));
+                    }
                 }
-                if (state && state.ack && id === 'discovery.' + instance + '.servicesProgress') {
-                    $('#step1_text').show().html(_('Lookup services') + ' - ' + state.val + '%');
-                    $('#step1_progressbar').show().progressbar({value: state.val});
-                }
+
             });
 
             socket.on('cmdStdout', function (_id, text) {
@@ -1279,6 +1369,9 @@
         }
         .param-line input {
             margin-bottom: 2px;
+        }
+        .value {
+            width: 200px;
         }
 </style>
 </head>
@@ -1641,6 +1734,7 @@
             <div id="step1_help2" class="translate" style="display: none">step1_help2</div>
             <div id="step1_text" style="display: none"></div>
             <div id="step1_progressbar" style="display: none"></div>
+            <div id="step1_result" style="display: none"></div>
         </div>
         <div class="wizard-footer">
             <button id="step1_settings" class="bottom-buttons" data-title="Settings"></button>

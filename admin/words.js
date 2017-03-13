@@ -19,6 +19,13 @@ systemDictionary = {
     "License terms":    {"en": "License terms",             "de": "Lizenzbedingungen",      "ru": "Содержание лицензии"},
     "license agreement": {"en": "license agreement",        "de": "Lizenzvertrag",          "ru": "Лицензионное соглашение"},
     "extended":         {"en": "extended",                  "de": "erweitert",              "ru": "расширено"},
+    "Found services":   {"en": "services found",            "de": "Services gefunden",      "ru": "сервисов найдено"},
+    "Found devices":    {"en": "devices found",             "de": "Geräten gefunden",       "ru": "потенциальных устройств найдено"},
+    "Show suggested":   {"en": "Show suggested",            "de": "Empfohlene Instanzen",   "ru": "Полезные драйвера"},
+    "Required for %s":  {"en": "Required for %s",           "de": "benötigt für %s",        "ru": "необходим для %s"},
+    "agree":            {"en": "agree",                     "de": "Einverstanden",          "ru": "Согласен(на)"},
+    "not agree":        {"en": "not agree",                 "de": "Nicht einverstanden",    "ru": "Не согласен(на)"},
+    "license not agree":    {"en": "Not agree with license!", "de": "Nicht einverstanden mit Lizenz",  "ru": "Не согласен(на) с лицензией"},
     "license_checkbox": {
         "en": "I am agree shown license agreement.",
         "de": "Ich bin einverstanden.",
