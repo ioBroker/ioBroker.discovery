@@ -34,7 +34,7 @@ function enumMethods() {
     methods = {};
     for (var f = 0; f < dir.length; f++) {
         var parts = dir[f].split('.');
-        if (parts[parts.length - 1] === 'js') {
+        if (parts[parts.length - 1] === 'js' && parts[0] !== '_') {
             parts.pop();
             methods[parts.join('.')] = require(__dirname + '/lib/methods/' + dir[f]);
         }
@@ -286,9 +286,21 @@ function discoveryEnd(devices, callback) {
                     }
                 };
                 // remove double devices
-                devices.sort(function () {
-
+                devices.sort(function (a, b) {
+                    if (a._addr > b.addr) return -1;
+                    if (a._addr < b.addr) return 1;
+                    return 0;
                 });
+                // remove double entries from upnp and ip
+                for (var d = devices.length - 2; d >= 0; d--) {
+                    if (devices[d]._addr === devices[d + 1]._addr) {
+                        if (devices[d]._source === 'upnp') {
+                            devices.splice(d, 1);
+                        } else {
+                            devices.splice(d + 1, 1);
+                        }
+                    }
+                }
 
                 // analyse every IP address
                 analyseDevices(devices, options, 0, function (err) {
