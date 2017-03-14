@@ -20,7 +20,7 @@ systemDictionary = {
     "license agreement": {"en": "license agreement",        "de": "Lizenzvertrag",          "ru": "Лицензионное соглашение"},
     "extended":         {"en": "extended",                  "de": "erweitert",              "ru": "расширено"},
     "Found services":   {"en": "services found",            "de": "Services gefunden",      "ru": "сервисов найдено"},
-    "Found devices":    {"en": "devices found",             "de": "Geräten gefunden",       "ru": "потенциальных устройств найдено"},
+    "Found devices":    {"en": "devices found",             "de": "Geräte gefunden",        "ru": "потенциальных устройств найдено"},
     "Show suggested":   {"en": "Show suggested",            "de": "Empfohlene Instanzen",   "ru": "Полезные драйвера"},
     "Required for %s":  {"en": "Required for %s",           "de": "benötigt für %s",        "ru": "необходим для %s"},
     "agree":            {"en": "agree",                     "de": "Einverstanden",          "ru": "Согласен(на)"},

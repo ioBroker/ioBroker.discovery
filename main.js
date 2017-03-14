@@ -96,6 +96,14 @@ function processMessages() {
 
 function analyseDeviceDependencies(device, options, callback) {
     var count = 0;
+    for (var aa in adapters) {
+        if (!adapters.hasOwnProperty(aa)) continue;
+        if (adapters[aa].type !== device._type) continue;
+        if (!adapters[aa].dependencies) continue;
+        count++;
+    }
+
+    var callbacks = {};
 
     // try all found adapter types (with dependencies)
     for (var a in adapters) {
@@ -103,16 +111,32 @@ function analyseDeviceDependencies(device, options, callback) {
         if (adapters[a].type !== device._type) continue;
         if (!adapters[a].dependencies) continue;
 
-        count++;
+        var timeout = setTimeout(function () {
+            timeout = null;
+            //options.log.error('Timeout by detect "' + adpr + '" on "' + device._addr + '": ' + (adapters[adpr].timeout || 2000) + 'ms');
+            if (!--count) analyseDeviceDependencies(device, options, callback);
+        }, adapters[a].timeout || 2000);
+
+
         (function (adpr) {
             adapter.log.debug('Test ' + device._addr + ' ' + adpr);
 
             // expected, that detect method will add to _instances one instance of specific type or extend existing one
             adapters[a].detect(device._addr, device, options, function (err, isFound, addr) {
+                if (callbacks[adpr]) {
+                    adapter.log.error('Double callback by "' + adpr + '"');
+                } else {
+                    callbacks[adpr] = true;
+                }
+
                 if (isFound) {
                     adapter.log.debug('Test ' + device._addr + ' ' + adpr + ' DETECTED!');
                 }
-                if (!--count) callback(err);
+                if (timeout) {
+                    clearTimeout(timeout);
+                    timeout = null;
+                    if (!--count) callback(err);
+                }
             })
         })(a);
     }
@@ -126,6 +150,14 @@ function analyseDevice(device, options, callback) {
 
     adapter.log.debug('Test ' + device._addr);
 
+    for (var aa in adapters) {
+        if (!adapters.hasOwnProperty(aa)) continue;
+        if (typeof adapters[aa].type === 'string' && adapters[aa].type !== device._type) continue;
+        if (typeof adapters[aa].type === 'object' && adapters[aa].type.indexOf(device._type) === -1) continue;
+        if (adapters[aa].dependencies) continue;
+        count++;
+    }
+    var callbacks = {};
     // try all found adapter types (first without dependencies)
     for (var a in adapters) {
         if (!adapters.hasOwnProperty(a)) continue;
@@ -133,7 +165,6 @@ function analyseDevice(device, options, callback) {
         if (typeof adapters[a].type === 'object' && adapters[a].type.indexOf(device._type) === -1) continue;
         if (adapters[a].dependencies) continue;
 
-        count++;
         (function (adpr) {
             adapter.log.debug('Test ' + device._addr + ' ' + adpr);
 
@@ -147,6 +178,12 @@ function analyseDevice(device, options, callback) {
                 // expected, that detect method will add to _instances one instance of specific type or extend existing one
                 adapters[adpr].detect(device._addr, device, options, function (err, isFound, addr) {
                     if (timeout) {
+                        if (callbacks[adpr]) {
+                            adapter.log.error('Double callback by "' + adpr + '"');
+                        } else {
+                            callbacks[adpr] = true;
+                        }
+
                         clearTimeout(timeout);
                         timeout = null;
                         if (!--count) analyseDeviceDependencies(device, options, callback);
@@ -181,28 +218,37 @@ function analyseDevices(devices, options, index, callback) {
 
             count++;
         }
+
+        var callbacks = {};
         // add suggested adapters
         for (var a in adapters) {
             if (!adapters.hasOwnProperty(a)) continue;
             if (adapters[a].type !== 'advice') continue;
 
-            try {
-                // expected, that detect method will add to _instances one instance of specific type or extend existing one
-                adapters[a].detect(null, null, options, function (err, isFound, name) {
-                    if (isFound) {
-                        adapter.log.debug('Added suggested adapter: ' + name);
-                    }
-                    if (!--count && callback) {
-                        adapter.setState('servicesProgress', 100, true);
-                        adapter.setState('instancesFound', options.newInstances.length, true);
-                        callback && callback(null);
-                        callback =  null;
-                    }
-                });
-            } catch (e) {
-                adapter.log.error('Cannot detect suggested adapter: ' + e);
-                count--;
-            }
+            (function (adpr) {
+                try {
+                    // expected, that detect method will add to _instances one instance of specific type or extend existing one
+                    adapters[adpr].detect(null, null, options, function (err, isFound, name) {
+                        if (callbacks[adpr]) {
+                            adapter.log.error('Double callback by "' + adpr + '"');
+                        } else {
+                            callbacks[adpr] = true;
+                        }
+                        if (isFound) {
+                            adapter.log.debug('Added suggested adapter: ' + name);
+                        }
+                        if (!--count && callback) {
+                            adapter.setState('servicesProgress', 100, true);
+                            adapter.setState('instancesFound', options.newInstances.length, true);
+                            callback && callback(null);
+                            callback =  null;
+                        }
+                    });
+                } catch (e) {
+                    adapter.log.error('Cannot detect suggested adapter: ' + e);
+                    count--;
+                }
+            })(a);
         }
         if (!count && callback) {
             adapter.setState('servicesProgress', 100, true);
@@ -210,13 +256,12 @@ function analyseDevices(devices, options, index, callback) {
             callback && callback(null);
             callback =  null;
         }
-        return;
+    } else {
+        analyseDevice(devices[index], options, function (err) {
+            if (err) adapter.log.error('Error by analyse device: ' + err);
+            setTimeout(analyseDevices, 0, devices, options, index + 1, callback);
+        });
     }
-
-    analyseDevice(devices[index], options, function (err) {
-        if (err) adapter.log.error('Error by analyse device: ' + err);
-        setTimeout(analyseDevices, 0, devices, options, index + 1, callback);
-    });
 }
 
 function getInstances(callback) {
