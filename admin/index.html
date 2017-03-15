@@ -710,7 +710,8 @@
                                     text: _('agree'),
                                     click: function () {
                                         $dialogLicense.dialog('close');
-                                        callback(true);
+                                        callback && callback(true);
+                                        callback = null;
                                     }
                                 },
                                 {
@@ -718,40 +719,48 @@
                                     text: _('not agree'),
                                     click: function () {
                                         $dialogLicense.dialog('close');
-                                        callback(false);
+                                        callback && callback(false);
+                                        callback = null;
                                     }
                                 }
                             ],
                             close: function () {
-                                callback(false);
+                                callback && callback(false);
+                                callback = null;
                             }
                         });
                     } else {
                         showMessage(_('Cannot get license agreement'), _('No internet'), 'alert');
-                        callback(false);
+                        callback && callback(false);
+                        callback = null;
                     }
                 }
             });
         }
 
-        function step3_waitTillInstalled(id, timeout, callback, count) {
+        function step3_waitTillInstalled(id, template, timeout, callback, count) {
             count = count || 0;
 
-            socket.emit('getState', id, function (err, state) {
-                console.log(id + '(' + count + '): ' + (state ? state.val : 'null'));
-                if (state && state.val) {
-                    callback && callback();
-                } else {
-                    count++;
-                    if (count * 1000 > timeout) {
-                        callback && callback('timeout');
+            if (template && template.common.mode !== 'daemon' && template.common.mode !== 'once') {
+                callback && callback();
+            } else {
+                socket.emit('getState', id, function (err, state) {
+                    console.log(id + '(' + count + '): ' + (state ? state.val : 'null'));
+                    if (state && state.val) {
+                        callback && callback();
                     } else {
-                        setTimeout(function () {
-                            step3_waitTillInstalled(id, timeout, callback, count + 1);
-                        }, 1000);
+                        count++;
+                        if (count * 1000 > timeout) {
+                            // may be "once" was too fast and finished in less than a second
+                            callback && callback((template && template.common.mode === 'once') ? '' : 'timeout');
+                        } else {
+                            setTimeout(function () {
+                                step3_waitTillInstalled(id, template, timeout, callback, count + 1);
+                            }, 1000);
+                        }
                     }
-                }
-            });
+                });
+            }
         }
 
         function step3_getAdaptersInfo(host, callback) {
@@ -818,7 +827,7 @@
                         if (isAgree) {
                             step3_addInstance(template, obj, true, callback);
                         } else {
-                            $('.step3-progress[data-id="' + template._id + '"]').html(_('license not agree')).addClass('error');
+                            $('.step3-progress[data-id="' + template._id + '"]').html(_('license not agree')).removeClass('process').addClass('error');
                             callback && callback(_('license not agree'));
                         }
                     });
@@ -836,8 +845,8 @@
             $text.html(_('check parameters')).addClass('warn');
             step3_askParameters(template, function (err, template) {
                 if (!template) {
-                    $text.html(_('canceled')).addClass('warn');
-                    callback && callback();
+                    $text.html(_('canceled')).removeClass('process').addClass('warn');
+                    callback && callback(err || 'No template');
                     return;
                 }
                 $text.html(_('wait till installed')).addClass('warn');
@@ -845,10 +854,10 @@
                 if (template.comment) delete template.comment;
 
                 socket.emit('setObject', template._id, template, function (err) {
-                    step3_waitTillInstalled(obj._id + '.alive', 20000, function (err) {
+                    step3_waitTillInstalled(obj._id + '.alive', template, 20000, function (err) {
                         if (err) {
-                            $text.html(_('timeout by install')).addClass('error');
-                            callback && callback();
+                            $text.html(_('timeout by install')).removeClass('process').addClass('error');
+                            callback && callback(err);
                         } else {
                             // Remove it from list
                             socket.emit('getObject', 'system.discovery', function (err, discObj) {
@@ -866,11 +875,11 @@
                                 if (changed) {
                                     newInstances = discObj.native.newInstances;
                                     socket.emit('setObject', 'system.discovery', discObj, function (err) {
-                                        $text.html(_('started')).addClass('success').removeClass('warn');
+                                        $text.html(_('started')).addClass('success').removeClass('process').removeClass('warn');
                                         callback && callback();
                                     });
                                 } else {
-                                    $text.html(_('started')).addClass('success').removeClass('warn');
+                                    $text.html(_('started')).addClass('success').removeClass('process').removeClass('warn');
                                     callback && callback();
                                 }
                             });
@@ -943,19 +952,19 @@
 
                 if (params.length) {
                     var text = '<table>';
-                    var text = '<tr class="param-line"><td>' + _('Description') + '</td><td>' + buildComment(obj.comment) + '</td></tr>';
+                    text = '<tr class="param-line"><td>' + _('Description') + '</td><td>' + buildComment(obj.comment) + '</td></tr>';
 
                     for (var pp = 0; pp < params.length; pp++) {
                         text += '<tr class="param-line">';
                         text += '<td>' + _(params[pp].title) + (params[pp].title ? ':' : '') + ' </td><td>';
                         if (params[pp].type === 'password') {
-                            text += '<input data-name="' + params[pp].name + '" value="' + (params[pp].def !== undefined ? params[pp].def : '') + '" class="params" type="password"/></td>';
+                            text += '<input data-required="' + !!params[pp].required + '" data-name="' + params[pp].name + '" value="' + (params[pp].def !== undefined ? params[pp].def : '') + '" class="params" type="password"/></td>';
                             text += '</tr><tr class="param-line"><td>' + _('passwordRepeat') + '</td>';
-                            text += '<td><input data-name="' + params[pp].name + '" value="' + (params[pp].def !== undefined ? params[pp].def : '') + '" class="passRepeat" type="password"/>';
+                            text += '<td><input data-required="' + !!params[pp].required + '" data-name="' + params[pp].name + '" value="' + (params[pp].def !== undefined ? params[pp].def : '') + '" class="passRepeat" type="password"/>';
                         } else if (params[pp].type === 'checkbox') {
-                            text += '<input data-name="' + params[pp].name + '" type="checkbox" ' + (params[pp].def ? 'checked' : '') + ' class="params" />';
+                            text += '<input data-required="' + !!params[pp].required + '" data-name="' + params[pp].name + '" type="checkbox" ' + (params[pp].def ? 'checked' : '') + ' class="params" />';
                         } else if (params[pp].type === 'select') {
-                            text += '<select data-name="' + params[pp].name + '" class="params">';
+                            text += '<select data-required="' + !!params[pp].required + '" data-name="' + params[pp].name + '" class="params">';
                             for (var op in params[pp].options) {
                                 if (!params[pp].options.hasOwnProperty(op)) continue;
                                 text += '<option value="' + op + '" ' + (params[pp].def === op ? 'selected' : '') + '>' + (params[pp].options[op] !== null ? params[pp].options[op] : op) + '</option>';
@@ -966,7 +975,7 @@
                         } else if (params[pp].type === 'comment') {
                             text += '<span style="' + (params[pp].style || '') + '">' + (params[pp].comment || params[pp].def) + '</span>';
                         } else{
-                            text += '<input data-name="' + params[pp].name + '" value="' + (params[pp].def !== undefined ? params[pp].def : '') + '" class="params" />';
+                            text += '<input data-required="' + !!params[pp].required + '" data-name="' + params[pp].name + '" value="' + (params[pp].def !== undefined ? params[pp].def : '') + '" class="params" />';
                         }
                         text += '</td></tr>';
                     }
@@ -1020,7 +1029,7 @@
                     step3_showLicenseDialog(_obj, function (isAgree) {
                         if (isAgree) {
                             step3_cmdExec(host, 'install ' + name, function (exitCode) {
-                                callback && callback(exitCode);
+                                callback && callback(exitCode !== 51 ? exitCode : 0); // 1 is yet installed
                             });
                         } else {
                             callback && callback(_('license not agree'));
@@ -1028,19 +1037,19 @@
                     });
                 } else {
                     step3_cmdExec(host, 'install ' + name, function (exitCode) {
-                        callback && callback(exitCode);
+                        callback && callback(exitCode !== 51 ? exitCode : 0);
                     });
                 }
             });
         }
 
         function step3_processInstance(task, callback) {
-            $('.step3-progress[data-id="' + task._id + '"]').html(_('Install package'));
+            $('.step3-progress[data-id="' + task._id + '"]').html(_('Install package')).addClass('process');
 
             // get Object
             socket.emit('getObject', task._id, function (err, obj) {
                 if (obj && task.comment.add) {
-                    $('.step3-progress[data-id="' + task._id + '"]').html(_('yet exists')).addClass('error');
+                    $('.step3-progress[data-id="' + task._id + '"]').html(_('yet exists')).removeClass('process').addClass('error');
                     callback && callback();
                 } else {
                     if (obj) {
@@ -1059,14 +1068,43 @@
                             } else {
                                 name = name.substring('system.adapter.'.length);
                                 if (repos && repos[task.common.host] && repos[task.common.host].curInstalled[name]) {
-                                    template = JSON.parse(JSON.stringify(repos[task.common.host].curInstalled[name]));
-                                    step3_addInstance(template, task, false, callback);
+                                    step3_getAdapterInfo(task.common.host, name, function (template) {
+                                        if (err) {
+                                            $('.step3-progress[data-id="' + task._id + '"]').html(_('Error: %s', err)).removeClass('process').addClass('error');
+                                            callback && callback(err);
+                                        } else {
+                                            if (!template.native) {
+                                                // add adapter
+                                                step3_addAdapter(task.common.host, name, function (err) {
+                                                    if (err) {
+                                                        $('.step3-progress[data-id="' + task._id + '"]').html(_('Error: %s', err)).removeClass('process').addClass('error');
+                                                        callback && callback(err);
+                                                    } else {
+                                                        repos[task.common.host] = null;
+                                                        step3_getAdapterInfo(task.common.host, name, function (template) {
+                                                            if (template) {
+                                                                if (template.instanceObjects !== undefined) delete template.instanceObjects;
+                                                                if (template.objects !== undefined) delete template.objects;
+                                                                if (template._existing !== undefined) delete template._existing;
+                                                                step3_addInstance(template, task, true, callback);
+                                                            } else {
+                                                                $('.step3-progress[data-id="' + task._id + '"]').html(_('No io-package.json found')).removeClass('process').addClass('error');
+                                                                callback && callback(_('No io-package.json found'));
+                                                            }
+                                                        });
+                                                    }
+                                                });
+                                            } else {
+                                                step3_addInstance(template, task, false, callback);
+                                            }
+                                        }
+                                    });
                                 } else {
                                     // add adapter
                                     step3_addAdapter(task.common.host, name, function (err) {
                                         if (err) {
-                                            $('.step3-progress[data-id="' + task._id + '"]').html(_('Error: %s', err)).addClass('error');
-                                            callback && callback();
+                                            $('.step3-progress[data-id="' + task._id + '"]').html(_('Error: %s', err)).removeClass('process').addClass('error');
+                                            callback && callback(err);
                                         } else {
                                             repos[task.common.host] = null;
                                             step3_getAdapterInfo(task.common.host, name, function (template) {
@@ -1076,8 +1114,8 @@
                                                     if (template._existing !== undefined) delete template._existing;
                                                     step3_addInstance(template, task, true, callback);
                                                 } else {
-                                                    $('.step3-progress[data-id="' + task._id + '"]').html(_('No io-package.json found', err)).addClass('error');
-                                                    callback && callback();
+                                                    $('.step3-progress[data-id="' + task._id + '"]').html(_('No io-package.json found')).removeClass('process').addClass('error');
+                                                    callback && callback(_('No io-package.json found'));
                                                 }
                                             });
                                         }
@@ -1090,15 +1128,35 @@
             });
         }
 
-        function step3_processInstances(instances, callback) {
+        function step3_processInstances(instances, errors, callback) {
             if (!instances || !instances.length) {
                 callback();
                 return;
             }
-            var task = instances.shift();
-            step3_processInstance(task, function () {
+            var task  = instances.shift();
+            var found = false;
+
+            if (task.comment.required) {
+                for (var r = 0; r < task.comment.required.length; r++) {
+                    if (errors.indexOf(task.comment.required[r]) !== -1) {
+                        found = true;
+                        break;
+                    }
+                }
+            }
+            if (found) {
+                $('.step3-progress[data-id="' + task._id + '"]').html(_('Some dependencies are not installed')).removeClass('process').addClass('error');
                 setTimeout(function () {
-                    step3_processInstances(instances, callback)
+                    step3_processInstances(instances, errors, callback)
+                }, 0);
+                return;
+            }
+
+            step3_processInstance(task, function (err) {
+                if (err) errors.push(task._id);
+
+                setTimeout(function () {
+                    step3_processInstances(instances, errors, callback)
                 }, 0);
             });
         }
@@ -1154,7 +1212,11 @@
                                             return;
                                         }
                                     }
-
+                                    if ($(this).data('required') && !val) {
+                                        showMessage(_('Parameter %s is mandatory!', name));
+                                        error = true;
+                                        return;
+                                    }
                                     setParam(name, obj, val);
                                 });
                                 if (!error) {
@@ -1187,27 +1249,46 @@
             $('.step2-allow').each(function () {
                 if ($(this).prop('checked')) {
                     var i = $(this).data('id');
-                    text += '<tr>';
-                    text += '<td>' + newInstances[i]._id.substring('system.adapter.'.length) + '</td>';
-                    text += '<td data-id="' + newInstances[i]._id + '" class="step3-progress">' + _('create instance') + '</td>';
-                    text += '</tr>';
                     instances.push(newInstances[i]);
                     newInstances[i].common.host = $('.step2-host[data-id="' + i + '"]').val();
                 }
             });
 
-            $('#step3_instances').html(text);
+            var noInputsNoRequires  = [];
+            var inputsNoRequires = [];
+            var requires   = [];
 
-            // move instances with input dialogs and licences to begin
-            instances.sort(function (a, b) {
-                var isInputA = !!(a.comment.license || a.comment.inputs);
-                var isInputB = !!(b.comment.license || b.comment.inputs);
-                if (isInputA && !isInputB) return 1;
-                if (isInputB && !isInputA) return -1;
+            for (var t = 0; t < instances.length; t++) {
+                var i = instances[t].comment.license || instances[t].comment.inputs;
+                if (!i && !instances[t].comment.required) {
+                    noInputsNoRequires.push(instances[t]);
+                } else if (!instances[t].comment.required && i) {
+                    inputsNoRequires.push(instances[t]);
+                } else {
+                    requires.push(instances[t]);
+                }
+            }
+
+            // 1 inputs, no requires
+            // 2 no inputs, no requires
+            // 3 requires
+            // sort requires by number
+            requires.sort(function (a, b) {
+                if (a.comment.required.length > b.comment.required.length) return 1;
+                if (a.comment.required.length < b.comment.required.length) return -1;
                 return 0;
             });
+            instances = inputsNoRequires.concat(noInputsNoRequires).concat(requires);
 
-            step3_processInstances(instances, function () {
+            for (var k = 0; k < instances.length; k++) {
+                text += '<tr>';
+                text += '<td>' + instances[k]._id.substring('system.adapter.'.length) + '</td>';
+                text += '<td data-id="' + instances[k]._id + '" class="step3-progress">' + _('create instance') + '</td>';
+                text += '</tr>';
+            }
+            $('#step3_instances').html(text);
+
+            step3_processInstances(instances, [], function () {
                 $('#step3_prev').button('enable');
             });
         }
@@ -1383,6 +1464,10 @@
         .warn {
             color: orange;
         }
+        .process {
+            color: orange;
+            font-weight: bold;
+        }
         #step1_settings {
             float: left;
         }
@@ -1461,7 +1546,13 @@
                         <tr><td><label class="translate" for="system_country">Country:</label></td>
                             <td>
                                 <select id="system_country" class="system-settings value">
-                                        <option value="">Please select country</option>
+                                    <option value="">Please select country</option>
+                                    <option value="Germany" class="translate">Germany</option>
+                                    <option value="Austria" class="translate">Austria</option>
+                                    <option value="Switzerland" class="translate">Switzerland</option>
+                                    <option value="Russian Federation" class="translate">Russian Federation</option>
+                                    <option value="Ukraine" class="translate">Ukraine</option>
+                                    <option value="Belarus" class="translate">Belarus</option>
                                     <option value="Afghanistan" class="translate">Afghanistan</option>
                                     <option value="Albania" class="translate">Albania</option>
                                     <option value="Algeria" class="translate">Algeria</option>
@@ -1475,13 +1566,11 @@
                                     <option value="Armenia" class="translate">Armenia</option>
                                     <option value="Aruba" class="translate">Aruba</option>
                                     <option value="Australia" class="translate">Australia</option>
-                                    <option value="Austria" class="translate">Austria</option>
                                     <option value="Azerbaijan" class="translate">Azerbaijan</option>
                                     <option value="Bahamas" class="translate">Bahamas</option>
                                     <option value="Bahrain" class="translate">Bahrain</option>
                                     <option value="Bangladesh" class="translate">Bangladesh</option>
                                     <option value="Barbados" class="translate">Barbados</option>
-                                    <option value="Belarus" class="translate">Belarus</option>
                                     <option value="Belgium" class="translate">Belgium</option>
                                     <option value="Belize" class="translate">Belize</option>
                                     <option value="Benin" class="translate">Benin</option>
@@ -1541,7 +1630,6 @@
                                     <option value="Gabon" class="translate">Gabon</option>
                                     <option value="Gambia" class="translate">Gambia</option>
                                     <option value="Georgia" class="translate">Georgia</option>
-                                    <option value="Germany" class="translate">Germany</option>
                                     <option value="Ghana" class="translate">Ghana</option>
                                     <option value="Gibraltar" class="translate">Gibraltar</option>
                                     <option value="Guernsey" class="translate">Guernsey</option>
@@ -1643,7 +1731,6 @@
                                     <option value="Qatar" class="translate">Qatar</option>
                                     <option value="Reunion" class="translate">Reunion</option>
                                     <option value="Romania" class="translate">Romania</option>
-                                    <option value="Russian Federation" class="translate">Russian Federation</option>
                                     <option value="Rwanda" class="translate">Rwanda</option>
                                     <option value="Saint Kitts and Nevis" class="translate">Saint Kitts and Nevis</option>
                                     <option value="Saint Lucia" class="translate">Saint Lucia</option>
@@ -1672,7 +1759,6 @@
                                     <option value="Svalbard and Jan Mayen Islands" class="translate">Svalbard and Jan Mayen Islands</option>
                                     <option value="Swaziland" class="translate">Swaziland</option>
                                     <option value="Sweden" class="translate">Sweden</option>
-                                    <option value="Switzerland" class="translate">Switzerland</option>
                                     <option value="Syrian Arab Republic" class="translate">Syrian Arab Republic</option>
                                     <option value="Taiwan" class="translate">Taiwan</option>
                                     <option value="Tajikistan" class="translate">Tajikistan</option>
@@ -1688,7 +1774,6 @@
                                     <option value="Turks and Caicos Islands" class="translate">Turks and Caicos Islands</option>
                                     <option value="Tuvalu" class="translate">Tuvalu</option>
                                     <option value="Uganda" class="translate">Uganda</option>
-                                    <option value="Ukraine" class="translate">Ukraine</option>
                                     <option value="United Arab Emirates" class="translate">United Arab Emirates</option>
                                     <option value="United Kingdom" class="translate">United Kingdom</option>
                                     <option value="United States" class="translate">United States</option>

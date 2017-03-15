@@ -24,7 +24,7 @@ Just now it can detect via ping, UPnP (serial planned).
 - chromecast
 
 ## Changelog
-### 0.2.0 (2017-02-23)
+### 0.2.1 (2017-03-15)
 * (bluefox) initial commit
 
 ## License

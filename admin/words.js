@@ -10,7 +10,7 @@ systemDictionary = {
     "Use":              {"en": "Use",                       "de": "Benutze",                "ru": "Ипользовать"},
     "Instance":         {"en": "Instance",                  "de": "Instanz",                "ru": "Экземпляр"},
     "Host":             {"en": "Host",                      "de": "Host",                   "ru": "Сервер"},
-    "Description":      {"en": "Description",               "de": "Description",            "ru": "Описание"},
+    "Description":      {"en": "Description",               "de": "Beschreibung",           "ru": "Описание"},
     "Install adapters": {"en": "Install adapters",          "de": "Install adapters",       "ru": "Установить драйвера"},
     "Progress":         {"en": "Progress",                  "de": "Progress",               "ru": "Процесс"},
     "Select language":  {"en": "Select language",           "de": "Sprache:",               "ru": "Язык:"},
@@ -56,10 +56,17 @@ systemDictionary = {
     "Last scan on %s":      {"en": "Last scan on %s",       "de": "Letze Suche ist am %s gewesen", "ru": "Последнее скнирование было %s"},
     "Show all instances":   {"en": "Show all instances",    "de": "Zeige alle Instanzen",   "ru": "Показать все предложения"},
     "for %s":               {"en": "for %s",                "de": "für %s",                 "ru": "для %s"},
+    "%s devices":           {"en": "%s devices",            "de": "%s Geräte",              "ru": "устройств - %s"},
+    "Error: %s":            {"en": "Error: %s",             "de": "Fehler: %s",             "ru": "Ошибка: %s"},
     "Please close dialog and open it anew!": {
         "en": "Please close dialog and open it anew!",
         "de": "Please close dialog and open it anew!",
         "ru": "Please close dialog and open it anew!"
+    },
+    "Some dependencies are not installed": {
+        "en": "Some dependencies are not installed",
+        "de": "Manche erforderliche Instanzen sind nicht installiert",
+        "ru": "Некоторые зависимости не установлены"
     },
     "Unknown error":        {"en": "Unknown error",         "de": "Unbekannter Fehler",     "ru": "Неизвестная ошибка"},
     "Edit parameters for %s": {

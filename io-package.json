@@ -1,9 +1,9 @@
 {
     "common": {
         "name":                     "discovery",
-        "version":                  "0.2.0",
+        "version":                  "0.2.1",
         "news": {
-            "0.2.0": {
+            "0.2.1": {
                 "en": "initial commit",
                 "de": "initial commit",
                 "ru": "initial commit"
@@ -25,7 +25,7 @@
         "singletonHost":            true,
         "messagebox":               true,
         "readme":                   "https://github.com/ioBroker/ioBroker.discovery/blob/master/README.md",
-        "dependencies":             [{"js-controller": ">=0.16.0"}],
+        "dependencies":             [{"js-controller": ">=0.17.0"}],
         "loglevel":                 "info",
         "icon":                     "discovery.png",
         "keywords":                 ["poll", "discovery", "ip"],
