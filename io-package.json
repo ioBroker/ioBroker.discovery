@@ -30,7 +30,11 @@
         "icon":                     "discovery.png",
         "keywords":                 ["poll", "discovery", "ip"],
         "extIcon":                  "https://raw.githubusercontent.com/ioBroker/ioBroker.discovery/master/admin/discovery.png",
-		"type":                     "common adapters"
+		"type":                     "common adapters",
+        "config":{
+            "width": 1224,
+            "height": 700
+        }
     },
     "native": {
         "pingTimeout":       1000,
