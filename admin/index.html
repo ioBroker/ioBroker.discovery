@@ -34,6 +34,8 @@
         var systemConfig;
         var isFirst = true;
         var mapLoaded = false;
+        var lastScan = null;
+        var isRunning = false;
 
         function step0_initMap () {
             var $button = $('#detectCoordinates');
@@ -252,41 +254,45 @@
             $('#step1_progressbar').hide();
 
             var $settings = $('#step1_settings');
-            $settings.button({
-                label:  _($settings.data('title')),
-                icons: {
-                    primary: ' ui-icon-pencil'
-                }
-            }).unbind('click').click(function () {
-                document.location = 'settings.html' + document.location.search;
-            });
-
-            $step1.button({
-                label:  _($step1.data('title')),
-                icons: {
-                    primary: ' ui-icon-search'
-                }
-            }).unbind('click').click(function () {
-                $step1.button('disable');
-                $('#step1_next').button('disable');
-                $('#step1_help1').hide();
-                $('#step1_help2').hide();
-
-                sendTo(null, 'browse', null, function (result) {
-                    $('#step1_text').hide();
-                    $('#step1_result').hide();
-                    $('#step1_progressbar').hide();
-                    $('#step1_next').button('enable');
-                    $step1.button('enable');
-                    if (result.error) {
-                        showMessage(result.error, _('Error'), 'alert');
-                    } else {
-                        newInstances = result.newInstances;
-                        devices = result.devices;
-                        showStep(currentStep + 1);
+            if (!$settings.data('inited')) {
+                $settings.data('inited', true);
+                $settings.button({
+                    label:  _($settings.data('title')),
+                    icons: {
+                        primary: ' ui-icon-pencil'
                     }
+                }).unbind('click').click(function () {
+                    document.location = 'settings.html' + document.location.search;
                 });
-            });
+
+                $step1.button({
+                    label:  _($step1.data('title')),
+                    icons: {
+                        primary: ' ui-icon-search'
+                    }
+                }).unbind('click').click(function () {
+                    $step1.button('disable');
+                    $('#step1_next').button('disable');
+                    $('#step1_help1').hide();
+                    $('#step1_help2').hide();
+                    isRunning = true;
+                    sendTo(null, 'browse', null, function (result) {
+                        isRunning = false;
+                        $('#step1_text').hide();
+                        $('#step1_result').hide();
+                        $('#step1_progressbar').hide();
+                        $('#step1_next').button('enable');
+                        $step1.button('enable');
+                        if (result.error) {
+                            showMessage(result.error, _('Error'), 'alert');
+                        } else {
+                            newInstances = result.newInstances;
+                            devices = result.devices;
+                            showStep(currentStep + 1);
+                        }
+                    });
+                });
+            }
 
             $('#step1_next').button('disable');
             $('#step1_help2').hide();
@@ -298,32 +304,27 @@
             });
 
             socket.emit('getObject', 'system.discovery', function (err, obj) {
-                if (obj && obj.native.newInstances) {
-                    newInstances = obj.native.newInstances;
-                }
-                if (obj && obj.native.devices) {
-                    devices = obj.native.devices;
-                }
-                var found = false;
-                if (devices) {
-                    for (var d in devices) {
-                        if (devices.hasOwnProperty(d)) {
-                            found = true;
-                            break;
-                        }
+                if (obj) {
+                    if (obj.native.newInstances) {
+                        newInstances = obj.native.newInstances;
                     }
-                }
-                if (newInstances) {
-                    for (var n in newInstances) {
-                        if (newInstances.hasOwnProperty(n)) {
-                            found = true;
-                            break;
-                        }
+                    if (obj.native.devices) {
+                        devices = obj.native.devices;
                     }
+                    if (obj.native.lastScan) lastScan = obj.native.lastScan;
                 }
-                if (found) {
+                if (lastScan) {
+                    $('#step1_help3').show().html(_('Last scan on %s', formatTime(new Date(lastScan))));
+                } else {
+                    $('#step1_help3').hide();
+                }
+
+                if (newInstances.length) {
                     $('#step1_next').button('enable');
                     $('#step1_help2').show();
+                } else {
+                    $('#step1_next').button('disable');
+                    $('#step1_help2').hide();
                 }
             });
         }
@@ -469,6 +470,16 @@
             }
         }
 
+        function formatTime(a) {
+            var yyyy = a.getFullYear();
+            var mm  = a.getMonth()    < 9 ? '0' + (a.getMonth() + 1) : (a.getMonth() + 1); // getMonth() is zero-based
+            var dd  = a.getDate()    < 10 ? '0' + a.getDate()    : a.getDate();
+            var hh  = a.getHours()   < 10 ? '0' + a.getHours()   : a.getHours();
+            var min = a.getMinutes() < 10 ? '0' + a.getMinutes() : a.getMinutes();
+            var ss  = a.getSeconds() < 10 ? '0' + a.getSeconds() : a.getSeconds();
+            return yyyy + '-' + mm + '-' + dd + ' ' + hh + ':' + min  +':' + ss;
+        }
+
         function step2_showHideInstances() {
             $('.step2-instance').show();
 
@@ -530,7 +541,7 @@
                 }).attr('title', _('Show all instances'));
 
                 $('#step2-show-suggested').button({
-                    label: _('Show not only new'),
+                    label: _('Show suggested'),
                     icons: {
                         primary: 'ui-icon-notice'
                     }
@@ -569,8 +580,8 @@
                         if (newInstances[i].comment.advice) hasSuggested = true;
 
                         text += '<tr data-id="' + i + '" class="step2-instance ' +
-                            (newInstances[i].comment.ack ? 'step2-instance-acknowledged' : '') +
-                            (newInstances[i].comment.advice ? 'step2-instance-suggested' : '') +
+                            (newInstances[i].comment.ack ? 'step2-instance-acknowledged ' : '') +
+                            (newInstances[i].comment.advice ? 'step2-instance-suggested ' : '') +
                             '">';
                         text += '<td><input type="checkbox" data-id="' + i + '" class="step2-allow"/></td>';
                         text += '<td>' + newInstances[i]._id.substring('system.adapter.'.length) + '</td>';
@@ -587,6 +598,11 @@
                         text += '<td><input type="checkbox" data-id="' + i + '" ' + (newInstances[i].comment.ack ? 'disabled checked' : '') + ' class="step2-ack"/></td>';
                         text += '</tr>';
                     }
+                }
+                if (lastScan) {
+                    $('#step2_header').html(_('Create instances automatically') + ' - ' + _('Last scan on %s', formatTime(new Date(lastScan))));
+                } else {
+                    $('#step2_header').html(_('Create instances automatically'));
                 }
 
                 $instances.html(text);
@@ -611,8 +627,9 @@
                 }
                 $('.step2-allow').change(step2CheckNextAllow);
                 $('.step2-ack').change(function () {
-                    var isShow = $('.step2-show-acknowledged').hasClass('discovery-state-active');
+                    var isShow = $('#step2-show-acknowledged').hasClass('discovery-state-active');
                     var i = $(this).data('id');
+                    $(this).prop('disabled', true);
                     newInstances[i].comment.ack = true;
                     var $instance = $('.step2-instance[data-id="' + i + '"]');
                     if (!isShow) $instance.hide();
@@ -1255,8 +1272,13 @@
                     if (id === 'discovery.' + instance + '.devicesFound') {
                         $('#step1_result').show().html(state.val + ' ' + _('Found devices'));
                     }
+                    else
+                    if (id === 'discovery.' + instance + '.scanRunning') {
+                        if (!state.val && !isRunning) {
+                            step1();
+                        }
+                    }
                 }
-
             });
 
             socket.on('cmdStdout', function (_id, text) {
@@ -1732,6 +1754,7 @@
         <div class="wizard-content">
             <div id="step1_help1" class="translate">step1_help1</div>
             <div id="step1_help2" class="translate" style="display: none">step1_help2</div>
+            <div id="step1_help3" class="translate" style="display: none"></div>
             <div id="step1_text" style="display: none"></div>
             <div id="step1_progressbar" style="display: none"></div>
             <div id="step1_result" style="display: none"></div>
@@ -1746,21 +1769,21 @@
     </div>
     <div data-step="2" class="wizard-page" style="display: none">
         <div class="wizard-header ui-widget-header">
-            <h3 class="translate">Create instances automatically</h3>
+            <h3 class="translate" id="step2_header">Create instances automatically</h3>
         </div>
         <div class="wizard-content">
             <button style="display: inline-block; height: 24px;" data-title="Select all" id="step2_selectall"></button>
             <button style="display: inline-block; height: 24px;" data-title="Deselect all" id="step2_deselectall"></button>
             <button style="display: inline-block; height: 24px; font-size: 12px;" data-title="Show all" id="step2-show-acknowledged"></button>
-            <button style="display: inline-block; height: 24px; font-size: 12px;" data-title="Show all" id="step2-show-suggested"></button>
+            <button style="display: inline-block; height: 24px; font-size: 12px;" data-title="Show suggested too" id="step2-show-suggested"></button>
             <table class="wizard-table">
                 <thead>
                 <tr>
-                    <th class="translate">Use</th>
-                    <th class="translate">Instance</th>
+                    <th class="translate" style="width: 70px">Use</th>
+                    <th class="translate" style="width: 150px">Instance</th>
                     <th class="translate">Host</th>
                     <th class="translate">Description</th>
-                    <th class="translate translateT" title="Do not show this instance any more">Ack</th>
+                    <th class="translate translateT" title="Do not show this instance any more"  style="width: 50px">Ack</th>
                 </tr>
                 </thead>
                 <tbody id="step2_instances">

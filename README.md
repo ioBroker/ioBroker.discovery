@@ -21,9 +21,10 @@ Just now it can detect via ping, UPnP (serial planned).
 - nut
 - tr-064
 - fronius
+- chromecast
 
 ## Changelog
-### 0.1.0 (2017-02-23)
+### 0.2.0 (2017-02-23)
 * (bluefox) initial commit
 
 ## License

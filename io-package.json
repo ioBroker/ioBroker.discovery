@@ -1,9 +1,9 @@
 {
     "common": {
         "name":                     "discovery",
-        "version":                  "0.1.0",
+        "version":                  "0.2.0",
         "news": {
-            "0.1.0": {
+            "0.2.0": {
                 "en": "initial commit",
                 "de": "initial commit",
                 "ru": "initial commit"
@@ -100,6 +100,18 @@
                 "role":  "value",
                 "name":  "Found devices",
                 "type":  "number",
+                "read":  true,
+                "write": false
+            },
+            "native": {}
+        },
+        {
+            "_id":  "scanRunning",
+            "type": "state",
+            "common": {
+                "role":  "indicator",
+                "name":  "Is scan now running",
+                "type":  "boolean",
                 "read":  true,
                 "write": false
             },

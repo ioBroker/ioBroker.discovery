@@ -55,6 +55,8 @@ adapter.on('ready', function () {
 
 adapter.on('unload', function (callback) {
     if (isRunning) {
+        adapter && adapter.setState && adapter.setState('scanRunning', false, true);
+        isRunning = false;
         isStopping = true;
         setTimeout(function () {
             if (callback) {
@@ -72,10 +74,11 @@ function processMessage(obj) {
         case 'browse': {
             if (obj.callback) {
                 adapter.log.info('Received "browse" event');
-                browse(obj.message, function (err, newInstances, devices) {
+                browse(obj.message, function (error, newInstances, devices) {
                     adapter.log.info('Browse finished');
                     adapter.sendTo(obj.from, obj.command, {
-                        devices: devices,
+                        error:        error,
+                        devices:      devices,
                         newInstances: newInstances
                     }, obj.callback);
                 });
@@ -362,16 +365,36 @@ function discoveryEnd(devices, callback) {
                                 type: 'config'
                             };
                         }
-
+                        var oldInstances = obj.native.newInstances || [];
                         obj.native.newInstances = options.newInstances;
                         obj.native.devices = devices;
                         obj.native.lastScan = new Date().getTime();
+                        for (var j = oldInstances.length - 1; j >= 0; j--) {
+                            if (oldInstances[j].comment.ack) {
+                                delete oldInstances[j].comment.ack;
+                                oldInstances[j]._id = oldInstances[j]._id.replace(/\.\d+$/, '');
+                                oldInstances[j]= JSON.stringify(oldInstances[j]);
+                            } else {
+                                oldInstances.splice(j, 1);
+                            }
+                        }
+                        for (var i = 0; i < oldInstances.length; i++) {
+                            for (var n = 0; n < options.newInstances.length; n++) {
+                                var modified = JSON.parse(JSON.stringify(options.newInstances[n]));
+                                modified._id = modified._id.replace(/\.\d+$/, '');
+                                if (oldInstances[i] === JSON.stringify(modified)) {
+                                    options.newInstances[n].comment.ack = true;
+                                    break;
+                                }
+                            }
+                        }
 
                         adapter.setForeignObject('system.discovery', obj, function (err) {
                             isRunning = false;
                             if (err) adapter.log.error('Cannot update system.discovery: ' + err);
                             adapter.log.info('Discovery finished');
                             if (typeof callback === 'function') callback(null, options.newInstances, devices);
+                            adapter.setState('scanRunning', false, true);
                         });
                     });
                 });
@@ -412,11 +435,12 @@ function browse(options, callback) {
         if (callback) callback('Yet running');
         return;
     }
+    adapter.setState('scanRunning', true, true);
     isRunning = true;
     enumMethods();
 
-    var count = 0;
-    var result = [];
+    var count    = 0;
+    var result   = [];
     var progress = [];
     var devices  = [];
     for (var m in methods) {
@@ -446,6 +470,7 @@ function browse(options, callback) {
 }
 
 function main() {
+    adapter.setState('scanRunning', false, true);
     adapter.config.pingTimeout = parseInt(adapter.config.pingTimeout, 10) || 1000;
     adapter.config.pingBlock  = parseInt(adapter.config.pingBlock, 10) || 20;
 
