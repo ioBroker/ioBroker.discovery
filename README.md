@@ -22,6 +22,8 @@ Just now it can detect via ping, UPnP (serial planned).
 - tr-064
 - fronius
 - chromecast
+- z-wave USB (Tested with Aeon Labs)
+- rflink (57600)
 
 ## Changelog
 ### 0.2.1 (2017-03-15)

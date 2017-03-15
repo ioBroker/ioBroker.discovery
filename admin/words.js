@@ -58,6 +58,7 @@ systemDictionary = {
     "for %s":               {"en": "for %s",                "de": "für %s",                 "ru": "для %s"},
     "%s devices":           {"en": "%s devices",            "de": "%s Geräte",              "ru": "устройств - %s"},
     "Error: %s":            {"en": "Error: %s",             "de": "Fehler: %s",             "ru": "Ошибка: %s"},
+    "on %s":                {"en": "on %s",                 "de": "auf %s",                 "ru": "на %s"},
     "Please close dialog and open it anew!": {
         "en": "Please close dialog and open it anew!",
         "de": "Please close dialog and open it anew!",
