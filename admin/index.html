@@ -709,18 +709,18 @@
                                 {
                                     text: _('agree'),
                                     click: function () {
-                                        $dialogLicense.dialog('close');
                                         callback && callback(true);
                                         callback = null;
+                                        $dialogLicense.dialog('close');
                                     }
                                 },
                                 {
                                     id: 'not-agree',
                                     text: _('not agree'),
                                     click: function () {
-                                        $dialogLicense.dialog('close');
                                         callback && callback(false);
                                         callback = null;
+                                        $dialogLicense.dialog('close');
                                     }
                                 }
                             ],
