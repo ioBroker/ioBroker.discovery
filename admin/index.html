@@ -595,7 +595,7 @@
                             text += '<td><select class="step2-host" data-id="' + i + '" disabled><option value="' + hosts[0] + '" selected>' + hosts[0] + '</option></select></td>';
                         }
                         text += '<td>' + buildComment(newInstances[i].comment) + '</td>';
-                        text += '<td><input type="checkbox" data-id="' + i + '" ' + (newInstances[i].comment.ack ? 'disabled checked' : '') + ' class="step2-ack"/></td>';
+                        text += '<td style="text-align: center"><input type="checkbox" data-id="' + i + '" ' + (newInstances[i].comment.ack ? 'disabled checked' : '') + ' class="step2-ack"/></td>';
                         text += '</tr>';
                     }
                 }
@@ -1868,7 +1868,7 @@
                     <th class="translate" style="width: 150px">Instance</th>
                     <th class="translate">Host</th>
                     <th class="translate">Description</th>
-                    <th class="translate translateT" title="Do not show this instance any more"  style="width: 50px">Ack</th>
+                    <th class="translate translateT" title="Do not show this instance any more" style="width: 50px">Ignore</th>
                 </tr>
                 </thead>
                 <tbody id="step2_instances">

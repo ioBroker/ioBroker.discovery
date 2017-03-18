@@ -51,7 +51,7 @@ systemDictionary = {
     "Ok":                   {"en": "Ok",                    "de": "Ok",                     "ru": "Ok"},
     "Cancel":               {"en": "Cancel",                "de": "Abbrechen",              "ru": "Отмена"},
     "check parameters":     {"en": "check parameters",      "de": "Einstellungen überprüfen", "ru": "проверка параметров"},
-    "Ack":                  {"en": "Hide",                  "de": "Ack",                    "ru": "Скрыть"},
+    "Ignore":               {"en": "Ignore",                "de": "Ignorieren",             "ru": "Игнорировать"},
     "Show not only new":    {"en": "Show not only new",     "de": "Zeige nicht nur neue Instanzen", "ru": "Не только новые"},
     "Last scan on %s":      {"en": "Last scan on %s",       "de": "Letze Suche ist am %s gewesen", "ru": "Последнее скнирование было %s"},
     "Show all instances":   {"en": "Show all instances",    "de": "Zeige alle Instanzen",   "ru": "Показать все предложения"},
@@ -136,7 +136,7 @@ systemDictionary = {
     "point":                {"en": "point",                 "de": "Punkt",                  "ru": "точка"},
     "Country:":             {"en": "Country:",              "de": "Staat",                  "ru": "Страна:"},
     "City:":                {"en": "City:",                 "de": "Stadt:",                 "ru": "Город:"},
-    "Address:":             {"en": "Address:",              "de": "Adressw:",               "ru": "Адрес:"},
+    "Address:":             {"en": "Address:",              "de": "Adresse:",               "ru": "Адрес:"},
     "Latitude:":            {"en": "Latitude:",             "de": "Breitengrad:",           "ru": "Широта:"},
     "Longitude:":           {"en": "Longitude:",            "de": "Längengrad:",            "ru": "Долгота:"},
     "Used only for coordinates detection": {

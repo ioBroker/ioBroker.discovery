@@ -26,6 +26,9 @@ Just now it can detect via ping, UPnP (serial planned).
 - rflink (57600)
 
 ## Changelog
+### 0.2.2 (2017-03-18)
+* (bluefox) Fix typo
+
 ### 0.2.1 (2017-03-15)
 * (bluefox) initial commit
 
