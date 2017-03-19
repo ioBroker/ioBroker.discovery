@@ -11,11 +11,11 @@ systemDictionary = {
     "Instance":         {"en": "Instance",                  "de": "Instanz",                "ru": "Экземпляр"},
     "Host":             {"en": "Host",                      "de": "Host",                   "ru": "Сервер"},
     "Description":      {"en": "Description",               "de": "Beschreibung",           "ru": "Описание"},
-    "Install adapters": {"en": "Install adapters",          "de": "Install adapters",       "ru": "Установить драйвера"},
+    "Install adapters": {"en": "Install adapters",          "de": "Installiere Adapter",       "ru": "Установить драйвера"},
     "Progress":         {"en": "Progress",                  "de": "Progress",               "ru": "Процесс"},
     "Select language":  {"en": "Select language",           "de": "Sprache:",               "ru": "Язык:"},
-    "Select all":       {"en": "Select all",                "de": "Alle selektieren",       "ru": "Отметить все"},
-    "Deselect all":     {"en": "Deselect all",              "de": "Alle unsekeltieren",     "ru": "Снять отметку у всех"},
+    "Select all":       {"en": "Select all",                "de": "Alle auswählen",         "ru": "Отметить все"},
+    "Deselect all":     {"en": "Deselect all",              "de": "Nichts auswählen",       "ru": "Снять отметку у всех"},
     "License terms":    {"en": "License terms",             "de": "Lizenzbedingungen",      "ru": "Содержание лицензии"},
     "license agreement": {"en": "license agreement",        "de": "Lizenzvertrag",          "ru": "Лицензионное соглашение"},
     "extended":         {"en": "extended",                  "de": "erweitert",              "ru": "расширено"},
@@ -25,20 +25,20 @@ systemDictionary = {
     "Required for %s":  {"en": "Required for %s",           "de": "benötigt für %s",        "ru": "необходим для %s"},
     "agree":            {"en": "agree",                     "de": "Einverstanden",          "ru": "Согласен(на)"},
     "not agree":        {"en": "not agree",                 "de": "Nicht einverstanden",    "ru": "Не согласен(на)"},
-    "license not agree":    {"en": "Not agree with license!", "de": "Nicht einverstanden mit Lizenz",  "ru": "Не согласен(на) с лицензией"},
+    "license not agree":    {"en": "Not agree with license!", "de": "Mit der Lizenz nicht einverstanden!",  "ru": "Не согласен(на) с лицензией"},
     "license_checkbox": {
         "en": "I am agree shown license agreement.",
-        "de": "Ich bin einverstanden.",
+        "de": "Ich bin mit der Lizenz einverstanden.",
         "ru": "Я соглаcен/согласна)"
     },
-    "Wizard":               {"en": "Wizard",                "de": "Suche",                  "ru": "Поиск"},
+    "Wizard":               {"en": "Wizard",                "de": "Assistent",              "ru": "Поиск"},
     "Next":                 {"en": "Next",                  "de": "Weiter",                 "ru": "Дальше"},
     "Create instances":     {"en": "Create instances",      "de": "Erzeuge Instanzen",      "ru": "Создать"},
     "Back":                 {"en": "Back",                  "de": "Zurück",                 "ru": "Назад"},
-    "Close":                {"en": "Close",                 "de": "Zumachen",               "ru": "Закрыть"},
+    "Close":                {"en": "Close",                 "de": "Schliessen",               "ru": "Закрыть"},
     "Finish":               {"en": "Finish",                "de": "Fertig",                 "ru": "Закончить"},
     "Settings":             {"en": "Settings",              "de": "Einstellungen",          "ru": "Настройки"},
-    "Discover":             {"en": "Discover",              "de": "Suche",                  "ru": "Поиск"},
+    "Discover":             {"en": "Discover",              "de": "Suchen",                  "ru": "Поиск"},
     "permissionError":      {"en": "Permission error",      "de": "Zugriffsfehler",         "ru": "Ошибка доступа"},
     "Error":                {"en": "Error",                 "de": "Fehler",                 "ru": "Ошибка"},
     "started":              {"en": "started",               "de": "gestartet",              "ru": "запущен"},
@@ -46,27 +46,27 @@ systemDictionary = {
     "new":                  {"en": "new",                   "de": "neu",                    "ru": "новый"},
     "create instance":      {"en": "pending",               "de": "warten",                 "ru": "ожидание очереди"},
     "Details":              {"en": "Details",               "de": "Details",                "ru": "Детали"},
-    "Install package":      {"en": "install package...",    "de": "installiere von npm...", "ru": "Установка пакета..."},
+    "Install package":      {"en": "install package...",    "de": "installiere npm-Paket...", "ru": "Установка пакета..."},
     "canceled":             {"en": "canceled by user",      "de": "vom Anwender abgebrochen", "ru": "отменено пользователем"},
     "Ok":                   {"en": "Ok",                    "de": "Ok",                     "ru": "Ok"},
     "Cancel":               {"en": "Cancel",                "de": "Abbrechen",              "ru": "Отмена"},
     "check parameters":     {"en": "check parameters",      "de": "Einstellungen überprüfen", "ru": "проверка параметров"},
     "Ignore":               {"en": "Ignore",                "de": "Ignorieren",             "ru": "Игнорировать"},
     "Show not only new":    {"en": "Show not only new",     "de": "Zeige nicht nur neue Instanzen", "ru": "Не только новые"},
-    "Last scan on %s":      {"en": "Last scan on %s",       "de": "Letze Suche ist am %s gewesen", "ru": "Последнее скнирование было %s"},
+    "Last scan on %s":      {"en": "Last scan on %s",       "de": "Letze Suche war am %s", "ru": "Последнее скнирование было %s"},
     "Show all instances":   {"en": "Show all instances",    "de": "Zeige alle Instanzen",   "ru": "Показать все предложения"},
     "for %s":               {"en": "for %s",                "de": "für %s",                 "ru": "для %s"},
     "%s devices":           {"en": "%s devices",            "de": "%s Geräte",              "ru": "устройств - %s"},
     "Error: %s":            {"en": "Error: %s",             "de": "Fehler: %s",             "ru": "Ошибка: %s"},
     "on %s":                {"en": "on %s",                 "de": "auf %s",                 "ru": "на %s"},
     "Please close dialog and open it anew!": {
-        "en": "Please close dialog and open it anew!",
-        "de": "Please close dialog and open it anew!",
-        "ru": "Please close dialog and open it anew!"
+        "en": "Please close dialog and open it a new!",
+        "de": "Bitte Dialogfeld schliessen und erneut öffnen!",
+        "ru": "Please close dialog and open it a new!"
     },
     "Some dependencies are not installed": {
         "en": "Some dependencies are not installed",
-        "de": "Manche erforderliche Instanzen sind nicht installiert",
+        "de": "Einige erforderliche Instanzen sind nicht installiert",
         "ru": "Некоторые зависимости не установлены"
     },
     "Unknown error":        {"en": "Unknown error",         "de": "Unbekannter Fehler",     "ru": "Неизвестная ошибка"},
@@ -77,7 +77,7 @@ systemDictionary = {
     },
     "Passwords does not match": {
         "en": "Passwords does not match",
-        "de": "Kennwort und Kennwortswiederholung sind unterschiedlich",
+        "de": "Kennwörter sind unterschiedlich",
         "ru": "Пароль и повтор пароля не совпадают"
     },
     "Discovery adapter settings": {
@@ -87,27 +87,27 @@ systemDictionary = {
     },
     "Discover all possible devices": {
         "en": "Discover all possible devices",
-        "de": "Suche alle mögliche Geräte",
+        "de": "Suche alle möglichen Geräte",
         "ru": "поиск всевозможных устройств и сервисов"
     },
     "step1_help1": {
         "en": "Press <b><i>\"Discover\"</i></b> to find devices in your network",
-        "de": "Drucke <b><i>\"Suche\"</i></b> um die Geräte in lokalem Netzwerk zu suchen",
+        "de": "Drücke <b><i>\"Suchen\"</i></b> um Geräte im lokalen Netzwerk zu suchen",
         "ru": "Нажать <b><i>\"Поиск устройств\"</i></b> для поиска устройств в вашей сети"
     },
     "step1_help2": {
         "en": "or <b><i>\"Next\"</i></b> to use devices from previous discovery process",
-        "de": "oder <b><i>\"Weiter\"</i></b> um die Geräte von vorheriger Suche zu benutzen",
+        "de": "oder <b><i>\"Weiter\"</i></b> um die Geräte der vorherigen Suche zu benützen",
         "ru": "или <b><i>\"Дальше\"</i></b> что бы использовать устройства из предудущего поиска"
     },
     "Create instances automatically": {
         "en": "Create instances automatically",
-        "de": "Erzeuge Instanzen",
+        "de": "Instanzen automatisch erzeugen",
         "ru": "Создать всё автоматически"
     },
     // used in tr-064
     'user': {
-        de: 'Anwendername',
+        de: 'Benutzerrname',
         en: 'Username',
         ru: 'Имя пользователя'
     },
@@ -125,16 +125,16 @@ systemDictionary = {
     },
     "System settings":      {"en": "System settings",       "de": "Systemeinstellungen",    "ru": "Системные настройки"},
     "System language:":     {"en": "System language:",      "de": "System Sprache:",        "ru": "Системный язык:"},
-    "Temperature units:":   {"en": "Temperature units:",    "de": "Einheit Temperatur:",    "ru": "Единицы измерения температуры:"},
+    "Temperature units:":   {"en": "Temperature units:",    "de": "Temperatureinheit:",    "ru": "Единицы измерения температуры:"},
     "Currency:":            {"en": "Currency:",             "de": "Währung:",               "ru": "Знак валюты:"},
     "Date format:":         {"en": "Date format:",          "de": "Datumsformat:",          "ru": "Формат даты:"},
     "DD.MM.YYYY":           {"en": "DD.MM.YYYY",            "de": "DD.MM.YYYY",             "ru": "ДД.ММ.ГГГГ"},
     "DD.MM.YY":             {"en": "DD.MM.YY",              "de": "DD.MM.YY",               "ru": "ДД.ММ.ГГ"},
     "DD/MM/YYYY":           {"en": "DD/MM/YYYY",            "de": "DD/MM/YYYY",             "ru": "ДД/ММ/ГГГГ"},
-    "Float divider:":       {"en": "Float divider:",        "de": "Trennzeichen:",          "ru": "Разделитель в числе с плавающей запятой:"},
+    "Float divider:":       {"en": "Float divider:",        "de": "Dezimaltrennzeichen:",          "ru": "Разделитель в числе с плавающей запятой:"},
     "comma":                {"en": "comma",                 "de": "Komma",                  "ru": "запятая"},
     "point":                {"en": "point",                 "de": "Punkt",                  "ru": "точка"},
-    "Country:":             {"en": "Country:",              "de": "Staat",                  "ru": "Страна:"},
+    "Country:":             {"en": "Country:",              "de": "Land",                  "ru": "Страна:"},
     "City:":                {"en": "City:",                 "de": "Stadt:",                 "ru": "Город:"},
     "Address:":             {"en": "Address:",              "de": "Adresse:",               "ru": "Адрес:"},
     "Latitude:":            {"en": "Latitude:",             "de": "Breitengrad:",           "ru": "Широта:"},
