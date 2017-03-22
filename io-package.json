@@ -17,7 +17,7 @@
         "title":                    "Discovery Adapter",
         "desc":                     {
             "en": "This adapter tries to discover all known devices.",
-            "de": "Adapter fersucht alle bekannte Geräte automatisch zu finden",
+            "de": "Adapter versucht alle bekannte Geräte automatisch zu finden",
             "ru": "Драйвер пытается найти все известные устройства"
         },
         "authors": [
