@@ -1,8 +1,13 @@
 {
     "common": {
         "name":                     "discovery",
-        "version":                  "0.2.2",
+        "version":                  "0.2.3",
         "news": {
+			"0.2.3": {
+                "en": "added more adapters",
+                "de": "Wietere Adapters hinzugefügt",
+                "ru": "Добавлены дополнительные драйвера"
+            },
             "0.2.2": {
                 "en": "Fix typo",
                 "de": "Fix typo",

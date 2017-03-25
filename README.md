@@ -26,6 +26,17 @@ Just now it can detect via ping, UPnP (serial planned).
 - rflink (57600)
 
 ## Changelog
+### 0.2.3 (2017-03-18)
+* (bluefox) fix license dialog
+* (bluefox) add zwave
+* (bluefox) add sqllite and flot
+* (bluefox) ack => ignore
+* (bluefox) add megad
+* (apollon77) add history
+* (apollon77) enhance/fix sql-sqlite
+* (apollon77) add InfluxDB
+* (ykuendig) german translation updated
+
 ### 0.2.2 (2017-03-18)
 * (bluefox) Fix typo
 
