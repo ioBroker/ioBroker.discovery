@@ -1,8 +1,13 @@
 {
     "common": {
         "name":                     "discovery",
-        "version":                  "0.2.3",
+        "version":                  "0.3.0",
         "news": {
+            "0.3.0": {
+                "en": "Fixed serial discovery",
+                "de": "Serialsuche korrigiert",
+                "ru": "исправлен поиск на последовательных портах"
+            },
 			"0.2.3": {
                 "en": "added more adapters",
                 "de": "Wietere Adapters hinzugefügt",

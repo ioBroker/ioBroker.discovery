@@ -927,16 +927,16 @@
         }
 
         /*
-            Types of parameters:
-             - type=password, def=default value
-             - type=checkbox, def=default value
-             - type=select, options={value1: TextValule1, value2=TextValue2}
-             - type=link, def = URL
-             - type=comment, style="CSS style", def=text
-             - type=text
+         Types of parameters:
+         - type=password, def=default value
+         - type=checkbox, def=default value
+         - type=select, options={value1: TextValule1, value2=TextValue2}
+         - type=link, def = URL
+         - type=comment, style="CSS style", def=text
+         - type=text
 
-             - name = Name of attribute like "native.ip" or "native.port"
-             - title = Title of input
+         - name = Name of attribute like "native.ip" or "native.port"
+         - title = Title of input
          */
         function step3_askParameters(obj, callback) {
             if (obj.comment && obj.comment.inputs) {
@@ -1338,7 +1338,7 @@
 
             socket.emit('subscribeStates',  'discovery.' + instance + '.*');
             socket.on('stateChange', function (id, state) {
-                if (state && state.ack) {
+                if (state && state.ack && state.val !== null && state.val !== 'null') {
                     if (id === 'discovery.' + instance + '.devicesProgress') {
                         $('#step1_text').show().html(_('Lookup devices') + ' - ' + state.val + '%');
                         $('#step1_progressbar').show().progressbar({value: state.val});
@@ -1480,7 +1480,7 @@
         .value {
             width: 200px;
         }
-</style>
+    </style>
 </head>
 <body>
 <div style="width: 100%; height: 100%" id="container">

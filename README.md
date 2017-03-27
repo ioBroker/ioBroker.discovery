@@ -26,6 +26,9 @@ Just now it can detect via ping, UPnP (serial planned).
 - rflink (57600)
 
 ## Changelog
+### 0.3.0 (2017-03-27)
+* (bluefox) Fixed serial discovery
+
 ### 0.2.3 (2017-03-18)
 * (bluefox) fix license dialog
 * (bluefox) add zwave
