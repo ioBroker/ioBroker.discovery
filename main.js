@@ -156,7 +156,6 @@ function analyseDeviceSerial(device, options, list, callback) {
 
         var timeout = setTimeout(function () {
             timeout = null;
-            //options.log.error('Timeout by detect "' + adpr + '" on "' + device._addr + '": ' + (adapters[adpr].timeout || 2000) + 'ms');
             analyseDeviceSerial(device, options, list, callback);
         }, adapters[adpr].timeout || 2000);
 
@@ -164,19 +163,11 @@ function analyseDeviceSerial(device, options, list, callback) {
             // expected, that detect method will add to _instances one instance of specific type or extend existing one
             adapters[adpr].detect(device._addr, device, options, function (err, isFound, addr) {
                 if (timeout) {
-                    if (callbacks[adpr]) {
-                        adapter.log.error('Double callback by "' + adpr + '"');
-                    } else {
-                        callbacks[adpr] = true;
-                    }
-
                     clearTimeout(timeout);
                     timeout = null;
                     setTimeout(analyseDeviceSerial, 0, device, options, list, callback);
                 }
-                if (isFound) {
-                    adapter.log.debug('Test ' + device._addr + ' ' + adpr + ' DETECTED!');
-                }
+                if (isFound) adapter.log.debug('Test ' + device._addr + ' ' + adpr + ' DETECTED!');
             });
         } catch (e) {
             options.log.error('Cannot detect "' + adpr + '" on "' + device._addr + '": ' + e);
