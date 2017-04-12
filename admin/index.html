@@ -1348,10 +1348,10 @@
                         $('#step1_progressbar').show().progressbar({value: state.val});
                     } else
                     if (id === 'discovery.' + instance + '.instancesFound') {
-                        $('#step1_result').show().html(state.val + ' ' + _('Found services'));
+                        $('#step1_result').show().html(_('Found services', state.val));
                     } else
                     if (id === 'discovery.' + instance + '.devicesFound') {
-                        $('#step1_result').show().html(state.val + ' ' + _('Found devices'));
+                        $('#step1_result').show().html(_('Found devices', state.val));
                     }
                     else
                     if (id === 'discovery.' + instance + '.scanRunning') {
