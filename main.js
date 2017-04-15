@@ -76,6 +76,7 @@ function processMessage(obj) {
                 adapter.log.info('Received "browse" event');
                 browse(obj.message, function (error, newInstances, devices) {
                     adapter.log.info('Browse finished');
+                    adapter.setState('scanRunning', false, true);
                     adapter.sendTo(obj.from, obj.command, {
                         error:        error,
                         devices:      devices,
@@ -101,6 +102,7 @@ function analyseDeviceDependencies(device, options, callback) {
     var count = 0;
     for (var aa in adapters) {
         if (!adapters.hasOwnProperty(aa)) continue;
+        if (process.env.DEBUG && process.env.DEBUG !== a) continue;
         if (adapters[aa].type !== device._type) continue;
         if (!adapters[aa].dependencies) continue;
         count++;
@@ -111,13 +113,17 @@ function analyseDeviceDependencies(device, options, callback) {
     // try all found adapter types (with dependencies)
     for (var a in adapters) {
         if (!adapters.hasOwnProperty(a)) continue;
+        if (process.env.DEBUG && process.env.DEBUG !== a) continue;
         if (adapters[a].type !== device._type) continue;
         if (!adapters[a].dependencies) continue;
 
         var timeout = setTimeout(function () {
             timeout = null;
             //options.log.error('Timeout by detect "' + adpr + '" on "' + device._addr + '": ' + (adapters[adpr].timeout || 2000) + 'ms');
-            if (!--count) analyseDeviceDependencies(device, options, callback);
+            if (!--count) {
+                analyseDeviceDependencies(device, options, callback);
+                count = false;
+            }
         }, adapters[a].timeout || 2000);
 
 
@@ -138,13 +144,16 @@ function analyseDeviceDependencies(device, options, callback) {
                 if (timeout) {
                     clearTimeout(timeout);
                     timeout = null;
-                    if (!--count) callback(err);
+                    if (count !== false && !--count) {
+                        count = false;
+                        callback(err);
+                    }
                 }
             })
         })(a);
     }
 
-    if (!count) callback(null);
+    if (count === 0) callback(null);
 }
 
 function analyseDeviceSerial(device, options, list, callback) {
@@ -154,8 +163,10 @@ function analyseDeviceSerial(device, options, list, callback) {
         var adpr = list.shift();
         adapter.log.debug('Test ' + device._addr + ' ' + adpr);
 
+        var done = false;
         var timeout = setTimeout(function () {
             timeout = null;
+            //options.log.error('Timeout by detect "' + adpr + '" on "' + device._addr + '": ' + (adapters[adpr].timeout || 2000) + 'ms');
             analyseDeviceSerial(device, options, list, callback);
         }, adapters[adpr].timeout || 2000);
 
@@ -163,11 +174,19 @@ function analyseDeviceSerial(device, options, list, callback) {
             // expected, that detect method will add to _instances one instance of specific type or extend existing one
             adapters[adpr].detect(device._addr, device, options, function (err, isFound, addr) {
                 if (timeout) {
+                    if (done) {
+                        adapter.log.error('Double callback by "' + adpr + '"');
+                    } else {
+                        done = true;
+                    }
+
                     clearTimeout(timeout);
                     timeout = null;
                     setTimeout(analyseDeviceSerial, 0, device, options, list, callback);
                 }
-                if (isFound) adapter.log.debug('Test ' + device._addr + ' ' + adpr + ' DETECTED!');
+                if (isFound) {
+                    adapter.log.debug('Test ' + device._addr + ' ' + adpr + ' DETECTED!');
+                }
             });
         } catch (e) {
             options.log.error('Cannot detect "' + adpr + '" on "' + device._addr + '": ' + e);
@@ -184,6 +203,7 @@ function analyseDevice(device, options, callback) {
 
     for (var aa in adapters) {
         if (!adapters.hasOwnProperty(aa)) continue;
+        if (process.env.DEBUG && process.env.DEBUG !== aa) continue;
         if (typeof adapters[aa].type === 'string' && adapters[aa].type !== device._type) continue;
         if (typeof adapters[aa].type === 'object' && adapters[aa].type.indexOf(device._type) === -1) continue;
         if (adapters[aa].dependencies) continue;
@@ -192,12 +212,13 @@ function analyseDevice(device, options, callback) {
 
     if (device._type === 'serial') {
         var list = [];
-        for (var a in adapters) {
-            if (!adapters.hasOwnProperty(a)) continue;
-            if (typeof adapters[a].type === 'string' && adapters[a].type !== device._type) continue;
-            if (typeof adapters[a].type === 'object' && adapters[a].type.indexOf(device._type) === -1) continue;
-            if (adapters[a].dependencies) continue;
-            list.push(a);
+        for (var s in adapters) {
+            if (!adapters.hasOwnProperty(s)) continue;
+            if (process.env.DEBUG && process.env.DEBUG !== s) continue;
+            if (typeof adapters[s].type === 'string' && adapters[s].type !== device._type) continue;
+            if (typeof adapters[s].type === 'object' && adapters[s].type.indexOf(device._type) === -1) continue;
+            if (adapters[s].dependencies) continue;
+            list.push(s);
         }
         analyseDeviceSerial(device, options, list, function () {
             analyseDeviceDependencies(device, options, callback);
@@ -207,6 +228,7 @@ function analyseDevice(device, options, callback) {
         // try all found adapter types (first without dependencies)
         for (var a in adapters) {
             if (!adapters.hasOwnProperty(a)) continue;
+            if (process.env.DEBUG && process.env.DEBUG !== a) continue;
             if (typeof adapters[a].type === 'string' && adapters[a].type !== device._type) continue;
             if (typeof adapters[a].type === 'object' && adapters[a].type.indexOf(device._type) === -1) continue;
             if (adapters[a].dependencies) continue;
@@ -217,7 +239,10 @@ function analyseDevice(device, options, callback) {
                 var timeout = setTimeout(function () {
                     timeout = null;
                     //options.log.error('Timeout by detect "' + adpr + '" on "' + device._addr + '": ' + (adapters[adpr].timeout || 2000) + 'ms');
-                    if (!--count) analyseDeviceDependencies(device, options, callback);
+                    if (count !== false && !--count) {
+                        analyseDeviceDependencies(device, options, callback);
+                        count = false;
+                    }
                 }, adapters[adpr].timeout || 2000);
 
                 try {
@@ -232,19 +257,25 @@ function analyseDevice(device, options, callback) {
 
                             clearTimeout(timeout);
                             timeout = null;
-                            if (!--count) analyseDeviceDependencies(device, options, callback);
+                            if (count !== false && !--count) {
+                                analyseDeviceDependencies(device, options, callback);
+                                count = false;
+                            }
                         }
                         if (isFound) {
                             adapter.log.debug('Test ' + device._addr + ' ' + adpr + ' DETECTED!');
                         }
                     });
                 } catch (e) {
-                    options.log.error('Cannot detect "' + adpr + '" on "' + device._addr + '": ' + e);
-                    if (!--count) analyseDeviceDependencies(device, options, callback);
+                    adapters.log.error('Cannot detect "' + adpr + '" on "' + device._addr + '": ' + e);
+                    if (count !== false && !--count) {
+                        analyseDeviceDependencies(device, options, callback);
+                        count = false;
+                    }
                 }
             })(a);
         }
-        if (!count) analyseDeviceDependencies(device, options, callback);
+        if (count === 0) analyseDeviceDependencies(device, options, callback);
     }
 }
 
@@ -436,8 +467,8 @@ function discoveryEnd(devices, callback) {
                             isRunning = false;
                             if (err) adapter.log.error('Cannot update system.discovery: ' + err);
                             adapter.log.info('Discovery finished');
-                            if (typeof callback === 'function') callback(null, options.newInstances, devices);
                             adapter.setState('scanRunning', false, true);
+                            if (typeof callback === 'function') callback(null, options.newInstances, devices);
                         });
                     });
                 });

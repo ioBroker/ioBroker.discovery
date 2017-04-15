@@ -24,8 +24,12 @@ Just now it can detect via ping, UPnP (serial planned).
 - chromecast
 - z-wave USB (Tested with Aeon Labs)
 - rflink (57600)
+- philips HUE
 
 ## Changelog
+### 0.3.2 (2017-04-15)
+* (bluefox) add philips HUE
+
 ### 0.3.0 (2017-03-27)
 * (bluefox) Fixed serial discovery
 

@@ -1,8 +1,13 @@
 {
     "common": {
         "name":                     "discovery",
-        "version":                  "0.3.1",
+        "version":                  "0.3.2",
         "news": {
+            "0.3.2": {
+                "en": "Add Philips HUE",
+                "de": "Philips HUE hinzugefügt",
+                "ru": "Добавлен Philips HUE"
+            },
             "0.3.1": {
                 "en": "Add discovery of Daikin Adapter",
                 "de": "Erkennung für den Daikin-Adapter hinzugefügt",
@@ -30,6 +35,11 @@
             }
         },
         "title":                    "Discovery Adapter",
+        "titleLang":                     {
+            "en": "Discovery Adapter",
+            "de": "Discovery Adapter",
+            "ru": "Драйвер для поиска устройств"
+        },
         "desc":                     {
             "en": "This adapter tries to discover all known devices.",
             "de": "Adapter versucht alle bekannte Geräte automatisch zu finden",
