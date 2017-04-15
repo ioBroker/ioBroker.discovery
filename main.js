@@ -199,8 +199,6 @@ function analyseDeviceSerial(device, options, list, callback) {
 function analyseDevice(device, options, callback) {
     var count = 0;
 
-    adapter.log.debug('Test ' + device._addr);
-
     for (var aa in adapters) {
         if (!adapters.hasOwnProperty(aa)) continue;
         if (process.env.DEBUG && process.env.DEBUG !== aa) continue;

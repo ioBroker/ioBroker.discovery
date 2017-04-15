@@ -24,11 +24,19 @@ Just now it can detect via ping, UPnP (serial planned).
 - chromecast
 - z-wave USB (Tested with Aeon Labs)
 - rflink (57600)
+- mysensors USB/Serial (9600, 38400, 57600, 115200)
+- Daikin climate control
 - philips HUE
 
 ## Changelog
-### 0.3.2 (2017-04-15)
+### 0.3.3 (2017-04-15)
 * (bluefox) add philips HUE
+
+### 0.3.2 (2017-04-12)
+* (bluefox) Add mysensors USB/Serial
+
+### 0.3.1 (2017-04-01)
+* (apollon77) Add Daikin climate control
 
 ### 0.3.0 (2017-03-27)
 * (bluefox) Fixed serial discovery
