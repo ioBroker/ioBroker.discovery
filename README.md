@@ -14,19 +14,67 @@ Just now it can detect via ping, UPnP (serial planned).
 
 ## Actually supported
 
-- ping
-- hm-rpc
-- hm-rega
-- sonos
-- nut
-- tr-064
-- fronius
-- chromecast
-- z-wave USB (Tested with Aeon Labs)
-- rflink (57600)
-- mysensors USB/Serial (9600, 38400, 57600, 115200)
+### Automatically Discovered
+
+- Chromecast
 - Daikin climate control
+- fronius
+- Homematic CCU (hm-rpc, hm-rega)
 - philips HUE
+- InfluxDB
+- MegaD
+- mysensors USB/Serial (9600, 38400, 57600, 115200)
+- Nut
+- Ping
+- RFLink (Serial 57600baud)
+- Sonos
+- SQL (MySQL, MSSQL, PostgreSQL)
+- TR-064
+- UPnP
+- z-wave USB (Tested with Aeon Labs)
+
+### Offered as additional adapters
+- cloud
+- History (if no SQL or InfluxDB found)
+- flot (offered when a History-Adapter is present)
+- JavaScript
+- Mobile
+- Vis
+- Web
+
+## Todo
+- fritzbox (ruhr70)
+- fritzdect (foxthefox)
+- samsung (soef)
+- rpi2 (if ioBroker run on Raspberry)
+- mqtt/mqtt-client
+- harmony (pmant) / fakeroku (pmant)
+- kodi (instalator)
+- fhem
+- lgtv (smundt)
+- yamaha (soef)
+- squeezebox (unclesamswiss)
+- knx (chefkoch009)
+- lightify (soef)
+- onkyo
+- netatmo (parns)
+- wifilight (soef)
+- mpd (instalator)
+- s7
+- unifi (jens-maus)
+- milight (foxthefox)
+- km200 (frankjoke)
+- homepilot (Pix)
+- artnet
+- wolf (smiling-jack)
+- xs1 (frankjoke)
+- innogy-smarthome (parns)
+- miele (soef)
+- epson_stylus_px830 (pix)
+- modbus (Bluefox)
+- cul / maxcul (Bluefox)
+- owfs (Bluefox)
+- smartmeter (Apollon77)
 
 ## Changelog
 ### 0.3.3 (2017-04-15)
