@@ -20,7 +20,7 @@ Just now it can detect via ping, UPnP (serial planned).
 - Daikin climate control
 - fronius
 - Homematic CCU (hm-rpc, hm-rega)
-- philips HUE
+- Philips HUE
 - InfluxDB
 - MegaD
 - mysensors USB/Serial (9600, 38400, 57600, 115200)
@@ -32,6 +32,7 @@ Just now it can detect via ping, UPnP (serial planned).
 - TR-064
 - UPnP
 - z-wave USB (Tested with Aeon Labs)
+- Landroid
 
 ### Offered as additional adapters
 - cloud
