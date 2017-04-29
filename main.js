@@ -31,7 +31,7 @@ function enumAdapters() {
             if (adapters && adapters[aName] && adapters[aName].reloadModule) {
                 var module = require.resolve(moduleName);
                 delete require.cache[module];
-                delete _adapters[aName];
+                delete adapters[aName];
             }
             if (!adapters[aName]) adapters[aName] = require(moduleName);
         }
@@ -268,7 +268,7 @@ function analyseDevice(device, options, callback) {
                         }
                     });
                 } catch (e) {
-                    adapters.log.error('Cannot detect "' + adpr + '" on "' + device._addr + '": ' + e);
+                    adapter.log.error('Cannot detect "' + adpr + '" on "' + device._addr + '": ' + e);
                     if (count !== false && !--count) {
                         analyseDeviceDependencies(device, options, callback);
                         count = false;
