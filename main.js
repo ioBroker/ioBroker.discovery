@@ -14,17 +14,26 @@
 var utils    = require(__dirname + '/lib/utils'); // Get common adapter utils
 var adapter  = new utils.Adapter('discovery');
 var fs       = require('fs');
-var adapters = null;
+var adapters = {};
 var methods  = null;
 
 function enumAdapters() {
     var dir = fs.readdirSync(__dirname + '/lib/adapters');
-    adapters = {};
+    
     for (var f = 0; f < dir.length; f++) {
         var parts = dir[f].split('.');
         if (parts[parts.length - 1] === 'js') {
             parts.pop();
-            adapters[parts.join('.')] = require(__dirname + '/lib/adapters/' + dir[f]);
+            
+            var moduleName = __dirname + '/lib/adapters/' + dir[f];
+            var aName =  parts.join('.');
+            
+            if (adapters && adapters[aName] && adapters[aName].reloadModule) {
+                var module = require.resolve(moduleName);
+                delete require.cache[module];
+                delete _adapters[aName];
+            }
+            if (!adapters[aName]) adapters[aName] = require(moduleName);
         }
     }
 }
@@ -98,25 +107,37 @@ function processMessages() {
     });
 }
 
-function analyseDeviceDependencies(device, options, callback) {
-    var count = 0;
-    for (var aa in adapters) {
-        if (!adapters.hasOwnProperty(aa)) continue;
-        if (process.env.DEBUG && process.env.DEBUG !== a) continue;
-        if (adapters[aa].type !== device._type) continue;
-        if (!adapters[aa].dependencies) continue;
-        count++;
-    }
+function isValidAdapter(adapterName, type, dependencies) {
+    if (!adapters.hasOwnProperty(adapterName)) return false;
+    var adapter = adapters[adapterName];
+    if (typeof adapter.type === 'string' && adapter.type !== type) return false;
+    if (typeof adapter.type === 'object' && adapter.type.indexOf(type) === -1) return false;
+    return ((!!adapter.dependencies) === dependencies);
+}
 
+function forEachValidAdapter(device, dependencies, callback) {
+    if (typeof dependencies === 'function') {
+        callback = dependencies;
+        dependencies = undefined;
+    }
+    var cnt = 0, type;
+    type = typeof device === 'object' ? device._type : device;
+    for (var a in adapters) {
+        if (isValidAdapter(a, type, dependencies)) {
+            callback && callback(adapters[a], a);
+            cnt += 1;
+        }
+    }
+    return cnt;
+}
+
+
+function analyseDeviceDependencies(device, options, callback) {
+    var count = forEachValidAdapter(device, true);
     var callbacks = {};
 
     // try all found adapter types (with dependencies)
-    for (var a in adapters) {
-        if (!adapters.hasOwnProperty(a)) continue;
-        if (process.env.DEBUG && process.env.DEBUG !== a) continue;
-        if (adapters[a].type !== device._type) continue;
-        if (!adapters[a].dependencies) continue;
-
+    forEachValidAdapter(device, true, function(_adapter, a) {
         var timeout = setTimeout(function () {
             timeout = null;
             //options.log.error('Timeout by detect "' + adpr + '" on "' + device._addr + '": ' + (adapters[adpr].timeout || 2000) + 'ms');
@@ -151,7 +172,7 @@ function analyseDeviceDependencies(device, options, callback) {
                 }
             })
         })(a);
-    }
+    });
 
     if (count === 0) callback(null);
 }
@@ -195,41 +216,23 @@ function analyseDeviceSerial(device, options, list, callback) {
     }
 }
 
+
 // addr can be IP address (192.168.1.1) or serial port name (/dev/ttyUSB0, COM1)
 function analyseDevice(device, options, callback) {
-    var count = 0;
-
-    for (var aa in adapters) {
-        if (!adapters.hasOwnProperty(aa)) continue;
-        if (process.env.DEBUG && process.env.DEBUG !== aa) continue;
-        if (typeof adapters[aa].type === 'string' && adapters[aa].type !== device._type) continue;
-        if (typeof adapters[aa].type === 'object' && adapters[aa].type.indexOf(device._type) === -1) continue;
-        if (adapters[aa].dependencies) continue;
-        count++;
-    }
+    var count = forEachValidAdapter(device, false);
 
     if (device._type === 'serial') {
         var list = [];
-        for (var s in adapters) {
-            if (!adapters.hasOwnProperty(s)) continue;
-            if (process.env.DEBUG && process.env.DEBUG !== s) continue;
-            if (typeof adapters[s].type === 'string' && adapters[s].type !== device._type) continue;
-            if (typeof adapters[s].type === 'object' && adapters[s].type.indexOf(device._type) === -1) continue;
-            if (adapters[s].dependencies) continue;
-            list.push(s);
-        }
+        forEachValidAdapter(device, false, function(adapter, aName) {
+            list.push(aName);
+        });
         analyseDeviceSerial(device, options, list, function () {
             analyseDeviceDependencies(device, options, callback);
         });
     } else {
         var callbacks = {};
         // try all found adapter types (first without dependencies)
-        for (var a in adapters) {
-            if (!adapters.hasOwnProperty(a)) continue;
-            if (process.env.DEBUG && process.env.DEBUG !== a) continue;
-            if (typeof adapters[a].type === 'string' && adapters[a].type !== device._type) continue;
-            if (typeof adapters[a].type === 'object' && adapters[a].type.indexOf(device._type) === -1) continue;
-            if (adapters[a].dependencies) continue;
+        forEachValidAdapter(device, false, function(_adapter, a) {
 
             (function (adpr) {
                 adapter.log.debug('Test ' + device._addr + ' ' + adpr);
@@ -272,7 +275,7 @@ function analyseDevice(device, options, callback) {
                     }
                 }
             })(a);
-        }
+        })
         if (count === 0) analyseDeviceDependencies(device, options, callback);
     }
 }
@@ -379,7 +382,7 @@ function discoveryEnd(devices, callback) {
     }
 
     // Get the list of adapters with auto-discovery
-    if (!adapters) enumAdapters();
+    enumAdapters();
 
     getInstances(function (instances) {
         adapter.getEnums(null, function (err, enums) {
