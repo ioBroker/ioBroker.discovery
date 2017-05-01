@@ -33,6 +33,10 @@ Just now it can detect via ping, UPnP (serial planned).
 - UPnP
 - z-wave USB (Tested with Aeon Labs)
 - Landroid
+- SamsungTV
+- Miele
+- Yamaha
+- Lightify
 
 ### Offered as additional adapters
 - cloud
@@ -57,10 +61,8 @@ Just now it can detect via ping, UPnP (serial planned).
 - km200 (frankjoke)
 - knx (chefkoch009)
 - kodi (instalator)
-- landroid (ldittmar81)
 - lgtv (smundt)
 - megaesp (ausHaus)
-- miele (soef)
 - modbus (Bluefox)
 - mpd (instalator)
 - mqtt/mqtt-client (Bluefox)
@@ -69,17 +71,19 @@ Just now it can detect via ping, UPnP (serial planned).
 - rpi2 (if ioBroker run on Raspberry)
 - rwe-smarthome (PArns)
 - s7 (Bluefox)
-- samsung (soef)
 - smartmeter (Apollon77)
 - unifi (jens-maus)
 - wifilight (soef)
 - wolf (smiling-jack)
 - xs1 (frankjoke)
-- yamaha (soef)
 - squeezebox (unclesamswiss)
 
 
 ## Changelog
+### 0.4.0 (2017-05-01)
+* (soef) add SamsungTV, Lightify, Miele and yamaha
+* (soef) add new discovery method mDNS
+
 ### 0.3.3 (2017-04-15)
 * (bluefox) add philips HUE
 
