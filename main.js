@@ -275,7 +275,7 @@ function analyseDevice(device, options, callback) {
                     }
                 }
             })(a);
-        })
+        });
         if (count === 0) analyseDeviceDependencies(device, options, callback);
     }
 }
@@ -369,17 +369,18 @@ function discoveryEnd(devices, callback) {
         _type: 'ip'
     });
 
+    // will be done in checking double ips
     // try to find names for all IPs
-    for (var d = 0; d < devices.length; d++) {
-        if (!devices[d]._name) {
-            for (var dd = 0; dd < devices.length; dd++) {
-                if (devices[dd]._name && devices[d]._addr === devices[dd]._addr) {
-                    devices[d]._name = devices[dd]._name;
-                    break;
-                }
-            }
-        }
-    }
+    // for (var d = 0; d < devices.length; d++) {
+    //     if (!devices[d]._name) {
+    //         for (var dd = 0; dd < devices.length; dd++) {
+    //             if (devices[dd]._name && devices[d]._addr === devices[dd]._addr) {
+    //                 devices[d]._name = devices[dd]._name;
+    //                 break;
+    //             }
+    //         }
+    //     }
+    // }
 
     // Get the list of adapters with auto-discovery
     enumAdapters();
@@ -410,21 +411,34 @@ function discoveryEnd(devices, callback) {
                 };
                 // remove double devices
                 devices.sort(function (a, b) {
-                    if (a._addr > b.addr) return -1;
-                    if (a._addr < b.addr) return 1;
+                    if (a._addr > b._addr) return -1;
+                    if (a._addr < b._addr) return 1;   
                     return 0;
                 });
+                
                 // remove double entries from upnp and ip
+                // and merge available object infos. e.g _upnp or _mdns
+                // the adapter can test device._upnp !== 'undefined' instead of device._source === 'upnp'
                 for (var d = devices.length - 2; d >= 0; d--) {
-                    if (devices[d]._addr === devices[d + 1]._addr) {
-                        if (devices[d]._source === 'upnp') {
+                    var dd = devices[d], dd1 = devices[d + 1];
+                    if (dd._addr === dd1._addr) {
+                        if (dd._source !== 'ping') {
+                            // if (dd._upnp) device[d+1]._upnp = dd._upnp;
+                            // if (dd._mdns) device[d+1]._mdns = dd._mdns;
+                            Object.keys(dd).forEach(function(n) {
+                                 if (typeof dd[n] === 'object' && !dd1[n]) dd1[n] = dd[n];
+                            });
+                            if (!dd1._name) dd1._name = dd._name;
                             devices.splice(d, 1);
                         } else {
+                            if (!dd1._name) dd._name = dd._name;
                             devices.splice(d + 1, 1);
                         }
                     }
                 }
 
+                options._devices = devices; // allow adapters to know all ips and their infos
+                
                 // analyse every IP address
                 analyseDevices(devices, options, 0, function (err) {
                     adapter.log.info('Discovery finished. Found new or modified ' + options.newInstances.length + ' instances');
