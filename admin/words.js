@@ -91,8 +91,8 @@ systemDictionary = {
         "ru": "поиск всевозможных устройств и сервисов"
     },
     "step1_help1": {
-        "en": "Press <b><i>\"Discover\"</i></b> to find devices in your network",
-        "de": "Drücke <b><i>\"Suchen\"</i></b> um Geräte im lokalen Netzwerk zu suchen",
+        "en": "Press <b><i>\"Discover\"</i></b> to find devices in your network (Turn off network firewalls/traffic analyze systems before!)",
+        "de": "Drücke <b><i>\"Suchen\"</i></b> um Geräte im lokalen Netzwerk zu suchen (Netzwerk-Firewalls und Netzwerkverkehrs-Analysesysteme vorher deaktivieren!)",
         "ru": "Нажать <b><i>\"Поиск устройств\"</i></b> для поиска устройств в вашей сети"
     },
     "step1_help2": {
