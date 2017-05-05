@@ -36,6 +36,7 @@
         var mapLoaded = false;
         var lastScan = null;
         var isRunning = false;
+        var showConfig = []; // Show configuration dialog after the wizard is finished
 
         function step0_initMap () {
             var $button = $('#detectCoordinates');
@@ -880,6 +881,9 @@
                                     });
                                 } else {
                                     $text.html(_('started')).addClass('success').removeClass('process').removeClass('warn');
+                                    if (obj.comment.showConfig) {
+                                        showConfig.push(obj._id);
+                                    }
                                     callback && callback();
                                 }
                             });
@@ -1164,6 +1168,7 @@
         function step3() {
             var text = '';
             var instances = [];
+            showConfig = [];
             $('#step3_prev').button('disable');
             var $details = $('#step3_show_details');
 
@@ -1326,6 +1331,10 @@
                         primary: 'ui-icon-closethick'
                     }
                 }).click(function () {
+                    if (typeof parent !== 'undefined' && parent && parent.$iframeDialog) {
+                        parent.showConfig = JSON.parse(JSON.stringify(showConfig));
+                    }
+
                     window.close();
                     if (typeof parent !== 'undefined' && parent && parent.$iframeDialog) {
                         parent.$iframeDialog.dialog('close');
