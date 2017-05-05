@@ -18,12 +18,12 @@ Just now it can detect via ping, UPnP (serial planned).
 
 - Chromecast
 - Daikin climate control
-- fronius
+- Fronius
 - Homematic CCU (hm-rpc, hm-rega)
 - Philips HUE
 - InfluxDB
 - MegaD
-- mysensors USB/Serial (9600, 38400, 57600, 115200)
+- Mysensors USB/Serial (9600, 38400, 57600, 115200)
 - Nut
 - Ping
 - RFLink (Serial 57600baud)
@@ -31,15 +31,19 @@ Just now it can detect via ping, UPnP (serial planned).
 - SQL (MySQL, MSSQL, PostgreSQL)
 - TR-064
 - UPnP
-- z-wave USB (Tested with Aeon Labs)
+- Z-wave USB (Tested with Aeon Labs)
 - Landroid
 - SamsungTV
 - Miele
 - Yamaha
 - Lightify
+- Wifilight
+- FireTV
+- KNX
+- Squeezebox
 
 ### Offered as additional adapters
-- cloud
+- Cloud
 - History (if no SQL or InfluxDB found)
 - flot (offered when a History-Adapter is present)
 - JavaScript
@@ -59,7 +63,6 @@ Just now it can detect via ping, UPnP (serial planned).
 - fritzbox (ruhr70)
 - homepilot (Pix)
 - km200 (frankjoke)
-- knx (chefkoch009)
 - kodi (instalator)
 - lgtv (smundt)
 - megaesp (ausHaus)
@@ -73,10 +76,8 @@ Just now it can detect via ping, UPnP (serial planned).
 - s7 (Bluefox)
 - smartmeter (Apollon77)
 - unifi (jens-maus)
-- wifilight (soef)
 - wolf (smiling-jack)
 - xs1 (frankjoke)
-- squeezebox (unclesamswiss)
 
 
 ## Changelog
