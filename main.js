@@ -14,6 +14,7 @@
 var utils    = require(__dirname + '/lib/utils'); // Get common adapter utils
 var adapter  = new utils.Adapter('discovery');
 var fs       = require('fs');
+var dns      = require('dns');
 var adapters = {};
 var methods  = null;
 
@@ -67,6 +68,7 @@ adapter.on('unload', function (callback) {
         adapter && adapter.setState && adapter.setState('scanRunning', false, true);
         isRunning = false;
         isStopping = true;
+        haltAllMethods();
         setTimeout(function () {
             if (callback) {
                 callback();
@@ -285,7 +287,7 @@ function analyseDevices(devices, options, index, callback) {
         index = callback;
         index = 0;
     }
-    adapter.setState('servicesProgress', Math.round((index / devices.length) * 100), true);
+    adapter.setState('servicesProgress', Math.round(index * 100 / devices.length), true);
     adapter.setState('instancesFound', options.newInstances.length, true);
 
     if (!devices || index >= devices.length) {
@@ -342,45 +344,21 @@ function analyseDevices(devices, options, index, callback) {
     }
 }
 
+
 function getInstances(callback) {
     adapter.objects.getObjectView('system', 'instance', {startkey: 'system.adapter.', endkey: 'system.adapter.\u9999'}, function (err, doc) {
-        if (err) {
-            if (callback) callback ([]);
-        } else {
-            if (doc.rows.length === 0) {
-                if (callback) callback ([]);
-            } else {
-                var res = [];
-                for (var i = 0; i < doc.rows.length; i++) {
-                    res.push(doc.rows[i].value);
-                }
-                if (callback) callback (res);
-            }
-        }
+        if (err || !doc || !doc.rows || !doc.rows.length) return callback && callback ([]);
+        var res = [];
+        doc.rows.forEach(function (row) {
+            res.push(row.value);
+        });
+        callback && callback (res);
     });
 }
 
+
 function discoveryEnd(devices, callback) {
     adapter.log.info('Found ' + devices.length + ' addresses');
-
-    devices.push({
-        _addr: '127.0.0.1',
-        _name: 'localhost',
-        _type: 'ip'
-    });
-
-    // will be done in checking double ips
-    // try to find names for all IPs
-    // for (var d = 0; d < devices.length; d++) {
-    //     if (!devices[d]._name) {
-    //         for (var dd = 0; dd < devices.length; dd++) {
-    //             if (devices[dd]._name && devices[d]._addr === devices[dd]._addr) {
-    //                 devices[d]._name = devices[dd]._name;
-    //                 break;
-    //             }
-    //         }
-    //     }
-    // }
 
     // Get the list of adapters with auto-discovery
     enumAdapters();
@@ -409,35 +387,9 @@ function discoveryEnd(devices, callback) {
                         }
                     }
                 };
-                // remove double devices
-                devices.sort(function (a, b) {
-                    if (a._addr > b._addr) return -1;
-                    if (a._addr < b._addr) return 1;   
-                    return 0;
-                });
                 
-                // remove double entries from upnp and ip
-                // and merge available object infos. e.g _upnp or _mdns
-                // the adapter can test device._upnp !== 'undefined' instead of device._source === 'upnp'
-                for (var d = devices.length - 2; d >= 0; d--) {
-                    var dd = devices[d], dd1 = devices[d + 1];
-                    if (dd._addr === dd1._addr) {
-                        if (dd._source !== 'ping') {
-                            // if (dd._upnp) device[d+1]._upnp = dd._upnp;
-                            // if (dd._mdns) device[d+1]._mdns = dd._mdns;
-                            Object.keys(dd).forEach(function(n) {
-                                 if (typeof dd[n] === 'object' && !dd1[n]) dd1[n] = dd[n];
-                            });
-                            if (!dd1._name) dd1._name = dd._name;
-                            devices.splice(d, 1);
-                        } else {
-                            if (!dd1._name) dd._name = dd._name;
-                            devices.splice(d + 1, 1);
-                        }
-                    }
-                }
-
                 options._devices = devices; // allow adapters to know all ips and their infos
+                options._g_devices = g_devices;
                 
                 // analyse every IP address
                 analyseDevices(devices, options, 0, function (err) {
@@ -492,34 +444,371 @@ function discoveryEnd(devices, callback) {
     });
 }
 
-var timeoutProgress;
-function updateFindProgress(progress, devices) {
-    if (timeoutProgress) return;
-    timeoutProgress = setTimeout(function () {
-        timeoutProgress = null;
-        var count = 0;
-        var value = 0;
-        var devs  = 0;
-        for (var p in progress) {
-            if (progress.hasOwnProperty(p)) {
-                count++;
-                value += progress[p];
-            }
-        }
-        if (devices) {
-            for (var d in devices) {
-                if (devices.hasOwnProperty(d)) {
-                    devs += devices[d];
-                }
-            }
-        }
+var g_devices = {};
+var g_devices_count = 0;
+var g_browse = null;
+var specialEntryNames = 'name,data,LOCATION'.split(',');
 
-        adapter.setState('devicesProgress', Math.round(value / count * 100) / 100, true);
-        adapter.setState('devicesFound', devs, true);
-    }, 1000)
+function haltAllMethods() {
+    Object.keys(methods).forEach(function (method) {
+        // not final
+        if (method && method.halt !== undefined) {
+             method.halt = true;
+         }
+    });
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// wraper class for each method module
+
+var Method = function (methodName, parent) {
+    if (!(this instanceof Method)) {
+        return new Method(methodName, parent);
+    }
+    var module = methods[methodName];
+    module.source = module.source || methodName;
+    Object.assign(this, module);
+    var self = this, doneCalled = 0;
+    
+    this.parent = parent;
+    this.options = adapter.config;
+    this.foundCount = 0;
+    this.progress = 0;
+    this.adapter = adapter;
+    this.log = adapter.log;
+    this.halt = parent.halt;
+    this.halt [methodName] = false; // not necessary, but to see hwo to use
+    
+    this.add = this.addDevice = function (newDevice, err) {
+        if (newDevice === null) {
+            return self.done();
+        }
+        self.foundCount += 1;
+        return parent.addDevice (newDevice, self.source, self.type);
+    };
+    
+    this.get = this.getDevice = function (ip) {
+         return g_devices[ip];
+    };
+    
+    this.updateProgress = function(progress) {
+        if (typeof progress === 'number') self.progress = Math.round(progress);
+        adapter.log.debug (self.source + ': ' + self.progress + '%, devices - ' + self.foundCount);
+        parent.updateProgress ();
+    };
+    
+    this.done = function (err) {
+        if (doneCalled++) return;  // only on call accepted
+        if (timer) {
+            clearTimeout(timer);
+            timer = null;
+        }
+        if (interval) {
+            clearInterval(interval);
+            interval = null;
+        }
+        self.progress = 100;
+        adapter.log.info ('Done discovering ' + self.source + ' devices. ' + self.foundCount + ' packages received');
+        parent.done (self);
+    };
+    this.close = this.done; // * this.close should be overwriten. Is called to stop searching
+    
+    var timer, interval;
+    this.setTimeout = this.setInterval = function (timeout, options) {
+        options = options || {};
+        
+        if (options.timeout !== false) timer = setTimeout(function () {
+            timer = null;
+            self.close();
+            if (!doneCalled) self.done();
+        }, timeout);
+        
+        if (options.progress !== false) {
+            parent.updateProgress();
+            interval = setInterval(function() {
+                self.progress += 5;
+                parent.updateProgress();
+                if (self.progrress > 95) {
+                    clearInterval(interval);
+                    interval = null;
+                }
+            }, timeout / 20);
+        }
+    };
+    
+};
+
+
 function browse(options, callback) {
+    if (isRunning) return callback && callback('Yet running');
+    
+    isRunning = true;
+    g_devices = {};
+    g_devices_count = 0;
+    
+    adapter.setState('scanRunning', true, true);
+    enumMethods();
+    
+    function Browse () {
+        var self = this;
+        adapter.config.stopPingOnTR064Ready = true; //
+        
+        var methodsArray = Object.keys(methods).filter(function(m) {
+            return methods[m].browse && (!options || options.indexOf (m) !== -1);
+        });
+        this.count = methodsArray.length;
+        this.foundCount = 0;
+        this.halt = {};
+        
+        var timeoutProgress;
+        this.updateProgress = function () {
+            if (timeoutProgress) return;
+            timeoutProgress = setTimeout(function () {
+                timeoutProgress = null;
+                var value = 0;
+                methodsArray.forEach(function(n) {
+                    value += methods[n].progress;
+                });
+                adapter.setState('devicesProgress', Math.round(value / methodsArray.length), true);
+                adapter.setState('devicesFound', self.foundCount, true);
+            }, 1000)
+        };
+        
+        this.done = function (method) {
+            if (method !== undefined) {
+                self.count--;
+            }
+            self.updateProgress();
+            if (!self.count) {
+                self.count = -1;
+                if (timeoutProgress) clearTimeout(timeoutProgress);
+                var devices = [];
+                Object.keys(g_devices).sort().forEach(function (n) {
+                    devices.push(g_devices[n]);
+                });
+                self.getMissedNames(devices, function() {
+                    devices.push({
+                        _addr: '127.0.0.1',
+                        _name: 'localhost',
+                        _type: 'ip'
+                    });
+                    discoveryEnd (devices, callback);
+                });
+            }
+        };
+    
+        this.getMissedNames = function (devices, callback) {
+            var cnt = 0;
+            (function doIt() {
+                if (cnt >= devices.length) return callback();
+                var dev = devices[cnt++];
+                if (dev._name) return doIt();
+                dns.reverse (dev._addr, function (err, hostnames) {
+                    dev._name = !err && hostnames && hostnames.length ? hostnames[0] : dev._sddr;
+                    dev._dns = {
+                        hostnames: hostnames
+                    };
+                    doIt();
+                });
+            })();
+        };
+        
+        this.addDevice = function (newDevice, source/*methodName*/, type) {
+            var device;
+            if (!newDevice || !newDevice._addr) return;
+            adapter.log.debug('main.addDevice: ip=' + newDevice._addr + ' source=' + source);
+        
+            if (!(device = g_devices[newDevice._addr])) {
+                g_devices_count += 1;
+                newDevice._source = source;
+                newDevice._type = type || 'ip';
+                newDevice._new = true;
+                self.foundCount += 1;
+                return g_devices[newDevice._addr] = newDevice;
+            }
+            delete newDevice._new;
+            //debug:
+            // device.__debug = device.__debug || [];
+            // device.__debug.push(newDevice);
+        
+            (function _merge(dest, from) {
+                Object.getOwnPropertyNames (from).forEach (function (name) {
+                    if (name === '__debug') return;
+                    if (typeof from[name] === 'object') {
+                        if (typeof dest[name] !== 'object') {
+                            dest[name] = {}
+                        }
+                        _merge (dest[name], from[name]);
+                    } else {
+                        var uneq = true, namex = name+'x';
+                        if (specialEntryNames.indexOf (name) >= 0 && dest[name] && from[name] !== undefined && (uneq = dest[name] !== from[name])) {
+                            if (dest[namex] === undefined) dest[namex] = [dest[name]];
+                            if (from[name] && dest[namex].indexOf(from[name]) < 0) dest[namex].push(from[name]);
+                        }
+                        if (uneq) dest[name] = from[name];
+                    }
+                });
+            }) (device, newDevice);
+        
+            if (!device._name && newDevice._name) device._name = newDevice._name;
+            return newDevice;
+        };
+    
+        methodsArray.forEach (function(m) {
+            //if (m !== 'ping') return;
+            var method = Method(m, self);
+            methods[m] = method;
+            method.browse(method);
+        
+        });
+        if (methodsArray.length === 0) self.done();
+    }
+    g_browse = new Browse();
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+var addDevice = function (newDevice, source/*methodName*/, type) {
+    var device;
+    if (!newDevice || !newDevice._addr) return;
+    adapter.log.debug('main.addDevice: ip=' + newDevice._addr + ' source=' + source);
+    
+    if (!(device = g_devices[newDevice._addr])) {
+        g_devices_count += 1;
+        newDevice._source = source;
+        newDevice._type = type || 'ip';
+        newDevice._new = true;
+        //self.foundCount += 1; // for the class
+        return g_devices[newDevice._addr] = newDevice;
+    }
+    delete newDevice._new;
+    //debug:
+    // device.__debug = device.__debug || [];
+    // device.__debug.push(newDevice);
+    
+    (function _merge(dest, from) {
+        Object.getOwnPropertyNames (from).forEach (function (name) {
+            if (name === '__debug') return;
+            if (typeof from[name] === 'object') {
+                if (typeof dest[name] !== 'object') {
+                    dest[name] = {}
+                }
+                _merge (dest[name], from[name]);
+            } else {
+                var uneq = true, namex = name+'x';
+                if (specialEntryNames.indexOf (name) >= 0 && dest[name] && from[name] !== undefined && (uneq = dest[name] !== from[name])) {
+                    if (dest[namex] === undefined) dest[namex] = [dest[name]];
+                    if (from[name] && dest[namex].indexOf(from[name]) < 0) dest[namex].push(from[name]);
+                }
+                if (uneq) dest[name] = from[name];
+            }
+        });
+    }) (device, newDevice);
+    
+    if (!device._name && newDevice._name) device._name = newDevice._name;
+    return newDevice;
+};
+
+
+function old_browse(options, callback) {
+    if (isRunning) {
+        if (callback) callback('Yet running');
+        return;
+    }
+    isRunning = true;
+    g_devices = {}; //.length = 0;
+    g_devices_count = 0;
+    
+    adapter.setState('scanRunning', true, true);
+    enumMethods();
+    
+    var timeoutProgress;
+    function updateProgress() {
+        if (timeoutProgress) return;
+        timeoutProgress = setTimeout(function () {
+            timeoutProgress = null;
+            var value = 0;
+            methodsArray.forEach(function(n) {
+                value += methods[n].progress;
+            });
+            adapter.setState('devicesProgress', Math.round((value * 100) / methodsArray.length) / 100, true);
+            adapter.setState('devicesFound', g_devices_count, true);
+        }, 1000)
+    }
+    
+    function getMissedNames (devices, callback) {
+        return callback();
+        // todo
+        // dns.reverse(rinfo.address, function (err, hostnames) {
+        //     obj._name = hostnames && hostnames.length ? hostnames[0] : rinfo.address;
+        // });
+    }
+
+    function doReturn (method) {
+        if (method !== undefined) {
+            method.progress = 100;
+            count--;
+        }
+        updateProgress();
+        if (!count) {
+            count = -1;
+            if (timeoutProgress) clearTimeout(timeoutProgress);
+            var devices = [];
+            Object.keys(g_devices).sort().forEach(function (n) {
+                devices.push(g_devices[n]);
+            });
+            getMissedNames(devices, function() {
+                devices.push({
+                    _addr: '127.0.0.1',
+                    _name: 'localhost',
+                    _type: 'ip'
+                });
+                discoveryEnd (devices, callback);
+            });
+        }
+    }
+    
+    var callOptions = Object.assign ( { halt: {}, adapter: adapter }, adapter.config);
+    var methodsArray = Object.keys(methods).filter(function(m) {
+        return methods[m].browse && (!options || options.indexOf (m) !== -1);
+    });
+    var count = methodsArray.length;
+    methodsArray.forEach(function(m) {
+        
+        (function callMethod (_m) {
+            var method = methods[_m];
+            method.source = method.source || _m;
+            method.foundCount = 0;
+            method.progress = 0;
+    
+            //adapter.log.info ('calling ' + method.source + '.browse...');
+            method.old_browse (callOptions, adapter.log,
+                
+                function (_progress, _count) {
+                    if (typeof _progress === 'number') method.progress = _progress;
+                    if (typeof _count === 'number') method._foundCount = _count;
+                    adapter.log.debug (method.source + ': ' + method.progress + '%, devices - ' + method.foundCount);
+                    updateProgress ();
+                }, //.bind (method),
+                
+                function (newDevice, err) {
+                    if (newDevice === null) {
+                        adapter.log.info ('Done discovering ' + method.source + ' devices. ' + method.foundCount + ' packages received');
+                        return doReturn (method);
+                    }
+                    method.foundCount += 1;
+                    return addDevice (newDevice, method.source, method.type);
+                } //.bind (method)
+            )
+        })(m);
+    });
+    if (methodsArray.length === 0) doReturn();
+}
+
+
+
+function xbrowse(options, callback) {
     if (isRunning) {
         if (callback) callback('Yet running');
         return;
@@ -532,13 +821,15 @@ function browse(options, callback) {
     var result   = [];
     var progress = [];
     var devices  = [];
+    var ar = Object.keys(methods);
     for (var m in methods) {
         if (!methods.hasOwnProperty(m) || !methods[m].browse) continue;
         if (options && options.indexOf(m) === -1) continue;
 
         count++;
         progress[m] = 0;
-        methods[m].browse(adapter.config, adapter.log, function (name, _progress, _devices) {
+        methods[m].browse(adapter.config, adapter.log,
+            function (name, _progress, _devices) {
                 adapter.log.debug(name + ': ' + _progress + '%, devices - ' + _devices);
                 progress[name] = _progress;
                 devices[name]  = _devices;
@@ -558,10 +849,15 @@ function browse(options, callback) {
     if (!count) discoveryEnd(result, callback);
 }
 
+
+
 function main() {
     adapter.setState('scanRunning', false, true);
     adapter.config.pingTimeout = parseInt(adapter.config.pingTimeout, 10) || 1000;
     adapter.config.pingBlock  = parseInt(adapter.config.pingBlock, 10) || 20;
 
     //browse();
+    //old_browse();
 }
+
+
