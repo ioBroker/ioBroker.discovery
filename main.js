@@ -498,6 +498,9 @@ var Method = function (methodName, parent) {
     };
     
     this.done = function (err) {
+        if (err) {
+            adapter.log.warn(err);
+        }
         if (doneCalled++) return;  // only on call accepted
         if (timer) {
             clearTimeout(timer);
@@ -517,17 +520,24 @@ var Method = function (methodName, parent) {
     this.setTimeout = this.setInterval = function (timeout, options) {
         options = options || {};
         
-        if (options.timeout !== false) timer = setTimeout(function () {
-            timer = null;
-            self.close();
-            if (!doneCalled) self.done();
-        }, timeout);
+        if (options.timeout !== false) {
+            timer = setTimeout(function () {
+                timer = null;
+                self.close();
+
+                if (!doneCalled) {
+                    self.done();
+                }
+            }, timeout);
+        }
         
         if (options.progress !== false) {
             parent.updateProgress();
             interval = setInterval(function() {
                 self.progress += 5;
+
                 parent.updateProgress();
+
                 if (self.progrress > 95) {
                     clearInterval(interval);
                     interval = null;
@@ -535,12 +545,13 @@ var Method = function (methodName, parent) {
             }, timeout / 20);
         }
     };
-    
 };
 
 
 function browse(options, callback) {
-    if (isRunning) return callback && callback('Yet running');
+    if (isRunning) {
+        return callback && callback('Yet running');
+    }
     
     isRunning = true;
     g_devices = {};
@@ -553,7 +564,7 @@ function browse(options, callback) {
         var self = this;
         adapter.config.stopPingOnTR064Ready = true; //
         
-        var methodsArray = Object.keys(methods).filter(function(m) {
+        var methodsArray = Object.keys(methods).filter(function (m) {
             return methods[m].browse && (!options || options.indexOf (m) !== -1);
         });
         this.count = methodsArray.length;
@@ -602,7 +613,11 @@ function browse(options, callback) {
             (function doIt() {
                 if (cnt >= devices.length) return callback();
                 var dev = devices[cnt++];
-                if (dev._name) return doIt();
+
+                if (dev._name) {
+                    return doIt();
+                }
+
                 dns.reverse (dev._addr, function (err, hostnames) {
                     dev._name = !err && hostnames && hostnames.length ? hostnames[0] : dev._sddr;
                     dev._dns = {
@@ -615,7 +630,10 @@ function browse(options, callback) {
         
         this.addDevice = function (newDevice, source/*methodName*/, type) {
             var device;
-            if (!newDevice || !newDevice._addr) return;
+            if (!newDevice || !newDevice._addr) {
+                return;
+            }
+
             adapter.log.debug('main.addDevice: ip=' + newDevice._addr + ' source=' + source);
         
             if (!(device = g_devices[newDevice._addr])) {
@@ -640,7 +658,8 @@ function browse(options, callback) {
                         }
                         _merge (dest[name], from[name]);
                     } else {
-                        var uneq = true, namex = name+'x';
+                        var uneq = true;
+                        var namex = name + 'x';
                         if (specialEntryNames.indexOf (name) >= 0 && dest[name] && from[name] !== undefined && (uneq = dest[name] !== from[name])) {
                             if (dest[namex] === undefined) dest[namex] = [dest[name]];
                             if (from[name] && dest[namex].indexOf(from[name]) < 0) dest[namex].push(from[name]);
@@ -650,7 +669,9 @@ function browse(options, callback) {
                 });
             }) (device, newDevice);
         
-            if (!device._name && newDevice._name) device._name = newDevice._name;
+            if (!device._name && newDevice._name) {
+                device._name = newDevice._name;
+            }
             return newDevice;
         };
     
@@ -659,9 +680,11 @@ function browse(options, callback) {
             var method = Method(m, self);
             methods[m] = method;
             method.browse(method);
-        
         });
-        if (methodsArray.length === 0) self.done();
+
+        if (methodsArray.length === 0) {
+            self.done();
+        }
     }
     g_browse = new Browse();
 }
@@ -696,12 +719,16 @@ var addDevice = function (newDevice, source/*methodName*/, type) {
                 }
                 _merge (dest[name], from[name]);
             } else {
-                var uneq = true, namex = name+'x';
+                var uneq = true;
+                var namex = name + 'x';
                 if (specialEntryNames.indexOf (name) >= 0 && dest[name] && from[name] !== undefined && (uneq = dest[name] !== from[name])) {
                     if (dest[namex] === undefined) dest[namex] = [dest[name]];
                     if (from[name] && dest[namex].indexOf(from[name]) < 0) dest[namex].push(from[name]);
                 }
-                if (uneq) dest[name] = from[name];
+
+                if (uneq) {
+                    dest[name] = from[name];
+                }
             }
         });
     }) (device, newDevice);
