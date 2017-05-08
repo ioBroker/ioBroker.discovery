@@ -344,23 +344,6 @@ function analyseDevices(devices, options, index, callback) {
     }
 }
 
-// function getInstances(callback) {
-//     adapter.objects.getObjectView('system', 'instance', {startkey: 'system.adapter.', endkey: 'system.adapter.\u9999'}, function (err, doc) {
-//         if (err) {
-//             if (callback) callback ([]);
-//         } else {
-//             if (doc.rows.length === 0) {
-//                 if (callback) callback ([]);
-//             } else {
-//                 var res = [];
-//                 for (var i = 0; i < doc.rows.length; i++) {
-//                     res.push(doc.rows[i].value);
-//                 }
-//                 if (callback) callback (res);
-//             }
-//         }
-//     });
-// }
 
 function getInstances(callback) {
     adapter.objects.getObjectView('system', 'instance', {startkey: 'system.adapter.', endkey: 'system.adapter.\u9999'}, function (err, doc) {
@@ -461,52 +444,10 @@ function discoveryEnd(devices, callback) {
     });
 }
 
-// var timeoutProgress;
-// function updateFindProgress(progress, devices) {
-//     if (timeoutProgress) return;
-//     timeoutProgress = setTimeout(function () {
-//         timeoutProgress = null;
-//         var count = 0;
-//         var value = 0;
-//         var devs  = 0;
-//         for (var p in progress) {
-//             if (progress.hasOwnProperty(p)) {
-//                 count++;
-//                 value += progress[p];
-//             }
-//         }
-//         // if (devices) {
-//         //     for (var d in devices) {
-//         //         if (devices.hasOwnProperty(d)) {
-//         //             devs += devices[d];
-//         //         }
-//         //     }
-//         // }
-//         devs = g_devices.length;
-//
-//         //adapter.setState('devicesProgress', Math.round(value / count * 100) / 100, true);
-//         adapter.setState('devicesProgress', Math.round((value * 100) / count) / 100, true);
-//         adapter.setState('devicesFound', devs, true);
-//     }, 1000)
-// }
-
 var g_devices = {};
 var g_devices_count = 0;
 var g_browse = null;
-
 var specialEntryNames = 'name,data,LOCATION'.split(',');
-
-// function checkStringOverwrite(name, source, dest) {
-//     if (!dest || !source) return;
-//     if (dest[name] && source[name] !== undefined && dest[name] !== source[name]) {
-//         //dest[name+'x'] = dest[name+'x'] || [dest[name]];
-//         //if (source[name]) dest[name+'x'].push(source[name]);
-//         source[name+'x'] = dest[name+'x'] || [dest[name]];
-//         if (source[name]) source[name+'x'].push(source[name]);
-//     }
-// }
-
-exports.adapter = adapter; // temporary. will be done by a class in the feature
 
 function haltAllMethods() {
     Object.keys(methods).forEach(function (method) {
@@ -525,15 +466,14 @@ var Method = function (methodName, parent) {
         return new Method(methodName, parent);
     }
     var module = methods[methodName];
+    module.source = module.source || methodName;
     Object.assign(this, module);
-    module.method = this; // till now, not used. Sets exports.module of each method module to this.
     var self = this, doneCalled = 0;
     
     this.parent = parent;
     this.options = adapter.config;
     this.foundCount = 0;
     this.progress = 0;
-    this.source = this.source || methoName;
     this.adapter = adapter;
     this.log = adapter.log;
     this.halt = parent.halt;
@@ -546,6 +486,7 @@ var Method = function (methodName, parent) {
         self.foundCount += 1;
         return parent.addDevice (newDevice, self.source, self.type);
     };
+    
     this.get = this.getDevice = function (ip) {
          return g_devices[ip];
     };
@@ -570,22 +511,23 @@ var Method = function (methodName, parent) {
         adapter.log.info ('Done discovering ' + self.source + ' devices. ' + self.foundCount + ' packages received');
         parent.done (self);
     };
-    this.close = this.done; //function () {};
+    this.close = this.done; // * this.close should be overwriten. Is called to stop searching
     
     var timer, interval;
-    //this.setTimeout = this.setInterval = function (timeout, doTimeout, doProgressUpdate) {
     this.setTimeout = this.setInterval = function (timeout, options) {
         options = options || {};
+        
         if (options.timeout !== false) timer = setTimeout(function () {
             timer = null;
             self.close();
             if (!doneCalled) self.done();
         }, timeout);
+        
         if (options.progress !== false) {
-            self.parent.updateProgress();
+            parent.updateProgress();
             interval = setInterval(function() {
                 self.progress += 5;
-                self.parent.updateProgress();
+                parent.updateProgress();
                 if (self.progrress > 95) {
                     clearInterval(interval);
                     interval = null;
@@ -601,7 +543,7 @@ function browse(options, callback) {
     if (isRunning) return callback && callback('Yet running');
     
     isRunning = true;
-    g_devices = {}; //.length = 0;
+    g_devices = {};
     g_devices_count = 0;
     
     adapter.setState('scanRunning', true, true);
@@ -611,14 +553,12 @@ function browse(options, callback) {
         var self = this;
         adapter.config.stopPingOnTR064Ready = true; //
         
-        //this.callOptions = Object.assign ( { halt: {}, adapter: adapter }, adapter.config);
         var methodsArray = Object.keys(methods).filter(function(m) {
             return methods[m].browse && (!options || options.indexOf (m) !== -1);
         });
         this.count = methodsArray.length;
         this.foundCount = 0;
         this.halt = {};
-        
         
         var timeoutProgress;
         this.updateProgress = function () {
@@ -629,7 +569,6 @@ function browse(options, callback) {
                 methodsArray.forEach(function(n) {
                     value += methods[n].progress;
                 });
-                //adapter.setState('devicesProgress', Math.round((value * 100) / methodsArray.length) / 100, true);
                 adapter.setState('devicesProgress', Math.round(value / methodsArray.length), true);
                 adapter.setState('devicesFound', self.foundCount, true);
             }, 1000)
@@ -673,7 +612,6 @@ function browse(options, callback) {
                 });
             })();
         };
-        
         
         this.addDevice = function (newDevice, source/*methodName*/, type) {
             var device;
