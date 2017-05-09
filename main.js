@@ -501,7 +501,7 @@ var Method = function (methodName, parent) {
         if (err) {
             adapter.log.warn(err);
         }
-        if (doneCalled++) return;  // only on call accepted
+        if (doneCalled++) return;  // only one call accepted
         if (timer) {
             clearTimeout(timer);
             timer = null;
@@ -689,194 +689,6 @@ function browse(options, callback) {
     g_browse = new Browse();
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-var addDevice = function (newDevice, source/*methodName*/, type) {
-    var device;
-    if (!newDevice || !newDevice._addr) return;
-    adapter.log.debug('main.addDevice: ip=' + newDevice._addr + ' source=' + source);
-    
-    if (!(device = g_devices[newDevice._addr])) {
-        g_devices_count += 1;
-        newDevice._source = source;
-        newDevice._type = type || 'ip';
-        newDevice._new = true;
-        //self.foundCount += 1; // for the class
-        return g_devices[newDevice._addr] = newDevice;
-    }
-    delete newDevice._new;
-    //debug:
-    // device.__debug = device.__debug || [];
-    // device.__debug.push(newDevice);
-    
-    (function _merge(dest, from) {
-        Object.getOwnPropertyNames (from).forEach (function (name) {
-            if (name === '__debug') return;
-            if (typeof from[name] === 'object') {
-                if (typeof dest[name] !== 'object') {
-                    dest[name] = {}
-                }
-                _merge (dest[name], from[name]);
-            } else {
-                var uneq = true;
-                var namex = name + 'x';
-                if (specialEntryNames.indexOf (name) >= 0 && dest[name] && from[name] !== undefined && (uneq = dest[name] !== from[name])) {
-                    if (dest[namex] === undefined) dest[namex] = [dest[name]];
-                    if (from[name] && dest[namex].indexOf(from[name]) < 0) dest[namex].push(from[name]);
-                }
-
-                if (uneq) {
-                    dest[name] = from[name];
-                }
-            }
-        });
-    }) (device, newDevice);
-    
-    if (!device._name && newDevice._name) device._name = newDevice._name;
-    return newDevice;
-};
-
-
-function old_browse(options, callback) {
-    if (isRunning) {
-        if (callback) callback('Yet running');
-        return;
-    }
-    isRunning = true;
-    g_devices = {}; //.length = 0;
-    g_devices_count = 0;
-    
-    adapter.setState('scanRunning', true, true);
-    enumMethods();
-    
-    var timeoutProgress;
-    function updateProgress() {
-        if (timeoutProgress) return;
-        timeoutProgress = setTimeout(function () {
-            timeoutProgress = null;
-            var value = 0;
-            methodsArray.forEach(function(n) {
-                value += methods[n].progress;
-            });
-            adapter.setState('devicesProgress', Math.round((value * 100) / methodsArray.length) / 100, true);
-            adapter.setState('devicesFound', g_devices_count, true);
-        }, 1000)
-    }
-    
-    function getMissedNames (devices, callback) {
-        return callback();
-        // todo
-        // dns.reverse(rinfo.address, function (err, hostnames) {
-        //     obj._name = hostnames && hostnames.length ? hostnames[0] : rinfo.address;
-        // });
-    }
-
-    function doReturn (method) {
-        if (method !== undefined) {
-            method.progress = 100;
-            count--;
-        }
-        updateProgress();
-        if (!count) {
-            count = -1;
-            if (timeoutProgress) clearTimeout(timeoutProgress);
-            var devices = [];
-            Object.keys(g_devices).sort().forEach(function (n) {
-                devices.push(g_devices[n]);
-            });
-            getMissedNames(devices, function() {
-                devices.push({
-                    _addr: '127.0.0.1',
-                    _name: 'localhost',
-                    _type: 'ip'
-                });
-                discoveryEnd (devices, callback);
-            });
-        }
-    }
-    
-    var callOptions = Object.assign ( { halt: {}, adapter: adapter }, adapter.config);
-    var methodsArray = Object.keys(methods).filter(function(m) {
-        return methods[m].browse && (!options || options.indexOf (m) !== -1);
-    });
-    var count = methodsArray.length;
-    methodsArray.forEach(function(m) {
-        
-        (function callMethod (_m) {
-            var method = methods[_m];
-            method.source = method.source || _m;
-            method.foundCount = 0;
-            method.progress = 0;
-    
-            //adapter.log.info ('calling ' + method.source + '.browse...');
-            method.old_browse (callOptions, adapter.log,
-                
-                function (_progress, _count) {
-                    if (typeof _progress === 'number') method.progress = _progress;
-                    if (typeof _count === 'number') method._foundCount = _count;
-                    adapter.log.debug (method.source + ': ' + method.progress + '%, devices - ' + method.foundCount);
-                    updateProgress ();
-                }, //.bind (method),
-                
-                function (newDevice, err) {
-                    if (newDevice === null) {
-                        adapter.log.info ('Done discovering ' + method.source + ' devices. ' + method.foundCount + ' packages received');
-                        return doReturn (method);
-                    }
-                    method.foundCount += 1;
-                    return addDevice (newDevice, method.source, method.type);
-                } //.bind (method)
-            )
-        })(m);
-    });
-    if (methodsArray.length === 0) doReturn();
-}
-
-
-
-function xbrowse(options, callback) {
-    if (isRunning) {
-        if (callback) callback('Yet running');
-        return;
-    }
-    adapter.setState('scanRunning', true, true);
-    isRunning = true;
-    enumMethods();
-
-    var count    = 0;
-    var result   = [];
-    var progress = [];
-    var devices  = [];
-    var ar = Object.keys(methods);
-    for (var m in methods) {
-        if (!methods.hasOwnProperty(m) || !methods[m].browse) continue;
-        if (options && options.indexOf(m) === -1) continue;
-
-        count++;
-        progress[m] = 0;
-        methods[m].browse(adapter.config, adapter.log,
-            function (name, _progress, _devices) {
-                adapter.log.debug(name + ': ' + _progress + '%, devices - ' + _devices);
-                progress[name] = _progress;
-                devices[name]  = _devices;
-                updateFindProgress(progress, devices);
-            },
-            function (err, _result, source, type) {
-                if (_result) {
-                    for (var r = 0; r < _result.length; r++) {
-                        _result[r]._source = source;
-                        _result[r]._type = type;
-                    }
-                    result = result.concat(_result);
-                }
-                if (!--count) discoveryEnd(result, callback);
-            });
-    }
-    if (!count) discoveryEnd(result, callback);
-}
-
-
 
 function main() {
     adapter.setState('scanRunning', false, true);
@@ -884,7 +696,6 @@ function main() {
     adapter.config.pingBlock  = parseInt(adapter.config.pingBlock, 10) || 20;
 
     //browse();
-    //old_browse();
 }
 
 
