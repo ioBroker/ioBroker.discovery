@@ -41,6 +41,8 @@ Just now it can detect via ping, UPnP (serial planned).
 - FireTV
 - KNX
 - Squeezebox
+- OpenHAB
+- Broadlink
 
 ### Offered as additional adapters
 - Cloud
@@ -54,7 +56,6 @@ Just now it can detect via ping, UPnP (serial planned).
 ## Todo
 - artnet? (Bluefox)
 - B-Control-Em? (Bluefox)
-- Broadlink (hieblemedia)
 - cul / maxcul (Bluefox)
 - epson_stylus_px830 (pix)
 - harmony (pmant) / fakeroku (pmant)
@@ -84,6 +85,7 @@ Just now it can detect via ping, UPnP (serial planned).
 ### 0.4.0 (2017-05-01)
 * (soef) add SamsungTV, Lightify, Miele and yamaha
 * (soef) add new discovery method mDNS
+* (bluefox) add openhab, Broadlink
 
 ### 0.3.3 (2017-04-15)
 * (bluefox) add philips HUE
