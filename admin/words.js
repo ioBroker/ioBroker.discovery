@@ -59,6 +59,17 @@ systemDictionary = {
     "%s devices":           {"en": "%s devices",            "de": "%s Geräte",              "ru": "устройств - %s"},
     "Error: %s":            {"en": "Error: %s",             "de": "Fehler: %s",             "ru": "Ошибка: %s"},
     "on %s":                {"en": "on %s",                 "de": "auf %s",                 "ru": "на %s"},
+    "mdns":                 {"en": "mDNS",                  "de": "mDNS",                   "ru": "mDNS"},
+    "ping":                 {"en": "Ping",                  "de": "Ping",                   "ru": "пинг"},
+    "serial":               {"en": "Serial",                "de": "Serial",                 "ru": "Последовательные порты или USB"},
+    "tr064":                {"en": "TR-064(Fritzbox)",      "de": "TR-064(Fritzbox)",       "ru": "TR-064(Fritzbox)"},
+    "upnp":                 {"en": "UPnP",                  "de": "UPnP",                   "ru": "UPnP"},
+    "wifi-mi-light":        {"en": "WiFi Mi-Light",         "de": "WiFi Mi-Light",          "ru": "WiFi Mi-Light"},
+    "Use following methods:": {
+        "en": "Use following methods:",
+        "de": "Folgende Methoden benutzen:",
+        "ru": "Использовать методы:"
+    },
     "Please close dialog and open it anew!": {
         "en": "Please close dialog and open it a new!",
         "de": "Bitte Dialogfeld schliessen und erneut öffnen!",

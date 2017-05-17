@@ -247,6 +247,7 @@
             });
         }
 
+        // Discover all possible devices
         function step1() {
             var $step1 = $('#step1_discover');
             $('#step1_help1').show();
@@ -273,11 +274,28 @@
                     }
                 }).unbind('click').click(function () {
                     $step1.button('disable');
+                    $('.step1-methods').prop('disabled', true);
                     $('#step1_next').button('disable');
                     $('#step1_help1').hide();
                     $('#step1_help2').hide();
                     isRunning = true;
-                    sendTo(null, 'browse', null, function (result) {
+
+                    var options = [];
+                    var ignore  = [];
+                    $('.step1-methods').each(function () {
+                        if ($(this).prop('checked')) {
+                            options.push($(this).data('method'));
+                        } else {
+                            ignore.push($(this).data('method'));
+                        }
+                    });
+                    if (typeof Storage  !== 'undefined') {
+                        localStorage.setItem('discovery_ignore', JSON.stringify(ignore));
+                    }
+
+                    sendTo(null, 'browse', options, function (result) {
+                        $('.step1-methods').prop('disabled', false);
+
                         isRunning = false;
                         $('#step1_text').hide();
                         $('#step1_result').hide();
@@ -304,29 +322,54 @@
                 }
             });
 
-            socket.emit('getObject', 'system.discovery', function (err, obj) {
-                if (obj) {
-                    if (obj.native.newInstances) {
-                        newInstances = obj.native.newInstances;
+            sendTo(null, 'listMethods', null, function (result) {
+                var text = '<h4>' + _('Use following methods:') + '</h4>';
+
+                var ignore = null;
+                if (typeof Storage  !== 'undefined') {
+                    ignore = localStorage.getItem('discovery_ignore');
+                    if (ignore) {
+                        try {
+                            ignore = JSON.parse(ignore);
+                        } catch (r) {
+                            ignore = null;
+                        }
                     }
-                    if (obj.native.devices) {
-                        devices = obj.native.devices;
-                    }
-                    if (obj.native.lastScan) lastScan = obj.native.lastScan;
-                }
-                if (lastScan) {
-                    $('#step1_help3').show().html(_('Last scan on %s', formatTime(new Date(lastScan))));
-                } else {
-                    $('#step1_help3').hide();
                 }
 
-                if (newInstances.length) {
-                    $('#step1_next').button('enable');
-                    $('#step1_help2').show();
-                } else {
-                    $('#step1_next').button('disable');
-                    $('#step1_help2').hide();
+                result = result || {};
+                for (var r in result) {
+                    if (result.hasOwnProperty(r)) {
+                        text += '<input type="checkbox" class="step1-methods" data-method="' + r + '" ' + ((ignore && ignore.indexOf(r) !== -1) ? '' : 'checked') + '/>' + _(r) /*+ ' [' + result[r].type + ']' */+ '<br>';
+                    }
                 }
+
+                $('#step1_methods').html(text + '<br>').show();
+
+                socket.emit('getObject', 'system.discovery', function (err, obj) {
+                    if (obj) {
+                        if (obj.native.newInstances) {
+                            newInstances = obj.native.newInstances;
+                        }
+                        if (obj.native.devices) {
+                            devices = obj.native.devices;
+                        }
+                        if (obj.native.lastScan) lastScan = obj.native.lastScan;
+                    }
+                    if (lastScan) {
+                        $('#step1_help3').show().html(_('Last scan on %s', formatTime(new Date(lastScan))));
+                    } else {
+                        $('#step1_help3').hide();
+                    }
+
+                    if (newInstances.length) {
+                        $('#step1_next').button('enable');
+                        $('#step1_help2').show();
+                    } else {
+                        $('#step1_next').button('disable');
+                        $('#step1_help2').hide();
+                    }
+                });
             });
         }
 
@@ -493,6 +536,7 @@
         }
 
         // show list of found instances
+        // Create instances automatically
         function step2() {
             var $step2_selectall = $('#step2_selectall');
             if (!$step2_selectall.data('inited')) {
@@ -1499,6 +1543,7 @@
 </head>
 <body>
 <div style="width: 100%; height: 100%" id="container">
+    <!-- System settings -->
     <div data-step="0" class="wizard-page" style="display: none">
         <div class="wizard-header ui-widget-header">
             <h3 class="translate">System settings</h3>
@@ -1847,6 +1892,7 @@
             <button id="step0_close" class="bottom-buttons bottom-close" data-title="Close"></button>
         </div>
     </div>
+    <!-- Discover all possible devices -->
     <div data-step="1" class="wizard-page" style="display: none">
         <div class="wizard-header ui-widget-header">
             <h3 class="translate">Discover all possible devices</h3>
@@ -1855,6 +1901,7 @@
             <div id="step1_help1" class="translate">step1_help1</div>
             <div id="step1_help2" class="translate" style="display: none">step1_help2</div>
             <div id="step1_help3" class="translate" style="display: none"></div>
+            <div id="step1_methods" style="display: none"></div>
             <div id="step1_text" style="display: none"></div>
             <div id="step1_progressbar" style="display: none"></div>
             <div id="step1_result" style="display: none"></div>
@@ -1867,6 +1914,7 @@
             <button id="step1_close" class="bottom-buttons bottom-close" data-title="Close"></button>
         </div>
     </div>
+    <!-- Create instances automatically -->
     <div data-step="2" class="wizard-page" style="display: none">
         <div class="wizard-header ui-widget-header">
             <h3 class="translate" id="step2_header">Create instances automatically</h3>
@@ -1897,6 +1945,7 @@
             <button id="step2_close" class="bottom-buttons bottom-close" data-title="Close"></button>
         </div>
     </div>
+    <!-- Install adapters -->
     <div data-step="3" class="wizard-page" style="display: none">
         <div class="wizard-header ui-widget-header">
             <h3 class="translate">Install adapters</h3>

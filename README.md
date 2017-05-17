@@ -82,6 +82,9 @@ Just now it can detect via ping, UPnP (serial planned).
 
 
 ## Changelog
+### 0.4.3 (2017-05-17)
+* (bluefox) Add discovery methods selection
+
 ### 0.4.0 (2017-05-01)
 * (soef) add SamsungTV, Lightify, Miele and yamaha
 * (soef) add new discovery method mDNS

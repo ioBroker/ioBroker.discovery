@@ -84,9 +84,9 @@ function processMessage(obj) {
     switch (obj.command) {
         case 'browse': {
             if (obj.callback) {
-                adapter.log.info('Received "browse" event');
+                adapter.log.debug('Received "browse" event');
                 browse(obj.message, function (error, newInstances, devices) {
-                    adapter.log.info('Browse finished');
+                    adapter.log.debug('Browse finished');
                     adapter.setState('scanRunning', false, true);
                     adapter.sendTo(obj.from, obj.command, {
                         error:        error,
@@ -94,6 +94,17 @@ function processMessage(obj) {
                         newInstances: newInstances
                     }, obj.callback);
                 });
+            }
+            break;
+        }
+        case 'listMethods': {
+            if (obj.callback) {
+                adapter.log.debug('Received "listMethods" event');
+                if (!methods || !methods.length) {
+                    enumMethods();
+                }
+                
+                adapter.sendTo(obj.from, obj.command, methods, obj.callback);
             }
             break;
         }
@@ -132,7 +143,6 @@ function forEachValidAdapter(device, dependencies, callback) {
     }
     return cnt;
 }
-
 
 function analyseDeviceDependencies(device, options, callback) {
     var count = forEachValidAdapter(device, true);
@@ -217,7 +227,6 @@ function analyseDeviceSerial(device, options, list, callback) {
         }
     }
 }
-
 
 // addr can be IP address (192.168.1.1) or serial port name (/dev/ttyUSB0, COM1)
 function analyseDevice(device, options, callback) {
@@ -344,7 +353,6 @@ function analyseDevices(devices, options, index, callback) {
     }
 }
 
-
 function getInstances(callback) {
     adapter.objects.getObjectView('system', 'instance', {startkey: 'system.adapter.', endkey: 'system.adapter.\u9999'}, function (err, doc) {
         if (err || !doc || !doc.rows || !doc.rows.length) return callback && callback ([]);
@@ -355,7 +363,6 @@ function getInstances(callback) {
         callback && callback (res);
     });
 }
-
 
 function discoveryEnd(devices, callback) {
     adapter.log.info('Found ' + devices.length + ' addresses');
@@ -547,7 +554,6 @@ var Method = function (methodName, parent) {
     };
 };
 
-
 function browse(options, callback) {
     if (isRunning) {
         return callback && callback('Yet running');
@@ -565,7 +571,7 @@ function browse(options, callback) {
         adapter.config.stopPingOnTR064Ready = true; //
         
         var methodsArray = Object.keys(methods).filter(function (m) {
-            return methods[m].browse && (!options || options.indexOf (m) !== -1);
+            return methods[m].browse && (!options || options.indexOf(m) !== -1);
         });
         this.count = methodsArray.length;
         this.foundCount = 0;
@@ -688,7 +694,6 @@ function browse(options, callback) {
     }
     g_browse = new Browse();
 }
-
 
 function main() {
     adapter.setState('scanRunning', false, true);
