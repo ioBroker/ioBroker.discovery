@@ -89,6 +89,7 @@
                             });
                             $('#step0_save').button('enable');
                             $('#step0_next').button('disable');
+                            $('#step0_save_hint').show();
                         }
                     } else {
                         showMessage(_('Cannot get coordinates: %s', status), _('Error'), 'alert');
@@ -129,6 +130,7 @@
                             if (!err) {
                                 $('#step0_save').button('disable');
                                 $('#step0_next').button('enable');
+                                $('#step0_save_hint').hide();
                             } else {
                                 showMessage(err);
                             }
@@ -136,6 +138,7 @@
                     } else {
                         $('#step0_save').button('disable');
                         $('#step0_next').button('enable');
+                        $('#step0_save_hint').hide();
                     }
                 });
             } else {
@@ -211,6 +214,7 @@
                         $('#system_' + attr).val(systemConfig.common[attr]).change(function () {
                             $('#step0_save').button('enable');
                             $('#step0_next').button('disable');
+                            $('#step0_save_hint').show();
                         }).keyup(function () {
                             $(this).trigger('change');
                         });
@@ -219,9 +223,11 @@
                 if (!changed) {
                     $('#step0_save').button('disable');
                     $('#step0_next').button('enable');
+                    $('#step0_save_hint').hide();
                 } else {
                     $('#step0_save').button('enable');
                     $('#step0_next').button('disable');
+                    $('#step0_save_hint').show();
                 }
 
                 if (isFirst) {
@@ -1539,6 +1545,18 @@
         #step1_progressbar {
             background: white;
         }
+        #step0_save_hint {
+            display: block;
+            position: absolute;
+            bottom: 5px;
+            right: 150px;
+            color: #f36767;
+            font-size: 18px;
+            animation: blinker 2s linear infinite;
+        }
+        @keyframes blinker {
+            50% { opacity: 0; }
+        }
     </style>
 </head>
 <body>
@@ -1884,7 +1902,7 @@
                     <td style="width: 50%; height: 200px"><div id="step0_map" style="width: 100%; height: 100%"></div></td>
                 </tr>
             </table>
-
+            <div id="step0_save_hint" class="translate">save-hint</div>
         </div>
         <div class="wizard-footer">
             <button id="step0_save" class="bottom-buttons" data-title="Next"></button>

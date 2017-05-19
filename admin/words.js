@@ -26,6 +26,11 @@ systemDictionary = {
     "agree":            {"en": "agree",                     "de": "Einverstanden",          "ru": "Согласен(на)"},
     "not agree":        {"en": "not agree",                 "de": "Nicht einverstanden",    "ru": "Не согласен(на)"},
     "license not agree":    {"en": "Not agree with license!", "de": "Mit der Lizenz nicht einverstanden!",  "ru": "Не согласен(на) с лицензией"},
+    "save-hint": {
+        "en": "Click on the \"Save\" button to continue...",
+        "de": "Bitte \"Speichern\" um weiter zu kommen...",
+        "ru": "Для продолжения нажмите \"Сохранить\"..."
+    },
     "license_checkbox": {
         "en": "I am agree shown license agreement.",
         "de": "Ich bin mit der Lizenz einverstanden.",
