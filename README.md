@@ -43,6 +43,7 @@ Just now it can detect via ping, UPnP (serial planned).
 - Squeezebox
 - OpenHAB
 - Broadlink
+- LGTV
 
 ### Offered as additional adapters
 - Cloud
@@ -65,7 +66,6 @@ Just now it can detect via ping, UPnP (serial planned).
 - homepilot (Pix)
 - km200 (frankjoke)
 - kodi (instalator)
-- lgtv (smundt)
 - megaesp (ausHaus)
 - modbus (Bluefox)
 - mpd (instalator)
@@ -82,7 +82,10 @@ Just now it can detect via ping, UPnP (serial planned).
 
 
 ## Changelog
-### 0.4.3 (2017-05-17)
+### 0.4.3 (2017-05-24)
+* (bluefox) Add lgtv
+
+### 0.4.2 (2017-05-17)
 * (bluefox) Add discovery methods selection
 
 ### 0.4.0 (2017-05-01)
