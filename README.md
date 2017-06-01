@@ -82,8 +82,9 @@ Just now it can detect via ping, UPnP (serial planned).
 
 
 ## Changelog
-### 0.4.3 (2017-05-24)
+### 0.4.4 (2017-06-01)
 * (bluefox) Add lgtv
+* (bluefox) disable serial by default. It must be explicit enabled every time
 
 ### 0.4.2 (2017-05-17)
 * (bluefox) Add discovery methods selection

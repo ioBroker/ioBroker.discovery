@@ -1,9 +1,9 @@
 {
     "common": {
         "name":                     "discovery",
-        "version":                  "0.4.3",
+        "version":                  "0.4.4",
         "news": {
-            "0.4.3": {
+            "0.4.4": {
                 "en": "Add lgtv",
                 "de": "LGTV hinzugefügt",
                 "ru": "Добавлен lgtv"

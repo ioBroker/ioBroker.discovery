@@ -331,22 +331,31 @@
             sendTo(null, 'listMethods', null, function (result) {
                 var text = '<h4>' + _('Use following methods:') + '</h4>';
 
-                var ignore = null;
+                var ignore = [];
                 if (typeof Storage  !== 'undefined') {
                     ignore = localStorage.getItem('discovery_ignore');
                     if (ignore) {
                         try {
                             ignore = JSON.parse(ignore);
                         } catch (r) {
-                            ignore = null;
+                            ignore = [];
                         }
                     }
+                }
+
+                if (!ignore) {
+                    ignore = [];
+                }
+
+                // because of the problem on some systems, deactivate it by default. User must to activate it actively
+                if (ignore.indexOf('serial') === -1) {
+                    ignore.push('serial');
                 }
 
                 result = result || {};
                 for (var r in result) {
                     if (result.hasOwnProperty(r)) {
-                        text += '<input type="checkbox" class="step1-methods" data-method="' + r + '" ' + ((ignore && ignore.indexOf(r) !== -1) ? '' : 'checked') + '/>' + _(r) /*+ ' [' + result[r].type + ']' */+ '<br>';
+                        text += '<input type="checkbox" class="step1-methods" data-method="' + r + '" ' + ((ignore.indexOf(r) !== -1) ? '' : 'checked') + '/>' + _(r) /*+ ' [' + result[r].type + ']' */+ '<br>';
                     }
                 }
 
