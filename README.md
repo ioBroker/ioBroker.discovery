@@ -44,6 +44,7 @@ Just now it can detect via ping, UPnP (serial planned).
 - OpenHAB
 - Broadlink
 - LGTV
+- Mi Home Smarthome
 
 ### Offered as additional adapters
 - Cloud
@@ -80,11 +81,11 @@ Just now it can detect via ping, UPnP (serial planned).
 - wolf (smiling-jack)
 - xs1 (frankjoke)
 
-
 ## Changelog
 ### 0.4.4 (2017-06-01)
 * (bluefox) Add lgtv
 * (bluefox) disable serial by default. It must be explicit enabled every time
+* (bluefox) add mihome
 
 ### 0.4.2 (2017-05-17)
 * (bluefox) Add discovery methods selection

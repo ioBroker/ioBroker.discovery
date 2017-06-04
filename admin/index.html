@@ -1015,7 +1015,7 @@
 
                 if (params.length) {
                     var text = '<table>';
-                    text = '<tr class="param-line"><td>' + _('Description') + '</td><td>' + buildComment(obj.comment) + '</td></tr>';
+                    text += '<tr class="param-line"><td>' + _('Description') + '</td><td>' + buildComment(obj.comment) + '</td></tr>';
 
                     for (var pp = 0; pp < params.length; pp++) {
                         text += '<tr class="param-line">';
