@@ -16,35 +16,36 @@ Just now it can detect via ping, UPnP (serial planned).
 
 ### Automatically Discovered
 
+- Broadlink
 - Chromecast
 - Daikin climate control
+- FireTV
 - Fronius
 - Homematic CCU (hm-rpc, hm-rega)
 - Philips HUE
 - InfluxDB
+- KNX
+- Landroid
+- LGTV
+- Lightify
+- MAX! Cube
 - MegaD
+- Mi Home Smarthome
 - Mysensors USB/Serial (9600, 38400, 57600, 115200)
 - Nut
+- OpenHAB
 - Ping
 - RFLink (Serial 57600baud)
+- SamsungTV
 - Sonos
+- Squeezebox
 - SQL (MySQL, MSSQL, PostgreSQL)
 - TR-064
 - UPnP
 - Z-wave USB (Tested with Aeon Labs)
-- Landroid
-- SamsungTV
 - Miele
 - Yamaha
-- Lightify
 - Wifilight
-- FireTV
-- KNX
-- Squeezebox
-- OpenHAB
-- Broadlink
-- LGTV
-- Mi Home Smarthome
 
 ### Offered as additional adapters
 - Cloud
