@@ -1,8 +1,13 @@
 {
     "common": {
         "name":                     "discovery",
-        "version":                  "0.4.4",
+        "version":                  "0.4.5",
         "news": {
+            "0.4.5": {
+                "en": "Fixes in mihome",
+                "de": "Fixes in mihome",
+                "ru": "Fixes in mihome"
+            },
             "0.4.4": {
                 "en": "Add lgtv",
                 "de": "LGTV hinzugefügt",

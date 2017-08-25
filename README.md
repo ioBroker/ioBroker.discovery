@@ -83,6 +83,10 @@ Just now it can detect via ping, UPnP (serial planned).
 - xs1 (frankjoke)
 
 ## Changelog
+
+### 0.4.5 (2017-08-25)
+* (Apollon77) Fixes in mihome
+
 ### 0.4.4 (2017-06-01)
 * (bluefox) Add lgtv
 * (bluefox) disable serial by default. It must be explicit enabled every time
