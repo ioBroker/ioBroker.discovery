@@ -1,7 +1,7 @@
 {
     "common": {
-        "name":                     "discovery",
-        "version":                  "0.4.5",
+        "name": "discovery",
+        "version": "0.4.5",
         "news": {
             "0.4.5": {
                 "en": "Fixes in mihome",
@@ -18,7 +18,7 @@
                 "de": "Methodenauswahl hinzugefügt",
                 "ru": "Добавлен выбор методов поиска"
             },
-			"0.4.0": {
+            "0.4.0": {
                 "en": "add SamsungTV, Lightify, Miele and yamaha\nadd new discovery method mDNS",
                 "de": "SamsungTV, Lightify, Miele und yamaha sind hinzugefügt\nNeues Discovery Methode mDNS hinzugefügt",
                 "ru": "Добавлены SamsungTV, Lightify, Miele and yamaha\nДобавлен новый метод обнаружения - mDNS"
@@ -43,7 +43,7 @@
                 "de": "Serialsuche korrigiert",
                 "ru": "исправлен поиск на последовательных портах"
             },
-			"0.2.3": {
+            "0.2.3": {
                 "en": "added more adapters",
                 "de": "Wietere Adapters hinzugefügt",
                 "ru": "Добавлены дополнительные драйвера"
@@ -59,13 +59,13 @@
                 "ru": "initial commit"
             }
         },
-        "title":                    "Discovery Adapter",
+        "title": "Discovery Adapter",
         "titleLang": {
             "en": "Discovery Adapter",
             "de": "Gerätesuche",
             "ru": "Поиск устройств"
         },
-        "desc":                     {
+        "desc": {
             "en": "This adapter tries to discover all known devices.",
             "de": "Adapter versucht alle bekannte Geräte automatisch zu finden",
             "ru": "Драйвер пытается найти все известные устройства"
@@ -73,27 +73,35 @@
         "authors": [
             "bluefox <dogafox@gmail.com>"
         ],
-        "license":                  "MIT",
-        "platform":                 "Javascript/Node.js",
-        "mode":                     "daemon",
-		"enabled":                  true,
-        "singletonHost":            true,
-        "messagebox":               true,
-        "readme":                   "https://github.com/ioBroker/ioBroker.discovery/blob/master/README.md",
-        "dependencies":             [{"js-controller": ">=0.17.0"}],
-        "loglevel":                 "info",
-        "icon":                     "discovery.png",
-        "keywords":                 ["poll", "discovery", "ip"],
-        "extIcon":                  "https://raw.githubusercontent.com/ioBroker/ioBroker.discovery/master/admin/discovery.png",
-		"type":                     "common adapters",
-        "config":{
+        "license": "MIT",
+        "platform": "Javascript/Node.js",
+        "mode": "daemon",
+        "enabled": true,
+        "singletonHost": true,
+        "messagebox": true,
+        "readme": "https://github.com/ioBroker/ioBroker.discovery/blob/master/README.md",
+        "dependencies": [
+            {
+                "js-controller": ">=0.17.0"
+            }
+        ],
+        "loglevel": "info",
+        "icon": "discovery.png",
+        "keywords": [
+            "poll",
+            "discovery",
+            "ip"
+        ],
+        "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.discovery/master/admin/discovery.png",
+        "type": "general",
+        "config": {
             "width": 1224,
             "height": 700
         }
     },
     "native": {
-        "pingTimeout":       1000,
-        "pingBlock":         20
+        "pingTimeout": 1000,
+        "pingBlock": 20
     },
     "_objects": [
         {
@@ -111,67 +119,67 @@
     ],
     "instanceObjects": [
         {
-            "_id":  "devicesProgress",
+            "_id": "devicesProgress",
             "type": "state",
             "common": {
-                "role":  "value",
-                "name":  "Find devices progress",
-                "min":   0,
-                "max":   100,
-                "type":  "number",
+                "role": "value",
+                "name": "Find devices progress",
+                "min": 0,
+                "max": 100,
+                "type": "number",
                 "unit": "%",
-                "read":  true,
+                "read": true,
                 "write": false
             },
             "native": {}
         },
         {
-            "_id":  "servicesProgress",
+            "_id": "servicesProgress",
             "type": "state",
             "common": {
-                "role":  "value",
-                "name":  "Find services on devices progress",
-                "min":   0,
-                "max":   100,
-                "type":  "number",
+                "role": "value",
+                "name": "Find services on devices progress",
+                "min": 0,
+                "max": 100,
+                "type": "number",
                 "unit": "%",
-                "read":  true,
+                "read": true,
                 "write": false
             },
             "native": {}
         },
         {
-            "_id":  "instancesFound",
+            "_id": "instancesFound",
             "type": "state",
             "common": {
-                "role":  "value",
-                "name":  "Found services",
-                "type":  "number",
-                "read":  true,
+                "role": "value",
+                "name": "Found services",
+                "type": "number",
+                "read": true,
                 "write": false
             },
             "native": {}
         },
         {
-            "_id":  "devicesFound",
+            "_id": "devicesFound",
             "type": "state",
             "common": {
-                "role":  "value",
-                "name":  "Found devices",
-                "type":  "number",
-                "read":  true,
+                "role": "value",
+                "name": "Found devices",
+                "type": "number",
+                "read": true,
                 "write": false
             },
             "native": {}
         },
         {
-            "_id":  "scanRunning",
+            "_id": "scanRunning",
             "type": "state",
             "common": {
-                "role":  "indicator",
-                "name":  "Is scan now running",
-                "type":  "boolean",
-                "read":  true,
+                "role": "indicator",
+                "name": "Is scan now running",
+                "type": "boolean",
+                "read": true,
                 "write": false
             },
             "native": {}
