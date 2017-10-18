@@ -19,19 +19,23 @@ Just now it can detect via ping, UPnP (serial planned).
 - Broadlink
 - Chromecast
 - Daikin climate control
+- Epson Stylus PX830
 - FireTV
 - Fronius
 - Homematic CCU (hm-rpc, hm-rega)
+- Homepilot
 - Philips HUE
 - InfluxDB
 - KNX
 - Landroid
 - LGTV
 - Lightify
+- Loxone
 - MAX! Cube
 - MegaD
 - Mi Home Smarthome
 - Mysensors USB/Serial (9600, 38400, 57600, 115200)
+- Musiccast
 - Nut
 - OpenHAB
 - Ping
@@ -60,12 +64,10 @@ Just now it can detect via ping, UPnP (serial planned).
 - artnet? (Bluefox)
 - B-Control-Em? (Bluefox)
 - cul / maxcul (Bluefox)
-- epson_stylus_px830 (pix)
 - harmony (pmant) / fakeroku (pmant)
 - fhem (Bluefox)
 - Foobar200 (Instalator)
 - fritzbox (ruhr70)
-- homepilot (Pix)
 - km200 (frankjoke)
 - kodi (instalator)
 - megaesp (ausHaus)
@@ -83,6 +85,10 @@ Just now it can detect via ping, UPnP (serial planned).
 - xs1 (frankjoke)
 
 ## Changelog
+### 1.0.0 (2017-10-18)
+* (pix) Add Epson Stylus PX830
+* (pix) Add Homepilot
+* (Samuel Weibel) Loxone
 
 ### 0.4.5 (2017-08-25)
 * (Apollon77) Fixes in mihome
