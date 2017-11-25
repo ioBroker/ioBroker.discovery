@@ -1,11 +1,16 @@
 {
     "common": {
         "name": "discovery",
-        "version": "1.0.0",
+        "version": "1.0.1",
         "news": {
+            "1.0.1": {
+                "en": "Fix Epson Stylus PX830\nAdd Bose Soundtouch",
+                "de": "Epson Stylus PX830 KORRIGIERT\nBose Soundtouch hinzugefügt",
+                "ru": "Fix Epson Stylus PX830\nAdd Bose Soundtouch"
+            },
             "1.0.0": {
                 "en": "Add Epson Stylus PX830, Loxone\nAdd Homepilot",
-                "de": "Epson Stylus PX830, Loxone und Homepilot sin hinzugefügt",
+                "de": "Epson Stylus PX830, Loxone und Homepilot sind hinzugefügt",
                 "ru": "Добавлены Epson Stylus PX830, Loxone и Homepilot"
             },
             "0.4.5": {
