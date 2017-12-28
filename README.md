@@ -17,6 +17,7 @@ Just now it can detect via ping, UPnP (serial planned).
 ### Automatically Discovered
 
 - Broadlink
+- Bose Soundtouch
 - Chromecast
 - Daikin climate control
 - Epson Stylus PX830
@@ -85,6 +86,10 @@ Just now it can detect via ping, UPnP (serial planned).
 - xs1 (frankjoke)
 
 ## Changelog
+### 1.0.1 (2017-12-28)
+* Fix Epson Stylus PX830
+* Add Bose Soundtouch
+
 ### 1.0.0 (2017-10-18)
 * (pix) Add Epson Stylus PX830
 * (pix) Add Homepilot
