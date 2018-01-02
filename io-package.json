@@ -1,8 +1,18 @@
 {
     "common": {
         "name": "discovery",
-        "version": "1.0.1",
+        "version": "1.1.0",
         "news": {
+            "1.1.0": {
+                "en": "Support of admin3",
+                "de": "Unterstützung von admin3",
+                "ru": "Поддержка admin3",
+                "pt": "Suporte de admin3",
+                "nl": "Ondersteuning van admin3",
+                "fr": "Support de admin3",
+                "it": "Supporto di admin3",
+                "es": "Soporte de admin3"
+            },
             "1.0.1": {
                 "en": "Fix Epson Stylus PX830\nAdd Bose Soundtouch",
                 "de": "Epson Stylus PX830 KORRIGIERT\nBose Soundtouch hinzugefügt",
@@ -69,16 +79,25 @@
                 "ru": "initial commit"
             }
         },
-        "title": "Discovery Adapter",
-        "titleLang": {
+        "title": {
             "en": "Discovery Adapter",
             "de": "Gerätesuche",
-            "ru": "Поиск устройств"
+            "ru": "Драйвер поиска устройств",
+            "pt": "Adaptador de descoberta",
+            "nl": "Discovery Adapter",
+            "fr": "Adaptateur Discovery",
+            "it": "Adattatore Discovery",
+            "es": "Adaptador de descubrimiento"
         },
         "desc": {
             "en": "This adapter tries to discover all known devices.",
             "de": "Adapter versucht alle bekannte Geräte automatisch zu finden",
-            "ru": "Драйвер пытается найти все известные устройства"
+            "ru": "Драйвер пытается найти все известные устройства",
+            "pt": "Este adaptador tenta descobrir todos os dispositivos conhecidos",
+            "nl": "Deze adapter probeert alle bekende apparaten te vinden",
+            "fr": "Cet adaptateur essaie de découvrir tous les périphériques connus",
+            "it": "Questo adattatore tenta di scoprire tutti i dispositivi conosciuti",
+            "es": "Este adaptador intenta descubrir todos los dispositivos conocidos"
         },
         "authors": [
             "bluefox <dogafox@gmail.com>"
@@ -88,11 +107,12 @@
         "mode": "daemon",
         "enabled": true,
         "singletonHost": true,
+        "materialize": true,
         "messagebox": true,
         "readme": "https://github.com/ioBroker/ioBroker.discovery/blob/master/README.md",
         "dependencies": [
             {
-                "js-controller": ">=0.17.0"
+                "js-controller": ">=1.2.0"
             }
         ],
         "loglevel": "info",
