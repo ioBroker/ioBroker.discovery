@@ -79,26 +79,29 @@
                 "ru": "initial commit"
             }
         },
-        "title": {
-            "en": "Discovery Adapter",
+        "title": "Discovery devices",
+        "titleLang": {
+            "en": "Discovery devices",
             "de": "Gerätesuche",
             "ru": "Драйвер поиска устройств",
-            "pt": "Adaptador de descoberta",
-            "nl": "Discovery Adapter",
-            "fr": "Adaptateur Discovery",
-            "it": "Adattatore Discovery",
-            "es": "Adaptador de descubrimiento"
+			"pt": "Dispositivos de descoberta",
+			"nl": "Ontdekkingsapparaten",
+			"fr": "Dispositifs de découverte",
+			"it": "Dispositivi di scoperta",
+			"es": "Dispositivos de descubrimiento",
+			"pl": "Urządzenia Discovery"
         },
         "desc": {
-            "en": "This adapter tries to discover all known devices.",
-            "de": "Adapter versucht alle bekannte Geräte automatisch zu finden",
-            "ru": "Драйвер пытается найти все известные устройства",
-            "pt": "Este adaptador tenta descobrir todos os dispositivos conhecidos",
-            "nl": "Deze adapter probeert alle bekende apparaten te vinden",
-            "fr": "Cet adaptateur essaie de découvrir tous les périphériques connus",
-            "it": "Questo adattatore tenta di scoprire tutti i dispositivi conosciuti",
-            "es": "Este adaptador intenta descubrir todos los dispositivos conocidos"
-        },
+			"en": "This adapter tries to discover all known devices in your network and on your machine",
+			"de": "Dieser Adapter versucht, alle bekannten Geräte in Ihrem Netzwerk und auf Ihrem Computer zu finden",
+			"ru": "Этот адаптер пытается обнаружить все известные устройства в вашей сети и на вашем компьютере",
+			"pt": "Este adaptador tenta descobrir todos os dispositivos conhecidos da sua rede e da sua máquina",
+			"nl": "Deze adapter probeert alle bekende apparaten in uw netwerk en op uw computer te ontdekken",
+			"fr": "Cet adaptateur essaie de découvrir tous les périphériques connus sur votre réseau et sur votre machine",
+			"it": "Questo adattatore tenta di rilevare tutti i dispositivi noti nella rete e sulla macchina",
+			"es": "Este adaptador intenta descubrir todos los dispositivos conocidos en su red y en su máquina",
+			"pl": "Ten adapter próbuje wykryć wszystkie znane urządzenia w sieci i na twoim komputerze"
+		  },
         "authors": [
             "bluefox <dogafox@gmail.com>"
         ],

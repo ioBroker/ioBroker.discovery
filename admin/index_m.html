@@ -56,7 +56,7 @@
                 });
             }
 
-            $button.click(function () {
+            $button.off('click').on('click', function () {
                 var country = $('#system_country').val();
                 var city    = $('#system_city').val();
                 var address = $('#system_address').val();
@@ -110,7 +110,7 @@
 
                 $button.addClass('disabled');
 
-                $('#step0_save').click(function () {
+                $('#step0_save').off('click').on('click', function () {
                     var changed = false;
                     $('.system-settings').each(function () {
                         var attr = $(this).attr('id').substring('system_'.length);
@@ -268,23 +268,12 @@
             var $settings = $('#step1_settings');
             if (!$settings.data('inited')) {
                 $settings.data('inited', true);
-                $settings.html($settings.data('title'))/*.button({
-                    label:  _($settings.data('title')),
-                    icons: {
-                        primary: ' ui-icon-pencil'
-                    }
-                })*/.unbind('click').click(function () {
-                    document.location = 'settings.html' + document.location.search;
+                $settings.off('click').on('click', function () {
+                    document.location = 'settings_m.html' + document.location.search;
                 });
 
-                $step1.html($step1.data('title'))/*.button({
-                    label:  _($step1.data('title')),
-                    icons: {
-                        primary: ' ui-icon-search'
-                    }
-                })*/.unbind('click').click(function () {
+                $step1.off('click').on('click', function () {
                     $step1.addClass('disabled');
-                    $('.step1-methods').prop('disabled', true);
                     $('#step1_next').addClass('disabled');
                     $('#step1_help1').hide();
                     $('#step1_help2').hide();
@@ -292,13 +281,15 @@
 
                     var options = [];
                     var ignore  = [];
-                    $('.step1-methods').each(function () {
-                        if ($(this).prop('checked')) {
-                            options.push($(this).data('method'));
-                        } else {
-                            ignore.push($(this).data('method'));
-                        }
-                    });
+                    $('.step1-methods')
+                        .prop('disabled', true)
+                        .each(function () {
+                            if ($(this).prop('checked')) {
+                                options.push($(this).data('method'));
+                            } else {
+                                ignore.push($(this).data('method'));
+                            }
+                        });
                     if (typeof Storage  !== 'undefined') {
                         localStorage.setItem('discovery_ignore', JSON.stringify(ignore));
                     }
@@ -314,14 +305,16 @@
                         $step1.removeClass('disabled');
                         if (result.error) {
                             showMessage(result.error, _('Error'), 'alert');
+                            newInstances = [];
                         } else {
                             newInstances = result.newInstances;
-                            devices = result.devices;
+                            devices      = result.devices;
                             showStep(currentStep + 1);
                         }
                     });
                 });
             }
+
 
             $('#step1_next').addClass('disabled');
             $('#step1_help2').hide();
@@ -331,9 +324,12 @@
                     $step1.addClass('disabled');
                 }
             });
+            step2_litsMethods();
+        }
 
+        function step2_litsMethods() {
             sendTo(null, 'listMethods', null, function (result) {
-                var text = '<h4>' + _('Use following methods:') + '</h4>';
+                var text = '<div class="row"><div class="col s12"><h6 class="title">' + _('Use following methods:') + '</h6></div></div>';
 
                 var ignore = [];
                 if (typeof Storage  !== 'undefined') {
@@ -359,11 +355,18 @@
                 result = result || {};
                 for (var r in result) {
                     if (result.hasOwnProperty(r)) {
-                        text += '<input type="checkbox" class="step1-methods" data-method="' + r + '" ' + ((ignore.indexOf(r) !== -1) ? '' : 'checked') + '/>' + _(r) /*+ ' [' + result[r].type + ']' */+ '<br>';
+                        text += '<div class="row"><div class="col s12"><input type="checkbox" class="step1-methods filled-in" data-method="' + r + '" ' + ((ignore.indexOf(r) !== -1) ? '' : 'checked') + '/><span>' + _(r) /*+ ' [' + result[r].type + ']' */+ '</span></div></div>';
                     }
                 }
-
-                $('#step1_methods').html(text + '<br>').show();
+                var $methods = $('#step1_methods');
+                $methods.show().find('.text').html(text);
+                // workaround for materialize checkbox problem
+                $methods.find('input[type="checkbox"]+span').off('click').on('click', function () {
+                    var $input = $(this).prev();
+                    if (!$input.prop('disabled')) {
+                        $input.prop('checked', !$input.prop('checked')).trigger('change');
+                    }
+                });
 
                 socket.emit('getObject', 'system.discovery', function (err, obj) {
                     if (obj) {
@@ -376,10 +379,11 @@
                         if (obj.native.lastScan) lastScan = obj.native.lastScan;
                     }
                     if (lastScan) {
-                        $('#step1_help3').show().html(_('Last scan on %s', formatTime(new Date(lastScan))));
+                        $('#step1_help3').show().find('.text').html(_('Last scan on %s', formatTime(new Date(lastScan))));
                     } else {
                         $('#step1_help3').hide();
                     }
+                    newInstances = newInstances || [];
 
                     if (newInstances.length) {
                         $('#step1_next').removeClass('disabled');
@@ -546,10 +550,24 @@
         function step2_showHideInstances() {
             $('.step2-instance').show();
 
-            if (!$('#step2-show-acknowledged').hasClass('discovery-state-active')) {
+            var hasAcknowledged = false;
+            $('.step2-ack').each(function () {
+                if ($(this).prop('checked')) {
+                    hasAcknowledged = true;
+                    return false;
+                }
+            });
+            var $acknowledged = $('#step2-show-acknowledged');
+            if (hasAcknowledged) {
+                $acknowledged.show()
+            } else {
+                $acknowledged.hide();
+            }
+
+            if (!$acknowledged.hasClass('green')) {
                 $('.step2-instance-acknowledged').hide();
             }
-            if (!$('#step2-show-suggested').hasClass('discovery-state-active')) {
+            if (!$('#step2-show-suggested').hasClass('green')) {
                 $('.step2-instance-suggested').hide();
             }
         }
@@ -560,74 +578,54 @@
             var $step2_selectall = $('#step2_selectall');
             if (!$step2_selectall.data('inited')) {
                 $step2_selectall.data('inited', true);
-                $step2_selectall/*.button({
-                    text: false,
-                    icons: {
-                        primary: 'ui-icon-check'
-                    }
-                })*/.unbind('click').click(function () {
+                $step2_selectall.off('click').on('click', function () {
                     $('.step2-allow').each(function () {
                         $(this).prop('checked', true);
                     });
                     step2CheckNextAllow();
-                }).attr('title', _('Select all'));
+                });
 
-                $('#step2_deselectall')/*.button({
-                    text: false,
-                    icons: {
-                        primary: 'ui-icon-minus'
-                    }
-                })*/.unbind('click').click(function () {
+                $('#step2_deselectall').off('click').on('click', function () {
                     $('.step2-allow').each(function () {
                         $(this).prop('checked', false);
                     });
                     step2CheckNextAllow();
-                }).attr('title', _('Deselect all'));
+                });
 
 
 
-                $('#step2-show-acknowledged').html(_('Show not only new'))/*.button({
-                    label: _('Show not only new'),
-                    icons: {
-                        primary: 'ui-icon-circle-zoomin'
-                    }
-                })*/.click(function () {
-                    var isShow = $(this).hasClass('discovery-state-active');
+                $('#step2-show-acknowledged').off('click').on('click', function () {
+                    var isShow = $(this).hasClass('green');
                     if (isShow) {
-                        $(this).removeClass('discovery-state-active');
+                        $(this).removeClass('green');
                     } else {
-                        $(this).addClass('discovery-state-active');
+                        $(this).addClass('green');
                     }
                     step2_showHideInstances();
-                    if (typeof storage !== 'undefined') {
-                        storage.set('wizard.show.acknowledged', $(this).hasClass('discovery-state-active'));
+                    if (typeof Storage !== 'undefined') {
+                        localStorage.setItem('wizard.show.acknowledged', $(this).hasClass('green'));
                     }
-                }).attr('title', _('Show all instances'));
+                });
 
-                $('#step2-show-suggested').html(_('Show suggested'))/*.button({
-                    label: _('Show suggested'),
-                    icons: {
-                        primary: 'ui-icon-notice'
-                    }
-                })*/.click(function () {
-                    var isShow = $(this).hasClass('discovery-state-active');
+                $('#step2-show-suggested').off('click').on('click', function () {
+                    var isShow = $(this).hasClass('green');
                     if (isShow) {
-                        $(this).removeClass('discovery-state-active');
+                        $(this).removeClass('green');
                     } else {
-                        $(this).addClass('discovery-state-active');
+                        $(this).addClass('green');
                     }
                     step2_showHideInstances();
-                    if (typeof storage !== 'undefined') {
-                        storage.set('wizard.show.suggested', $(this).hasClass('discovery-state-active'));
+                    if (typeof Storage !== 'undefined') {
+                        localStorage.setItem('wizard.show.suggested', $(this).hasClass('green'));
                     }
-                }).attr('title', _('Show suggested'));
+                });
 
-                if (typeof storage !== 'undefined') {
-                    if (storage.get('wizard.show.acknowledged') !== false) {
-                        $('#step2-show-acknowledged').addClass('discovery-state-active');
+                if (typeof Storage !== 'undefined') {
+                    if (localStorage.getItem('wizard.show.acknowledged') === 'true') {
+                        $('#step2-show-acknowledged').addClass('green');
                     }
-                    if (storage.get('wizard.show.suggested') !== false) {
-                        $('#step2-show-suggested').addClass('discovery-state-active');
+                    if (localStorage.getItem('wizard.show.suggested') === 'true') {
+                        $('#step2-show-suggested').addClass('green');
                     }
                 }
             }
@@ -644,10 +642,10 @@
                         if (newInstances[i].comment.advice) hasSuggested = true;
 
                         text += '<tr data-id="' + i + '" class="step2-instance ' +
-                            (newInstances[i].comment.ack ? 'step2-instance-acknowledged ' : '') +
+                            (newInstances[i].comment.ack    ? 'step2-instance-acknowledged ' : '') +
                             (newInstances[i].comment.advice ? 'step2-instance-suggested ' : '') +
                             '">';
-                        text += '<td><input type="checkbox" data-id="' + i + '" class="step2-allow"/></td>';
+                        text += '<td><input type="checkbox" data-id="' + i + '" class="step2-allow filled-in"/><span></span></td>';
                         text += '<td>' + newInstances[i]._id.substring('system.adapter.'.length) + '</td>';
                         if (hosts.length > 1) {
                             text += '<td><select class="step2-host" data-id="' + i + '" ' + (newInstances[i].common.host ? 'disabled' : '') + '>';
@@ -655,11 +653,9 @@
                                 text += '<option value="' + hosts[h] + '" ' + (newInstances[i].common.host === hosts[h] ? 'selected' : '') + '>' + hosts[h] + '</option>';
                             }
                             text += '</select></td>';
-                        } else {
-                            text += '<td><select class="step2-host" data-id="' + i + '" disabled><option value="' + hosts[0] + '" selected>' + hosts[0] + '</option></select></td>';
                         }
                         text += '<td>' + buildComment(newInstances[i].comment) + '</td>';
-                        text += '<td style="text-align: center"><input type="checkbox" data-id="' + i + '" ' + (newInstances[i].comment.ack ? 'disabled checked' : '') + ' class="step2-ack"/></td>';
+                        text += '<td style="text-align: center"><input type="checkbox" data-id="' + i + '" ' + (newInstances[i].comment.ack ? 'disabled checked' : '') + ' class="step2-ack"/><span></span></td>';
                         text += '</tr>';
                     }
                 }
@@ -668,8 +664,20 @@
                 } else {
                     $('#step2_header').html(_('Create instances automatically'));
                 }
-
+                if (hosts.length > 1) {
+                    $('.wizard-table-host').show();
+                } else {
+                    $('.wizard-table-host').hide();
+                }
                 $instances.html(text);
+
+                // workaround for materialize checkbox problem
+                $instances.find('input[type="checkbox"]+span').off('click').on('click', function () {
+                    var $input = $(this).prev();
+                    if (!$input.prop('disabled')) {
+                        $input.prop('checked', !$input.prop('checked')).trigger('change');
+                    }
+                });
 
                 var $acknowledged = $('#step2-show-acknowledged');
                 var $suggested    = $('#step2-show-suggested');
@@ -683,21 +691,18 @@
                 } else {
                     $suggested.show();
                 }
-                if (!$acknowledged.hasClass('discovery-state-active')) {
+                if (!$acknowledged.hasClass('green')) {
                     $('.step2-instance-acknowledged').hide();
                 }
-                if (!$suggested.hasClass('discovery-state-active')) {
+                if (!$suggested.hasClass('green')) {
                     $('.step2-instance-suggested').hide();
                 }
                 $('.step2-allow').change(step2CheckNextAllow);
                 $('.step2-ack').change(function () {
-                    var isShow = $('#step2-show-acknowledged').hasClass('discovery-state-active');
                     var i = $(this).data('id');
                     $(this).prop('disabled', true);
                     newInstances[i].comment.ack = true;
                     var $instance = $('.step2-instance[data-id="' + i + '"]');
-                    if (!isShow) $instance.hide();
-
                     $instance.addClass('step2-instance-acknowledged');
 
                     socket.emit('getObject', 'system.discovery', function (err, obj) {
@@ -718,6 +723,7 @@
                         } else {
                             showMessage(_('Please close dialog and open it anew!'), _('Unknown error'), 'alert');
                         }
+                        step2_showHideInstances();
                     });
                 });
 
@@ -727,6 +733,9 @@
 
         function step3_showLicenseDialog(adapter, callback) {
             var $dialogLicense = $('#dialog-license');
+            $dialogLicense.modal({
+                dismissible: false
+            });
 
             // Is adapter installed
             if (adapter.installed || !adapter.licenseUrl) {
@@ -760,39 +769,17 @@
                         body = body.replace(/\r\n/g, '<br>');
                         body = body.replace(/\n/g, '<br>');
                         $('#license_text').html(body);
-                        $dialogLicense.dialog({
-                            autoOpen: true,
-                            modal: true,
-                            width: 600,
-                            height: 400,
-                            open: function (event) {
-                                $(event.target).parent().find('.ui-dialog-titlebar-close .ui-button-text').html('');
-                                $("#not-agree").focus();
-                            },
-                            buttons: [
-                                {
-                                    text: _('agree'),
-                                    click: function () {
-                                        callback && callback(true);
-                                        callback = null;
-                                        $dialogLicense.dialog('close');
-                                    }
-                                },
-                                {
-                                    id: 'not-agree',
-                                    text: _('not agree'),
-                                    click: function () {
-                                        callback && callback(false);
-                                        callback = null;
-                                        $dialogLicense.dialog('close');
-                                    }
-                                }
-                            ],
-                            close: function () {
-                                callback && callback(false);
-                                callback = null;
-                            }
+                        $dialogLicense.find('#license_agree').off('click').on('click', function () {
+                            callback && callback(true);
+                            callback = null;
+                            $('#license_text').html('');
                         });
+                        $dialogLicense.find('#license_non_agree').off('click').on('click', function () {
+                            callback && callback(false);
+                            callback = null;
+                            $('#license_text').html('');
+                        });
+                        $dialogLicense.modal('open');
                     } else {
                         showMessage(_('Cannot get license agreement'), _('No internet'), 'alert');
                         callback && callback(false);
@@ -828,7 +815,10 @@
         }
 
         function step3_getAdaptersInfo(host, callback) {
-            if (!host) return;
+            if (!host) {
+                console.error('step3_getAdaptersInfo: empty host');
+                return;
+            }
 
             if (!callback) throw 'Callback cannot be null or undefined';
 
@@ -1018,18 +1008,22 @@
                 }
 
                 if (params.length) {
-                    var text = '<table>';
-                    text += '<tr class="param-line"><td>' + _('Description') + '</td><td>' + buildComment(obj.comment) + '</td></tr>';
+                    var text = '';
+                    text += '<div class="row"><div class="col s12 description">' + _('Description') + '</div>';
+                    text += '<div class="col s12">' + buildComment(obj.comment) + '</div></div>';
+
 
                     for (var pp = 0; pp < params.length; pp++) {
-                        text += '<tr class="param-line">';
-                        text += '<td>' + _(params[pp].title) + (params[pp].title ? ':' : '') + ' </td><td>';
+                        text += '<div class="row"><div class="col s12">';
                         if (params[pp].type === 'password') {
-                            text += '<input data-required="' + !!params[pp].required + '" data-name="' + params[pp].name + '" value="' + (params[pp].def !== undefined ? params[pp].def : '') + '" class="params" type="password"/></td>';
-                            text += '</tr><tr class="param-line"><td>' + _('passwordRepeat') + '</td>';
-                            text += '<td><input data-required="' + !!params[pp].required + '" data-name="' + params[pp].name + '" value="' + (params[pp].def !== undefined ? params[pp].def : '') + '" class="passRepeat" type="password"/>';
+                            text += '<input data-required="' + !!params[pp].required + '" data-name="' + params[pp].name + '" value="' + (params[pp].def !== undefined ? params[pp].def : '') + '" class="params" type="password"/>';
+                            text += '<label>' + _(params[pp].title) + (params[pp].title ? ':' : '') + ' </label>';
+                            text += '</div></div><div class="row"><div class="col s12">';
+                            text += '<input data-required="' + !!params[pp].required + '" data-name="' + params[pp].name + '" value="' + (params[pp].def !== undefined ? params[pp].def : '') + '" class="passRepeat" type="password"/>';
+                            text += '<label>' + _('passwordRepeat') + '';
                         } else if (params[pp].type === 'checkbox') {
                             text += '<input data-required="' + !!params[pp].required + '" data-name="' + params[pp].name + '" type="checkbox" ' + (params[pp].def ? 'checked' : '') + ' class="params" />';
+                            text += '<span>' + _(params[pp].title) + (params[pp].title ? ':' : '') + ' </span>';
                         } else if (params[pp].type === 'select') {
                             text += '<select data-required="' + !!params[pp].required + '" data-name="' + params[pp].name + '" class="params">';
                             for (var op in params[pp].options) {
@@ -1037,24 +1031,35 @@
                                 text += '<option value="' + op + '" ' + (params[pp].def === op ? 'selected' : '') + '>' + (params[pp].options[op] !== null ? params[pp].options[op] : op) + '</option>';
                             }
                             text += '</select>';
+                            text += '<label>' + _(params[pp].title) + (params[pp].title ? ':' : '') + ' </label>';
                         } else if (params[pp].type === 'link') {
-                            text += '<a href="' + (params[pp].link || params[pp].def) + '" target="' + params[pp].title.replace(/\s/g, '_') + '">' + (params[pp].link || params[pp].def) + '</a>';
+                            text += '<a class="btn" href="' + (params[pp].link || params[pp].def) + '" target="' + params[pp].title.replace(/\s/g, '_') + '">' + (params[pp].link || params[pp].def) + '</a>';
+                            //text += '<label>' + _(params[pp].title) + (params[pp].title ? ':' : '') + ' </label>';
                         } else if (params[pp].type === 'comment') {
                             text += '<span style="' + (params[pp].style || '') + '">' + (params[pp].comment || params[pp].def) + '</span>';
                         } else{
                             text += '<input data-required="' + !!params[pp].required + '" data-name="' + params[pp].name + '" value="' + (params[pp].def !== undefined ? params[pp].def : '') + '" class="params" />';
+                            text += '<label>' + _(params[pp].title) + (params[pp].title ? ':' : '') + ' </label>';
                         }
-                        text += '</td></tr>';
+                        text += '</div></div>';
                     }
                     text += '</table>';
                     var $dialog = $('#dialog-parameters');
-                    $dialog.html(text);
-                    $dialog.dialog('option', 'title', _('Edit parameters for %s', obj._id.substring('system.adapter.'.length)));
-                    //$dialog.dialog('option', 'height', 150 + params.length * 40);
-                    //$('.ui-dialog[aria-describedby="dialog-parameters"]').css('height', '90%');
+                    $dialog.find('.controls').html(text);
+                    $dialog.find('select').select();
+
+                    // workaround for materialize checkbox problem
+                    $dialog.find('input[type="checkbox"]+span').off('click').on('click', function () {
+                        var $input = $(this).prev();
+                        if (!$input.prop('disabled')) {
+                            $input.prop('checked', !$input.prop('checked')).trigger('change');
+                        }
+                    });
+
+                    $dialog.find('title').html(_('Edit parameters for %s', obj._id.substring('system.adapter.'.length)));
                     $dialog.data('callback', callback);
                     $dialog.data('obj', obj);
-                    $dialog.dialog('open');
+                    $dialog.modal('open');
                 } else {
                     callback(null, obj);
                 }
@@ -1237,80 +1242,76 @@
 
             if (!$details.data('inited')) {
                 $details.data('inited', true);
-                $details.html(_($details.data('title')))/*.button({
-                    label: _($details.data('title')),
-                    icons: {
-                        primary: 'ui-icon-comment'
-                    }
-                })*/.unbind('click').click(function () {
+                $details.off('click').on('click', function () {
+                    var val;
                     if ($stdout.is(':visible')) {
                         $stdout.hide();
+                        val = false;
                     } else {
                         $stdout.show();
+                        val = true;
+                    }
+                    if (typeof Storage !== 'undefined') {
+                        localStorage.setItem('wizard.details', val);
                     }
                 });
+                if (typeof Storage !== 'undefined') {
+                    if (localStorage.getItem('wizard.details') === 'true') {
+                        $details.trigger('click');
+                    }
+                }
+
                 var $dialog = $('#dialog-parameters');
-                $dialog.dialog({
-                    autoOpen:   false,
-                    modal:      true,
-                    width:      '80%',
-//                    height:     '90%',
-                    open:       function (event) {
-                        $(event.target).parent().find('.ui-dialog-titlebar-close .ui-button-text').html('');
-                    },
-                    buttons:    [
-                        {
-                            text: _('Ok'),
-                            click: function () {
-                                var $dialog = $('#dialog-parameters');
-                                var obj = $dialog.data('obj');
-                                var error = false;
-                                $dialog.find('.params').each(function () {
-                                    var name = $(this).data('name');
-                                    var val;
-                                    if ($(this).attr('type') === 'checkbox') {
-                                        val = $(this).prop('checked');
-                                    } else {
-                                        val = $(this).val();
-                                    }
-                                    if ($(this).prop('type') === 'password') {
-                                        if (val !== $dialog.find('.passRepeat[data-name="' + name + '"]').val()) {
-                                            showMessage(_('Passwords does not match'), _('Error'), 'alert');
-                                            error = true;
-                                            return;
-                                        }
-                                    }
-                                    if ($(this).data('required') && !val) {
-                                        showMessage(_('Parameter %s is mandatory!', name));
-                                        error = true;
-                                        return;
-                                    }
-                                    setParam(name, obj, val);
-                                });
-                                if (!error) {
-                                    $dialog.dialog('close');
-                                    var callback = $dialog.data('callback');
-                                    if (callback && typeof callback === 'function') {
-                                        $dialog.data('callback', null);
-                                        $dialog.data('obj', null);
-                                        callback(null, obj);
-                                    }
-                                }
-                            }
-                        },
-                        {
-                            text: _('Cancel'),
-                            click: function () {
-                                var $dialog = $('#dialog-parameters');
-                                $dialog.dialog('close');
-                                var callback = $dialog.data('callback');
-                                if (callback && typeof callback === 'function') {
-                                    $dialog.data('callback', null);
-                                    callback(null, null);
-                                }
+                $dialog.modal({
+                    dismissible: false
+                });
+
+                $dialog.find('.btn-set').off('click').on('click', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    var $dialog = $('#dialog-parameters');
+                    var obj = $dialog.data('obj');
+                    var error = false;
+                    $dialog.find('.params').each(function () {
+                        var name = $(this).data('name');
+                        var val;
+                        if ($(this).attr('type') === 'checkbox') {
+                            val = $(this).prop('checked');
+                        } else {
+                            val = $(this).val();
+                        }
+                        if ($(this).prop('type') === 'password') {
+                            if (val !== $dialog.find('.passRepeat[data-name="' + name + '"]').val()) {
+                                showMessage(_('Passwords does not match'), _('Error'), 'alert');
+                                error = true;
+                                return;
                             }
                         }
-                    ]
+                        if ($(this).data('required') && !val) {
+                            showMessage(_('Parameter %s is mandatory!', name));
+                            error = true;
+                            return;
+                        }
+                        setParam(name, obj, val);
+                    });
+                    if (!error) {
+                        $dialog.modal('close');
+                        var callback = $dialog.data('callback');
+                        if (callback && typeof callback === 'function') {
+                            $dialog.data('callback', null);
+                            $dialog.data('obj', null);
+                            callback(null, obj);
+                        }
+                    }
+                });
+                $dialog.find('.btn-cancel').off('click').on('click', function () {
+                    var $dialog = $('#dialog-parameters');
+                    $dialog.modal('close');
+                    var callback = $dialog.data('callback');
+                    if (callback && typeof callback === 'function') {
+                        $dialog.data('callback', null);
+                        callback(null, null);
+                    }
                 });
             }
 
@@ -1318,7 +1319,7 @@
                 if ($(this).prop('checked')) {
                     var i = $(this).data('id');
                     instances.push(newInstances[i]);
-                    newInstances[i].common.host = $('.step2-host[data-id="' + i + '"]').val();
+                    newInstances[i].common.host = $('.step2-host[data-id="' + i + '"]').val() || hosts[0];
                 }
             });
 
@@ -1365,65 +1366,44 @@
             $('.header').hide();
             // step 0
 
-            $('.bottom-next').each(function () {
-                $(this).html(_($(this).data('title')))/*.button({
-                    label: _($(this).data('title')),
-                    icons: {
-                        primary: 'ui-icon-seek-next'
-                    }
-                })*/.click(function () {
-                    showStep(currentStep + 1);
-                });
+            $('.btn-next').off('click').on('click', function () {
+                showStep(currentStep + 1);
             });
 
-            $('.bottom-prev').each(function () {
-                $(this).html(_($(this).data('title')))/*.button({
-                    label: _($(this).data('title')),
-                    icons: {
-                        primary: 'ui-icon-seek-prev'
-                    }
-                })*/.click(function () {
-                    showStep(currentStep - 1);
-                });
+            $('.btn-prev').off('click').on('click', function () {
+                showStep(currentStep - 1);
             });
 
-            $('.bottom-close').each(function () {
-                $(this).html(_($(this).data('title')))/*.button({
-                    label: _($(this).data('title')),
-                    icons: {
-                        primary: 'ui-icon-closethick'
-                    }
-                })*/.click(function () {
-                    if (typeof parent !== 'undefined' && parent && parent.$iframeDialog) {
-                        parent.showConfig = JSON.parse(JSON.stringify(showConfig));
-                    }
+            $('.btn-close').off('click').on('click', function () {
+                if (typeof parent !== 'undefined' && parent && parent.$iframeDialog) {
+                    parent.showConfig = JSON.parse(JSON.stringify(showConfig));
+                }
 
-                    window.close();
-                    if (typeof parent !== 'undefined' && parent && parent.$iframeDialog) {
-                        parent.$iframeDialog.dialog('close');
-                    }
-                });
+                window.close();
+                if (typeof parent !== 'undefined' && parent && parent.$iframeDialog) {
+                    parent.$iframeDialog.close();
+                }
             });
 
             showStep(0);
             $stdout = $('#stdout');
 
-            socket.emit('subscribeStates',  'discovery.' + instance + '.*');
+            socket.emit('subscribe',  'discovery.' + instance + '.*');
             socket.on('stateChange', function (id, state) {
                 if (state && state.ack && state.val !== null && state.val !== 'null') {
                     if (id === 'discovery.' + instance + '.devicesProgress') {
-                        $('#step1_text').show().html(_('Lookup devices') + ' - ' + state.val + '%');
-                        $('#step1_progressbar').show().progressbar({value: state.val});
+                        $('#step1_text').show().find('.text').html(_('Lookup devices') + ' - ' + state.val + '%');
+                        $('#step1_progressbar').show().find('.progress .determinate').css({width: state.val + '%'});
                     } else
                     if (id === 'discovery.' + instance + '.servicesProgress') {
-                        $('#step1_text').show().html(_('Lookup services') + ' - ' + state.val + '%');
-                        $('#step1_progressbar').show().progressbar({value: state.val});
+                        $('#step1_text').show().find('.text').html(_('Lookup services') + ' - ' + state.val + '%');
+                        $('#step1_progressbar').show().find('.progress .determinate').css({width: state.val + '%'});
                     } else
                     if (id === 'discovery.' + instance + '.instancesFound') {
-                        $('#step1_result').show().html(_('Found services', state.val));
+                        $('#step1_result').show().find('.text').html(_('Found services', state.val));
                     } else
                     if (id === 'discovery.' + instance + '.devicesFound') {
-                        $('#step1_result').show().html(_('Found devices', state.val));
+                        $('#step1_result').show().find('.text').html(_('Found devices', state.val));
                     }
                     else
                     if (id === 'discovery.' + instance + '.scanRunning') {
@@ -1490,9 +1470,6 @@
         .dialog-config-buttons {
             display: none !important;
         }
-        .discovery-state-active {
-            background: lightgreen;
-        }
         .wizard-page {
             width: 100%;
             height: 100%;
@@ -1539,12 +1516,27 @@
             background: #338ce6;
             color: white;
             text-align: left;
+            border-radius: 0;
+        }
+        .wizard-table td {
+            border-radius: 0;
         }
         .wizard-table tr:nth-child(even) {
             background: #CCC;
         }
-        .wizard-table tr:nth-child(odd) {
-            background: #FFF;
+        .step2-instance-suggested {
+            background: #56fb5a !important;
+            color: white;
+        }
+        .wizard-table tr:nth-child(even).step2-instance-suggested {
+            background: #5ecd5f !important;
+            color: black;
+        }
+        .step2-instance-acknowledged {
+            opacity: 0.7;
+        }
+        .wizard-table tr:nth-child(even).step2-instance-acknowledged {
+            opacity: 0.6;
         }
         #step3_instances td, #step3_instances th {
             padding-left: 5px;
@@ -1565,18 +1557,15 @@
         #step1_settings {
             float: left;
         }
-        /*.param-line {
-            height: 27px;
-        }
-        .param-line input {
-            margin-bottom: 2px;
-        }*/
-        .ui-progressbar-value {
-            background: #338ce6 !important;
-        }
-        #step1_progressbar {
+        #step1_progressbar .progressbar {
             background: white;
         }
+        #step1_help1,
+        .header-buttons {
+            margin-bottom: 0;
+            margin-top: 1rem;
+        }
+
         #step0_save_hint {
             float: right;
             color: #f36767;
@@ -1591,11 +1580,19 @@
         }
         .btn-close,
         .btn-next,
+        .btn-discover,
         .btn-save  {
             float: right;
             margin-top: 1rem;
         }
-        .btn-close {
+        .btn-settings,
+        .btn-prev {
+            float: left;
+            margin-left: 1rem;
+            margin-top: 1rem;
+        }
+        .btn-close,
+        .btn-discover {
             margin-right: 1rem;
         }
         .btn-next {
@@ -1604,6 +1601,28 @@
         .btn-save {
             margin-right: 2rem;
         }
+        .wizard-table-use {
+            width: 100px;
+        }
+        .wizard-table-instance {
+            width: 10%;
+        }
+        .wizard-table-host {
+            width: 20%;
+        }
+        .wizard-table-desc {
+            width: 70%;
+        }
+        .wizard-table-ignore {
+            width: 100px;
+        }
+        #stdout {
+            font-family: courier, monospace;
+            font-size: 11px;
+            resize: none;
+            height: inherit;
+        }
+
     </style>
 </head>
 <body>
@@ -1624,6 +1643,12 @@
                                 <option value="en">English</option>
                                 <option value="de">Deutsch</option>
                                 <option value="ru">русский</option>
+                                <option value="pt">Portugues</option>
+                                <option value="nl">Nederlands</option>
+                                <option value="fr">français</option>
+                                <option value="it">Italiano</option>
+                                <option value="es">Espanol</option>
+                                <option value="pl">polski</option>
                             </select>
                             <label class="translate" for="system_language">System language:</label>
                         </div>
@@ -1961,7 +1986,7 @@
                 <i class="material-icons left">close</i>
                 <span class="translate">Close</span>
             </a>
-            <a id="step0_next" class="btn btn-active btn-next">
+            <a id="step0_next" class="btn btn-next btn-active">
                 <i class="material-icons left">navigate_next</i>
                 <span class="translate">Next</span>
             </a>
@@ -1974,122 +1999,210 @@
     </div>
     <!-- Discover all possible devices -->
     <div data-step="1" class="wizard-page" style="display: none">
-        <div class="wizard-header ui-widget-header">
-            <h3 class="translate">Discover all possible devices</h3>
-        </div>
+        <nav class="wizard-header">
+            <div class="nav-wrapper">
+                <h6 class="translate">Discover all possible devices</h6>
+            </div>
+        </nav>
         <div class="wizard-content">
-            <div id="step1_help1" class="translate">step1_help1</div>
-            <div id="step1_help2" class="translate" style="display: none">step1_help2</div>
-            <div id="step1_help3" class="translate" style="display: none"></div>
-            <div id="step1_methods" style="display: none"></div>
-            <div id="step1_text" style="display: none"></div>
-            <div id="step1_progressbar" style="display: none"></div>
-            <div id="step1_result" style="display: none"></div>
+            <div class="row" id="step1_help1">
+                <div class="col s12 text translate">step1_help1</div>
+            </div>
+            <div class="row"  id="step1_help2" style="display: none">
+                <div class="col s12 translate text">step1_help2</div>
+            </div>
+            <div class="row" id="step1_help3" style="display: none">
+                <div class="col s12 translate text"></div>
+            </div>
+            <div class="row" id="step1_methods" style="display: none" >
+                <div class="col s12 text"></div>
+            </div>
+            <div class="row" id="step1_text" style="display: none">
+                <div class="col s12 text" ></div>
+            </div>
+            <div class="row" id="step1_progressbar" style="display: none">
+                <div class="col s12" >
+                    <div class="progress">
+                        <div class="determinate" style="width: 70%"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="step1_result"  style="display: none">
+                <div class="col s12 text"></div>
+            </div>
         </div>
-        <div class="wizard-footer">
-            <button id="step1_settings" class="bottom-buttons" data-title="Settings"></button>
-            <button id="step1_discover" class="bottom-buttons ui-state-active" data-title="Discover"></button>
-            <button id="step1_prev"  class="bottom-buttons bottom-prev"  data-title="Back"></button>
-            <button id="step1_next" class="bottom-buttons bottom-next" data-title="Next"></button>
-            <button id="step1_close" class="bottom-buttons bottom-close" data-title="Close"></button>
-        </div>
+        <nav class="wizard-footer nav-wrapper footer">
+            <a id="step1_close"    class="btn btn-close">
+                <i class="material-icons left">close</i>
+                <span class="translate">Close</span>
+            </a>
+            <a id="step1_next"     class="btn btn-next">
+                <i class="material-icons left">navigate_next</i>
+                <span class="translate">Next</span>
+            </a>
+            <a id="step1_prev"     class="btn btn-prev">
+                <i class="material-icons left">navigate_before</i>
+                <span class="translate">Back</span>
+            </a>
+            <a id="step1_discover" class="btn btn-discover btn-active">
+                <i class="material-icons left">visibility</i>
+                <span class="translate">Discover</span>
+            </a>
+            <a id="step1_settings" class="btn btn-settings">
+                <i class="material-icons left">build</i>
+                <span class="translate">Settings</span>
+            </a>
+        </nav>
     </div>
     <!-- Create instances automatically -->
     <div data-step="2" class="wizard-page" style="display: none">
-        <div class="wizard-header ui-widget-header">
-            <h3 class="translate" id="step2_header">Create instances automatically</h3>
-        </div>
+        <nav class="wizard-header">
+            <div class="nav-wrapper">
+                <h6 class="translate" id="step2_header">Create instances automatically</h6>
+            </div>
+        </nav>
         <div class="wizard-content">
-            <button style="display: inline-block; height: 24px;" data-title="Select all" id="step2_selectall"></button>
-            <button style="display: inline-block; height: 24px;" data-title="Deselect all" id="step2_deselectall"></button>
-            <button style="display: inline-block; height: 24px; font-size: 12px;" data-title="Show all" id="step2-show-acknowledged"></button>
-            <button style="display: inline-block; height: 24px; font-size: 12px;" data-title="Show suggested too" id="step2-show-suggested"></button>
-            <table class="wizard-table">
-                <thead>
-                <tr>
-                    <th class="translate" style="width: 70px">Use</th>
-                    <th class="translate" style="width: 150px">Instance</th>
-                    <th class="translate">Host</th>
-                    <th class="translate">Description</th>
-                    <th class="translate translateT" title="Do not show this instance any more" style="width: 50px">Ignore</th>
-                </tr>
-                </thead>
-                <tbody id="step2_instances">
+            <div class="row header-buttons">
+                <div class="col s12">
+                    <a class="btn" id="step2_selectall">
+                        <i class="material-icons left">done_all</i>
+                        <span class="translate">Select all</span>
+                    </a>
+                    <a class="btn" id="step2_deselectall">
+                        <i class="material-icons left">do_not_disturb_alt</i>
+                        <span class="translate">Deselect all</span>
+                    </a>
+                    <a class="btn" id="step2-show-acknowledged">
+                        <i class="material-icons left">expand_more</i>
+                        <span class="translate">Show all</span>
+                    </a>
+                    <a class="btn" id="step2-show-suggested">
+                        <i class="material-icons left">arrow_drop_down_circle</i>
+                        <span class="translate">Show suggested too</span>
+                    </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12">
+                    <table class="wizard-table">
+                        <thead>
+                        <tr>
+                            <th class="translate wizard-table-use">Use</th>
+                            <th class="translate wizard-table-instance">Instance</th>
+                            <th class="translate wizard-table-host">Host</th>
+                            <th class="translate wizard-table-desc">Description</th>
+                            <th class="translate wizard-table-ignore translateT" title="Do not show this instance any more">Ignore</th>
+                        </tr>
+                        </thead>
+                        <tbody id="step2_instances">
 
-                </tbody>
-            </table>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-        <div class="wizard-footer">
-            <button id="step2_prev"  class="bottom-buttons bottom-prev"  data-title="Back"></button>
-            <button id="step2_next"  class="bottom-buttons bottom-next ui-state-active"  data-title="Create instances"></button>
-            <button id="step2_close" class="bottom-buttons bottom-close" data-title="Close"></button>
-        </div>
+        <nav class="wizard-footer nav-wrapper footer">
+            <a id="step2_close"    class="btn btn-close">
+                <i class="material-icons left">close</i>
+                <span class="translate">Close</span>
+            </a>
+            <a id="step2_prev"     class="btn btn-prev">
+                <i class="material-icons left">navigate_before</i>
+                <span class="translate">Back</span>
+            </a>
+            <a id="step2_next"  class="btn btn-next active">
+                <i class="material-icons left">navigate_next</i>
+                <span class="translate">Create instances</span>
+            </a>
+        </nav>
     </div>
     <!-- Install adapters -->
     <div data-step="3" class="wizard-page" style="display: none">
-        <div class="wizard-header ui-widget-header">
-            <h3 class="translate">Install adapters</h3>
-        </div>
+        <nav class="wizard-header">
+            <div class="nav-wrapper">
+                <h6 class="translate">Install adapters</h6>
+            </div>
+        </nav>
         <div class="wizard-content">
-            <table class="wizard-table">
-                <thead>
-                <tr>
-                    <th class="translate" style="width: 200px">Instance</th>
-                    <th class="translate">Progress</th>
-                </tr>
-                </thead>
-                <tbody id="step3_instances">
-                </tbody>
-            </table>
-            <button id="step3_show_details" data-title="Details"></button>
-            <textarea style="font-family: courier, monospace; font-size: 11px; resize: none; display: none" id="stdout" disabled="disabled" cols="120" rows="10"></textarea>
+            <div class="row">
+                <div class="col s12">
+                    <table class="wizard-table">
+                        <thead>
+                        <tr>
+                            <th class="translate" style="width: 200px">Instance</th>
+                            <th class="translate">Progress</th>
+                        </tr>
+                        </thead>
+                        <tbody id="step3_instances">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 l2">
+                    <div class="switch">
+                        <label>
+                            <span class="translate">less</span>
+                            <input id="step3_show_details" type="checkbox">
+                            <span class="lever"></span>
+                            <span class="translate">more</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="col s12 l10">
+                    <textarea style="display: none" id="stdout" disabled="disabled" cols="120" rows="10"></textarea>
+                </div>
+            </div>
         </div>
-        <div class="wizard-footer">
-            <button id="step3_prev"  class="bottom-buttons bottom-prev"  data-title="Back"></button>
-            <button id="step3_close" class="bottom-buttons bottom-close ui-state-active" data-title="Finish"></button>
-        </div>
+        <nav class="wizard-footer nav-wrapper footer">
+            <a id="step3_prev"     class="btn btn-prev">
+                <i class="material-icons left">navigate_before</i>
+                <span class="translate">Back</span>
+            </a>
+            <a id="step3_close" class="btn btn-close btn-active">
+                <i class="material-icons left">close</i>
+                <span class="translate">Finish</span>
+            </a>
+        </nav>
     </div>
 </div>
 
-<div id="dialog-license" class="modal modal-fixed-footer" style="display: none">
-    <div class="modal-content">
-        <div class="col s12 m6 l3">
-            <h5 class="translate" id="license_agreement_label">license agreement</h5>
-        </div>
-        <div class="row">
+<div class="material-dialogs m">
+    <div id="dialog-license" class="modal modal-fixed-footer" style="display: none">
+        <div class="modal-content">
             <div class="col s12 m6 l3">
-                <select id="license_language">
-                    <option value="en">English</option>
-                    <option value="de">Deutsch</option>
-                    <option value="ru">русский</option>
-                    <option value="pt">Portugues</option>
-                    <option value="nl">Nederlands</option>
-                    <option value="fr">français</option>
-                    <option value="it">Italiano</option>
-                    <option value="es">Espanol</option>
-                </select>
-                <label class="translate" for="license_language" id="license_language_label">Select language</label>
+                <h5 class="translate" id="license_agreement_label">license agreement</h5>
             </div>
-            <div class="col s12 m6 l9">
-                <input id="license_diag" class="filled-in" type="checkbox"/>
-                <span class="translate" id="license_checkbox" for="license_diag">license_checkbox</span>
+            <div class="row">
+                <div class="col s12">
+                    <div id="license_text"></div>
+                </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col s12">
-                <h6 id="license_terms" class="translate">License terms</h6>
-                <div id="license_text"></div>
-            </div>
+        <div class="modal-footer">
+            <a id="license_agree"     class="modal-action modal-close waves-effect waves-green btn-flat translate">agree</a>
+            <a id="license_non_agree" class="modal-action modal-close waves-effect waves-green btn-flat btn-gray translate">not agree</a>
         </div>
     </div>
-    <div class="modal-footer">
-        <a id="license_agree"     class="modal-action modal-close waves-effect waves-green btn-flat translate">agree</a>
-        <a id="license_non_agree" class="modal-action modal-close waves-effect waves-green btn-flat btn-gray translate">not agree</a>
+
+    <div id="dialog-parameters" style="display: none; z-index: 102" class="modal modal-fixed-footer">
+        <div class="modal-content">
+            <div class="row">
+                <div class="col s12">
+                    <h6 class="title"></h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 controls">
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a class="modal-action modal-close waves-effect waves-green btn btn-set"  ><i class="large material-icons">check</i><span class="translate">Apply</span></a>
+            <a class="modal-action modal-close waves-effect waves-green btn btn-close"><i class="large material-icons">close</i><span class="translate">Close</span></a>
+        </div>
     </div>
-</div>
 
-<div id="dialog-parameters" style="display: none; z-index: 102" class="modal modal-fixed-footer">
 </div>
-
 </body>
 </html>

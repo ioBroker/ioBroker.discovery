@@ -2,3 +2,5 @@ node_modules
 .idea
 tmp
 /nbproject
+admin/i18n/flat.txt
+admin/i18n/*/flat.txt

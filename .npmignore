@@ -4,3 +4,4 @@ tasks
 test
 .travis.yml
 appveyor.yml
+admin/i18n
