@@ -86,6 +86,9 @@ Just now it can detect via ping, UPnP (serial planned).
 - xs1 (frankjoke)
 
 ## Changelog
+### 1.1.0 (2018-01-13)
+* (bluefox) ready for admin3
+
 ### 1.0.1 (2017-12-28)
 * Fix Epson Stylus PX830
 * Add Bose Soundtouch
