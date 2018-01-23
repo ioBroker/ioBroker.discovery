@@ -15,7 +15,7 @@
     "home automation"
   ],
   "optionalDependencies": {
-    "serialport": "^4.0.7",
+    "serialport": "^6.0.4",
     "mdns-discovery": "^0.2.6"
   },
   "dependencies": {
