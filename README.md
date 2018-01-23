@@ -86,6 +86,9 @@ Just now it can detect via ping, UPnP (serial planned).
 - xs1 (frankjoke)
 
 ## Changelog
+### 1.1.0 (2018-01-23)
+* (Apollon77) Upgrade Serialport Library
+
 ### 1.0.1 (2017-12-28)
 * Fix Epson Stylus PX830
 * Add Bose Soundtouch
