@@ -3,6 +3,17 @@
         "name": "discovery",
         "version": "1.1.0",
         "news": {
+            "1.1.1": {
+                "en": "New adapters added: ekey, Home Assistant, FHEM",
+                "de": "Neue Adapter hinzugefügt: ekey, Home Assistant, FHEM",
+                "ru": "Добавлены новые адаптеры: ekey, Home Assistant, FHEM",
+                "pt": "Novos adaptadores adicionados: ekey, Home Assistant, FHEM",
+                "nl": "Nieuwe adapters toegevoegd: ekey, Home Assistant, FHEM",
+                "fr": "Nouveaux adaptateurs ajoutés: ekey, Home Assistant, FHEM",
+                "it": "Nuovi adattatori aggiunti: ekey, Home Assistant, FHEM",
+                "es": "Nuevos adaptadores agregados: ekey, Home Assistant, FHEM",
+                "pl": "Dodano nowe adaptery: ekey, Home Assistant, FHEM"
+            },
             "1.1.0": {
                 "en": "Support of admin3",
                 "de": "Unterstützung von admin3",
