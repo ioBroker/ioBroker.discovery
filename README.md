@@ -86,6 +86,9 @@ Just now it can detect via ping, UPnP (serial planned).
 - xs1 (frankjoke)
 
 ## Changelog
+### 1.1.1 (2018-06-25)
+* (Apollon77) Upgrade Serialport Library
+
 ### 1.1.0 (2018-01-23)
 * (Apollon77) Upgrade Serialport Library
 
