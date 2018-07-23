@@ -20,6 +20,7 @@ Just now it can detect via ping, UPnP (serial planned).
 - Broadlink
 - Chromecast
 - Daikin climate control
+- Denon /Marantz
 - ekey
 - Epson Stylus PX830
 - FHEM
@@ -88,16 +89,16 @@ Just now it can detect via ping, UPnP (serial planned).
 - xs1 (frankjoke)
 
 ## Changelog
-### 1.1.1 (2018-06-25)
-* (Apollon77) Upgrade Serialport Library
-
-### 1.1.0 (2018-01-23)
-* (Apollon77) Upgrade Serialport Library
+### 1.2.0 (2018-07-23)
+* (bluefox) New adapter added: DENON
 
 ### 1.1.1 (2018-03-27)
 * (bluefox) New adapter added: ekey, Home Assistant, FHEM
 
-### 1.1.0 (2018-01-13)
+### 1.1.0 (2018-01-23)
+* (Apollon77) Upgrade Serialport Library
+
+### 1.0.2 (2018-01-13)
 * (bluefox) ready for admin3
 
 ### 1.0.1 (2017-12-28)
