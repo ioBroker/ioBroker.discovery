@@ -16,13 +16,16 @@ Just now it can detect via ping, UPnP (serial planned).
 
 ### Automatically Discovered
 
-- Broadlink
 - Bose Soundtouch
+- Broadlink
 - Chromecast
 - Daikin climate control
+- ekey
 - Epson Stylus PX830
+- FHEM
 - FireTV
 - Fronius
+- Home Assistant
 - Homematic CCU (hm-rpc, hm-rega)
 - Homepilot
 - Philips HUE
@@ -34,23 +37,23 @@ Just now it can detect via ping, UPnP (serial planned).
 - Loxone
 - MAX! Cube
 - MegaD
+- Miele
 - Mi Home Smarthome
-- Mysensors USB/Serial (9600, 38400, 57600, 115200)
 - Musiccast
+- Mysensors USB/Serial (9600, 38400, 57600, 115200)
 - Nut
 - OpenHAB
 - Ping
 - RFLink (Serial 57600baud)
 - SamsungTV
 - Sonos
-- Squeezebox
 - SQL (MySQL, MSSQL, PostgreSQL)
+- Squeezebox
 - TR-064
 - UPnP
-- Z-wave USB (Tested with Aeon Labs)
-- Miele
-- Yamaha
 - Wifilight
+- Yamaha
+- Z-wave USB (Tested with Aeon Labs)
 
 ### Offered as additional adapters
 - Cloud
@@ -66,7 +69,6 @@ Just now it can detect via ping, UPnP (serial planned).
 - B-Control-Em? (Bluefox)
 - cul / maxcul (Bluefox)
 - harmony (pmant) / fakeroku (pmant)
-- fhem (Bluefox)
 - Foobar200 (Instalator)
 - fritzbox (ruhr70)
 - km200 (frankjoke)
@@ -77,7 +79,7 @@ Just now it can detect via ping, UPnP (serial planned).
 - mqtt/mqtt-client (Bluefox)
 - onkyo (Bluefox)
 - owfs (Bluefox)
-- rpi2 (if ioBroker run on Raspberry)
+- rpi2 (if ioBroker runs on Raspberry)
 - rwe-smarthome (PArns)
 - s7 (Bluefox)
 - smartmeter (Apollon77)
@@ -91,6 +93,12 @@ Just now it can detect via ping, UPnP (serial planned).
 
 ### 1.1.0 (2018-01-23)
 * (Apollon77) Upgrade Serialport Library
+
+### 1.1.1 (2018-03-27)
+* (bluefox) New adapter added: ekey, Home Assistant, FHEM
+
+### 1.1.0 (2018-01-13)
+* (bluefox) ready for admin3
 
 ### 1.0.1 (2017-12-28)
 * Fix Epson Stylus PX830
@@ -150,7 +158,7 @@ Just now it can detect via ping, UPnP (serial planned).
 
 The MIT License (MIT)
 
-Copyright (c) 2017, bluefox <dogafox@gmail.com>
+Copyright (c) 2017-2018, bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

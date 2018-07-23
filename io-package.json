@@ -13,6 +13,27 @@
                 "de": "Serialport Bibliothek aktualisiert",
                 "ru": "Upgrade Serialport Library"
             },
+            "1.1.1": {
+                "en": "New adapters added: ekey, Home Assistant, FHEM",
+                "de": "Neue Adapter hinzugefügt: ekey, Home Assistant, FHEM",
+                "ru": "Добавлены новые адаптеры: ekey, Home Assistant, FHEM",
+                "pt": "Novos adaptadores adicionados: ekey, Home Assistant, FHEM",
+                "nl": "Nieuwe adapters toegevoegd: ekey, Home Assistant, FHEM",
+                "fr": "Nouveaux adaptateurs ajoutés: ekey, Home Assistant, FHEM",
+                "it": "Nuovi adattatori aggiunti: ekey, Home Assistant, FHEM",
+                "es": "Nuevos adaptadores agregados: ekey, Home Assistant, FHEM",
+                "pl": "Dodano nowe adaptery: ekey, Home Assistant, FHEM"
+            },
+            "1.1.0": {
+                "en": "Support of admin3",
+                "de": "Unterstützung von admin3",
+                "ru": "Поддержка admin3",
+                "pt": "Suporte de admin3",
+                "nl": "Ondersteuning van admin3",
+                "fr": "Support de admin3",
+                "it": "Supporto di admin3",
+                "es": "Soporte de admin3"
+            },
             "1.0.1": {
                 "en": "Fix Epson Stylus PX830\nAdd Bose Soundtouch",
                 "de": "Epson Stylus PX830 KORRIGIERT\nBose Soundtouch hinzugefügt",
@@ -79,17 +100,29 @@
                 "ru": "initial commit"
             }
         },
-        "title": "Discovery Adapter",
+        "title": "Discovery devices",
         "titleLang": {
-            "en": "Discovery Adapter",
+            "en": "Discovery devices",
             "de": "Gerätesuche",
-            "ru": "Поиск устройств"
+            "ru": "Драйвер поиска устройств",
+			"pt": "Dispositivos de descoberta",
+			"nl": "Ontdekkingsapparaten",
+			"fr": "Dispositifs de découverte",
+			"it": "Dispositivi di scoperta",
+			"es": "Dispositivos de descubrimiento",
+			"pl": "Urządzenia Discovery"
         },
         "desc": {
-            "en": "This adapter tries to discover all known devices.",
-            "de": "Adapter versucht alle bekannte Geräte automatisch zu finden",
-            "ru": "Драйвер пытается найти все известные устройства"
-        },
+			"en": "This adapter tries to discover all known devices in your network and on your machine",
+			"de": "Dieser Adapter versucht, alle bekannten Geräte in Ihrem Netzwerk und auf Ihrem Computer zu finden",
+			"ru": "Этот адаптер пытается обнаружить все известные устройства в вашей сети и на вашем компьютере",
+			"pt": "Este adaptador tenta descobrir todos os dispositivos conhecidos da sua rede e da sua máquina",
+			"nl": "Deze adapter probeert alle bekende apparaten in uw netwerk en op uw computer te ontdekken",
+			"fr": "Cet adaptateur essaie de découvrir tous les périphériques connus sur votre réseau et sur votre machine",
+			"it": "Questo adattatore tenta di rilevare tutti i dispositivi noti nella rete e sulla macchina",
+			"es": "Este adaptador intenta descubrir todos los dispositivos conocidos en su red y en su máquina",
+			"pl": "Ten adapter próbuje wykryć wszystkie znane urządzenia w sieci i na twoim komputerze"
+		  },
         "authors": [
             "bluefox <dogafox@gmail.com>"
         ],
@@ -98,11 +131,12 @@
         "mode": "daemon",
         "enabled": true,
         "singletonHost": true,
+        "materialize": true,
         "messagebox": true,
         "readme": "https://github.com/ioBroker/ioBroker.discovery/blob/master/README.md",
         "dependencies": [
             {
-                "js-controller": ">=0.17.0"
+                "js-controller": ">=1.2.0"
             }
         ],
         "loglevel": "info",

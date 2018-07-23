@@ -18,7 +18,7 @@ var dns      = require('dns');
 var adapters = {};
 var methods  = null;
 
-function enumAdapters() {
+function enumAdapters(repository) {
     var dir = fs.readdirSync(__dirname + '/lib/adapters');
     
     for (var f = 0; f < dir.length; f++) {
@@ -27,14 +27,18 @@ function enumAdapters() {
             parts.pop();
             
             var moduleName = __dirname + '/lib/adapters/' + dir[f];
-            var aName =  parts.join('.');
+            var aName      = parts.join('.');
             
             if (adapters && adapters[aName] && adapters[aName].reloadModule) {
                 var module = require.resolve(moduleName);
                 delete require.cache[module];
                 delete adapters[aName];
             }
-            if (!adapters[aName]) adapters[aName] = require(moduleName);
+
+            // check if this adapter available in repository
+            if (!adapters[aName] && (!repository || repository.indexOf(aName) !== -1)) {
+                adapters[aName] = require(moduleName);
+            }
         }
     }
 }
@@ -367,82 +371,92 @@ function getInstances(callback) {
 function discoveryEnd(devices, callback) {
     adapter.log.info('Found ' + devices.length + ' addresses');
 
-    // Get the list of adapters with auto-discovery
-    enumAdapters();
+    adapter.getForeignObject('system.repositories', function (err, repo) {
+        adapter.getForeignObject('system.config', function (err, systemConfig) {
+            var repository = null;
+            if (repo && repo.native && systemConfig && systemConfig.common && systemConfig.common.activeRepo &&
+                repo.native.repositories && repo.native.repositories[systemConfig.common.activeRepo] && repo.native.repositories[systemConfig.common.activeRepo].json) {
+                repository = Object.keys(repo.native.repositories[systemConfig.common.activeRepo].json);
+            }
 
-    getInstances(function (instances) {
-        adapter.getEnums(null, function (err, enums) {
-            // read language
-            adapter.getForeignObject('system.config', function (err, obj) {
-                var options = {
-                    existingInstances: instances,
-                    newInstances: [],
-                    enums: enums,
-                    language: obj ? obj.common.language : 'en',
-                    log: {
-                        debug: function (text) {
-                            adapter.log.debug(text);
-                        },
-                        warn: function (text) {
-                            adapter.log.warn(text);
-                        },
-                        error: function (text) {
-                            adapter.log.error(text);
-                        },
-                        info: function (text) {
-                            adapter.log.info(text);
-                        }
-                    }
-                };
-                
-                options._devices = devices; // allow adapters to know all ips and their infos
-                options._g_devices = g_devices;
-                
-                // analyse every IP address
-                analyseDevices(devices, options, 0, function (err) {
-                    adapter.log.info('Discovery finished. Found new or modified ' + options.newInstances.length + ' instances');
+            // Get the list of adapters with auto-discovery
+            enumAdapters(repository);
 
-                    // add this information to system.discovery.host
-                    adapter.getForeignObject('system.discovery', function (err, obj) {
-                        if (!obj) {
-                            obj = {
-                                common: {
-                                    name: 'prepared update of discovery'
+            getInstances(function (instances) {
+                adapter.getEnums(null, function (err, enums) {
+                    // read language
+                    adapter.getForeignObject('system.config', function (err, obj) {
+                        var options = {
+                            existingInstances: instances,
+                            newInstances: [],
+                            enums: enums,
+                            language: obj ? obj.common.language : 'en',
+                            log: {
+                                debug: function (text) {
+                                    adapter.log.debug(text);
                                 },
-                                native: {},
-                                type: 'config'
-                            };
-                        }
-                        var oldInstances = obj.native.newInstances || [];
-                        obj.native.newInstances = options.newInstances;
-                        obj.native.devices = devices;
-                        obj.native.lastScan = new Date().getTime();
-                        for (var j = oldInstances.length - 1; j >= 0; j--) {
-                            if (oldInstances[j].comment.ack) {
-                                delete oldInstances[j].comment.ack;
-                                oldInstances[j]._id = oldInstances[j]._id.replace(/\.\d+$/, '');
-                                oldInstances[j]= JSON.stringify(oldInstances[j]);
-                            } else {
-                                oldInstances.splice(j, 1);
-                            }
-                        }
-                        for (var i = 0; i < oldInstances.length; i++) {
-                            for (var n = 0; n < options.newInstances.length; n++) {
-                                var modified = JSON.parse(JSON.stringify(options.newInstances[n]));
-                                modified._id = modified._id.replace(/\.\d+$/, '');
-                                if (oldInstances[i] === JSON.stringify(modified)) {
-                                    options.newInstances[n].comment.ack = true;
-                                    break;
+                                warn: function (text) {
+                                    adapter.log.warn(text);
+                                },
+                                error: function (text) {
+                                    adapter.log.error(text);
+                                },
+                                info: function (text) {
+                                    adapter.log.info(text);
                                 }
                             }
-                        }
+                        };
 
-                        adapter.setForeignObject('system.discovery', obj, function (err) {
-                            isRunning = false;
-                            if (err) adapter.log.error('Cannot update system.discovery: ' + err);
-                            adapter.log.info('Discovery finished');
-                            adapter.setState('scanRunning', false, true);
-                            if (typeof callback === 'function') callback(null, options.newInstances, devices);
+                        options._devices = devices; // allow adapters to know all ips and their infos
+                        options._g_devices = g_devices;
+
+                        // analyse every IP address
+                        analyseDevices(devices, options, 0, function (err) {
+                            adapter.log.info('Discovery finished. Found new or modified ' + options.newInstances.length + ' instances');
+
+                            // add this information to system.discovery.host
+                            adapter.getForeignObject('system.discovery', function (err, obj) {
+                                if (!obj) {
+                                    obj = {
+                                        common: {
+                                            name: 'prepared update of discovery'
+                                        },
+                                        native: {},
+                                        type: 'config'
+                                    };
+                                }
+                                var oldInstances = obj.native.newInstances || [];
+                                obj.native.newInstances = options.newInstances;
+                                obj.native.devices = devices;
+                                obj.native.lastScan = new Date().getTime();
+                                for (var j = oldInstances.length - 1; j >= 0; j--) {
+                                    if (oldInstances[j].comment.ack) {
+                                        delete oldInstances[j].comment.ack;
+                                        oldInstances[j]._id = oldInstances[j]._id.replace(/\.\d+$/, '');
+                                        oldInstances[j]= JSON.stringify(oldInstances[j]);
+                                    } else {
+                                        oldInstances.splice(j, 1);
+                                    }
+                                }
+                                for (var i = 0; i < oldInstances.length; i++) {
+                                    for (var n = 0; n < options.newInstances.length; n++) {
+                                        var modified = JSON.parse(JSON.stringify(options.newInstances[n]));
+                                        modified._id = modified._id.replace(/\.\d+$/, '');
+                                        if (oldInstances[i] === JSON.stringify(modified)) {
+                                            options.newInstances[n].comment.ack = true;
+                                            break;
+                                        }
+                                    }
+                                }
+
+                                adapter.setForeignObject('system.discovery', obj, function (err) {
+                                    isRunning = false;
+                                    if (err) adapter.log.error('Cannot update system.discovery: ' + err);
+                                    adapter.log.info('Discovery finished');
+                                    adapter.setState('scanRunning', false, true);
+                                    if (typeof callback === 'function') callback(null, options.newInstances, devices);
+                                });
+                            });
                         });
                     });
                 });
@@ -573,6 +587,7 @@ function browse(options, callback) {
         var methodsArray = Object.keys(methods).filter(function (m) {
             return methods[m].browse && (!options || options.indexOf(m) !== -1);
         });
+
         this.count = methodsArray.length;
         this.foundCount = 0;
         this.halt = {};
@@ -681,7 +696,7 @@ function browse(options, callback) {
             return newDevice;
         };
     
-        methodsArray.forEach (function(m) {
+        methodsArray.forEach(function (m) {
             //if (m !== 'ping') return;
             var method = Method(m, self);
             methods[m] = method;
