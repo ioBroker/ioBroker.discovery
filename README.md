@@ -89,7 +89,7 @@ Just now it can detect via ping, UPnP (serial planned).
 - xs1 (frankjoke)
 
 ## Changelog
-### 1.2.0 (2018-07-23)
+### 1.2.1 (2018-07-28)
 * (bluefox) New adapter added: DENON
 
 ### 1.1.1 (2018-03-27)

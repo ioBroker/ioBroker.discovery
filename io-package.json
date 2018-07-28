@@ -1,9 +1,9 @@
 {
     "common": {
         "name": "discovery",
-        "version": "1.2.0",
+        "version": "1.2.1",
         "news": {
-            "1.2.0": {
+            "1.2.1": {
                 "en": "New adapter added: DENON",
                 "de": "Neuer Adapter hinzugefügt: DENON",
                 "ru": "Добавлен новый адаптер: DENON",
