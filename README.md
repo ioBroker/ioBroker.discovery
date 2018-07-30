@@ -51,6 +51,7 @@ Just now it can detect via ping, UPnP (serial planned).
 - SQL (MySQL, MSSQL, PostgreSQL)
 - Squeezebox
 - TR-064
+- Trådfri
 - UPnP
 - Wifilight
 - Yamaha
