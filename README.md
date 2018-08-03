@@ -19,6 +19,7 @@ Just now it can detect via ping, UPnP (serial planned).
 - Bose Soundtouch
 - Broadlink
 - Chromecast
+- deConz
 - Daikin climate control
 - Denon /Marantz
 - ekey
