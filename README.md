@@ -18,6 +18,7 @@ Just now it can detect via ping, UPnP (serial planned).
 
 - Bose Soundtouch
 - Broadlink
+- G-Homa plugs
 - Chromecast
 - deConz
 - Daikin climate control
@@ -41,6 +42,7 @@ Just now it can detect via ping, UPnP (serial planned).
 - MegaD
 - Miele
 - Mi Home Smarthome
+- MiLight bridge (v6)
 - Musiccast
 - Mysensors USB/Serial (9600, 38400, 57600, 115200)
 - Nut
@@ -48,6 +50,7 @@ Just now it can detect via ping, UPnP (serial planned).
 - Ping
 - RFLink (Serial 57600baud)
 - SamsungTV
+- Sonnen
 - Sonos
 - SQL (MySQL, MSSQL, PostgreSQL)
 - Squeezebox
