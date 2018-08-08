@@ -11,7 +11,7 @@
 /* jshint strict:false */
 /* jslint node: true */
 'use strict';
-var utils    = require(__dirname + '/lib/utils'); // Get common adapter utils
+var utils    = require('./lib/utils'); // Get common adapter utils
 var adapter  = new utils.Adapter('discovery');
 var fs       = require('fs');
 var dns      = require('dns');
