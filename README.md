@@ -38,6 +38,7 @@ Just now it can detect via ping, UPnP (serial planned).
 - LGTV
 - Lightify
 - Loxone
+- Lupusec
 - MAX! Cube
 - MegaD
 - Miele
