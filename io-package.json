@@ -1,8 +1,19 @@
 {
     "common": {
         "name": "discovery",
-        "version": "1.2.1",
+        "version": "1.2.2",
         "news": {
+            "1.2.2": {
+                "en": "New adapter added: energymanager",
+                "de": "Neuer Adapter hinzugefügt: energymanager",
+                "ru": "Добавлен новый адаптер: energymanager",
+                "pt": "Novo adaptador adicionado: energymanager",
+                "nl": "Nieuwe adapter toegevoegd: energymanager",
+                "fr": "Nouvel adaptateur ajouté: energymanager",
+                "it": "Nuovo adattatore aggiunto: energymanager",
+                "es": "Nuevo adaptador agregado: energymanager",
+                "pl": "Dodano nowy adapter: energymanager"
+            },
             "1.2.1": {
                 "en": "New adapter added: DENON",
                 "de": "Neuer Adapter hinzugefügt: DENON",
