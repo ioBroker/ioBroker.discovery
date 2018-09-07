@@ -61,6 +61,7 @@ Just now it can detect via ping, UPnP (serial planned).
 - UPnP
 - Wifilight
 - Yamaha
+- Yeelight
 - Z-wave USB (Tested with Aeon Labs)
 
 ### Offered as additional adapters
