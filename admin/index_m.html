@@ -2,12 +2,14 @@
 <head>
     <link rel="stylesheet" type="text/css" href="../../css/adapter.css"/>
     <link rel="stylesheet" type="text/css" href="../../lib/css/materialize.css">
+    <link rel="stylesheet" type="text/css" href="../../lib/css/ol.css">
 
     <script type="text/javascript" src="../../lib/js/jquery-1.11.1.min.js"></script>
     <script type="text/javascript" src="../../socket.io/socket.io.js"></script>
 
     <script type="text/javascript" src="../../js/translate.js"></script>
     <script type="text/javascript" src="../../lib/js/materialize.js"></script>
+    <script type="text/javascript" src="../../lib/js/ol.js"></script>
     <script type="text/javascript" src="../../js/adapter-settings.js"></script>
     <script type="text/javascript" src="words.js"></script>
 
@@ -21,6 +23,8 @@
         }
         var currentStep = null;
         var newInstances;
+        var useOpenLayers = true;
+        var OSM;
         //var existingInstances;
         var devices;
         var repos       = {};
@@ -38,22 +42,81 @@
         var isRunning   = false;
         var showConfig  = []; // Show configuration dialog after the wizard is finished
 
+        function positionReady(position) {
+            $('#system_latitude').val(position.coords.latitude);
+            $('#system_longitude').val(position.coords.longitude);
+        }
+
+        function initOSM(lon, lat) {
+            var point = ol.proj.fromLonLat([lon || parseFloat(systemConfig.common.longitude), lat || parseFloat(systemConfig.common.latitude)]);
+            if (!OSM) {
+                if (navigator.geolocation && !systemConfig.common.longitude) {
+                    navigator.geolocation.getCurrentPosition(positionReady);
+                }
+
+                OSM = {};
+                OSM.markerSource = new ol.source.Vector();
+
+                OSM.markerStyle = new ol.style.Style({
+                    image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
+                        anchor: [0.5, 49],
+                        anchorXUnits: 'fraction',
+                        anchorYUnits: 'pixels',
+                        opacity: 0.75,
+                        src: '../../img/pin.png'
+                    }))
+                });
+
+                OSM.oMap = new ol.Map({
+                    target: 'step0_map',
+                    layers: [
+                        new ol.layer.Tile({source: new ol.source.OSM()}),
+                        new ol.layer.Vector({
+                            source: OSM.markerSource,
+                            style: OSM.markerStyle,
+                        })
+                    ],
+                    view: new ol.View({center: point, zoom: 18})
+                });
+
+                OSM.marker = new ol.Feature({
+                    geometry: new ol.geom.Point(point),
+                    name: _('Your home')
+                });
+
+                OSM.markerSource.addFeature(OSM.marker);
+
+                OSM.oMap.on('singleclick', function (event) {
+                    var lonLat = ol.proj.toLonLat(event.coordinate);
+                    $('#system_longitude').val(lonLat[0]);
+                    $('#system_latitude').val(lonLat[1]).trigger('change');
+                });
+            }
+            var zoom = OSM.oMap.getView().getZoom();
+            OSM.marker.setGeometry(new ol.geom.Point(point));
+            OSM.oMap.setView(new ol.View({center: point, zoom: zoom}));
+        }
+
         function step0_initMap () {
             var $button = $('#detectCoordinates');
 
             $button.removeClass('disabled');
 
             if (systemConfig && systemConfig.common && systemConfig.common.longitude && systemConfig.common.latitude) {
-                var map = new google.maps.Map(document.getElementById('step0_map'), {
-                    zoom: 14,
-                    center: {lat: parseFloat(systemConfig.common.latitude), lng: parseFloat(systemConfig.common.longitude)}
-                });
+                if (useOpenLayers) {
+                    initOSM();
+                } else {
+                    var map = new google.maps.Map(document.getElementById('step0_map'), {
+                        zoom: 14,
+                        center: {lat: parseFloat(systemConfig.common.latitude), lng: parseFloat(systemConfig.common.longitude)}
+                    });
 
-                var marker = new google.maps.Marker({
-                    position: {lat: parseFloat(systemConfig.common.latitude), lng: parseFloat(systemConfig.common.longitude)},
-                    map: map,
-                    title: _('Your home')
-                });
+                    var marker = new google.maps.Marker({
+                        position: {lat: parseFloat(systemConfig.common.latitude), lng: parseFloat(systemConfig.common.longitude)},
+                        map: map,
+                        title: _('Your home')
+                    });
+                }
             }
 
             $button.off('click').on('click', function () {
@@ -82,15 +145,19 @@
                             changed = true;
                         }
                         if (changed) {
-                            var map = new google.maps.Map(document.getElementById('step0_map'), {
-                                zoom: 14,
-                                center: {lat: parseFloat($systemLatitude.val()), lng: parseFloat($systemLongitude.val())}
-                            });
-                            var marker = new google.maps.Marker({
-                                position: {lat: parseFloat($systemLatitude.val()), lng: parseFloat($systemLongitude.val())},
-                                map: map,
-                                title: _('Your home')
-                            });
+                            if (useOpenLayers) {
+                                initOSM(parseFloat($systemLongitude.val()), parseFloat($systemLatitude.val()));
+                            } else {
+                                var map = new google.maps.Map(document.getElementById('step0_map'), {
+                                    zoom: 14,
+                                    center: {lat: parseFloat($systemLatitude.val()), lng: parseFloat($systemLongitude.val())}
+                                });
+                                var marker = new google.maps.Marker({
+                                    position: {lat: parseFloat($systemLatitude.val()), lng: parseFloat($systemLongitude.val())},
+                                    map: map,
+                                    title: _('Your home')
+                                });
+                            }
                             $('#step0_save').removeClass('disabled');
                             $('#step0_next').addClass('disabled');
                             $('#step0_save_hint').show();
@@ -109,6 +176,12 @@
                 $button.css('font-size', 16);
 
                 $button.addClass('disabled');
+                $('#system_longitude').off('change').on('change', function () {
+                    initOSM(parseFloat($('#system_longitude').val()), parseFloat($('#system_latitude').val()));
+                });
+                $('#system_latitude').off('change').on('change', function () {
+                    initOSM(parseFloat($('#system_longitude').val()), parseFloat($('#system_latitude').val()));
+                });
 
                 $('#step0_save').off('click').on('click', function () {
                     var changed = false;
@@ -141,7 +214,7 @@
                     }
                 });
             } else {
-                if (!mapLoaded) {
+                if (!mapLoaded && !useOpenLayers) {
                     mapLoaded = true;
                     var key1 = 'AIzaSyCIrBRZfZAE';
                     var key2 = '_0C1OplAUy7OXhiWLoZc3eY';
@@ -238,7 +311,7 @@
                     if (systemConfig.common.wizard) {
                         $('#step0_next').trigger('click');
                     }
-                    if (!mapLoaded) {
+                    if (!mapLoaded && !useOpenLayers) {
                         mapLoaded = true;
                         var key1 = 'AIzaSyCIrBRZfZAE';
                         var key2 = '_0C1OplAUy7OXhiWLoZc3eY';
@@ -253,7 +326,9 @@
                             cache: true
                         });
                     }
+                    initOSM();
                 }
+                M.updateTextFields();
             });
         }
 
@@ -1448,6 +1523,7 @@
             });
 
             onChange(false);
+            M.updateTextFields();
         }
 
         function save(callback) {
@@ -1638,7 +1714,7 @@
             <div class="row">
                 <div class="col s6">
                     <div class="row">
-                        <div class="col s12">
+                        <div class="input-field col s12">
                             <select id="system_language" class="system-settings value">
                                 <option value="en">English</option>
                                 <option value="de">Deutsch</option>
@@ -1654,20 +1730,20 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col s12 m6">
+                        <div class="input-field col s12 m6">
                             <select id="system_tempUnit" class="system-settings value">
                                 <option value="°C">°C</option>
                                 <option value="°F">°F</option>
                             </select>
                             <label class="translate" for="system_tempUnit">Temperature units:</label>
                         </div>
-                        <div class="col s12 m6">
+                        <div class="input-field col s12 m6">
                             <input type="text" size="5" maxlength="5" id="system_currency" class="system-settings value"/>
                             <label class="translate" for="system_currency">Currency:</label>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col s12 m6">
+                        <div class="input-field col s12 m6">
                             <select id="system_dateFormat" class="system-settings value">
                                 <option value="DD.MM.YYYY" class="translate">DD.MM.YYYY</option>
                                 <option value="DD.MM.YY"   class="translate">DD.MM.YY</option>
@@ -1675,7 +1751,7 @@
                             </select>
                             <label class="translate" for="system_dateFormat">Date format:</label>
                         </div>
-                        <div class="col s12 m6">
+                        <div class="input-field col s12 m6">
                             <select id="system_isFloatComma" class="system-settings value">
                                 <option value="true"  class="translate">comma (3,14)</option>
                                 <option value="false" class="translate">point (3.14)</option>
@@ -1699,7 +1775,7 @@
                         </div>
                     </div-->
                     <div class="row">
-                        <div class="col s12 m6">
+                        <div class="input-field col s12 m6">
                             <select id="system_country" class="system-settings value">
                                 <option value="">Please select country</option>
                                 <option value="Germany" class="translate">Germany</option>
@@ -1950,14 +2026,14 @@
                             </select>
                             <label class="translate" for="system_country">Country:</label>
                         </div>
-                        <div class="col s12 m6">
-                            <input id="system_city" class="system-settings value"/>
+                        <div class="input-field col s12 m6">
+                            <input id="system_city" type="text" class="system-settings value"/>
                             <label class="translate" for="system_city">City:</label>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col s8">
-                            <input id="system_address" />
+                        <div class="input-field col s8">
+                            <input id="system_address" type="text" />
                             <label class="translate" for="system_address">Address:</label>
                         </div>
                         <div class="col s4">
@@ -1965,12 +2041,12 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col s12 m6">
-                            <input id="system_latitude" class="system-settings value" />
+                        <div class="input-field col s12 m6">
+                            <input id="system_latitude" type="text" class="system-settings value" />
                             <label class="translate" for="system_latitude">Latitude:</label>
                         </div>
-                        <div class="col s12 m6">
-                            <input id="system_longitude" class="system-settings value" />
+                        <div class="input-field col s12 m6">
+                            <input id="system_longitude" type="text" class="system-settings value" />
                             <label class="translate" for="system_longitude">Longitude:</label>
                         </div>
                     </div>
