@@ -43,8 +43,9 @@
         var showConfig  = []; // Show configuration dialog after the wizard is finished
 
         function positionReady(position) {
-            $('#system_latitude').val(position.coords.latitude);
-            $('#system_longitude').val(position.coords.longitude);
+            $('#system_latitude').val(position.coords.latitude.toFixed(8)).trigger('change');
+            $('#system_longitude').val(position.coords.longitude.toFixed(8)).trigger('change');
+            M.updateTextFields();
         }
 
         function initOSM(lon, lat) {
@@ -129,25 +130,23 @@
                 }
 
                 $button.addClass('disabled');
-                geocoder = geocoder || new google.maps.Geocoder();
-                geocoder.geocode({address: country + ' ' + city + ' ' + address}, function (results, status) {
-                    $button.removeClass('disabled');
-                    if (status === google.maps.GeocoderStatus.OK) {
-                        var changed = false;
-                        var $systemLatitude = $('#system_latitude');
-                        if ($systemLatitude.val() != results[0].geometry.location.lat().toFixed(8)) {
-                            $systemLatitude.val(results[0].geometry.location.lat().toFixed(8));
-                            changed = true;
-                        }
-                        var $systemLongitude = $('#system_longitude');
-                        if ($systemLongitude.val() != results[0].geometry.location.lng().toFixed(8)) {
-                            $systemLongitude.val(results[0].geometry.location.lng().toFixed(8));
-                            changed = true;
-                        }
-                        if (changed) {
-                            if (useOpenLayers) {
-                                initOSM(parseFloat($systemLongitude.val()), parseFloat($systemLatitude.val()));
-                            } else {
+                if (!useOpenLayers) {
+                    geocoder = geocoder || new google.maps.Geocoder();
+                    geocoder.geocode({address: country + ' ' + city + ' ' + address}, function (results, status) {
+                        $button.removeClass('disabled');
+                        if (status === google.maps.GeocoderStatus.OK) {
+                            var changed = false;
+                            var $systemLatitude = $('#system_latitude');
+                            if ($systemLatitude.val() != results[0].geometry.location.lat().toFixed(8)) {
+                                $systemLatitude.val(results[0].geometry.location.lat().toFixed(8));
+                                changed = true;
+                            }
+                            var $systemLongitude = $('#system_longitude');
+                            if ($systemLongitude.val() != results[0].geometry.location.lng().toFixed(8)) {
+                                $systemLongitude.val(results[0].geometry.location.lng().toFixed(8));
+                                changed = true;
+                            }
+                            if (changed) {
                                 var map = new google.maps.Map(document.getElementById('step0_map'), {
                                     zoom: 14,
                                     center: {lat: parseFloat($systemLatitude.val()), lng: parseFloat($systemLongitude.val())}
@@ -157,15 +156,44 @@
                                     map: map,
                                     title: _('Your home')
                                 });
+                                $('#step0_save').removeClass('disabled');
+                                $('#step0_next').addClass('disabled');
+                                $('#step0_save_hint').show();
                             }
+                        } else {
+                            showMessage(_('Cannot get coordinates: %s', status), _('Error'), 'alert');
+                        }
+                    });
+                } else {
+                    $.ajax('https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(country + ' ' + city + ' ' + address)).done(function(data) {
+                        $button.removeClass('disabled');
+                        var changed = false;
+
+                        if (!data || !data[0]) {
+                            return showError(_('Nothing found'));
+                        }
+
+                        var $systemLatitude = $('#system_latitude');
+                        if ($systemLatitude.val() != data[0].lat) {
+                            $systemLatitude.val(data[0].lat);
+                            changed = true;
+                        }
+                        var $systemLongitude = $('#system_longitude');
+                        if ($systemLongitude.val() != data[0].lon) {
+                            $systemLongitude.val(data[0].lon);
+                            changed = true;
+                        }
+                        if (changed) {
+                            initOSM(parseFloat($systemLongitude.val()), parseFloat($systemLatitude.val()));
                             $('#step0_save').removeClass('disabled');
                             $('#step0_next').addClass('disabled');
                             $('#step0_save_hint').show();
                         }
-                    } else {
-                        showMessage(_('Cannot get coordinates: %s', status), _('Error'), 'alert');
-                    }
-                });
+                    })
+                    .fail(function(e) {
+                        showError(e, _('Cannot fetch address'));
+                    });
+                }
             });
         }
 
@@ -214,22 +242,29 @@
                     }
                 });
             } else {
-                if (!mapLoaded && !useOpenLayers) {
+                if (!mapLoaded) {
                     mapLoaded = true;
-                    var key1 = 'AIzaSyCIrBRZfZAE';
-                    var key2 = '_0C1OplAUy7OXhiWLoZc3eY';
-                    var key = key1 + key2;
 
                     $('#system_address').attr('placeholder', _('Used only for coordinates detection'));
-                    // load google API
-                    $.ajax({
-                        // please do not miss use this api key!
-                        url: 'https://maps.googleapis.com/maps/api/js?key=' + key + '&signed_in=true&callback=step0_initMap',
-                        dataType: 'script',
-                        cache: true
-                    });
+
+                    if (!useOpenLayers) {
+                        var key1 = 'AIzaSyCIrBRZfZAE';
+                        var key2 = '_0C1OplAUy7OXhiWLoZc3eY';
+                        var key = key1 + key2;
+
+                        // load google API
+                        $.ajax({
+                            // please do not miss use this api key!
+                            url: 'https://maps.googleapis.com/maps/api/js?key=' + key + '&signed_in=true&callback=step0_initMap',
+                            dataType: 'script',
+                            cache: true
+                        });
+                    } else {
+                        step0_initMap();
+                    }
                 }
             }
+
             socket.emit('getObject', 'system.config', function (err, obj) {
                 var changed = false;
                 if (!obj || !obj.common) {
@@ -311,20 +346,26 @@
                     if (systemConfig.common.wizard) {
                         $('#step0_next').trigger('click');
                     }
-                    if (!mapLoaded && !useOpenLayers) {
+                    if (!mapLoaded) {
                         mapLoaded = true;
-                        var key1 = 'AIzaSyCIrBRZfZAE';
-                        var key2 = '_0C1OplAUy7OXhiWLoZc3eY';
-                        var key = key1 + key2;
 
                         $('#system_address').attr('placeholder', _('Used only for coordinates detection'));
-                        // load google API
-                        $.ajax({
-                            // please do not miss use this api key!
-                            url: 'https://maps.googleapis.com/maps/api/js?key=' + key + '&signed_in=true&callback=step0_initMap',
-                            dataType: 'script',
-                            cache: true
-                        });
+
+                        if (!useOpenLayers) {
+                            var key1 = 'AIzaSyCIrBRZfZAE';
+                            var key2 = '_0C1OplAUy7OXhiWLoZc3eY';
+                            var key = key1 + key2;
+
+                            // load google API
+                            $.ajax({
+                                // please do not miss use this api key!
+                                url: 'https://maps.googleapis.com/maps/api/js?key=' + key + '&signed_in=true&callback=step0_initMap',
+                                dataType: 'script',
+                                cache: true
+                            });
+                        } else {
+                            step0_initMap();
+                        }
                     }
                     initOSM();
                 }
@@ -1777,7 +1818,7 @@
                     <div class="row">
                         <div class="input-field col s12 m6">
                             <select id="system_country" class="system-settings value">
-                                <option value="">Please select country</option>
+                                <option value="" class="translate">Please select country</option>
                                 <option value="Germany" class="translate">Germany</option>
                                 <option value="Austria" class="translate">Austria</option>
                                 <option value="Switzerland" class="translate">Switzerland</option>
