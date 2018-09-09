@@ -53,6 +53,7 @@ Just now it can detect via ping, UPnP (serial planned).
 - SamsungTV
 - Sonnen
 - Sonos
+- Stiebel-Eltron/Tecalor ISG (plus)
 - SQL (MySQL, MSSQL, PostgreSQL)
 - Squeezebox
 - TR-064
