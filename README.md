@@ -23,6 +23,7 @@ Just now it can detect via ping, UPnP (serial planned).
 - deConz
 - Daikin climate control
 - Denon /Marantz
+- DoorBird
 - energymanager (E.ON/Solarwatt)
 - ekey
 - Epson Stylus PX830
@@ -61,6 +62,7 @@ Just now it can detect via ping, UPnP (serial planned).
 - UPnP
 - Wifilight
 - Yamaha
+- Yeelight
 - Z-wave USB (Tested with Aeon Labs)
 
 ### Offered as additional adapters

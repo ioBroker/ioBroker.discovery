@@ -10,6 +10,28 @@ systemDictionary = {
     "Lookup devices": {                              "en": "Lookup devices",                                  "de": "Suche Geräte",                                    "ru": "Поиск устройств",                                 "pt": "Dispositivos de pesquisa",                        "nl": "Opzoek apparaten",                                "fr": "Appareils de recherche",                          "it": "Dispositivi di ricerca",                          "es": "Dispositivos de búsqueda",                        "pl": "Urządzenia wyszukiwania"},
     "UPnP settings": {                               "en": "UPnP settings",                                   "de": "UPnP Einstellungen",                              "ru": "UPnP настройки",                                  "pt": "Configurações UPnP",                              "nl": "UPnP-instellingen",                               "fr": "Paramètres UPnP",                                 "it": "Impostazioni UPnP",                               "es": "Configuración de UPnP",                           "pl": "Ustawienia UPnP"},
     "Ping settings": {                               "en": "Ping settings",                                   "de": "Ping Einstellungen",                              "ru": "Ping настройки",                                  "pt": "Configurações de ping",                           "nl": "Ping-instellingen",                               "fr": "Paramètres de ping",                              "it": "Impostazioni ping",                               "es": "Configuración de ping",                           "pl": "Ping settings"},
+    "Please select country": {
+        "en": "Please select country",
+        "de": "Bitte wählen Sie ein Land aus",
+        "ru": "Выберите страну",
+        "pt": "Por favor selecione o país",
+        "nl": "Selecteer alstublieft een land",
+        "fr": "Veuillez sélectionner le pays",
+        "it": "Si prega di selezionare il paese",
+        "es": "Por favor seleccione país",
+        "pl": "Proszę wybrać kraj"
+    },
+    "Apply": {
+        "en": "Apply",
+        "de": "Verwenden",
+        "ru": "Применить",
+        "pt": "Aplique",
+        "nl": "Van toepassing zijn",
+        "fr": "Appliquer",
+        "it": "Applicare",
+        "es": "Aplicar",
+        "pl": "Zastosować"
+    },
     "Use": {                                         "en": "Use",                                             "de": "Benutze",                                         "ru": "Использовать",                                    "pt": "Usar",                                            "nl": "Gebruik",                                         "fr": "Utilisation",                                     "it": "Uso",                                             "es": "Utilizar",                                        "pl": "Posługiwać się"},
     "Instance": {                                    "en": "Instance",                                        "de": "Instanz",                                         "ru": "Экземпляр",                                       "pt": "Instância",                                       "nl": "Aanleg",                                          "fr": "Exemple",                                         "it": "Esempio",                                         "es": "Ejemplo",                                         "pl": "Instancja"},
     "Host": {                                        "en": "Host",                                            "de": "Host",                                            "ru": "Сервер",                                          "pt": "Hospedeiro",                                      "nl": "gastheer",                                        "fr": "Hôte",                                            "it": "Ospite",                                          "es": "Anfitrión",                                       "pl": "Gospodarz"},
