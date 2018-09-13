@@ -35,6 +35,7 @@ Just now it can detect via ping, UPnP (serial planned).
 - Homepilot
 - Philips HUE
 - InfluxDB
+- KLF-200
 - KNX
 - Landroid
 - LGTV
