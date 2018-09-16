@@ -23,6 +23,7 @@ Just now it can detect via ping, UPnP (serial planned).
 - deConz
 - Denon /Marantz
 - DoorBird
+- ebus
 - ekey
 - energymanager (E.ON/Solarwatt)
 - Epson Stylus PX830
