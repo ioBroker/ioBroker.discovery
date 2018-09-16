@@ -18,23 +18,24 @@ Just now it can detect via ping, UPnP (serial planned).
 
 - Bose Soundtouch
 - Broadlink
-- G-Homa plugs
 - Chromecast
-- deConz
 - Daikin climate control
+- deConz
 - Denon /Marantz
 - DoorBird
-- energymanager (E.ON/Solarwatt)
 - ekey
+- energymanager (E.ON/Solarwatt)
 - Epson Stylus PX830
 - FHEM
 - FireTV
 - Fronius
+- G-Homa plugs
 - Home Assistant
 - Homematic CCU (hm-rpc, hm-rega)
 - Homepilot
 - Philips HUE
 - InfluxDB
+- KLF-200
 - KNX
 - Landroid
 - LGTV
@@ -51,12 +52,14 @@ Just now it can detect via ping, UPnP (serial planned).
 - Nut
 - OpenHAB
 - Ping
+- Proxmox
 - RFLink (Serial 57600baud)
 - SamsungTV
 - Sonnen
 - Sonos
 - SQL (MySQL, MSSQL, PostgreSQL)
 - Squeezebox
+- stiebel-isg
 - TR-064
 - Trådfri
 - UPnP
@@ -98,6 +101,15 @@ Just now it can detect via ping, UPnP (serial planned).
 - xs1 (frankjoke)
 
 ## Changelog
+### 1.2.3 (2018-07-28)
+* (bluefox) Proxmox was fixed
+* (unltdnetworx) solarwatt
+* (Michael Schroeder) klf200
+* (bluefox) Use OpenStreetMap
+* (MeisterTR) yeelight
+* (unltdnetworx) stiebel-isg
+* (BuZZy1337) doorbird
+
 ### 1.2.1 (2018-07-28)
 * (bluefox) New adapter added: DENON
 

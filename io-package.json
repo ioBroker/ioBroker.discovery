@@ -1,8 +1,19 @@
 {
     "common": {
         "name": "discovery",
-        "version": "1.2.2",
+        "version": "1.2.3",
         "news": {
+            "1.2.3": {
+                "en": "New adapters: solarwatt, klf200, yeelight, stiebel-isg, doorbird\nProxmox was fixed\nOpenStreetMap was integrated",
+                "de": "Neue Adapter: Solarwatt, KLF200, Yeelight, Stiebel-Isg, Doorbird\nProxmox wurde behoben\nOpenStreetMap wurde integriert",
+                "ru": "Новые адаптеры: solarwatt, klf200, yeelight, stiebel-isg, doorbird\nProxmox был исправлен\nOpenStreetMap был интегрирован",
+                "pt": "Novos adaptadores: solarwatt, klf200, yeelight, stiebel-isg, doorbird\nProxmox foi corrigido\nOpenStreetMap foi integrado",
+                "nl": "Nieuwe adapters: solarwatt, klf200, yeelight, stiebel-isg, doorbird\nProxmox was opgelost\nOpenStreetMap is geïntegreerd",
+                "fr": "Nouveaux adaptateurs: solarwatt, klf200, yeelight, stiebel-isg, doorbird\nProxmox a été corrigé\nOpenStreetMap a été intégré",
+                "it": "Nuovi adattatori: solarwatt, klf200, yeelight, stiebel-isg, doorbird\nProxmox è stato corretto\nOpenStreetMap è stato integrato",
+                "es": "Nuevos adaptadores: solarwatt, klf200, yeelight, stiebel-isg, doorbird\nProxmox fue arreglado\nOpenStreetMap se integró",
+                "pl": "Nowe adaptery: solarwatt, klf200, yeelight, stiebel-isg, doorbird\nNaprawiono Proxmox\nOpenStreetMap został zintegrowany"
+            },
             "1.2.2": {
                 "en": "New adapter added: energymanager",
                 "de": "Neuer Adapter hinzugefügt: energymanager",
@@ -13,8 +24,7 @@
                 "it": "Nuovo adattatore aggiunto: energymanager",
                 "es": "Nuevo adaptador agregado: energymanager",
                 "pl": "Dodano nowy adapter: energymanager"
-            },
-            "1.2.1": {
+            },            "1.2.1": {
                 "en": "New adapter added: DENON",
                 "de": "Neuer Adapter hinzugefügt: DENON",
                 "ru": "Добавлен новый адаптер: DENON",
