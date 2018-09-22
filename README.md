@@ -103,7 +103,11 @@ Just now it can detect via ping, UPnP (serial planned).
 - xs1 (frankjoke)
 
 ## Changelog
-### 1.2.3 (2018-07-28)
+### 1.2.4 (2018-09-22)
+* (bluefox) Small GUI update was made
+* (rg-engineering) Added ebus
+
+### 1.2.3 (2018-09-13)
 * (bluefox) Proxmox was fixed
 * (unltdnetworx) solarwatt
 * (Michael Schroeder) klf200

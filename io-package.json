@@ -1,8 +1,19 @@
 {
     "common": {
         "name": "discovery",
-        "version": "1.2.3",
+        "version": "1.2.4",
         "news": {
+            "1.2.4": {
+                "en": "Small GUI update was made\nAdded ebus",
+                "de": "Ein kleines GUI-Update wurde vorgenommen\nEBus hinzugefügt",
+                "ru": "Было сделано небольшое обновление графического интерфейса пользователя\nДобавлен ebus",
+                "pt": "Atualização de pequena GUI foi feita\nAdicionado ebus",
+                "nl": "Kleine GUI-update is gemaakt\nEbus toegevoegd",
+                "fr": "Petite mise à jour de l'interface graphique a été faite\nEbus ajouté",
+                "it": "È stato effettuato un piccolo aggiornamento della GUI\nEbus aggiunto",
+                "es": "Se realizó una pequeña actualización de la GUI\nEbus añadido",
+                "pl": "Dokonano niewielkiej aktualizacji GUI\nDodano ebus"
+            },
             "1.2.3": {
                 "en": "New adapters: solarwatt, klf200, yeelight, stiebel-isg, doorbird\nProxmox was fixed\nOpenStreetMap was integrated",
                 "de": "Neue Adapter: Solarwatt, KLF200, Yeelight, Stiebel-Isg, Doorbird\nProxmox wurde behoben\nOpenStreetMap wurde integriert",

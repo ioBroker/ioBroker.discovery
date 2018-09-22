@@ -1478,6 +1478,20 @@
             });
         }
 
+        function close() {
+            if (typeof parent !== 'undefined' && parent) {
+                try {
+                    if (parent.$iframeDialog && typeof parent.$iframeDialog.close === 'function') {
+                        parent.$iframeDialog.close();
+                    } else {
+                        parent.postMessage('close', '*');
+                    }
+                } catch (e) {
+                    parent.postMessage('close', '*');
+                }
+            }
+        }
+
         function load(settings, onChange) {
             $('.header').hide();
             // step 0
@@ -1491,14 +1505,18 @@
             });
 
             $('.btn-close').off('click').on('click', function () {
-                if (typeof parent !== 'undefined' && parent && parent.$iframeDialog) {
-                    parent.showConfig = JSON.parse(JSON.stringify(showConfig));
+                if (typeof parent !== 'undefined' && parent) {
+                    try {
+                        if (parent.$iframeDialog) {
+                            parent.showConfig = JSON.parse(JSON.stringify(showConfig));
+                        }
+                    } catch (e) {
+                        parent.postMessage(JSON.stringify(showConfig), '*');
+                    }
                 }
 
                 window.close();
-                if (typeof parent !== 'undefined' && parent && parent.$iframeDialog) {
-                    parent.$iframeDialog.close();
-                }
+                close();
             });
 
             showStep(0);
