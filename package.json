@@ -17,8 +17,7 @@
   ],
   "optionalDependencies": {
     "serialport": "^6.2.0",
-    "mdns-discovery": "^0.2.6",
-    "flat": "^4.1.0"
+    "mdns-discovery": "^0.2.6"
   },
   "dependencies": {
     "node-ssdp": "^3.3.0",
