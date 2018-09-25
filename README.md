@@ -27,10 +27,12 @@ Just now it can detect via ping, UPnP (serial planned).
 - ekey
 - energymanager (E.ON/Solarwatt)
 - Epson Stylus PX830
+- Fakeroku
 - FHEM
 - FireTV
 - Fronius
 - G-Homa plugs
+- Harmony
 - Home Assistant
 - Homematic CCU (hm-rpc, hm-rega)
 - Homepilot
@@ -83,7 +85,6 @@ Just now it can detect via ping, UPnP (serial planned).
 - artnet? (Bluefox)
 - B-Control-Em? (Bluefox)
 - cul / maxcul (Bluefox)
-- harmony (pmant) / fakeroku (pmant)
 - Foobar200 (Instalator)
 - fritzbox (ruhr70)
 - km200 (frankjoke)
