@@ -12,6 +12,7 @@
 /* jslint node: true */
 'use strict';
 const utils    = require(__dirname + '/lib/utils'); // Get common adapter utils
+const tools    = require(utils.controllerDir + '/lib/tools');
 const adapter  = new utils.Adapter('discovery');
 const fs       = require('fs');
 const dns      = require('dns');
@@ -365,6 +366,11 @@ function discoveryEnd(devices, callback) {
             if (repo && repo.native && systemConfig && systemConfig.common && systemConfig.common.activeRepo &&
                 repo.native.repositories && repo.native.repositories[systemConfig.common.activeRepo] && repo.native.repositories[systemConfig.common.activeRepo].json) {
                 repository = Object.keys(repo.native.repositories[systemConfig.common.activeRepo].json);
+            }
+
+            // use only installed adapter if onlyLocal flag activated
+            if (adapter.config.onlyLocal) {
+                repository = repository.filter(a => tools.getAdapterDir(a));
             }
 
             // Get the list of adapters with auto-discovery

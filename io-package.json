@@ -193,7 +193,8 @@
     },
     "native": {
         "pingTimeout": 1000,
-        "pingBlock": 20
+        "pingBlock": 20,
+        "onlyLocal": false
     },
     "_objects": [
         {
