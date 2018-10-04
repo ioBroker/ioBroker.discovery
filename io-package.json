@@ -1,8 +1,51 @@
 {
     "common": {
         "name": "discovery",
-        "version": "1.1.1",
+        "version": "1.2.4",
         "news": {
+            "1.2.4": {
+                "en": "Small GUI update was made\nAdded ebus",
+                "de": "Ein kleines GUI-Update wurde vorgenommen\nEBus hinzugefügt",
+                "ru": "Было сделано небольшое обновление графического интерфейса пользователя\nДобавлен ebus",
+                "pt": "Atualização de pequena GUI foi feita\nAdicionado ebus",
+                "nl": "Kleine GUI-update is gemaakt\nEbus toegevoegd",
+                "fr": "Petite mise à jour de l'interface graphique a été faite\nEbus ajouté",
+                "it": "È stato effettuato un piccolo aggiornamento della GUI\nEbus aggiunto",
+                "es": "Se realizó una pequeña actualización de la GUI\nEbus añadido",
+                "pl": "Dokonano niewielkiej aktualizacji GUI\nDodano ebus"
+            },
+            "1.2.3": {
+                "en": "New adapters: solarwatt, klf200, yeelight, stiebel-isg, doorbird\nProxmox was fixed\nOpenStreetMap was integrated",
+                "de": "Neue Adapter: Solarwatt, KLF200, Yeelight, Stiebel-Isg, Doorbird\nProxmox wurde behoben\nOpenStreetMap wurde integriert",
+                "ru": "Новые адаптеры: solarwatt, klf200, yeelight, stiebel-isg, doorbird\nProxmox был исправлен\nOpenStreetMap был интегрирован",
+                "pt": "Novos adaptadores: solarwatt, klf200, yeelight, stiebel-isg, doorbird\nProxmox foi corrigido\nOpenStreetMap foi integrado",
+                "nl": "Nieuwe adapters: solarwatt, klf200, yeelight, stiebel-isg, doorbird\nProxmox was opgelost\nOpenStreetMap is geïntegreerd",
+                "fr": "Nouveaux adaptateurs: solarwatt, klf200, yeelight, stiebel-isg, doorbird\nProxmox a été corrigé\nOpenStreetMap a été intégré",
+                "it": "Nuovi adattatori: solarwatt, klf200, yeelight, stiebel-isg, doorbird\nProxmox è stato corretto\nOpenStreetMap è stato integrato",
+                "es": "Nuevos adaptadores: solarwatt, klf200, yeelight, stiebel-isg, doorbird\nProxmox fue arreglado\nOpenStreetMap se integró",
+                "pl": "Nowe adaptery: solarwatt, klf200, yeelight, stiebel-isg, doorbird\nNaprawiono Proxmox\nOpenStreetMap został zintegrowany"
+            },
+            "1.2.2": {
+                "en": "New adapter added: energymanager",
+                "de": "Neuer Adapter hinzugefügt: energymanager",
+                "ru": "Добавлен новый адаптер: energymanager",
+                "pt": "Novo adaptador adicionado: energymanager",
+                "nl": "Nieuwe adapter toegevoegd: energymanager",
+                "fr": "Nouvel adaptateur ajouté: energymanager",
+                "it": "Nuovo adattatore aggiunto: energymanager",
+                "es": "Nuevo adaptador agregado: energymanager",
+                "pl": "Dodano nowy adapter: energymanager"
+            },            "1.2.1": {
+                "en": "New adapter added: DENON",
+                "de": "Neuer Adapter hinzugefügt: DENON",
+                "ru": "Добавлен новый адаптер: DENON",
+                "pt": "Novo adaptador adicionado: DENON",
+                "nl": "Nieuwe adapter toegevoegd: DENON",
+                "fr": "Nouvel adaptateur ajouté: DENON",
+                "it": "Nuovo adattatore aggiunto: DENON",
+                "es": "Nuevo adaptador agregado: DENON",
+                "pl": "Dodano nowy adapter: DENON"
+            },
             "1.1.1": {
                 "en": "New adapters added: ekey, Home Assistant, FHEM",
                 "de": "Neue Adapter hinzugefügt: ekey, Home Assistant, FHEM",
@@ -15,6 +58,11 @@
                 "pl": "Dodano nowe adaptery: ekey, Home Assistant, FHEM"
             },
             "1.1.0": {
+                "en": "Upgrade Serialport Library",
+                "de": "Serialport Bibliothek aktualisiert",
+                "ru": "Upgrade Serialport Library"
+            },
+            "1.0.2": {
                 "en": "Support of admin3",
                 "de": "Unterstützung von admin3",
                 "ru": "Поддержка admin3",
@@ -145,7 +193,8 @@
     },
     "native": {
         "pingTimeout": 1000,
-        "pingBlock": 20
+        "pingBlock": 20,
+        "onlyLocal": false
     },
     "_objects": [
         {

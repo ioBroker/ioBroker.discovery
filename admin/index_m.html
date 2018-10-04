@@ -2,12 +2,14 @@
 <head>
     <link rel="stylesheet" type="text/css" href="../../css/adapter.css"/>
     <link rel="stylesheet" type="text/css" href="../../lib/css/materialize.css">
+    <link rel="stylesheet" type="text/css" href="../../lib/css/ol.css">
 
     <script type="text/javascript" src="../../lib/js/jquery-1.11.1.min.js"></script>
     <script type="text/javascript" src="../../socket.io/socket.io.js"></script>
 
     <script type="text/javascript" src="../../js/translate.js"></script>
     <script type="text/javascript" src="../../lib/js/materialize.js"></script>
+    <script type="text/javascript" src="../../lib/js/ol.js"></script>
     <script type="text/javascript" src="../../js/adapter-settings.js"></script>
     <script type="text/javascript" src="words.js"></script>
 
@@ -21,6 +23,8 @@
         }
         var currentStep = null;
         var newInstances;
+        var useOpenLayers = true;
+        var OSM;
         //var existingInstances;
         var devices;
         var repos       = {};
@@ -38,22 +42,82 @@
         var isRunning   = false;
         var showConfig  = []; // Show configuration dialog after the wizard is finished
 
+        function positionReady(position) {
+            $('#system_latitude').val(position.coords.latitude.toFixed(8)).trigger('change');
+            $('#system_longitude').val(position.coords.longitude.toFixed(8)).trigger('change');
+            M.updateTextFields();
+        }
+
+        function initOSM(lon, lat) {
+            var point = ol.proj.fromLonLat([lon || parseFloat(systemConfig.common.longitude), lat || parseFloat(systemConfig.common.latitude)]);
+            if (!OSM) {
+                if (navigator.geolocation && !systemConfig.common.longitude) {
+                    navigator.geolocation.getCurrentPosition(positionReady);
+                }
+
+                OSM = {};
+                OSM.markerSource = new ol.source.Vector();
+
+                OSM.markerStyle = new ol.style.Style({
+                    image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
+                        anchor: [0.5, 49],
+                        anchorXUnits: 'fraction',
+                        anchorYUnits: 'pixels',
+                        opacity: 0.75,
+                        src: '../../img/pin.png'
+                    }))
+                });
+
+                OSM.oMap = new ol.Map({
+                    target: 'step0_map',
+                    layers: [
+                        new ol.layer.Tile({source: new ol.source.OSM()}),
+                        new ol.layer.Vector({
+                            source: OSM.markerSource,
+                            style: OSM.markerStyle,
+                        })
+                    ],
+                    view: new ol.View({center: point, zoom: 18})
+                });
+
+                OSM.marker = new ol.Feature({
+                    geometry: new ol.geom.Point(point),
+                    name: _('Your home')
+                });
+
+                OSM.markerSource.addFeature(OSM.marker);
+
+                OSM.oMap.on('singleclick', function (event) {
+                    var lonLat = ol.proj.toLonLat(event.coordinate);
+                    $('#system_longitude').val(lonLat[0]);
+                    $('#system_latitude').val(lonLat[1]).trigger('change');
+                });
+            }
+            var zoom = OSM.oMap.getView().getZoom();
+            OSM.marker.setGeometry(new ol.geom.Point(point));
+            OSM.oMap.setView(new ol.View({center: point, zoom: zoom}));
+        }
+
         function step0_initMap () {
             var $button = $('#detectCoordinates');
 
             $button.removeClass('disabled');
 
             if (systemConfig && systemConfig.common && systemConfig.common.longitude && systemConfig.common.latitude) {
-                var map = new google.maps.Map(document.getElementById('step0_map'), {
-                    zoom: 14,
-                    center: {lat: parseFloat(systemConfig.common.latitude), lng: parseFloat(systemConfig.common.longitude)}
-                });
+                if (useOpenLayers) {
+                    initOSM();
+                } else {
+                    var map = new google.maps.Map(document.getElementById('step0_map'), {
+                        zoom: 14,
+                        center: {lat: parseFloat(systemConfig.common.latitude), lng: parseFloat(systemConfig.common.longitude)}
+                    });
 
-                var marker = new google.maps.Marker({
-                    position: {lat: parseFloat(systemConfig.common.latitude), lng: parseFloat(systemConfig.common.longitude)},
-                    map: map,
-                    title: _('Your home')
-                });
+                    var marker = new google.maps.Marker({
+                        position: {lat: parseFloat(systemConfig.common.latitude), lng: parseFloat(systemConfig.common.longitude)},
+                        map: map,
+                        title: _('Your home')
+                    });
+                }
             }
 
             $button.off('click').on('click', function () {
@@ -66,39 +130,70 @@
                 }
 
                 $button.addClass('disabled');
-                geocoder = geocoder || new google.maps.Geocoder();
-                geocoder.geocode({address: country + ' ' + city + ' ' + address}, function (results, status) {
-                    $button.removeClass('disabled');
-                    if (status === google.maps.GeocoderStatus.OK) {
+                if (!useOpenLayers) {
+                    geocoder = geocoder || new google.maps.Geocoder();
+                    geocoder.geocode({address: country + ' ' + city + ' ' + address}, function (results, status) {
+                        $button.removeClass('disabled');
+                        if (status === google.maps.GeocoderStatus.OK) {
+                            var changed = false;
+                            var $systemLatitude = $('#system_latitude');
+                            if ($systemLatitude.val() != results[0].geometry.location.lat().toFixed(8)) {
+                                $systemLatitude.val(results[0].geometry.location.lat().toFixed(8));
+                                changed = true;
+                            }
+                            var $systemLongitude = $('#system_longitude');
+                            if ($systemLongitude.val() != results[0].geometry.location.lng().toFixed(8)) {
+                                $systemLongitude.val(results[0].geometry.location.lng().toFixed(8));
+                                changed = true;
+                            }
+                            if (changed) {
+                                var map = new google.maps.Map(document.getElementById('step0_map'), {
+                                    zoom: 14,
+                                    center: {lat: parseFloat($systemLatitude.val()), lng: parseFloat($systemLongitude.val())}
+                                });
+                                var marker = new google.maps.Marker({
+                                    position: {lat: parseFloat($systemLatitude.val()), lng: parseFloat($systemLongitude.val())},
+                                    map: map,
+                                    title: _('Your home')
+                                });
+                                $('#step0_save').removeClass('disabled');
+                                $('#step0_next').addClass('disabled');
+                                $('#step0_save_hint').show();
+                            }
+                        } else {
+                            showMessage(_('Cannot get coordinates: %s', status), _('Error'), 'alert');
+                        }
+                    });
+                } else {
+                    $.ajax('https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(country + ' ' + city + ' ' + address)).done(function(data) {
+                        $button.removeClass('disabled');
                         var changed = false;
+
+                        if (!data || !data[0]) {
+                            return showError(_('Nothing found'));
+                        }
+
                         var $systemLatitude = $('#system_latitude');
-                        if ($systemLatitude.val() != results[0].geometry.location.lat().toFixed(8)) {
-                            $systemLatitude.val(results[0].geometry.location.lat().toFixed(8));
+                        if ($systemLatitude.val() != data[0].lat) {
+                            $systemLatitude.val(data[0].lat);
                             changed = true;
                         }
                         var $systemLongitude = $('#system_longitude');
-                        if ($systemLongitude.val() != results[0].geometry.location.lng().toFixed(8)) {
-                            $systemLongitude.val(results[0].geometry.location.lng().toFixed(8));
+                        if ($systemLongitude.val() != data[0].lon) {
+                            $systemLongitude.val(data[0].lon);
                             changed = true;
                         }
                         if (changed) {
-                            var map = new google.maps.Map(document.getElementById('step0_map'), {
-                                zoom: 14,
-                                center: {lat: parseFloat($systemLatitude.val()), lng: parseFloat($systemLongitude.val())}
-                            });
-                            var marker = new google.maps.Marker({
-                                position: {lat: parseFloat($systemLatitude.val()), lng: parseFloat($systemLongitude.val())},
-                                map: map,
-                                title: _('Your home')
-                            });
+                            initOSM(parseFloat($systemLongitude.val()), parseFloat($systemLatitude.val()));
                             $('#step0_save').removeClass('disabled');
                             $('#step0_next').addClass('disabled');
                             $('#step0_save_hint').show();
                         }
-                    } else {
-                        showMessage(_('Cannot get coordinates: %s', status), _('Error'), 'alert');
-                    }
-                });
+                    })
+                    .fail(function(e) {
+                        showError(e, _('Cannot fetch address'));
+                    });
+                }
             });
         }
 
@@ -109,6 +204,12 @@
                 $button.css('font-size', 16);
 
                 $button.addClass('disabled');
+                $('#system_longitude').off('change').on('change', function () {
+                    initOSM(parseFloat($('#system_longitude').val()), parseFloat($('#system_latitude').val()));
+                });
+                $('#system_latitude').off('change').on('change', function () {
+                    initOSM(parseFloat($('#system_longitude').val()), parseFloat($('#system_latitude').val()));
+                });
 
                 $('#step0_save').off('click').on('click', function () {
                     var changed = false;
@@ -143,20 +244,27 @@
             } else {
                 if (!mapLoaded) {
                     mapLoaded = true;
-                    var key1 = 'AIzaSyCIrBRZfZAE';
-                    var key2 = '_0C1OplAUy7OXhiWLoZc3eY';
-                    var key = key1 + key2;
 
                     $('#system_address').attr('placeholder', _('Used only for coordinates detection'));
-                    // load google API
-                    $.ajax({
-                        // please do not miss use this api key!
-                        url: 'https://maps.googleapis.com/maps/api/js?key=' + key + '&signed_in=true&callback=step0_initMap',
-                        dataType: 'script',
-                        cache: true
-                    });
+
+                    if (!useOpenLayers) {
+                        var key1 = 'AIzaSyCIrBRZfZAE';
+                        var key2 = '_0C1OplAUy7OXhiWLoZc3eY';
+                        var key = key1 + key2;
+
+                        // load google API
+                        $.ajax({
+                            // please do not miss use this api key!
+                            url: 'https://maps.googleapis.com/maps/api/js?key=' + key + '&signed_in=true&callback=step0_initMap',
+                            dataType: 'script',
+                            cache: true
+                        });
+                    } else {
+                        step0_initMap();
+                    }
                 }
             }
+
             socket.emit('getObject', 'system.config', function (err, obj) {
                 var changed = false;
                 if (!obj || !obj.common) {
@@ -240,20 +348,28 @@
                     }
                     if (!mapLoaded) {
                         mapLoaded = true;
-                        var key1 = 'AIzaSyCIrBRZfZAE';
-                        var key2 = '_0C1OplAUy7OXhiWLoZc3eY';
-                        var key = key1 + key2;
 
                         $('#system_address').attr('placeholder', _('Used only for coordinates detection'));
-                        // load google API
-                        $.ajax({
-                            // please do not miss use this api key!
-                            url: 'https://maps.googleapis.com/maps/api/js?key=' + key + '&signed_in=true&callback=step0_initMap',
-                            dataType: 'script',
-                            cache: true
-                        });
+
+                        if (!useOpenLayers) {
+                            var key1 = 'AIzaSyCIrBRZfZAE';
+                            var key2 = '_0C1OplAUy7OXhiWLoZc3eY';
+                            var key = key1 + key2;
+
+                            // load google API
+                            $.ajax({
+                                // please do not miss use this api key!
+                                url: 'https://maps.googleapis.com/maps/api/js?key=' + key + '&signed_in=true&callback=step0_initMap',
+                                dataType: 'script',
+                                cache: true
+                            });
+                        } else {
+                            step0_initMap();
+                        }
                     }
+                    initOSM();
                 }
+                M.updateTextFields();
             });
         }
 
@@ -1362,6 +1478,20 @@
             });
         }
 
+        function close() {
+            if (typeof parent !== 'undefined' && parent) {
+                try {
+                    if (parent.$iframeDialog && typeof parent.$iframeDialog.close === 'function') {
+                        parent.$iframeDialog.close();
+                    } else {
+                        parent.postMessage('close', '*');
+                    }
+                } catch (e) {
+                    parent.postMessage('close', '*');
+                }
+            }
+        }
+
         function load(settings, onChange) {
             $('.header').hide();
             // step 0
@@ -1375,14 +1505,18 @@
             });
 
             $('.btn-close').off('click').on('click', function () {
-                if (typeof parent !== 'undefined' && parent && parent.$iframeDialog) {
-                    parent.showConfig = JSON.parse(JSON.stringify(showConfig));
+                if (typeof parent !== 'undefined' && parent) {
+                    try {
+                        if (parent.$iframeDialog) {
+                            parent.showConfig = JSON.parse(JSON.stringify(showConfig));
+                        }
+                    } catch (e) {
+                        parent.postMessage(JSON.stringify(showConfig), '*');
+                    }
                 }
 
                 window.close();
-                if (typeof parent !== 'undefined' && parent && parent.$iframeDialog) {
-                    parent.$iframeDialog.close();
-                }
+                close();
             });
 
             showStep(0);
@@ -1448,6 +1582,7 @@
             });
 
             onChange(false);
+            M.updateTextFields();
         }
 
         function save(callback) {
@@ -1638,7 +1773,7 @@
             <div class="row">
                 <div class="col s6">
                     <div class="row">
-                        <div class="col s12">
+                        <div class="input-field col s12">
                             <select id="system_language" class="system-settings value">
                                 <option value="en">English</option>
                                 <option value="de">Deutsch</option>
@@ -1654,20 +1789,20 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col s12 m6">
+                        <div class="input-field col s12 m6">
                             <select id="system_tempUnit" class="system-settings value">
                                 <option value="°C">°C</option>
                                 <option value="°F">°F</option>
                             </select>
                             <label class="translate" for="system_tempUnit">Temperature units:</label>
                         </div>
-                        <div class="col s12 m6">
+                        <div class="input-field col s12 m6">
                             <input type="text" size="5" maxlength="5" id="system_currency" class="system-settings value"/>
                             <label class="translate" for="system_currency">Currency:</label>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col s12 m6">
+                        <div class="input-field col s12 m6">
                             <select id="system_dateFormat" class="system-settings value">
                                 <option value="DD.MM.YYYY" class="translate">DD.MM.YYYY</option>
                                 <option value="DD.MM.YY"   class="translate">DD.MM.YY</option>
@@ -1675,7 +1810,7 @@
                             </select>
                             <label class="translate" for="system_dateFormat">Date format:</label>
                         </div>
-                        <div class="col s12 m6">
+                        <div class="input-field col s12 m6">
                             <select id="system_isFloatComma" class="system-settings value">
                                 <option value="true"  class="translate">comma (3,14)</option>
                                 <option value="false" class="translate">point (3.14)</option>
@@ -1699,9 +1834,9 @@
                         </div>
                     </div-->
                     <div class="row">
-                        <div class="col s12 m6">
+                        <div class="input-field col s12 m6">
                             <select id="system_country" class="system-settings value">
-                                <option value="">Please select country</option>
+                                <option value="" class="translate">Please select country</option>
                                 <option value="Germany" class="translate">Germany</option>
                                 <option value="Austria" class="translate">Austria</option>
                                 <option value="Switzerland" class="translate">Switzerland</option>
@@ -1950,14 +2085,14 @@
                             </select>
                             <label class="translate" for="system_country">Country:</label>
                         </div>
-                        <div class="col s12 m6">
-                            <input id="system_city" class="system-settings value"/>
+                        <div class="input-field col s12 m6">
+                            <input id="system_city" type="text" class="system-settings value"/>
                             <label class="translate" for="system_city">City:</label>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col s8">
-                            <input id="system_address" />
+                        <div class="input-field col s8">
+                            <input id="system_address" type="text" />
                             <label class="translate" for="system_address">Address:</label>
                         </div>
                         <div class="col s4">
@@ -1965,12 +2100,12 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col s12 m6">
-                            <input id="system_latitude" class="system-settings value" />
+                        <div class="input-field col s12 m6">
+                            <input id="system_latitude" type="text" class="system-settings value" />
                             <label class="translate" for="system_latitude">Latitude:</label>
                         </div>
-                        <div class="col s12 m6">
-                            <input id="system_longitude" class="system-settings value" />
+                        <div class="input-field col s12 m6">
+                            <input id="system_longitude" type="text" class="system-settings value" />
                             <label class="translate" for="system_longitude">Longitude:</label>
                         </div>
                     </div>

@@ -20,39 +20,56 @@ Just now it can detect via ping, UPnP (serial planned).
 - Broadlink
 - Chromecast
 - Daikin climate control
+- deConz
+- Denon /Marantz
+- DoorBird
+- ebus
 - ekey
+- energymanager (E.ON/Solarwatt)
 - Epson Stylus PX830
+- Fakeroku
 - FHEM
 - FireTV
 - Fronius
+- G-Homa plugs
+- Harmony
 - Home Assistant
 - Homematic CCU (hm-rpc, hm-rega)
 - Homepilot
 - Philips HUE
 - InfluxDB
+- KLF-200
 - KNX
 - Landroid
 - LGTV
 - Lightify
 - Loxone
+- Lupusec
 - MAX! Cube
 - MegaD
 - Miele
 - Mi Home Smarthome
+- MiLight bridge (v6)
 - Musiccast
 - Mysensors USB/Serial (9600, 38400, 57600, 115200)
 - Nut
 - OpenHAB
 - Ping
+- Proxmox
 - RFLink (Serial 57600baud)
 - SamsungTV
+- Sonnen
 - Sonos
+- Stiebel-Eltron/Tecalor ISG (plus)
 - SQL (MySQL, MSSQL, PostgreSQL)
 - Squeezebox
+- stiebel-isg
 - TR-064
+- Trådfri
 - UPnP
 - Wifilight
 - Yamaha
+- Yeelight
 - Z-wave USB (Tested with Aeon Labs)
 
 ### Offered as additional adapters
@@ -68,7 +85,6 @@ Just now it can detect via ping, UPnP (serial planned).
 - artnet? (Bluefox)
 - B-Control-Em? (Bluefox)
 - cul / maxcul (Bluefox)
-- harmony (pmant) / fakeroku (pmant)
 - Foobar200 (Instalator)
 - fritzbox (ruhr70)
 - km200 (frankjoke)
@@ -88,10 +104,29 @@ Just now it can detect via ping, UPnP (serial planned).
 - xs1 (frankjoke)
 
 ## Changelog
+### 1.2.4 (2018-09-22)
+* (bluefox) Small GUI update was made
+* (rg-engineering) Added ebus
+
+### 1.2.3 (2018-09-13)
+* (bluefox) Proxmox was fixed
+* (unltdnetworx) solarwatt
+* (Michael Schroeder) klf200
+* (bluefox) Use OpenStreetMap
+* (MeisterTR) yeelight
+* (unltdnetworx) stiebel-isg
+* (BuZZy1337) doorbird
+
+### 1.2.1 (2018-07-28)
+* (bluefox) New adapter added: DENON
+
 ### 1.1.1 (2018-03-27)
 * (bluefox) New adapter added: ekey, Home Assistant, FHEM
 
-### 1.1.0 (2018-01-13)
+### 1.1.0 (2018-01-23)
+* (Apollon77) Upgrade Serialport Library
+
+### 1.0.2 (2018-01-13)
 * (bluefox) ready for admin3
 
 ### 1.0.1 (2017-12-28)
