@@ -1,8 +1,19 @@
 {
     "common": {
         "name": "discovery",
-        "version": "1.2.4",
+        "version": "1.3.0",
         "news": {
+            "1.3.0": {
+                "en": "Support of compact mode was added",
+                "de": "Unterstützung des Kompaktmodus wurde hinzugefügt",
+                "ru": "Добавлена ​​поддержка компактного режима",
+                "pt": "Suporte de modo compacto foi adicionado",
+                "nl": "Ondersteuning van de compacte modus is toegevoegd",
+                "fr": "Support du mode compact a été ajouté",
+                "it": "È stato aggiunto il supporto della modalità compatta",
+                "es": "Se agregó soporte de modo compacto.",
+                "pl": "Dodano obsługę trybu kompaktowego"
+            },
             "1.2.4": {
                 "en": "Small GUI update was made\nAdded ebus",
                 "de": "Ein kleines GUI-Update wurde vorgenommen\nEBus hinzugefügt",
@@ -168,6 +179,7 @@
         "platform": "Javascript/Node.js",
         "mode": "daemon",
         "enabled": true,
+        "compact": true,
         "singletonHost": true,
         "materialize": true,
         "messagebox": true,

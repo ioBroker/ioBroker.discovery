@@ -1,5 +1,5 @@
 ![Logo](admin/discovery.png)
-ioBroker Discover Adapter
+# ioBroker Discover Adapter
 ==============
 [![NPM version](http://img.shields.io/npm/v/iobroker.discovery.svg)](https://www.npmjs.com/package/iobroker.discovery)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.discovery.svg)](https://www.npmjs.com/package/iobroker.discovery)
@@ -7,7 +7,7 @@ ioBroker Discover Adapter
 
 [![NPM](https://nodei.co/npm/iobroker.discovery.png?downloads=true)](https://nodei.co/npm/iobroker.discovery/)
 
-# Detect devices with all known methods.
+**Detect devices with all known methods.**
 
 This is special adapters, that tries to find all possible devices, that can be reachable from host.
 Just now it can detect via ping, UPnP (serial planned).
@@ -104,6 +104,9 @@ Just now it can detect via ping, UPnP (serial planned).
 - xs1 (frankjoke)
 
 ## Changelog
+### 1.3.0 (2019-01-04)
+* (bluefox) Support of compact mode
+
 ### 1.2.4 (2018-09-22)
 * (bluefox) Small GUI update was made
 * (rg-engineering) Added ebus
@@ -187,7 +190,7 @@ Just now it can detect via ping, UPnP (serial planned).
 
 The MIT License (MIT)
 
-Copyright (c) 2017-2018, bluefox <dogafox@gmail.com>
+Copyright (c) 2017-2019, bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

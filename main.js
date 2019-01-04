@@ -2,7 +2,7 @@
  *
  *      ioBroker Discover Adapter
  *
- *      (c) 2017-2018 bluefox <dogafox@gmail.com>
+ *      Copyright (c) 2017-2019 bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
@@ -11,13 +11,42 @@
 /* jshint strict:false */
 /* jslint node: true */
 'use strict';
-const utils    = require(__dirname + '/lib/utils'); // Get common adapter utils
-const tools    = require(utils.controllerDir + '/lib/tools');
-const adapter  = new utils.Adapter('discovery');
-const fs       = require('fs');
-const dns      = require('dns');
-const adapters = {};
-let   methods  = null;
+const utils       = require('./lib/utils'); // Get common adapter utils
+const tools       = require(utils.controllerDir + '/lib/tools');
+const adapterName = require('./package.json').name.split('.').pop();
+const fs          = require('fs');
+const dns         = require('dns');
+const adapters    = {};
+let   methods     = null;
+
+let adapter;
+function startAdapter(options) {
+    options = options || {};
+
+    Object.assign(options, {name: adapterName});
+    const adapter  = new utils.Adapter(options);
+
+    adapter.on('message', obj => {
+        if (obj) processMessage(obj);
+        processMessages();
+    });
+
+    adapter.on('ready', main);
+
+    adapter.on('unload', callback => {
+        if (isRunning) {
+            adapter && adapter.setState && adapter.setState('scanRunning', false, true);
+            isRunning = false;
+            isStopping = true;
+            haltAllMethods();
+            setTimeout(() => callback && callback(), 1000);
+        } else if (callback) {
+            callback();
+        }
+    });
+
+    return adapter;
+}
 
 function enumAdapters(repository) {
     const dir = fs.readdirSync(__dirname + '/lib/adapters');
@@ -58,25 +87,6 @@ function enumMethods() {
 
 let isStopping = false;
 let isRunning = false;
-
-adapter.on('message', obj => {
-    if (obj) processMessage(obj);
-    processMessages();
-});
-
-adapter.on('ready', main);
-
-adapter.on('unload', callback => {
-    if (isRunning) {
-        adapter && adapter.setState && adapter.setState('scanRunning', false, true);
-        isRunning = false;
-        isStopping = true;
-        haltAllMethods();
-        setTimeout(() => callback && callback(), 1000);
-    } else if (callback) {
-        callback();
-    }
-});
 
 function processMessage(obj) {
     if (!obj || !obj.command) return;
@@ -700,4 +710,11 @@ function main() {
     //browse();
 }
 
+// If started as allInOne/compact mode => return function to create instance
+if (typeof module !== undefined && module.parent) {
+    module.exports = startAdapter;
+} else {
+    // or start the instance directly
+    startAdapter();
+}
 
