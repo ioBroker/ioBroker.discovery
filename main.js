@@ -24,7 +24,7 @@ function startAdapter(options) {
     options = options || {};
 
     Object.assign(options, {name: adapterName});
-    const adapter  = new utils.Adapter(options);
+    adapter  = new utils.Adapter(options);
 
     adapter.on('message', obj => {
         if (obj) processMessage(obj);
