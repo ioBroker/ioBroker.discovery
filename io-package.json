@@ -159,7 +159,8 @@
 			"fr": "Dispositifs de découverte",
 			"it": "Dispositivi di scoperta",
 			"es": "Dispositivos de descubrimiento",
-			"pl": "Urządzenia Discovery"
+			"pl": "Urządzenia Discovery",
+			"zh-cn": "发现设备"
         },
         "desc": {
 			"en": "This adapter tries to discover all known devices in your network and on your machine",
@@ -170,7 +171,8 @@
 			"fr": "Cet adaptateur essaie de découvrir tous les périphériques connus sur votre réseau et sur votre machine",
 			"it": "Questo adattatore tenta di rilevare tutti i dispositivi noti nella rete e sulla macchina",
 			"es": "Este adaptador intenta descubrir todos los dispositivos conocidos en su red y en su máquina",
-			"pl": "Ten adapter próbuje wykryć wszystkie znane urządzenia w sieci i na twoim komputerze"
+			"pl": "Ten adapter próbuje wykryć wszystkie znane urządzenia w sieci i na twoim komputerze",
+			"zh-cn": "这个适配器将尝试发现在您局域网和主机上的所有已知设备"
 		  },
         "authors": [
             "bluefox <dogafox@gmail.com>"
