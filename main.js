@@ -65,10 +65,11 @@ function enumAdapters(repository) {
                 delete adapters[aName];
             }
 
+            //TODO remove after adapter is in latest repo
             // check if this adapter available in repository
-            if (!adapters[aName] && (!repository || repository.indexOf(aName) !== -1)) {
+            //if (!adapters[aName] && (!repository || repository.indexOf(aName) !== -1)) {
                 adapters[aName] = require(moduleName);
-            }
+            //}
         }
     }
 }
