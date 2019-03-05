@@ -572,7 +572,7 @@ function browse(options, callback) {
     }
     
     isRunning = true;
-    g_devices = {};
+    g_devices = [];
     g_devices_count = 0;
     
     adapter.setState('scanRunning', true, true);
@@ -649,43 +649,14 @@ function browse(options, callback) {
 
             adapter.log.debug('main.addDevice: ip=' + newDevice._addr + ' source=' + source);
         
-            if (!(device = g_devices[newDevice._addr])) {
-                g_devices_count += 1;
-                newDevice._source = source;
-                newDevice._type = type || 'ip';
-                newDevice._new = true;
-                self.foundCount += 1;
-                return g_devices[newDevice._addr] = newDevice;
-            }
-            delete newDevice._new;
-            //debug:
-            // device.__debug = device.__debug || [];
-            // device.__debug.push(newDevice);
-        
-            (function _merge(dest, from) {
-                Object.getOwnPropertyNames (from).forEach (name => {
-                    if (name === '__debug') return;
-                    if (typeof from[name] === 'object') {
-                        if (typeof dest[name] !== 'object') {
-                            dest[name] = {}
-                        }
-                        _merge (dest[name], from[name]);
-                    } else {
-                        let uneq = true;
-                        const namex = name + 'x';
-                        if (specialEntryNames.indexOf (name) >= 0 && dest[name] && from[name] !== undefined && (uneq = dest[name] !== from[name])) {
-                            if (dest[namex] === undefined) dest[namex] = [dest[name]];
-                            if (from[name] && dest[namex].indexOf(from[name]) < 0) dest[namex].push(from[name]);
-                        }
-                        if (uneq) dest[name] = from[name];
-                    }
-                });
-            }) (device, newDevice);
-        
-            if (!device._name && newDevice._name) {
-                device._name = newDevice._name;
-            }
-            return newDevice;
+            
+            g_devices_count += 1;
+            newDevice._source = source;
+            newDevice._type = type || 'ip';
+            newDevice._new = true;
+            self.foundCount += 1;
+            g_devices.push(newDevice);
+            return true;
         };
     
         methodsArray.forEach(m => {
