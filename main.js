@@ -573,7 +573,7 @@ function browse(options, callback) {
     }
     
     isRunning = true;
-    g_devices = [];
+    g_devices = {};
     g_devices_count = 0;
     
     adapter.setState('scanRunning', true, true);
@@ -648,15 +648,28 @@ function browse(options, callback) {
                 return;
             }
 
-            adapter.log.debug('main.addDevice: ip=' + newDevice._addr + ' source=' + source);
-        
+            let old = self.get(newDevice._addr);
+
+            if(old !== undefined && old._type == type)
+            {
+                adapter.log.debug("extendef Device: " + newDevice._addr + " source=" + source);
+                if(old._upnp == undefined)
+                    old._upnp = [];
+                if(newDevice._upnp !== undefined)
+                    old._upnp.push(newDevice._upnp)
+
+                g_devices[ip] = old;
+            } else {
+                adapter.log.debug('main.addDevice: ip=' + newDevice._addr + ' source=' + source);
             
-            g_devices_count += 1;
-            newDevice._source = source;
-            newDevice._type = type || 'ip';
-            newDevice._new = true;
-            self.foundCount += 1;
-            g_devices.push(newDevice);
+                
+                g_devices_count += 1;
+                newDevice._source = source;
+                newDevice._type = type || 'ip';
+                newDevice._new = true;
+                self.foundCount += 1;
+                g_devices[ip] = newDevice;
+            }
             return true;
         };
     
