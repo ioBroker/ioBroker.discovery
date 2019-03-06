@@ -575,7 +575,7 @@ function browse(options, callback) {
     }
     
     isRunning = true;
-    g_devices = {'ip': {}, 'upnp': {}};
+    g_devices = {};
     g_devices_count = 0;
     
     adapter.setState('scanRunning', true, true);
@@ -614,9 +614,13 @@ function browse(options, callback) {
                 const devices = [];
 
                 adapter.log.debug(JSON.stringify(g_devices));
-                g_devices.forEach(t => {
-                    g_devices[n].forEach(d => devices.push(d));
-                });
+
+                Object.keys(g_devices).sort().forEach(t => 
+                    Object.keys(g_devices[t]).sort().forEach(d =>
+                        devices.push(d)
+                    )
+                );
+
                 
                 adapter.log.debug(JSON.stringify(t_devices));
 
@@ -658,12 +662,10 @@ function browse(options, callback) {
                 return;
             }
 
-            //if(g_devices[type] == undefined)
-            //    g_devices[type] = [];
+            if(g_devices[type] == undefined)
+                g_devices[type] = {};
 
             let old = g_devices[type][newDevice._addr];
-            adapter.log.debug("Test " + newDevice._addr);
-            adapter.log.debug(JSON.stringify(g_devices));
 
             if(old !== undefined && old._type == type)
             {
@@ -685,7 +687,6 @@ function browse(options, callback) {
                 self.foundCount += 1;
                 g_devices[type][newDevice._addr] = newDevice;
             }
-            adapter.log.debug(JSON.stringify(g_devices));
             return true;
         };
     
