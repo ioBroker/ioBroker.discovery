@@ -648,7 +648,7 @@ function browse(options, callback) {
                 return;
             }
 
-            let old = get(newDevice._addr);
+            let old = g_devices[newDevice._addr];
             adapter.log.debug("Test " + ip);
 
             if(old !== undefined && old._type == type)
