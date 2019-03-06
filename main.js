@@ -660,7 +660,7 @@ function browse(options, callback) {
                 if(newDevice._upnp !== undefined)
                     old._upnp.push(newDevice._upnp)
 
-                g_devices[ip] = old;
+                g_devices[newDevice._addr] = old;
             } else {
                 adapter.log.debug('main.addDevice: ip=' + newDevice._addr + ' source=' + source);
             
