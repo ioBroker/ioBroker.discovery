@@ -647,6 +647,7 @@ function browse(options, callback) {
                 }
 
                 dns.reverse (dev._addr, (err, hostnames) => {
+                    adapter.log.debug(JSON.stringify(dev));
                     dev._name = !err && hostnames && hostnames.length ? hostnames[0] : dev._sddr;
                     dev._dns = {
                         hostnames: hostnames
