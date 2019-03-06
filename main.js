@@ -506,8 +506,8 @@ const Method = function (methodName, parent) {
         return parent.addDevice (newDevice, self.source, self.type);
     };
     
-    this.get = this.getDevice = function (ip) {
-         return g_devices[ip];
+    this.get = this.getDevice = function (ip, type = "ip") {
+         return g_devices[type][ip];
     };
     
     this.updateProgress = function (progress) {
@@ -610,7 +610,15 @@ function browse(options, callback) {
                 self.count = -1;
                 if (timeoutProgress) clearTimeout(timeoutProgress);
                 const devices = [];
-                Object.keys(g_devices).sort().forEach(n => devices.push(g_devices[n]));
+
+                adapter.log.debug(JSON.stringify(g_devices));
+                g_devices.forEach(t => {
+                    g_devices[n].forEach(d => devices.push(d));
+                });
+                
+                adapter.log.debug(JSON.stringify(t_devices));
+
+                //Object.keys(g_devices).sort().forEach(n => devices.push(g_devices[n]));
                 self.getMissedNames(devices, () => {
                     devices.push({
                         _addr: '127.0.0.1',
@@ -648,19 +656,18 @@ function browse(options, callback) {
                 return;
             }
 
-            let old = g_devices[newDevice._addr];
+            let old = g_devices[type][newDevice._addr];
             adapter.log.debug("Test " + newDevice._addr);
 
             if(old !== undefined && old._type == type)
             {
                 adapter.log.debug("extended Device: " + newDevice._addr + " source=" + source);
-                adapter.log.debug(old._upnp);
                 if(old._upnp == undefined)
                     old._upnp = [];
                 if(newDevice._upnp !== undefined)
                     old._upnp.push(newDevice._upnp)
 
-                g_devices[newDevice._addr] = old;
+                g_devices[type][newDevice._addr] = old;
             } else {
                 adapter.log.debug('main.addDevice: ip=' + newDevice._addr + ' source=' + source);
             
@@ -670,7 +677,7 @@ function browse(options, callback) {
                 newDevice._type = type || 'ip';
                 newDevice._new = true;
                 self.foundCount += 1;
-                g_devices[newDevice._addr] = newDevice;
+                g_devices[type][newDevice._addr] = newDevice;
             }
             return true;
         };
