@@ -575,7 +575,7 @@ function browse(options, callback) {
     }
     
     isRunning = true;
-    g_devices = {'ip': [], 'upnp': []};
+    g_devices = {'ip': {}, 'upnp': {}};
     g_devices_count = 0;
     
     adapter.setState('scanRunning', true, true);
