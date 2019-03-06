@@ -507,7 +507,9 @@ const Method = function (methodName, parent) {
     };
     
     this.get = this.getDevice = function (ip, type = "ip") {
-         return g_devices[type][ip];
+        if(g_devices[type] == undefined)
+            return undefined;
+        return g_devices[type][ip];
     };
     
     this.updateProgress = function (progress) {
