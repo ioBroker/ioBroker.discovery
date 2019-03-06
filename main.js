@@ -663,6 +663,7 @@ function browse(options, callback) {
 
             let old = g_devices[type][newDevice._addr];
             adapter.log.debug("Test " + newDevice._addr);
+            adapter.log.debug(JSON.stringify(g_devices));
 
             if(old !== undefined && old._type == type)
             {
@@ -684,6 +685,7 @@ function browse(options, callback) {
                 self.foundCount += 1;
                 g_devices[type][newDevice._addr] = newDevice;
             }
+            adapter.log.debug(JSON.stringify(g_devices));
             return true;
         };
     
