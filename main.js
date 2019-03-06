@@ -649,7 +649,7 @@ function browse(options, callback) {
             }
 
             let old = g_devices[newDevice._addr];
-            adapter.log.debug("Test " + ip);
+            adapter.log.debug("Test " + newDevice._addr);
 
             if(old !== undefined && old._type == type)
             {
@@ -669,7 +669,7 @@ function browse(options, callback) {
                 newDevice._type = type || 'ip';
                 newDevice._new = true;
                 self.foundCount += 1;
-                g_devices[ip] = newDevice;
+                g_devices[newDevice._addr] = newDevice;
             }
             return true;
         };
