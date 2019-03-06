@@ -649,10 +649,11 @@ function browse(options, callback) {
             }
 
             let old = self.get(newDevice._addr);
+            adapter.log.debug("Test " + ip);
 
             if(old !== undefined && old._type == type)
             {
-                adapter.log.debug("extendef Device: " + newDevice._addr + " source=" + source);
+                adapter.log.debug("extended Device: " + newDevice._addr + " source=" + source);
                 if(old._upnp == undefined)
                     old._upnp = [];
                 if(newDevice._upnp !== undefined)
