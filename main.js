@@ -575,7 +575,7 @@ function browse(options, callback) {
     }
     
     isRunning = true;
-    g_devices = {};
+    g_devices = {'ip': [], 'upnp': []};
     g_devices_count = 0;
     
     adapter.setState('scanRunning', true, true);
@@ -658,8 +658,8 @@ function browse(options, callback) {
                 return;
             }
 
-            if(g_devices[type] == undefined)
-                g_devices[type] = [];
+            //if(g_devices[type] == undefined)
+            //    g_devices[type] = [];
 
             let old = g_devices[type][newDevice._addr];
             adapter.log.debug("Test " + newDevice._addr);
