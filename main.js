@@ -656,6 +656,9 @@ function browse(options, callback) {
                 return;
             }
 
+            if(g_devices[type] == undefined)
+                g_devices[type] = [];
+
             let old = g_devices[type][newDevice._addr];
             adapter.log.debug("Test " + newDevice._addr);
 
