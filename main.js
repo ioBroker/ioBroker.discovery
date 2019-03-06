@@ -654,6 +654,7 @@ function browse(options, callback) {
             if(old !== undefined && old._type == type)
             {
                 adapter.log.debug("extended Device: " + newDevice._addr + " source=" + source);
+                adapter.log.debug(old._upnp);
                 if(old._upnp == undefined)
                     old._upnp = [];
                 if(newDevice._upnp !== undefined)
