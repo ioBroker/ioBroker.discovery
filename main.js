@@ -617,7 +617,7 @@ function browse(options, callback) {
 
                 Object.keys(g_devices).sort().forEach(t => 
                     Object.keys(g_devices[t]).sort().forEach(d =>
-                        devices.push(d)
+                        devices.push(g_devices[t][d])
                     )
                 );
 
@@ -646,7 +646,6 @@ function browse(options, callback) {
                     return doIt();
                 }
 
-                adapter.log.debug(JSON.stringify(dev));
                 dns.reverse (dev._addr, (err, hostnames) => {
                     dev._name = !err && hostnames && hostnames.length ? hostnames[0] : dev._sddr;
                     dev._dns = {
