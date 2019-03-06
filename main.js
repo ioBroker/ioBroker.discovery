@@ -622,7 +622,7 @@ function browse(options, callback) {
                 );
 
                 
-                adapter.log.debug(JSON.stringify(t_devices));
+                adapter.log.debug(JSON.stringify(devices));
 
                 //Object.keys(g_devices).sort().forEach(n => devices.push(g_devices[n]));
                 self.getMissedNames(devices, () => {
