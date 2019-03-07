@@ -506,8 +506,10 @@ const Method = function (methodName, parent) {
         return parent.addDevice (newDevice, self.source, self.type);
     };
     
-    this.get = this.getDevice = function (ip) {
-         return g_devices[ip];
+    this.get = this.getDevice = function (ip, type = "ip") {
+        if(g_devices[type] == undefined)
+            return undefined;
+        return g_devices[type][ip];
     };
     
     this.updateProgress = function (progress) {
@@ -573,7 +575,7 @@ function browse(options, callback) {
     }
     
     isRunning = true;
-    g_devices = [];
+    g_devices = {};
     g_devices_count = 0;
     
     adapter.setState('scanRunning', true, true);
@@ -610,7 +612,19 @@ function browse(options, callback) {
                 self.count = -1;
                 if (timeoutProgress) clearTimeout(timeoutProgress);
                 const devices = [];
-                Object.keys(g_devices).sort().forEach(n => devices.push(g_devices[n]));
+
+                adapter.log.debug(JSON.stringify(g_devices));
+
+                Object.keys(g_devices).sort().forEach(t => 
+                    Object.keys(g_devices[t]).sort().forEach(d =>
+                        devices.push(g_devices[t][d])
+                    )
+                );
+
+                
+                adapter.log.debug(JSON.stringify(devices));
+
+                //Object.keys(g_devices).sort().forEach(n => devices.push(g_devices[n]));
                 self.getMissedNames(devices, () => {
                     devices.push({
                         _addr: '127.0.0.1',
@@ -648,15 +662,31 @@ function browse(options, callback) {
                 return;
             }
 
-            adapter.log.debug('main.addDevice: ip=' + newDevice._addr + ' source=' + source);
-        
+            if(g_devices[type] == undefined)
+                g_devices[type] = {};
+
+            let old = g_devices[type][newDevice._addr];
+
+            if(old !== undefined && old._type == type)
+            {
+                adapter.log.debug("extended Device: " + newDevice._addr + " source=" + source);
+                if(old._upnp == undefined)
+                    old._upnp = [];
+                if(newDevice._upnp !== undefined)
+                    old._upnp.push(newDevice._upnp)
+
+                g_devices[type][newDevice._addr] = old;
+            } else {
+                adapter.log.debug('main.addDevice: ip=' + newDevice._addr + ' source=' + source);
             
-            g_devices_count += 1;
-            newDevice._source = source;
-            newDevice._type = type || 'ip';
-            newDevice._new = true;
-            self.foundCount += 1;
-            g_devices.push(newDevice);
+                
+                g_devices_count += 1;
+                newDevice._source = source;
+                newDevice._type = type || 'ip';
+                newDevice._new = true;
+                self.foundCount += 1;
+                g_devices[type][newDevice._addr] = newDevice;
+            }
             return true;
         };
     
