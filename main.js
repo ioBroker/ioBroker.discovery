@@ -621,15 +621,16 @@ function browse(options, callback) {
                     )
                 );
 
-                
-                adapter.log.debug(JSON.stringify(devices));
-
                 //Object.keys(g_devices).sort().forEach(n => devices.push(g_devices[n]));
                 self.getMissedNames(devices, () => {
                     devices.push({
                         _addr: '127.0.0.1',
                         _name: 'localhost',
                         _type: 'ip'
+                    });devices.push({
+                        _addr: '0.0.0.0',
+                        _name: 'localhost',
+                        _type: 'once'
                     });
                     discoveryEnd (devices, callback);
                 });
