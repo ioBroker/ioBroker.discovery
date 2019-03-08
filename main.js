@@ -626,11 +626,6 @@ function browse(options, callback) {
                         _type: 'ip'
                     });
                     devices.push({
-                        _addr: '255.255.255.255',
-                        _name: 'localhost',
-                        _type: 'udp'
-                    });
-                    devices.push({
                         _addr: '0.0.0.0',
                         _name: 'localhost',
                         _type: 'once'
