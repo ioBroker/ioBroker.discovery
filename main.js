@@ -181,12 +181,6 @@ function analyseDeviceDependencies(device, options, callback) {
                     callbacks[adpr] = true;
                 }
 
-                if(times[adpr] == undefined)
-                    times[adpr] = [];
-
-                times[adpr].push(timeSec);
-
-
                 if (isFound) {
                     adapter.log.debug('Test ' + device._type + ' ' + device._addr + ' ' + adpr + ' DETECTED!');
                 }
@@ -296,9 +290,14 @@ function analyseDevice(device, options, callback) {
 
 
                         adapter.log.debug("started at " + startTS);
-                        adapter.log.debug("stopped at " + stoppedTS);
+                        adapter.log.debug("stopped at " + stopTS);
 
                         adapter.log.debug(adpr + " took " + timeSec);
+
+                        if(times[adpr] == undefined)
+                            times[adpr] = [];
+
+                        times[adpr].push(timeSec);
 
                         if (isFound) {
                             adapter.log.debug('Test ' + device._addr + ' ' + adpr + ' DETECTED!');
