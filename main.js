@@ -171,7 +171,7 @@ function analyseDeviceDependencies(device, options, callback) {
 
 
         (function (adpr) {
-            adapter.log.debug('Test ' + device._addr + ' ' + adpr);
+            adapter.log.debug('Test ' + device._type + ' ' + device._addr + ' ' + adpr);
 
             // expected, that detect method will add to _instances one instance of specific type or extend existing one
             adapters[a].detect(device._addr, device, options, (err, isFound, addr) => {
@@ -182,7 +182,7 @@ function analyseDeviceDependencies(device, options, callback) {
                 }
 
                 if (isFound) {
-                    adapter.log.debug('Test ' + device._addr + ' ' + adpr + ' DETECTED!');
+                    adapter.log.debug('Test ' + device._type + ' ' + device._addr + ' ' + adpr + ' DETECTED!');
                 }
                 if (timeout) {
                     clearTimeout(timeout);
@@ -252,7 +252,7 @@ function analyseDevice(device, options, callback) {
         forEachValidAdapter(device, false, (_adapter, a) => {
 
             (function (adpr) {
-                adapter.log.debug('Test ' + device._addr + ' ' + adpr);
+                adapter.log.debug('Test ' + device._type + ' ' + device._addr + ' ' + adpr);
 
                 let timeout = setTimeout(() => {
                     timeout = null;
@@ -621,16 +621,15 @@ function browse(options, callback) {
                     )
                 );
 
+                
+                adapter.log.debug(JSON.stringify(devices));
+
                 //Object.keys(g_devices).sort().forEach(n => devices.push(g_devices[n]));
                 self.getMissedNames(devices, () => {
                     devices.push({
                         _addr: '127.0.0.1',
                         _name: 'localhost',
                         _type: 'ip'
-                    });devices.push({
-                        _addr: '0.0.0.0',
-                        _name: 'localhost',
-                        _type: 'once'
                     });
                     discoveryEnd (devices, callback);
                 });
@@ -674,7 +673,7 @@ function browse(options, callback) {
                 if(old._upnp == undefined)
                     old._upnp = [];
                 if(newDevice._upnp !== undefined)
-                    old._upnp.push(newDevice._upnp[0]);
+                    old._upnp.push(newDevice._upnp)
 
                 g_devices[type][newDevice._addr] = old;
             } else {
