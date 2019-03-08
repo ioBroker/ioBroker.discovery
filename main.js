@@ -619,12 +619,16 @@ function browse(options, callback) {
                     )
                 );
 
-                //Object.keys(g_devices).sort().forEach(n => devices.push(g_devices[n]));
                 self.getMissedNames(devices, () => {
                     devices.push({
                         _addr: '127.0.0.1',
                         _name: 'localhost',
                         _type: 'ip'
+                    });
+                    devices.push({
+                        _addr: '255.255.255.255',
+                        _name: 'localhost',
+                        _type: 'udp'
                     });
                     devices.push({
                         _addr: '0.0.0.0',
