@@ -242,7 +242,6 @@ function analyseDeviceSerial(device, options, list, callback) {
 // addr can be IP address (192.168.1.1) or serial port name (/dev/ttyUSB0, COM1)
 function analyseDevice(device, options, callback) {
     let count = forEachValidAdapter(device, false);
-    let times = {};
 
     if (device._type === 'serial') {
         const list = [];
@@ -282,7 +281,7 @@ function analyseDevice(device, options, callback) {
                                 count = false;
                             }
                         }
-                        adapter.log.debug("Test " + apdr + " stopped");
+                        
                         if (isFound) {
                             adapter.log.debug('Test ' + device._addr + ' ' + adpr + ' DETECTED!');
                         }
@@ -298,9 +297,6 @@ function analyseDevice(device, options, callback) {
         });
         if (count === 0) analyseDeviceDependencies(device, options, callback);
     }
-    
-    adapter.log.debug(JSON.stringify(times));
-
 }
 
 function analyseDevices(devices, options, index, callback) {
