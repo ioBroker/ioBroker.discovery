@@ -613,16 +613,11 @@ function browse(options, callback) {
                 if (timeoutProgress) clearTimeout(timeoutProgress);
                 const devices = [];
 
-                adapter.log.debug(JSON.stringify(g_devices));
-
                 Object.keys(g_devices).sort().forEach(t => 
                     Object.keys(g_devices[t]).sort().forEach(d =>
                         devices.push(g_devices[t][d])
                     )
                 );
-
-                
-                adapter.log.debug(JSON.stringify(devices));
 
                 //Object.keys(g_devices).sort().forEach(n => devices.push(g_devices[n]));
                 self.getMissedNames(devices, () => {
@@ -630,6 +625,11 @@ function browse(options, callback) {
                         _addr: '127.0.0.1',
                         _name: 'localhost',
                         _type: 'ip'
+                    });
+                    devices.push({
+                        _addr: '0.0.0.0',
+                        _name: 'localhost',
+                        _type: 'once'
                     });
                     discoveryEnd (devices, callback);
                 });
