@@ -673,7 +673,7 @@ function browse(options, callback) {
                 if(old._upnp == undefined)
                     old._upnp = [];
                 if(newDevice._upnp !== undefined)
-                    old._upnp.push(newDevice._upnp)
+                    old._upnp.push(newDevice._upnp[0])
 
                 g_devices[type][newDevice._addr] = old;
             } else {
