@@ -157,7 +157,6 @@ function forEachValidAdapter(device, dependencies, callback) {
 function analyseDeviceDependencies(device, options, callback) {
     let count = forEachValidAdapter(device, true);
     const callbacks = {};
-    let times = {};
 
     // try all found adapter types (with dependencies)
     forEachValidAdapter(device, true, (_adapter, a) => {
@@ -173,7 +172,6 @@ function analyseDeviceDependencies(device, options, callback) {
 
         (function (adpr) {
             adapter.log.debug('Test ' + device._type + ' ' + device._addr + ' ' + adpr);
-            let startTS = Math.round(new Date().getTime() / 1000);
 
             // expected, that detect method will add to _instances one instance of specific type or extend existing one
             adapters[a].detect(device._addr, device, options, (err, isFound, addr) => {
@@ -182,10 +180,6 @@ function analyseDeviceDependencies(device, options, callback) {
                 } else {
                     callbacks[adpr] = true;
                 }
-
-                let stopTS = Math.round(new Date().getTime() / 1000);
-                let timeSec = stopTS - startTS;
-                adapter.log.debug(adpr + " took " + timeSec);
 
                 if(times[adpr] == undefined)
                     times[adpr] = [];
@@ -208,8 +202,6 @@ function analyseDeviceDependencies(device, options, callback) {
         })(a);
     });
 
-    adapter.log.debug(JSON.stringify(times));
-
     if (count === 0) callback(null);
 }
 
@@ -226,6 +218,7 @@ function analyseDeviceSerial(device, options, list, callback) {
             //options.log.error('Timeout by detect "' + adpr + '" on "' + device._addr + '": ' + (adapters[adpr].timeout || 2000) + 'ms');
             analyseDeviceSerial(device, options, list, callback);
         }, adapters[adpr].timeout || 2000);
+
 
         try {
             // expected, that detect method will add to _instances one instance of specific type or extend existing one
@@ -255,6 +248,7 @@ function analyseDeviceSerial(device, options, list, callback) {
 // addr can be IP address (192.168.1.1) or serial port name (/dev/ttyUSB0, COM1)
 function analyseDevice(device, options, callback) {
     let count = forEachValidAdapter(device, false);
+    let times = {};
 
     if (device._type === 'serial') {
         const list = [];
@@ -267,6 +261,8 @@ function analyseDevice(device, options, callback) {
 
             (function (adpr) {
                 adapter.log.debug('Test ' + device._type + ' ' + device._addr + ' ' + adpr);
+
+                let startTS = Math.round(new Date().getTime() / 1000);
 
                 let timeout = setTimeout(() => {
                     timeout = null;
@@ -294,6 +290,16 @@ function analyseDevice(device, options, callback) {
                                 count = false;
                             }
                         }
+                        
+                        let stopTS = Math.round(new Date().getTime() / 1000);
+                        let timeSec = stopTS - startTS;
+
+
+                        adapter.log.debug("started at " + startTS);
+                        adapter.log.debug("stopped at " + stoppedTS);
+
+                        adapter.log.debug(adpr + " took " + timeSec);
+
                         if (isFound) {
                             adapter.log.debug('Test ' + device._addr + ' ' + adpr + ' DETECTED!');
                         }
@@ -309,6 +315,9 @@ function analyseDevice(device, options, callback) {
         });
         if (count === 0) analyseDeviceDependencies(device, options, callback);
     }
+    
+    adapter.log.debug(JSON.stringify(times));
+
 }
 
 function analyseDevices(devices, options, index, callback) {
