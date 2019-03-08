@@ -256,8 +256,6 @@ function analyseDevice(device, options, callback) {
             (function (adpr) {
                 adapter.log.debug('Test ' + device._type + ' ' + device._addr + ' ' + adpr);
 
-                let startTS = Math.round(new Date().getTime() / 1000);
-
                 let timeout = setTimeout(() => {
                     timeout = null;
                     //options.log.error('Timeout by detect "' + adpr + '" on "' + device._addr + '": ' + (adapters[adpr].timeout || 2000) + 'ms');
@@ -284,21 +282,7 @@ function analyseDevice(device, options, callback) {
                                 count = false;
                             }
                         }
-                        
-                        let stopTS = Math.round(new Date().getTime() / 1000);
-                        let timeSec = stopTS - startTS;
-
-
-                        adapter.log.debug("started at " + startTS);
-                        adapter.log.debug("stopped at " + stopTS);
-
-                        adapter.log.debug(adpr + " took " + timeSec);
-
-                        if(times[adpr] == undefined)
-                            times[adpr] = [];
-
-                        times[adpr].push(timeSec);
-
+                        adapter.log.debug("Test " + apdr + " stopped");
                         if (isFound) {
                             adapter.log.debug('Test ' + device._addr + ' ' + adpr + ' DETECTED!');
                         }
