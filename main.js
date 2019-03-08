@@ -670,15 +670,19 @@ function browse(options, callback) {
             if(old !== undefined && old._type == type)
             {
                 adapter.log.debug("extended Device: " + newDevice._addr + " source=" + source);
-                if(old._upnp == undefined)
+                if(type == "upnp" && old._upnp == undefined)
                     old._upnp = [];
                 if(newDevice._upnp !== undefined)
-                    old._upnp.push(newDevice._upnp[0])
+                    old._upnp.push(newDevice._upnp)
 
                 g_devices[type][newDevice._addr] = old;
             } else {
                 adapter.log.debug('main.addDevice: ip=' + newDevice._addr + ' source=' + source);
             
+                if(type == "upnp")
+                {
+                    newDevice._upnp = [newDevice._upnp];
+                }
                 
                 g_devices_count += 1;
                 newDevice._source = source;
