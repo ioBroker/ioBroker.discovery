@@ -157,6 +157,7 @@ function forEachValidAdapter(device, dependencies, callback) {
 function analyseDeviceDependencies(device, options, callback) {
     let count = forEachValidAdapter(device, true);
     const callbacks = {};
+    let times = {};
 
     // try all found adapter types (with dependencies)
     forEachValidAdapter(device, true, (_adapter, a) => {
@@ -172,6 +173,7 @@ function analyseDeviceDependencies(device, options, callback) {
 
         (function (adpr) {
             adapter.log.debug('Test ' + device._type + ' ' + device._addr + ' ' + adpr);
+            let startTS = Math.round(new Date().getTime() / 1000);
 
             // expected, that detect method will add to _instances one instance of specific type or extend existing one
             adapters[a].detect(device._addr, device, options, (err, isFound, addr) => {
@@ -180,6 +182,16 @@ function analyseDeviceDependencies(device, options, callback) {
                 } else {
                     callbacks[adpr] = true;
                 }
+
+                let stopTS = Math.round(new Date().getTime() / 1000);
+                let timeSec = stopTS - startTS;
+                adapter.log.debug(adpr + " took " + timeSec);
+
+                if(times[adpr] == undefined)
+                    times[adpr] = [];
+
+                times[adpr].push(timeSec);
+
 
                 if (isFound) {
                     adapter.log.debug('Test ' + device._type + ' ' + device._addr + ' ' + adpr + ' DETECTED!');
@@ -195,6 +207,8 @@ function analyseDeviceDependencies(device, options, callback) {
             })
         })(a);
     });
+
+    adapter.log.debug(JSON.stringify(times));
 
     if (count === 0) callback(null);
 }
