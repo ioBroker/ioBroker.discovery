@@ -213,6 +213,7 @@ function analyseDeviceSerial(device, options, list, callback) {
             analyseDeviceSerial(device, options, list, callback);
         }, adapters[adpr].timeout || 2000);
 
+
         try {
             // expected, that detect method will add to _instances one instance of specific type or extend existing one
             adapters[adpr].detect(device._addr, device, options, (err, isFound, addr) => {
@@ -280,6 +281,7 @@ function analyseDevice(device, options, callback) {
                                 count = false;
                             }
                         }
+                        
                         if (isFound) {
                             adapter.log.debug('Test ' + device._addr + ' ' + adpr + ' DETECTED!');
                         }

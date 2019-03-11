@@ -1,7 +1,7 @@
 {
   "name": "iobroker.discovery",
   "description": "This adapter tries to detect devices in local network.",
-  "version": "1.3.6",
+  "version": "1.3.7",
   "author": "bluefox <dogafox@gmail.com>",
   "contributors": [
     "bluefox <dogafox@gmail.com>",
