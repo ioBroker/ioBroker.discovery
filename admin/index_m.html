@@ -308,10 +308,14 @@
                 if (!systemConfig.common.currency) {
                     if (systemConfig.common.language === 'ru') {
                         systemConfig.common.currency = '₽';
-                    } else if (systemConfig.common.language === 'de') {
-                        systemConfig.common.currency = '€';
-                    } else {
+                    } else if (systemConfig.common.language === 'en') {
                         systemConfig.common.currency = '$';
+                    } else if (systemConfig.common.language === 'pl') {
+                        systemConfig.common.currency = 'PLN';                    
+                    } else if (systemConfig.common.language === 'zh-cn') {
+                        systemConfig.common.currency = '￥';                    
+                    } else {
+                        systemConfig.common.currency = '€';
                     }
                     changed = true;
                 }
