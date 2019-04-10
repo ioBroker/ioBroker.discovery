@@ -687,6 +687,34 @@ function browse(options, callback) {
                 self.foundCount += 1;
                 g_devices[type][newDevice._addr] = newDevice;
             }
+            delete newDevice._new;
+            //debug:
+            // device.__debug = device.__debug || [];
+            // device.__debug.push(newDevice);
+        
+            (function _merge(dest, from) {
+                Object.getOwnPropertyNames (from).forEach (name => {
+                    if (name === '__debug') return;
+                    if (typeof from[name] === 'object') {
+                        if (typeof dest[name] !== 'object') {
+                            dest[name] = {};
+                        }
+                        _merge (dest[name], from[name]);
+                    } else {
+                        let uneq = true;
+                        const namex = name + 'x';
+                        if (specialEntryNames.indexOf (name) >= 0 && dest[name] && from[name] !== undefined && (uneq = dest[name] !== from[name])) {
+                            if (dest[namex] === undefined) dest[namex] = [dest[name]];
+                            if (from[name] && dest[namex].indexOf(from[name]) < 0) dest[namex].push(from[name]);
+                        }
+                        if (uneq) dest[name] = from[name];
+                    }
+                });
+            }) (device, newDevice);
+        
+            if (!device._name && newDevice._name) {
+                device._name = newDevice._name;
+            }
             return true;
         };
     
