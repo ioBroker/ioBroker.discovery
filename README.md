@@ -1,7 +1,7 @@
 ![Logo](admin/discovery.png)
 # ioBroker Discover Adapter
-==============
-[![NPM version](http://img.shields.io/npm/v/iobroker.discovery.svg)](https://www.npmjs.com/package/iobroker.discovery)
+
+![Number of Installations](http://iobroker.live/badges/discovery-installed.svg) ![Number of Installations](http://iobroker.live/badges/discovery-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.discovery.svg)](https://www.npmjs.com/package/iobroker.discovery)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.discovery.svg)](https://www.npmjs.com/package/iobroker.discovery)
 [![Tests](https://travis-ci.org/ioBroker/ioBroker.discovery.svg?branch=master)](https://travis-ci.org/ioBroker/ioBroker.discovery)
 
@@ -77,6 +77,7 @@ Just now it can detect via ping, UPnP (serial planned).
 - History (if no SQL or InfluxDB found)
 - flot (offered when a History-Adapter is present)
 - JavaScript
+- Info
 - Mobile
 - Vis
 - Web
@@ -106,6 +107,7 @@ Just now it can detect via ping, UPnP (serial planned).
 ## Changelog
 ### 1.3.0 (2019-01-04)
 * (bluefox) Support of compact mode
+* (ldittmar) info Adapter added
 
 ### 1.2.4 (2018-09-22)
 * (bluefox) Small GUI update was made

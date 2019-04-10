@@ -1,3 +1,5 @@
+/* global __dirname */
+
 /**
  *
  *      ioBroker Discover Adapter
@@ -192,7 +194,7 @@ function analyseDeviceDependencies(device, options, callback) {
                         callback(err);
                     }
                 }
-            })
+            });
         })(a);
     });
 
