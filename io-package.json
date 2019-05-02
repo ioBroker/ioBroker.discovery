@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "discovery",
-        "version": "1.3.7",
+        "version": "1.4.0",
         "news": {
+            "1.4.0": {
+                "en": "Code refactoring\nadded emby\nboradlink => broadlink2",
+                "de": "Code Refactoring\nfügte emby hinzu\nBroadlink => Broadlink 2",
+                "ru": "Рефакторинг кода\nдобавлена ​​Эмби\nbroadlink => broadlink 2",
+                "pt": "Refatoração de código\nadicionado emby\nbroadlink => broadlink 2",
+                "nl": "Code refactoring\ntoegevoegd emby\nbroadlink => breedband 2",
+                "fr": "Refactoring de code\najout d'embry\nbroadlink => broadlink 2",
+                "it": "Refactoring del codice\naggiunto emby\nbroadlink => broadlink 2",
+                "es": "Código de refactorización\nagregado emby\nbroadlink => broadlink 2",
+                "pl": "Refaktoryzacja kodu\ndodano emby\nbroadlink => broadlink 2",
+                "zh-cn": "代码重构\n添加了emby\nbroadlink => broadlink 2"
+            },
             "1.3.0": {
                 "en": "Support of compact mode was added",
                 "de": "Unterstützung des Kompaktmodus wurde hinzugefügt",
