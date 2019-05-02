@@ -67,10 +67,11 @@ function enumAdapters(repository) {
                 delete adapters[aName];
             }
 
+            //TODO remove after adapter is in latest repo
             // check if this adapter available in repository
-            if (!adapters[aName] && (!repository || repository.indexOf(aName) !== -1)) {
+            //if (!adapters[aName] && (!repository || repository.indexOf(aName) !== -1)) {
                 adapters[aName] = require(moduleName);
-            }
+            //}
         }
     }
 }
@@ -172,7 +173,7 @@ function analyseDeviceDependencies(device, options, callback) {
 
 
         (function (adpr) {
-            adapter.log.debug('Test ' + device._addr + ' ' + adpr);
+            adapter.log.debug('Test ' + device._type + ' ' + device._addr + ' ' + adpr);
 
             // expected, that detect method will add to _instances one instance of specific type or extend existing one
             adapters[a].detect(device._addr, device, options, (err, isFound, addr) => {
@@ -183,7 +184,7 @@ function analyseDeviceDependencies(device, options, callback) {
                 }
 
                 if (isFound) {
-                    adapter.log.debug('Test ' + device._addr + ' ' + adpr + ' DETECTED!');
+                    adapter.log.debug('Test ' + device._type + ' ' + device._addr + ' ' + adpr + ' DETECTED!');
                 }
                 if (timeout) {
                     clearTimeout(timeout);
@@ -213,6 +214,7 @@ function analyseDeviceSerial(device, options, list, callback) {
             //options.log.error('Timeout by detect "' + adpr + '" on "' + device._addr + '": ' + (adapters[adpr].timeout || 2000) + 'ms');
             analyseDeviceSerial(device, options, list, callback);
         }, adapters[adpr].timeout || 2000);
+
 
         try {
             // expected, that detect method will add to _instances one instance of specific type or extend existing one
@@ -253,7 +255,7 @@ function analyseDevice(device, options, callback) {
         forEachValidAdapter(device, false, (_adapter, a) => {
 
             (function (adpr) {
-                adapter.log.debug('Test ' + device._addr + ' ' + adpr);
+                adapter.log.debug('Test ' + device._type + ' ' + device._addr + ' ' + adpr);
 
                 let timeout = setTimeout(() => {
                     timeout = null;
@@ -281,6 +283,7 @@ function analyseDevice(device, options, callback) {
                                 count = false;
                             }
                         }
+                        
                         if (isFound) {
                             adapter.log.debug('Test ' + device._addr + ' ' + adpr + ' DETECTED!');
                         }
@@ -507,8 +510,10 @@ const Method = function (methodName, parent) {
         return parent.addDevice (newDevice, self.source, self.type);
     };
     
-    this.get = this.getDevice = function (ip) {
-         return g_devices[ip];
+    this.get = this.getDevice = function (ip, type = "ip") {
+        if(g_devices[type] == undefined)
+            return undefined;
+        return g_devices[type][ip];
     };
     
     this.updateProgress = function (progress) {
@@ -611,12 +616,18 @@ function browse(options, callback) {
                 self.count = -1;
                 if (timeoutProgress) clearTimeout(timeoutProgress);
                 const devices = [];
-                Object.keys(g_devices).sort().forEach(n => devices.push(g_devices[n]));
+
+                Object.keys(g_devices).sort().forEach(t => 
+                    Object.keys(g_devices[t]).sort().forEach(d =>
+                        devices.push(g_devices[t][d])
+                    )
+                );
+
                 self.getMissedNames(devices, () => {
                     devices.push({
-                        _addr: '127.0.0.1',
+                        _addr: '0.0.0.0',
                         _name: 'localhost',
-                        _type: 'ip'
+                        _type: 'once'
                     });
                     discoveryEnd (devices, callback);
                 });
@@ -649,15 +660,34 @@ function browse(options, callback) {
                 return;
             }
 
-            adapter.log.debug('main.addDevice: ip=' + newDevice._addr + ' source=' + source);
-        
-            if (!(device = g_devices[newDevice._addr])) {
+            if(g_devices[type] == undefined)
+                g_devices[type] = {};
+
+            let old = g_devices[type][newDevice._addr];
+
+            if(old !== undefined && old._type == type)
+            {
+                adapter.log.debug("extended Device: " + newDevice._addr + " source=" + source);
+                if(type == "upnp" && old._upnp == undefined)
+                    old._upnp = [];
+                if(newDevice._upnp !== undefined)
+                    old._upnp.push(newDevice._upnp)
+
+                g_devices[type][newDevice._addr] = old;
+            } else {
+                adapter.log.debug('main.addDevice: ip=' + newDevice._addr + ' source=' + source);
+            
+                if(type == "upnp")
+                {
+                    newDevice._upnp = [newDevice._upnp];
+                }
+                
                 g_devices_count += 1;
                 newDevice._source = source;
                 newDevice._type = type || 'ip';
                 newDevice._new = true;
                 self.foundCount += 1;
-                return g_devices[newDevice._addr] = newDevice;
+                g_devices[type][newDevice._addr] = newDevice;
             }
             delete newDevice._new;
             //debug:
@@ -687,7 +717,7 @@ function browse(options, callback) {
             if (!device._name && newDevice._name) {
                 device._name = newDevice._name;
             }
-            return newDevice;
+            return true;
         };
     
         methodsArray.forEach(m => {
