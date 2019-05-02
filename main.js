@@ -67,11 +67,10 @@ function enumAdapters(repository) {
                 delete adapters[aName];
             }
 
-            //TODO remove after adapter is in latest repo
             // check if this adapter available in repository
-            //if (!adapters[aName] && (!repository || repository.indexOf(aName) !== -1)) {
+            if (!adapters[aName] && (!repository || repository.indexOf(aName) !== -1)) {
                 adapters[aName] = require(moduleName);
-            //}
+            }
         }
     }
 }
@@ -510,9 +509,11 @@ const Method = function (methodName, parent) {
         return parent.addDevice (newDevice, self.source, self.type);
     };
     
-    this.get = this.getDevice = function (ip, type = "ip") {
-        if(g_devices[type] == undefined)
+    this.get = this.getDevice = function (ip, type) {
+        type = type || 'ip';
+        if (g_devices[type] === undefined) {
             return undefined;
+        }
         return g_devices[type][ip];
     };
     
@@ -660,25 +661,26 @@ function browse(options, callback) {
                 return;
             }
 
-            if(g_devices[type] == undefined)
-                g_devices[type] = {};
+            g_devices[type] = g_devices[type] || {};
 
             let old = g_devices[type][newDevice._addr];
 
-            if(old !== undefined && old._type == type)
-            {
-                adapter.log.debug("extended Device: " + newDevice._addr + " source=" + source);
-                if(type == "upnp" && old._upnp == undefined)
+            if (old && old._type === type) {
+                device = old;
+                adapter.log.debug('extended Device: ' + newDevice._addr + ' source=' + source);
+                if (type === 'upnp' && !old._upnp) {
                     old._upnp = [];
-                if(newDevice._upnp !== undefined)
+                }
+
+                if (newDevice._upnp !== undefined) {
                     old._upnp.push(newDevice._upnp)
+                }
 
                 g_devices[type][newDevice._addr] = old;
             } else {
                 adapter.log.debug('main.addDevice: ip=' + newDevice._addr + ' source=' + source);
             
-                if(type == "upnp")
-                {
+                if (type === 'upnp') {
                     newDevice._upnp = [newDevice._upnp];
                 }
                 
@@ -688,6 +690,7 @@ function browse(options, callback) {
                 newDevice._new = true;
                 self.foundCount += 1;
                 g_devices[type][newDevice._addr] = newDevice;
+                device = {};
             }
             delete newDevice._new;
             //debug:
@@ -695,24 +698,30 @@ function browse(options, callback) {
             // device.__debug.push(newDevice);
         
             (function _merge(dest, from) {
-                Object.getOwnPropertyNames (from).forEach (name => {
+                Object.getOwnPropertyNames(from).forEach(name => {
                     if (name === '__debug') return;
                     if (typeof from[name] === 'object') {
                         if (typeof dest[name] !== 'object') {
                             dest[name] = {};
                         }
-                        _merge (dest[name], from[name]);
+                        _merge(dest[name], from[name]);
                     } else {
                         let uneq = true;
                         const namex = name + 'x';
-                        if (specialEntryNames.indexOf (name) >= 0 && dest[name] && from[name] !== undefined && (uneq = dest[name] !== from[name])) {
-                            if (dest[namex] === undefined) dest[namex] = [dest[name]];
-                            if (from[name] && dest[namex].indexOf(from[name]) < 0) dest[namex].push(from[name]);
+                        if (specialEntryNames.indexOf(name) >= 0 && dest[name] && from[name] !== undefined && (uneq = (dest[name] !== from[name]))) {
+                            if (dest[namex] === undefined) {
+                                dest[namex] = [dest[name]];
+                            }
+                            if (from[name] && dest[namex].indexOf(from[name]) < 0) {
+                                dest[namex].push(from[name]);
+                            }
                         }
-                        if (uneq) dest[name] = from[name];
+                        if (uneq) {
+                            dest[name] = from[name];
+                        }
                     }
                 });
-            }) (device, newDevice);
+            })(device, newDevice);
         
             if (!device._name && newDevice._name) {
                 device._name = newDevice._name;
