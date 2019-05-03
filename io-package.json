@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "discovery",
-        "version": "1.4.0",
+        "version": "2.0.0",
         "news": {
             "1.4.0": {
                 "en": "Code refactoring\nadded emby\nboradlink => broadlink2",
