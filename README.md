@@ -105,11 +105,12 @@ Just now it can detect via ping, UPnP (serial planned).
 - xs1 (frankjoke)
 
 ## Changelog
-### 1.4.0 (2019-05-xx)
+### 2.0.0 (2019-05-15)
 * (thewhobox) Code refactoring
 * (thewhobox) add emby detection
 * (frankjoke) boradlink => broadlink2
 * (bluefox) Small fixes
+* (Apollon77) Support for nodejs 12 added, nodejs 4 is no longer supported!
 
 ### 1.3.0 (2019-01-04)
 * (bluefox) Support of compact mode
