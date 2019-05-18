@@ -37,6 +37,7 @@ Just now it can detect via ping, UPnP (serial planned).
 - Homematic CCU (hm-rpc, hm-rega)
 - Homepilot
 - Philips HUE
+- Plex
 - InfluxDB
 - KLF-200
 - KNX
