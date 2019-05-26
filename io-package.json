@@ -1,94 +1,115 @@
 {
     "common": {
-        "name":                     "discovery",
-        "version":                  "0.4.4",
+        "name": "discovery",
+        "version": "2.0.0",
         "news": {
-            "0.4.4": {
-                "en": "Add lgtv",
-                "de": "LGTV hinzugefügt",
-                "ru": "Добавлен lgtv"
+            "2.0.0": {
+                "en": "Support for nodejs 12 added, nodejs 4 is no longer supported!",
+                "de": "Unterstützung für NodeJS 12 hinzugefügt, NodeJS 4 wird nicht mehr unterstützt!",
+                "ru": "Добавлена ​​поддержка nodejs 12, nodejs 4 больше не поддерживается!",
+                "pt": "Suporte para nodejs 12 adicionado, nodejs 4 não é mais suportado!",
+                "nl": "Ondersteuning voor nodejs 12 toegevoegd, nodejs 4 wordt niet langer ondersteund!",
+                "fr": "Prise en charge de nodejs 12 ajoutée, nodejs 4 n'est plus prise en charge!",
+                "it": "Supporto per nodejs 12 aggiunto, nodejs 4 non è più supportato!",
+                "es": "Se agregó soporte para nodejs 12, ¡nodejs 4 ya no es compatible!",
+                "pl": "Dodano wsparcie dla nodejs 12, nodejs 4 nie jest już obsługiwany!",
+                "zh-cn": "添加了对nodejs 12的支持，不再支持nodejs 4！"
             },
-            "0.4.2": {
-                "en": "Add discovery methods selection",
-                "de": "Methodenauswahl hinzugefügt",
-                "ru": "Добавлен выбор методов поиска"
+            "1.4.0": {
+                "en": "Code refactoring\nadded emby\nboradlink => broadlink2",
+                "de": "Code Refactoring\nfügte emby hinzu\nBroadlink => Broadlink 2",
+                "ru": "Рефакторинг кода\nдобавлена ​​Эмби\nbroadlink => broadlink 2",
+                "pt": "Refatoração de código\nadicionado emby\nbroadlink => broadlink 2",
+                "nl": "Code refactoring\ntoegevoegd emby\nbroadlink => breedband 2",
+                "fr": "Refactoring de code\najout d'embry\nbroadlink => broadlink 2",
+                "it": "Refactoring del codice\naggiunto emby\nbroadlink => broadlink 2",
+                "es": "Código de refactorización\nagregado emby\nbroadlink => broadlink 2",
+                "pl": "Refaktoryzacja kodu\ndodano emby\nbroadlink => broadlink 2",
+                "zh-cn": "代码重构\n添加了emby\nbroadlink => broadlink 2"
             },
-			"0.4.0": {
-                "en": "add SamsungTV, Lightify, Miele and yamaha\nadd new discovery method mDNS",
-                "de": "SamsungTV, Lightify, Miele und yamaha sind hinzugefügt\nNeues Discovery Methode mDNS hinzugefügt",
-                "ru": "Добавлены SamsungTV, Lightify, Miele and yamaha\nДобавлен новый метод обнаружения - mDNS"
+            "1.3.0": {
+                "en": "Support of compact mode was added",
+                "de": "Unterstützung des Kompaktmodus wurde hinzugefügt",
+                "ru": "Добавлена ​​поддержка компактного режима",
+                "pt": "Suporte de modo compacto foi adicionado",
+                "nl": "Ondersteuning van de compacte modus is toegevoegd",
+                "fr": "Support du mode compact a été ajouté",
+                "it": "È stato aggiunto il supporto della modalità compatta",
+                "es": "Se agregó soporte de modo compacto.",
+                "pl": "Dodano obsługę trybu kompaktowego"
             },
-            "0.3.3": {
-                "en": "Add Philips HUE",
-                "de": "Philips HUE hinzugefügt",
-                "ru": "Добавлен Philips HUE"
-            },
-            "0.3.2": {
-                "en": "Add discovery of USB mysensors",
-                "de": "Erkennung für den USB mysensors hinzugefügt",
-                "ru": "Добавлено обнаружение USB mysensors"
-            },
-            "0.3.1": {
-                "en": "Add discovery of Daikin Adapter",
-                "de": "Erkennung für den Daikin-Adapter hinzugefügt",
-                "ru": "Add discovery of Daikin Adapter"
-            },
-            "0.3.0": {
-                "en": "Fixed serial discovery",
-                "de": "Serialsuche korrigiert",
-                "ru": "исправлен поиск на последовательных портах"
-            },
-			"0.2.3": {
-                "en": "added more adapters",
-                "de": "Wietere Adapters hinzugefügt",
-                "ru": "Добавлены дополнительные драйвера"
-            },
-            "0.2.2": {
-                "en": "Fix typo",
-                "de": "Fix typo",
-                "ru": "Исправлена синтаксическая ошибка"
-            },
-            "0.2.1": {
-                "en": "initial commit",
-                "de": "initial commit",
-                "ru": "initial commit"
+            "1.2.4": {
+                "en": "Small GUI update was made\nAdded ebus",
+                "de": "Ein kleines GUI-Update wurde vorgenommen\nEBus hinzugefügt",
+                "ru": "Было сделано небольшое обновление графического интерфейса пользователя\nДобавлен ebus",
+                "pt": "Atualização de pequena GUI foi feita\nAdicionado ebus",
+                "nl": "Kleine GUI-update is gemaakt\nEbus toegevoegd",
+                "fr": "Petite mise à jour de l'interface graphique a été faite\nEbus ajouté",
+                "it": "È stato effettuato un piccolo aggiornamento della GUI\nEbus aggiunto",
+                "es": "Se realizó una pequeña actualización de la GUI\nEbus añadido",
+                "pl": "Dokonano niewielkiej aktualizacji GUI\nDodano ebus"
             }
         },
-        "title":                    "Discovery Adapter",
+        "title": "Discovery devices",
         "titleLang": {
-            "en": "Discovery Adapter",
+            "en": "Discovery devices",
             "de": "Gerätesuche",
-            "ru": "Поиск устройств"
+            "ru": "Драйвер поиска устройств",
+			"pt": "Dispositivos de descoberta",
+			"nl": "Ontdekkingsapparaten",
+			"fr": "Dispositifs de découverte",
+			"it": "Dispositivi di scoperta",
+			"es": "Dispositivos de descubrimiento",
+			"pl": "Urządzenia Discovery",
+			"zh-cn": "发现设备"
         },
-        "desc":                     {
-            "en": "This adapter tries to discover all known devices.",
-            "de": "Adapter versucht alle bekannte Geräte automatisch zu finden",
-            "ru": "Драйвер пытается найти все известные устройства"
-        },
+        "desc": {
+			"en": "This adapter tries to discover all known devices in your network and on your machine",
+			"de": "Dieser Adapter versucht, alle bekannten Geräte in Ihrem Netzwerk und auf Ihrem Computer zu finden",
+			"ru": "Этот адаптер пытается обнаружить все известные устройства в вашей сети и на вашем компьютере",
+			"pt": "Este adaptador tenta descobrir todos os dispositivos conhecidos da sua rede e da sua máquina",
+			"nl": "Deze adapter probeert alle bekende apparaten in uw netwerk en op uw computer te ontdekken",
+			"fr": "Cet adaptateur essaie de découvrir tous les périphériques connus sur votre réseau et sur votre machine",
+			"it": "Questo adattatore tenta di rilevare tutti i dispositivi noti nella rete e sulla macchina",
+			"es": "Este adaptador intenta descubrir todos los dispositivos conocidos en su red y en su máquina",
+			"pl": "Ten adapter próbuje wykryć wszystkie znane urządzenia w sieci i na twoim komputerze",
+			"zh-cn": "这个适配器将尝试发现在您局域网和主机上的所有已知设备"
+		  },
         "authors": [
             "bluefox <dogafox@gmail.com>"
         ],
-        "license":                  "MIT",
-        "platform":                 "Javascript/Node.js",
-        "mode":                     "daemon",
-		"enabled":                  true,
-        "singletonHost":            true,
-        "messagebox":               true,
-        "readme":                   "https://github.com/ioBroker/ioBroker.discovery/blob/master/README.md",
-        "dependencies":             [{"js-controller": ">=0.17.0"}],
-        "loglevel":                 "info",
-        "icon":                     "discovery.png",
-        "keywords":                 ["poll", "discovery", "ip"],
-        "extIcon":                  "https://raw.githubusercontent.com/ioBroker/ioBroker.discovery/master/admin/discovery.png",
-		"type":                     "common adapters",
-        "config":{
+        "license": "MIT",
+        "platform": "Javascript/Node.js",
+        "mode": "daemon",
+        "enabled": true,
+        "compact": true,
+        "singletonHost": true,
+        "materialize": true,
+        "messagebox": true,
+        "readme": "https://github.com/ioBroker/ioBroker.discovery/blob/master/README.md",
+        "dependencies": [
+            {
+                "js-controller": ">=1.2.0"
+            }
+        ],
+        "loglevel": "info",
+        "icon": "discovery.png",
+        "keywords": [
+            "poll",
+            "discovery",
+            "ip"
+        ],
+        "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.discovery/master/admin/discovery.png",
+        "type": "general",
+        "config": {
             "width": 1224,
             "height": 700
         }
     },
     "native": {
-        "pingTimeout":       1000,
-        "pingBlock":         20
+        "pingTimeout": 1000,
+        "pingBlock": 20,
+        "onlyLocal": false
     },
     "_objects": [
         {
@@ -106,67 +127,67 @@
     ],
     "instanceObjects": [
         {
-            "_id":  "devicesProgress",
+            "_id": "devicesProgress",
             "type": "state",
             "common": {
-                "role":  "value",
-                "name":  "Find devices progress",
-                "min":   0,
-                "max":   100,
-                "type":  "number",
+                "role": "value",
+                "name": "Find devices progress",
+                "min": 0,
+                "max": 100,
+                "type": "number",
                 "unit": "%",
-                "read":  true,
+                "read": true,
                 "write": false
             },
             "native": {}
         },
         {
-            "_id":  "servicesProgress",
+            "_id": "servicesProgress",
             "type": "state",
             "common": {
-                "role":  "value",
-                "name":  "Find services on devices progress",
-                "min":   0,
-                "max":   100,
-                "type":  "number",
+                "role": "value",
+                "name": "Find services on devices progress",
+                "min": 0,
+                "max": 100,
+                "type": "number",
                 "unit": "%",
-                "read":  true,
+                "read": true,
                 "write": false
             },
             "native": {}
         },
         {
-            "_id":  "instancesFound",
+            "_id": "instancesFound",
             "type": "state",
             "common": {
-                "role":  "value",
-                "name":  "Found services",
-                "type":  "number",
-                "read":  true,
+                "role": "value",
+                "name": "Found services",
+                "type": "number",
+                "read": true,
                 "write": false
             },
             "native": {}
         },
         {
-            "_id":  "devicesFound",
+            "_id": "devicesFound",
             "type": "state",
             "common": {
-                "role":  "value",
-                "name":  "Found devices",
-                "type":  "number",
-                "read":  true,
+                "role": "value",
+                "name": "Found devices",
+                "type": "number",
+                "read": true,
                 "write": false
             },
             "native": {}
         },
         {
-            "_id":  "scanRunning",
+            "_id": "scanRunning",
             "type": "state",
             "common": {
-                "role":  "indicator",
-                "name":  "Is scan now running",
-                "type":  "boolean",
-                "read":  true,
+                "role": "indicator",
+                "name": "Is scan now running",
+                "type": "boolean",
+                "read": true,
                 "write": false
             },
             "native": {}
