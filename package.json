@@ -31,7 +31,8 @@
   "devDependencies": {
     "gulp": "^4.0.1",
     "mocha": "^6.1.4",
-    "chai": "^4.2.0"
+    "chai": "^4.2.0",
+    "eslint": "^6.8.0"
   },
   "bugs": {
     "url": "https://github.com/ioBroker/ioBroker.discovery/issues"
