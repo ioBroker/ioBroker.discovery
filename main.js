@@ -145,7 +145,7 @@ function forEachValidAdapter(device, dependencies, callback) {
         dependencies = undefined;
     }
     let cnt  = 0;
-    let type = typeof device === 'object' ? device._type : device;
+    const type = typeof device === 'object' ? device._type : device;
     for (const a in adapters) {
         if (adapters.hasOwnProperty(a) && isValidAdapter(a, type, dependencies)) {
             callback && callback(adapters[a], a);
@@ -474,8 +474,8 @@ function haltAllMethods() {
     Object.keys(methods).forEach(method => {
         // not final
         if (method && method.halt !== undefined) {
-             method.halt = true;
-         }
+            method.halt = true;
+        }
     });
 }
 
@@ -605,7 +605,7 @@ function browse(options, callback) {
                 methodsArray.forEach(n => value += methods[n].progress);
                 adapter.setState('devicesProgress', Math.round(value / methodsArray.length), true);
                 adapter.setState('devicesFound', self.foundCount, true);
-            }, 1000)
+            }, 1000);
         };
 
         this.done = function (method) {
@@ -663,7 +663,7 @@ function browse(options, callback) {
 
             g_devices[type] = g_devices[type] || {};
 
-            let old = g_devices[type][newDevice._addr];
+            const old = g_devices[type][newDevice._addr];
 
             if (old && old._type === type) {
                 device = old;
@@ -673,7 +673,7 @@ function browse(options, callback) {
                 }
 
                 if (newDevice._upnp !== undefined) {
-                    old._upnp.push(newDevice._upnp)
+                    old._upnp.push(newDevice._upnp);
                 }
 
                 g_devices[type][newDevice._addr] = old;

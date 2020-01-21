@@ -275,7 +275,7 @@ function languagesFlat2words(src) {
             if (aWords.hasOwnProperty(w)) {
                 if (!bigOne[w]) {
                     console.warn('Take from actual words.js: ' + w);
-                    bigOne[w] = aWords[w]
+                    bigOne[w] = aWords[w];
                 }
                 dirs.forEach(function (lang) {
                     if (temporaryIgnore.indexOf(lang) !== -1) return;
@@ -337,7 +337,7 @@ function languages2words(src) {
             if (aWords.hasOwnProperty(w)) {
                 if (!bigOne[w]) {
                     console.warn('Take from actual words.js: ' + w);
-                    bigOne[w] = aWords[w]
+                    bigOne[w] = aWords[w];
                 }
                 dirs.forEach(function (lang) {
                     if (temporaryIgnore.indexOf(lang) !== -1) return;
