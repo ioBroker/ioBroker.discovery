@@ -52,15 +52,15 @@ function startAdapter(options) {
 
 function enumAdapters(repository) {
     const dir = fs.readdirSync(__dirname + '/lib/adapters');
-    
+
     for (let f = 0; f < dir.length; f++) {
         const parts = dir[f].split('.');
         if (parts[parts.length - 1] === 'js') {
             parts.pop();
-            
+
             const moduleName = __dirname + '/lib/adapters/' + dir[f];
             const aName      = parts.join('.');
-            
+
             if (adapters && adapters[aName] && adapters[aName].reloadModule) {
                 const module = require.resolve(moduleName);
                 delete require.cache[module];
@@ -114,7 +114,7 @@ function processMessage(obj) {
                 if (!methods || !methods.length) {
                     enumMethods();
                 }
-                
+
                 adapter.sendTo(obj.from, obj.command, methods, obj.callback);
             }
             break;
@@ -282,7 +282,7 @@ function analyseDevice(device, options, callback) {
                                 count = false;
                             }
                         }
-                        
+
                         if (isFound) {
                             adapter.log.debug('Test ' + device._addr + ' ' + adpr + ' DETECTED!');
                         }
@@ -363,7 +363,7 @@ function analyseDevices(devices, options, index, callback) {
 }
 
 function getInstances(callback) {
-    adapter.objects.getObjectView('system', 'instance', {startkey: 'system.adapter.', endkey: 'system.adapter.\u9999'}, (err, doc) => {
+    adapter.getObjectView('system', 'instance', {startkey: 'system.adapter.', endkey: 'system.adapter.\u9999'}, (err, doc) => {
         if (err || !doc || !doc.rows || !doc.rows.length) return callback && callback ([]);
         const res = [];
         doc.rows.forEach(row => res.push(row.value));
@@ -491,7 +491,7 @@ const Method = function (methodName, parent) {
     Object.assign(this, module);
     const self = this;
     let doneCalled = 0;
-    
+
     this.parent = parent;
     this.options = adapter.config;
     this.foundCount = 0;
@@ -500,7 +500,7 @@ const Method = function (methodName, parent) {
     this.log = adapter.log;
     this.halt = parent.halt;
     this.halt [methodName] = false; // not necessary, but to see hwo to use
-    
+
     this.add = this.addDevice = function (newDevice, err) {
         if (newDevice === null) {
             return self.done();
@@ -508,7 +508,7 @@ const Method = function (methodName, parent) {
         self.foundCount += 1;
         return parent.addDevice (newDevice, self.source, self.type);
     };
-    
+
     this.get = this.getDevice = function (ip, type) {
         type = type || 'ip';
         if (g_devices[type] === undefined) {
@@ -516,13 +516,13 @@ const Method = function (methodName, parent) {
         }
         return g_devices[type][ip];
     };
-    
+
     this.updateProgress = function (progress) {
         if (typeof progress === 'number') self.progress = Math.round(progress);
         adapter.log.debug (self.source + ': ' + self.progress + '%, devices - ' + self.foundCount);
         parent.updateProgress ();
     };
-    
+
     this.done = function (err) {
         if (err) {
             adapter.log.warn(err);
@@ -546,7 +546,7 @@ const Method = function (methodName, parent) {
     let interval;
     this.setTimeout = this.setInterval = function (timeout, options) {
         options = options || {};
-        
+
         if (options.timeout !== false) {
             timer = setTimeout(() => {
                 timer = null;
@@ -557,7 +557,7 @@ const Method = function (methodName, parent) {
                 }
             }, timeout);
         }
-        
+
         if (options.progress !== false) {
             parent.updateProgress();
             interval = setInterval(() => {
@@ -578,18 +578,18 @@ function browse(options, callback) {
     if (isRunning) {
         return callback && callback('Yet running');
     }
-    
+
     isRunning = true;
     g_devices = {};
     g_devices_count = 0;
-    
+
     adapter.setState('scanRunning', true, true);
     enumMethods();
-    
+
     function Browse () {
         const self = this;
         adapter.config.stopPingOnTR064Ready = true; //
-        
+
         const methodsArray = Object.keys(methods).filter(m => methods[m].browse && (!options || options.indexOf(m) !== -1));
 
         this.count = methodsArray.length;
@@ -607,7 +607,7 @@ function browse(options, callback) {
                 adapter.setState('devicesFound', self.foundCount, true);
             }, 1000)
         };
-        
+
         this.done = function (method) {
             if (method !== undefined) {
                 self.count--;
@@ -618,7 +618,7 @@ function browse(options, callback) {
                 if (timeoutProgress) clearTimeout(timeoutProgress);
                 const devices = [];
 
-                Object.keys(g_devices).sort().forEach(t => 
+                Object.keys(g_devices).sort().forEach(t =>
                     Object.keys(g_devices[t]).sort().forEach(d =>
                         devices.push(g_devices[t][d])
                     )
@@ -634,7 +634,7 @@ function browse(options, callback) {
                 });
             }
         };
-    
+
         this.getMissedNames = function (devices, callback) {
             let cnt = 0;
             (function doIt() {
@@ -654,7 +654,7 @@ function browse(options, callback) {
                 });
             })();
         };
-        
+
         this.addDevice = function (newDevice, source/*methodName*/, type) {
             let device;
             if (!newDevice || !newDevice._addr) {
@@ -679,11 +679,11 @@ function browse(options, callback) {
                 g_devices[type][newDevice._addr] = old;
             } else {
                 adapter.log.debug('main.addDevice: ip=' + newDevice._addr + ' source=' + source);
-            
+
                 if (type === 'upnp') {
                     newDevice._upnp = [newDevice._upnp];
                 }
-                
+
                 g_devices_count += 1;
                 newDevice._source = source;
                 newDevice._type = type || 'ip';
@@ -696,7 +696,7 @@ function browse(options, callback) {
             //debug:
             // device.__debug = device.__debug || [];
             // device.__debug.push(newDevice);
-        
+
             (function _merge(dest, from) {
                 Object.getOwnPropertyNames(from).forEach(name => {
                     if (name === '__debug') return;
@@ -722,13 +722,13 @@ function browse(options, callback) {
                     }
                 });
             })(device, newDevice);
-        
+
             if (!device._name && newDevice._name) {
                 device._name = newDevice._name;
             }
             return true;
         };
-    
+
         methodsArray.forEach(m => {
             //if (m !== 'ping') return;
             const method = Method(m, self);
