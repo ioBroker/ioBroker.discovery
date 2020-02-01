@@ -65,6 +65,7 @@ Just now it can detect via ping, UPnP (serial planned).
 - Stiebel-Eltron/Tecalor ISG (plus)
 - SQL (MySQL, MSSQL, PostgreSQL)
 - Squeezebox
+- SqueezeboxRPC
 - stiebel-isg
 - TR-064
 - Trådfri
