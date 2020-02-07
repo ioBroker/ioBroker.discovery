@@ -16,6 +16,7 @@ Just now it can detect via ping, UPnP (serial planned).
 
 ### Automatically Discovered
 
+- Beckhoff PLC
 - Bosch Smart Home
 - Bose Soundtouch
 - Broadlink
@@ -107,6 +108,9 @@ Just now it can detect via ping, UPnP (serial planned).
 - xs1 (frankjoke)
 
 ## Changelog
+### 2.2.0 (2020-02-07)
+* (dkleber89) Add discovery for Beckhoff PLC
+
 ### 2.1.0 (2020-01-21)
 * (foxriver76) no longer use adapter.objects
 * __js-controller > 2.0.0 required__
@@ -205,7 +209,7 @@ Just now it can detect via ping, UPnP (serial planned).
 
 The MIT License (MIT)
 
-Copyright (c) 2017-2019, bluefox <dogafox@gmail.com>
+Copyright (c) 2017-2020, bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -29,6 +29,7 @@
     "url": "https://github.com/ioBroker/ioBroker.discovery"
   },
   "devDependencies": {
+    "axios": "0.19.2",
     "gulp": "^4.0.1",
     "mocha": "^6.1.4",
     "chai": "^4.2.0",

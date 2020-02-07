@@ -3,18 +3,18 @@
         "name": "discovery",
         "version": "2.2.0",
         "news": {
-          "2.2.0": {
-            "en": "removed usage of adapter.objects",
-            "de": "Verwendung von adapter.objects entfernt",
-            "ru": "удалено использование файла adapter.objects",
-            "pt": "removido o uso de adapter.objects",
-            "nl": "gebruik van adapter.objects verwijderd",
-            "fr": "utilisation supprimée de adapter.objects",
-            "it": "rimosso l'utilizzo di adapter.objects",
-            "es": "uso eliminado de adaptador.objetos",
-            "pl": "usunięto użycie adapter.objects",
-            "zh-cn": "删除了adapter.objects的用法"
-          },
+            "2.2.0": {
+                "en": "Add discovery for Beckhoff PLC",
+                "de": "Suche nach Beckhoff SPS hinzugefügt",
+                "ru": "Добавить открытие для Beckhoff PLC",
+                "pt": "Adicionar descoberta para Beckhoff PLC",
+                "nl": "Ontdekking toevoegen voor Beckhoff PLC",
+                "fr": "Ajouter une découverte pour Beckhoff PLC",
+                "it": "Aggiungi scoperta per Beckhoff PLC",
+                "es": "Agregar descubrimiento para Beckhoff PLC",
+                "pl": "Dodaj odkrycie dla Beckhoff PLC",
+                "zh-cn": "为Beckhoff PLC添加发现"
+            },
             "2.1.0": {
                 "en": "removed usage of adapter.objects",
                 "de": "Verwendung von adapter.objects entfernt",
@@ -60,7 +60,8 @@
                 "fr": "Support du mode compact a été ajouté",
                 "it": "È stato aggiunto il supporto della modalità compatta",
                 "es": "Se agregó soporte de modo compacto.",
-                "pl": "Dodano obsługę trybu kompaktowego"
+                "pl": "Dodano obsługę trybu kompaktowego",
+                "zh-cn": "支持紧凑模式"
             },
             "1.2.4": {
                 "en": "Small GUI update was made\nAdded ebus",
@@ -71,7 +72,8 @@
                 "fr": "Petite mise à jour de l'interface graphique a été faite\nEbus ajouté",
                 "it": "È stato effettuato un piccolo aggiornamento della GUI\nEbus aggiunto",
                 "es": "Se realizó una pequeña actualización de la GUI\nEbus añadido",
-                "pl": "Dokonano niewielkiej aktualizacji GUI\nDodano ebus"
+                "pl": "Dokonano niewielkiej aktualizacji GUI\nDodano ebus",
+                "zh-cn": "进行了小型GUI更新\n"
             }
         },
         "title": "Discovery devices",
@@ -79,26 +81,26 @@
             "en": "Discovery devices",
             "de": "Gerätesuche",
             "ru": "Драйвер поиска устройств",
-			"pt": "Dispositivos de descoberta",
-			"nl": "Ontdekkingsapparaten",
-			"fr": "Dispositifs de découverte",
-			"it": "Dispositivi di scoperta",
-			"es": "Dispositivos de descubrimiento",
-			"pl": "Urządzenia Discovery",
-			"zh-cn": "发现设备"
+            "pt": "Dispositivos de descoberta",
+            "nl": "Ontdekkingsapparaten",
+            "fr": "Dispositifs de découverte",
+            "it": "Dispositivi di scoperta",
+            "es": "Dispositivos de descubrimiento",
+            "pl": "Urządzenia Discovery",
+            "zh-cn": "发现设备"
         },
         "desc": {
-			"en": "This adapter tries to discover all known devices in your network and on your machine",
-			"de": "Dieser Adapter versucht, alle bekannten Geräte in Ihrem Netzwerk und auf Ihrem Computer zu finden",
-			"ru": "Этот адаптер пытается обнаружить все известные устройства в вашей сети и на вашем компьютере",
-			"pt": "Este adaptador tenta descobrir todos os dispositivos conhecidos da sua rede e da sua máquina",
-			"nl": "Deze adapter probeert alle bekende apparaten in uw netwerk en op uw computer te ontdekken",
-			"fr": "Cet adaptateur essaie de découvrir tous les périphériques connus sur votre réseau et sur votre machine",
-			"it": "Questo adattatore tenta di rilevare tutti i dispositivi noti nella rete e sulla macchina",
-			"es": "Este adaptador intenta descubrir todos los dispositivos conocidos en su red y en su máquina",
-			"pl": "Ten adapter próbuje wykryć wszystkie znane urządzenia w sieci i na twoim komputerze",
-			"zh-cn": "这个适配器将尝试发现在您局域网和主机上的所有已知设备"
-		  },
+            "en": "This adapter tries to discover all known devices in your network and on your machine",
+            "de": "Dieser Adapter versucht, alle bekannten Geräte in Ihrem Netzwerk und auf Ihrem Computer zu finden",
+            "ru": "Этот адаптер пытается обнаружить все известные устройства в вашей сети и на вашем компьютере",
+            "pt": "Este adaptador tenta descobrir todos os dispositivos conhecidos da sua rede e da sua máquina",
+            "nl": "Deze adapter probeert alle bekende apparaten in uw netwerk en op uw computer te ontdekken",
+            "fr": "Cet adaptateur essaie de découvrir tous les périphériques connus sur votre réseau et sur votre machine",
+            "it": "Questo adattatore tenta di rilevare tutti i dispositivi noti nella rete e sulla macchina",
+            "es": "Este adaptador intenta descubrir todos los dispositivos conocidos en su red y en su máquina",
+            "pl": "Ten adapter próbuje wykryć wszystkie znane urządzenia w sieci i na twoim komputerze",
+            "zh-cn": "这个适配器将尝试发现在您局域网和主机上的所有已知设备"
+        },
         "authors": [
             "bluefox <dogafox@gmail.com>"
         ],
