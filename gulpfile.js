@@ -4,6 +4,7 @@ const gulp      = require('gulp');
 const fs        = require('fs');
 const pkg       = require('./package.json');
 const iopackage = require('./io-package.json');
+const translate = require('./admin/translateTools.js').translateText;
 const version   = (pkg && pkg.version) ? pkg.version : iopackage.common.version;
 /*const appName   = getAppName();
 
@@ -417,4 +418,49 @@ gulp.task('updateReadme', function (done) {
     done();
 });
 
-gulp.task('default', ['updatePackages', 'updateReadme']);
+async function translateNotExisting(obj, baseText, yandex) {
+    let t = obj['en'];
+    if (!t) {
+        t = baseText;
+    }
+
+    if (t) {
+        for (let l in languages) {
+            if (!obj[l]) {
+                const time = new Date().getTime();
+                obj[l] = await translate(t, l, yandex);
+                console.log('en -> ' + l + ' ' + (new Date().getTime() - time) + ' ms');
+            }
+        }
+    }
+}
+
+gulp.task('translateIoPackage', async function(done) {
+    let yandex;
+    const i = process.argv.indexOf('--yandex');
+    if (i > -1) {
+        yandex = process.argv[i + 1];
+    }
+
+    if (iopackage && iopackage.common) {
+        if (iopackage.common.news) {
+            console.log('Translate News');
+            for (let k in iopackage.common.news) {
+                console.log('News: ' + k);
+                let nw = iopackage.common.news[k];
+                await translateNotExisting(nw, null, yandex);
+            }
+        }
+        if (iopackage.common.titleLang) {
+            console.log('Translate Title');
+            await translateNotExisting(iopackage.common.titleLang, iopackage.common.title, yandex);
+        }
+        if (iopackage.common.desc) {
+            console.log('Translate Description');
+            await translateNotExisting(iopackage.common.desc, null, yandex);
+        }
+    }
+    fs.writeFileSync('io-package.json', JSON.stringify(iopackage, null, 4) + '\n');
+});
+
+gulp.task('default', gulp.series('updatePackages', 'updateReadme'));
