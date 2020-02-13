@@ -110,7 +110,7 @@ Just now it can detect via ping, UPnP (serial planned).
 - xs1 (frankjoke)
 
 ## Changelog
-### 2.2.0 (2020-02-13)
+### 2.2.1 (2020-02-13)
 * (dkleber89) Add discovery for Beckhoff PLC
 * (forelleblau) Add discovery for Solarlog
 * (oweitman) Add discovery for SqueezeboxRPC
@@ -213,7 +213,7 @@ Just now it can detect via ping, UPnP (serial planned).
 
 The MIT License (MIT)
 
-Copyright (c) 2017-2020, bluefox <dogafox@gmail.com>
+Copyright (c) 2017-2020, Bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

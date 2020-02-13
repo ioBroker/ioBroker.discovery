@@ -1,19 +1,20 @@
-/* global __dirname */
-
 /**
  *
- *      ioBroker Discover Adapter
+ *      ioBroker Discovery Adapter
  *
- *      Copyright (c) 2017-2019 bluefox <dogafox@gmail.com>
+ *      Copyright (c) 2017-2020 Bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
  */
+
+/* global __dirname */
 /* jshint -W097 */
-/* jshint strict:false */
+/* jshint strict: false */
 /* jslint node: true */
+
 'use strict';
-const utils = require('@iobroker/adapter-core'); // Get common adapter utils
+const utils       = require('@iobroker/adapter-core'); // Get common adapter utils
 const tools       = require(utils.controllerDir + '/lib/tools');
 const adapterName = require('./package.json').name.split('.').pop();
 const fs          = require('fs');
@@ -28,10 +29,7 @@ function startAdapter(options) {
     Object.assign(options, {name: adapterName});
     adapter  = new utils.Adapter(options);
 
-    adapter.on('message', obj => {
-        if (obj) processMessage(obj);
-        processMessages();
-    });
+    adapter.on('message', obj => obj && processMessage(obj));
 
     adapter.on('ready', main);
 
@@ -122,21 +120,20 @@ function processMessage(obj) {
     }
 }
 
-function processMessages() {
-    adapter.getMessage(function (err, obj) {
-        if (obj) {
-            processMessage(obj.command, obj.message);
-            processMessages();
-        }
-    });
-}
-
 function isValidAdapter(adapterName, type, dependencies) {
-    if (!adapters.hasOwnProperty(adapterName)) return false;
+    if (!adapters.hasOwnProperty(adapterName)) {
+        return false;
+    }
     const adapter = adapters[adapterName];
-    if (typeof adapter.type === 'string' && adapter.type !== type) return false;
-    if (typeof adapter.type === 'object' && adapter.type.indexOf(type) === -1) return false;
-    return ((!!adapter.dependencies) === dependencies);
+
+    if (typeof adapter.type === 'string' && adapter.type !== type) {
+        return false;
+    } else
+    if (typeof adapter.type === 'object' && adapter.type.indexOf(type) === -1) {
+        return false;
+    } else {
+        return ((!!adapter.dependencies) === dependencies);
+    }
 }
 
 function forEachValidAdapter(device, dependencies, callback) {
