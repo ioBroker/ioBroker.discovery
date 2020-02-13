@@ -1,8 +1,11 @@
-Gruntfile.js
 gulpfile.js
 tasks
 test
+.github
+.eslintrc.json
+.npmignore
 .travis.yml
 appveyor.yml
 admin/i18n
 package-lock.json
+ioBroker.discovery.iml

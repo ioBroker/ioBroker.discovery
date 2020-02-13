@@ -61,6 +61,7 @@ Just now it can detect via ping, UPnP (serial planned).
 - Proxmox
 - RFLink (Serial 57600baud)
 - SamsungTV
+- Solarlog
 - Sonnen
 - Sonos
 - Stiebel-Eltron/Tecalor ISG (plus)
@@ -109,8 +110,10 @@ Just now it can detect via ping, UPnP (serial planned).
 - xs1 (frankjoke)
 
 ## Changelog
-### 2.2.0 (2020-02-07)
+### 2.2.0 (2020-02-13)
 * (dkleber89) Add discovery for Beckhoff PLC
+* (forelleblau) Add discovery for Solarlog
+* (oweitman) Add discovery for SqueezeboxRPC
 
 ### 2.1.0 (2020-01-21)
 * (foxriver76) no longer use adapter.objects

@@ -4,16 +4,16 @@
         "version": "2.2.0",
         "news": {
             "2.2.0": {
-                "en": "Add discovery for Beckhoff PLC",
-                "de": "Suche nach Beckhoff SPS hinzugefügt",
-                "ru": "Добавить открытие для Beckhoff PLC",
-                "pt": "Adicionar descoberta para Beckhoff PLC",
-                "nl": "Ontdekking toevoegen voor Beckhoff PLC",
-                "fr": "Ajouter une découverte pour Beckhoff PLC",
-                "it": "Aggiungi scoperta per Beckhoff PLC",
-                "es": "Agregar descubrimiento para Beckhoff PLC",
-                "pl": "Dodaj odkrycie dla Beckhoff PLC",
-                "zh-cn": "为Beckhoff PLC添加发现"
+                "en": "Added discovery for Beckhoff PLC\nAdded discovery for Solarlog\nAdded discovery for SqueezeboxRPC",
+                "de": "Entdeckung für Beckhoff PLC hinzugefügt\nEntdeckung für Solarlog hinzugefügt\nEntdeckung für SqueezeboxRPC hinzugefügt",
+                "ru": "Добавлено открытие для Beckhoff PLC\nДобавлено открытие для Solarlog\nДобавлено открытие для SqueezeboxRPC",
+                "pt": "Adicionada descoberta para o Beckhoff PLC\nAdicionada descoberta para o Solarlog\nAdicionada descoberta para o SqueezeboxRPC",
+                "nl": "Detectie toegevoegd voor Beckhoff PLC\nOntdekking voor Solarlog toegevoegd\nDetectie toegevoegd voor SqueezeboxRPC",
+                "fr": "Découverte supplémentaire pour Beckhoff PLC\nDécouverte ajoutée pour Solarlog\nDécouverte ajoutée pour SqueezeboxRPC",
+                "it": "Aggiunta scoperta per Beckhoff PLC\nAggiunto rilevamento per Solarlog\nAggiunto rilevamento per SqueezeboxRPC",
+                "es": "Descubrimiento agregado para Beckhoff PLC\nDescubrimiento agregado para Solarlog\nDescubrimiento agregado para SqueezeboxRPC",
+                "pl": "Dodano odkrycie dla Beckhoff PLC\nDodano odkrycie dla Solarlog\nDodano odkrycie dla SqueezeboxRPC",
+                "zh-cn": "增加了对Beckhoff PLC的发现\n增加了对Solarlog的发现\n添加了对SqueezeboxRPC的发现"
             },
             "2.1.0": {
                 "en": "removed usage of adapter.objects",
