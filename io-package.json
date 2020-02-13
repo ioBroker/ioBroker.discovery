@@ -1,9 +1,9 @@
 {
     "common": {
         "name": "discovery",
-        "version": "2.2.1",
+        "version": "2.2.2",
         "news": {
-            "2.2.1": {
+            "2.2.2": {
                 "en": "Added discovery for Beckhoff PLC\nAdded discovery for Solarlog\nAdded discovery for SqueezeboxRPC",
                 "de": "Entdeckung für Beckhoff PLC hinzugefügt\nEntdeckung für Solarlog hinzugefügt\nEntdeckung für SqueezeboxRPC hinzugefügt",
                 "ru": "Добавлено открытие для Beckhoff PLC\nДобавлено открытие для Solarlog\nДобавлено открытие для SqueezeboxRPC",
