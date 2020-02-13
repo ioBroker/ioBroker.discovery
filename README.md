@@ -110,7 +110,7 @@ Just now it can detect via ping, UPnP (serial planned).
 - xs1 (frankjoke)
 
 ## Changelog
-### 2.2.1 (2020-02-13)
+### 2.2.2 (2020-02-13)
 * (dkleber89) Add discovery for Beckhoff PLC
 * (forelleblau) Add discovery for Solarlog
 * (oweitman) Add discovery for SqueezeboxRPC
