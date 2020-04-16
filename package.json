@@ -22,7 +22,8 @@
   "dependencies": {
     "node-ssdp": "^3.3.0",
     "netmask": "^1.0.6",
-    "@iobroker/adapter-core": "^2.2.1"
+    "@iobroker/adapter-core": "^2.2.1",
+    "node-mndp": "^0.0.2"
   },
   "repository": {
     "type": "git",
