@@ -12,6 +12,8 @@
 This is special adapters, that tries to find all possible devices, that can be reachable from host.
 Just now it can detect via ping, UPnP (serial planned).
 
+**This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.** For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry reporting is used starting with js-controller 3.0.
+
 ## Actually supported
 
 ### Automatically Discovered
@@ -43,19 +45,24 @@ Just now it can detect via ping, UPnP (serial planned).
 - InfluxDB
 - KLF-200
 - KNX
+- Kodi
 - Landroid
 - LGTV
 - Lightify
 - Loxone
 - Lupusec
 - MAX! Cube
+- McLighting
 - MegaD
 - Miele
 - Mi Home Smarthome
+- Mikrotik
 - MiLight bridge (v6)
+- Mpd
 - Musiccast
 - Mysensors USB/Serial (9600, 38400, 57600, 115200)
 - Nut
+- Onkyo
 - OpenHAB
 - Ping
 - Proxmox
@@ -70,6 +77,7 @@ Just now it can detect via ping, UPnP (serial planned).
 - Squeezebox
 - SqueezeboxRPC
 - stiebel-isg
+- Synology
 - TR-064
 - Trådfri
 - UPnP
@@ -95,12 +103,9 @@ Just now it can detect via ping, UPnP (serial planned).
 - Foobar200 (Instalator)
 - fritzbox (ruhr70)
 - km200 (frankjoke)
-- kodi (instalator)
 - megaesp (ausHaus)
 - modbus (Bluefox)
-- mpd (instalator)
 - mqtt/mqtt-client (Bluefox)
-- onkyo (Bluefox)
 - owfs (Bluefox)
 - rpi2 (if ioBroker runs on Raspberry)
 - rwe-smarthome (PArns)
@@ -111,6 +116,13 @@ Just now it can detect via ping, UPnP (serial planned).
 - xs1 (frankjoke)
 
 ## Changelog
+
+### 2.3.0 (2020-04-16)
+* (instalator) Add Synology, Onkyo, Mpd, Mikrotik
+* (instalator) Fixed eKey, Mihome, Broadlink2, Plex
+* (instalator) Several optimizations and fixing of crash causes
+* (Apollon77) Add Sentry Crash Reporting for js-controller 3.0
+
 ### 2.2.2 (2020-02-13)
 * (dkleber89) Add discovery for Beckhoff PLC
 * (forelleblau) Add discovery for Solarlog

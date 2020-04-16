@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "discovery",
-        "version": "2.2.2",
+        "version": "2.3.0",
         "news": {
+            "2.3.0": {
+                "en": "Discovery added for Synology, Onkyo, Mpd, Mikrotik, optimizations and fixes, Added Sentry for use with js-controller 3.0",
+                "de": "Entdeckung für Synology, Onkyo, Mpd, Mikrotik, Optimierungen und Korrekturen hinzugefügt, Sentry für die Verwendung mit js-controller 3.0 hinzugefügt",
+                "ru": "Добавлено обнаружение для Synology, Onkyo, Mpd, Mikrotik, оптимизаций и исправлений, добавлен Sentry для использования с js-controller 3.0",
+                "pt": "Adicionada descoberta para Synology, Onkyo, Mpd, Mikrotik, otimizações e correções, Added Sentry para uso com o js-controller 3.0",
+                "nl": "Discovery toegevoegd voor Synology, Onkyo, Mpd, Mikrotik, optimalisaties en fixes, Sentry toegevoegd voor gebruik met js-controller 3.0",
+                "fr": "Découverte ajoutée pour Synology, Onkyo, Mpd, Mikrotik, optimisations et correctifs, Sentry ajouté pour une utilisation avec js-controller 3.0",
+                "it": "Discovery aggiunto per Synology, Onkyo, Mpd, Mikrotik, ottimizzazioni e correzioni, Sentry aggiunto per l'uso con js-controller 3.0",
+                "es": "Descubrimiento agregado para Synology, Onkyo, Mpd, Mikrotik, optimizaciones y correcciones, Sentry agregado para usar con js-controller 3.0",
+                "pl": "Dodano Discovery dla Synology, Onkyo, Mpd, Mikrotik, optymalizacje i poprawki, Dodano Sentry do użytku z js-controller 3.0",
+                "zh-cn": "为Synology，Onkyo，Mpd，Mikrotik，优化和修复添加了发现功能，添加了与js-controller 3.0一起使用的Sentry"
+            },
             "2.2.2": {
                 "en": "Added discovery for Beckhoff PLC\nAdded discovery for Solarlog\nAdded discovery for SqueezeboxRPC",
                 "de": "Entdeckung für Beckhoff PLC hinzugefügt\nEntdeckung für Solarlog hinzugefügt\nEntdeckung für SqueezeboxRPC hinzugefügt",
