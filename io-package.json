@@ -142,6 +142,11 @@
         "config": {
             "width": 1224,
             "height": 700
+        },
+        "plugins": {
+            "sentry": {
+                "dsn": "https://464b38d930eb4ee7b3e426620f52d256@sentry.iobroker.net/31"
+            }
         }
     },
     "native": {
