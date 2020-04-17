@@ -121,7 +121,7 @@ Just now it can detect via ping, UPnP (serial planned).
 
 ## Changelog
 
-### 2.3.0 (2020-04-16)
+### 2.3.1 (2020-04-16)
 * (instalator) Add Synology, Onkyo, Mpd, Mikrotik
 * (instalator) Fixed eKey, Mihome, Broadlink2, Plex
 * (instalator) Several optimizations and fixing of crash causes

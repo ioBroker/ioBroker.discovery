@@ -1,9 +1,9 @@
 {
     "common": {
         "name": "discovery",
-        "version": "2.3.0",
+        "version": "2.3.1",
         "news": {
-            "2.3.0": {
+            "2.3.1": {
                 "en": "Discovery added for Synology, Onkyo, Mpd, Mikrotik, optimizations and fixes, Added Sentry for use with js-controller 3.0",
                 "de": "Entdeckung für Synology, Onkyo, Mpd, Mikrotik, Optimierungen und Korrekturen hinzugefügt, Sentry für die Verwendung mit js-controller 3.0 hinzugefügt",
                 "ru": "Добавлено обнаружение для Synology, Onkyo, Mpd, Mikrotik, оптимизаций и исправлений, добавлен Sentry для использования с js-controller 3.0",
