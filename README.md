@@ -30,21 +30,24 @@ Just now it can detect via ping, UPnP (serial planned).
 - ebus
 - ekey
 - energymanager (E.ON/Solarwatt)
+- enet (Jung)
 - Epson Stylus PX830
-- Fakeroku
+- Fakeroku (harmony)
 - FHEM
 - FireTV
+- Fritzdect
 - Fronius
 - G-Homa plugs
 - Harmony
 - Home Assistant
 - Homematic CCU (hm-rpc, hm-rega)
 - Homepilot
+- HP-lio
 - Philips HUE
 - Plex
 - InfluxDB
 - KLF-200
-- KNX
+- KNX (disabled actually)
 - Kodi
 - Landroid
 - LGTV
@@ -61,10 +64,12 @@ Just now it can detect via ping, UPnP (serial planned).
 - Mpd
 - Musiccast
 - Mysensors USB/Serial (9600, 38400, 57600, 115200)
+- Nuki2
 - Nut
 - Onkyo
 - OpenHAB
 - Ping
+- Plex
 - Proxmox
 - RFLink (Serial 57600baud)
 - SamsungTV
@@ -76,7 +81,6 @@ Just now it can detect via ping, UPnP (serial planned).
 - SQL (MySQL, MSSQL, PostgreSQL)
 - Squeezebox
 - SqueezeboxRPC
-- stiebel-isg
 - Synology
 - TR-064
 - Trådfri
@@ -122,6 +126,7 @@ Just now it can detect via ping, UPnP (serial planned).
 * (instalator) Fixed eKey, Mihome, Broadlink2, Plex
 * (instalator) Several optimizations and fixing of crash causes
 * (Apollon77) Add Sentry Crash Reporting for js-controller 3.0
+* (bluefox) Refactoring
 
 ### 2.2.2 (2020-02-13)
 * (dkleber89) Add discovery for Beckhoff PLC

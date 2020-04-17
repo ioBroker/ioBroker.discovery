@@ -5,7 +5,14 @@ test
 .eslintrc.json
 .npmignore
 .travis.yml
+.idea
 appveyor.yml
 admin/i18n
 package-lock.json
 ioBroker.discovery.iml
+iob_npm.dode
+.git
+.gitignore
+.vscode
+.eslintrc.json
+.gitattributes
