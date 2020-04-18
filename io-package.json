@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "discovery",
-        "version": "2.3.1",
+        "version": "2.3.2",
         "news": {
+            "2.3.2": {
+                "en": "fix potential crash in knx discovery",
+                "de": "Behebung eines möglichen Absturzes bei der knx-Erkennung",
+                "ru": "исправить возможный сбой в открытии knx",
+                "pt": "corrigir falha potencial na descoberta do knx",
+                "nl": "potentiële crash in knx-ontdekking oplossen",
+                "fr": "correction d'un crash potentiel dans la découverte de knx",
+                "it": "risolve potenziali crash nella scoperta di knx",
+                "es": "Solucionar un posible bloqueo en el descubrimiento de KNX",
+                "pl": "napraw potencjalną awarię w wykrywaniu KNX",
+                "zh-cn": "修复knx发现中的潜在崩溃"
+            },
             "2.3.1": {
                 "en": "Discovery added for Synology, Onkyo, Mpd, Mikrotik, optimizations and fixes, Added Sentry for use with js-controller 3.0",
                 "de": "Entdeckung für Synology, Onkyo, Mpd, Mikrotik, Optimierungen und Korrekturen hinzugefügt, Sentry für die Verwendung mit js-controller 3.0 hinzugefügt",

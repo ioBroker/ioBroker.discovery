@@ -121,6 +121,9 @@ Just now it can detect via ping, UPnP (serial planned).
 
 ## Changelog
 
+### 2.3.2 (2020-04-18)
+* (Apollon77) Fix potential crash in knx discovery
+
 ### 2.3.1 (2020-04-16)
 * (instalator) Add Synology, Onkyo, Mpd, Mikrotik
 * (instalator) Fixed eKey, Mihome, Broadlink2, Plex
