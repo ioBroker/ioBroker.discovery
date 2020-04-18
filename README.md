@@ -67,6 +67,7 @@ Just now it can detect via ping, UPnP (serial planned).
 - Nuki2
 - Nut
 - Onkyo
+- Onvif
 - OpenHAB
 - Ping
 - Plex
@@ -120,6 +121,9 @@ Just now it can detect via ping, UPnP (serial planned).
 - xs1 (frankjoke)
 
 ## Changelog
+
+### 2.3.3 (2020-04-18)
+* (Haba1234) Add Onvif
 
 ### 2.3.2 (2020-04-18)
 * (Apollon77) Fix potential crash in knx discovery

@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "discovery",
-        "version": "2.3.2",
+        "version": "2.3.3",
         "news": {
+			"2.3.3": {
+                "en": "Discovery added for Onvif",
+				"de": "Entdeckung für Onvif hinzugefügt",
+				"ru": "Добавлено открытие для Onvif",
+				"pt": "Descoberta adicionada para Onvif",
+				"nl": "Discovery toegevoegd voor Onvif",
+				"fr": "Découverte ajoutée pour Onvif",
+				"it": "Discovery aggiunto per Onvif",
+				"es": "Descubrimiento agregado para Onvif",
+				"pl": "Dodano wykrywanie dla Onvif",
+				"zh-cn": "为Onvif添加了发现"
+            },
             "2.3.2": {
                 "en": "fix potential crash in knx discovery",
                 "de": "Behebung eines möglichen Absturzes bei der knx-Erkennung",
