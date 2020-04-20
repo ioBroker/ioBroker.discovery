@@ -23,8 +23,7 @@
     "node-ssdp": "^3.3.0",
     "netmask": "^1.0.6",
     "@iobroker/adapter-core": "^2.3.0",
-    "node-mndp": "^0.0.2",
-	"onvif": "^0.6.2"
+    "node-mndp": "^0.0.2"
   },
   "repository": {
     "type": "git",
