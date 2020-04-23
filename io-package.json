@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "discovery",
-        "version": "2.3.2",
+        "version": "2.3.3",
         "news": {
+            "2.3.3": {
+                "en": "potential crash case fixed",
+                "de": "Möglicher Crash-Fall behoben",
+                "ru": "случай возможного сбоя исправлен",
+                "pt": "possível caso de falha corrigido",
+                "nl": "mogelijke crash case opgelost",
+                "fr": "cas de crash potentiel corrigé",
+                "it": "potenziale caso di crash risolto",
+                "es": "caso de bloqueo potencial solucionado",
+                "pl": "naprawiono potencjalną awarię",
+                "zh-cn": "修复潜在的崩溃案例"
+            },
             "2.3.2": {
                 "en": "fix potential crash in knx discovery",
                 "de": "Behebung eines möglichen Absturzes bei der knx-Erkennung",
