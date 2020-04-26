@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "discovery",
-        "version": "2.3.4",
+        "version": "2.3.5",
         "news": {
             "2.3.4": {
                 "en": "potential crash case fixed",
