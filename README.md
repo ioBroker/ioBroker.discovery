@@ -121,6 +121,9 @@ Just now it can detect via ping, UPnP (serial planned).
 
 ## Changelog
 
+### 2.3.5 (2020-04-29)
+* (haba1234) New adapter added: Onvif
+
 ### 2.3.3 (2020-04-23)
 * correct access to wrong variable (Sentry IOBROKER-DISCOVERY-3)
 * catch http errors better (Sentry IOBROKER-DISCOVERY-2)

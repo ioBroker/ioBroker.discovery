@@ -3,6 +3,18 @@
         "name": "discovery",
         "version": "2.3.5",
         "news": {
+			"2.3.5": {
+                "en": "Discovery added for Onvif",
+				"de": "Entdeckung für Onvif hinzugefügt",
+				"ru": "Добавлено обнаружение для Onvif",
+				"pt": "Descoberta adicionada para Onvif",
+				"nl": "Discovery toegevoegd voor Onvif",
+				"fr": "Découverte ajoutée pour Onvif",
+				"it": "Discovery aggiunto per Onvif",
+				"es": "Descubrimiento agregado para Onvif",
+				"pl": "Dodano wykrywanie dla Onvif",
+				"zh-cn": "为Onvif添加了发现"
+            },
             "2.3.4": {
                 "en": "potential crash case fixed",
                 "de": "Möglicher Crash-Fall behoben",
