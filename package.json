@@ -32,7 +32,7 @@
     "devDependencies": {
         "axios": "^0.19.2",
         "gulp": "^4.0.2",
-        "mocha": "^7.1.1",
+        "mocha": "^7.1.2",
         "chai": "^4.2.0",
         "eslint": "^6.8.0"
     },

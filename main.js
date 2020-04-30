@@ -468,7 +468,7 @@ let g_browse = null;
 const specialEntryNames = 'name,data,LOCATION'.split(',');
 
 function haltAllMethods() {
-    Object.keys(methods).forEach(method => {
+    methods && Object.keys(methods).forEach(method => {
         // not final
         if (method && method.halt !== undefined) {
             method.halt = true;
