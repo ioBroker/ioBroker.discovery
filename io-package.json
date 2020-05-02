@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "discovery",
-        "version": "2.3.4",
+        "version": "2.3.5",
         "news": {
+            "2.3.5": {
+                "en": "serial device discovery fixed",
+                "de": "Erkennung serieller Geräte behoben",
+                "ru": "исправлено обнаружение серийного устройства",
+                "pt": "descoberta de dispositivo serial corrigida",
+                "nl": "seriële apparaatdetectie opgelost",
+                "fr": "détection de périphérique série corrigée",
+                "it": "rilevamento dispositivo seriale fisso",
+                "es": "descubrimiento de dispositivo en serie arreglado",
+                "pl": "naprawiono wykrywanie urządzeń szeregowych",
+                "zh-cn": "修复了串行设备发现"
+            },
             "2.3.4": {
                 "en": "potential crash case fixed",
                 "de": "Möglicher Crash-Fall behoben",
