@@ -63,6 +63,7 @@ Just now it can detect via ping, UPnP (serial planned).
 - MiLight bridge (v6)
 - Mpd
 - Musiccast
+- myDlink
 - Mysensors USB/Serial (9600, 38400, 57600, 115200)
 - Nuki2
 - Nut
@@ -120,6 +121,8 @@ Just now it can detect via ping, UPnP (serial planned).
 - xs1 (frankjoke)
 
 ## Changelog
+### 2.3.6 (2020-05-02)
+* (Garfonso) add mydlink adapter
 
 ### 2.3.3 (2020-04-23)
 * correct access to wrong variable (Sentry IOBROKER-DISCOVERY-3)
