@@ -3,29 +3,17 @@
         "name": "discovery",
         "version": "2.3.5",
         "news": {
-			"2.3.5": {
-                "en": "Discovery added for Onvif",
-				"de": "Entdeckung für Onvif hinzugefügt",
-				"ru": "Добавлено обнаружение для Onvif",
-				"pt": "Descoberta adicionada para Onvif",
-				"nl": "Discovery toegevoegd voor Onvif",
-				"fr": "Découverte ajoutée pour Onvif",
-				"it": "Discovery aggiunto per Onvif",
-				"es": "Descubrimiento agregado para Onvif",
-				"pl": "Dodano wykrywanie dla Onvif",
-				"zh-cn": "为Onvif添加了发现"
-            },
-            "2.3.4": {
-                "en": "potential crash case fixed",
-                "de": "Möglicher Crash-Fall behoben",
-                "ru": "случай возможного сбоя исправлен",
-                "pt": "possível caso de falha corrigido",
-                "nl": "mogelijke crash case opgelost",
-                "fr": "cas de crash potentiel corrigé",
-                "it": "potenziale caso di crash risolto",
-                "es": "caso de bloqueo potencial solucionado",
-                "pl": "naprawiono potencjalną awarię",
-                "zh-cn": "修复潜在的崩溃案例"
+            "2.3.5": {
+                "en": "potential crash case fixed\nserial device discovery fixed\nDiscovery added for Onvif",
+                "de": "Möglicher Crash-Fall behoben\nErkennung serieller Geräte behoben\nEntdeckung für Onvif hinzugefügt",
+                "ru": "случай возможного сбоя исправлен\nисправлено обнаружение серийного устройства\nДобавлено обнаружение для Onvif",
+                "pt": "possível caso de falha corrigido\ndescoberta de dispositivo serial corrigida\nDescoberta adicionada para Onvif",
+                "nl": "mogelijke crash case opgelost\nseriële apparaatdetectie opgelost\nDiscovery toegevoegd voor Onvif",
+                "fr": "cas de crash potentiel corrigé\ndétection de périphérique série corrigée\nDécouverte ajoutée pour Onvif",
+                "it": "potenziale caso di crash risolto\nrilevamento dispositivo seriale fisso\nDiscovery aggiunto per Onvif",
+                "es": "caso de bloqueo potencial solucionado\ndescubrimiento de dispositivo en serie arreglado\nDescubrimiento agregado para Onvif",
+                "pl": "naprawiono potencjalną awarię\nnaprawiono wykrywanie urządzeń szeregowych\nDodano wykrywanie dla Onvif",
+                "zh-cn": "修复潜在的崩溃案例\n修复了串行设备发现\n为Onvif添加了发现"
             },
             "2.3.3": {
                 "en": "potential crash case fixed",
