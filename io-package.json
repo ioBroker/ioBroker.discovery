@@ -1,9 +1,9 @@
 {
     "common": {
         "name": "discovery",
-        "version": "2.3.5",
+        "version": "2.3.6",
         "news": {
-            "2.3.5": {
+            "2.3.6": {
                 "en": "potential crash case fixed\nserial device discovery fixed\nDiscovery added for Onvif",
                 "de": "Möglicher Crash-Fall behoben\nErkennung serieller Geräte behoben\nEntdeckung für Onvif hinzugefügt",
                 "ru": "случай возможного сбоя исправлен\nисправлено обнаружение серийного устройства\nДобавлено обнаружение для Onvif",

@@ -123,8 +123,6 @@ Just now it can detect via ping, UPnP (serial planned).
 ## Changelog
 ### 2.3.6 (2020-05-02)
 * (Garfonso) add mydlink adapter
-
-### 2.3.5 (2020-05-01)
 * (haba1234) New adapter added: Onvif
 * (Apollon77) serial device discovery fixed
 
