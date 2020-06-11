@@ -1,48 +1,48 @@
 {
-    "name": "iobroker.discovery",
-    "description": "This adapter tries to detect devices in local network.",
-    "version": "2.3.6",
-    "author": "bluefox <dogafox@gmail.com>",
-    "contributors": [
-        "bluefox <dogafox@gmail.com>",
-        "Apollon77 <ingo@fischer-ka.de>"
-    ],
-    "homepage": "https://github.com/ioBroker/ioBroker.discovery",
-    "license": "MIT",
-    "keywords": [
-        "ioBroker",
-        "discovery",
-        "home automation",
-        "iot"
-    ],
-    "optionalDependencies": {
-        "serialport": "^8.0.7",
-        "mdns-discovery": "^0.2.6"
-    },
-    "dependencies": {
-        "node-ssdp": "^4.0.0",
-        "netmask": "^1.0.6",
-        "@iobroker/adapter-core": "^2.4.0",
-        "node-mndp": "^0.0.2"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/ioBroker/ioBroker.discovery"
-    },
-    "devDependencies": {
-        "@alcalzone/release-script": "^1.4.1",
-        "axios": "^0.19.2",
-        "gulp": "^4.0.2",
-        "mocha": "^8.0.1",
-        "chai": "^4.2.0",
-        "eslint": "^7.2.0"
-    },
-    "bugs": {
-        "url": "https://github.com/ioBroker/ioBroker.discovery/issues"
-    },
-    "main": "main.js",
-    "scripts": {
-        "test": "node node_modules/mocha/bin/mocha --exit",
-        "release": "release-script"
-    }
+  "name": "iobroker.discovery",
+  "description": "This adapter tries to detect devices in local network.",
+  "version": "2.3.7",
+  "author": "bluefox <dogafox@gmail.com>",
+  "contributors": [
+    "bluefox <dogafox@gmail.com>",
+    "Apollon77 <ingo@fischer-ka.de>"
+  ],
+  "homepage": "https://github.com/ioBroker/ioBroker.discovery",
+  "license": "MIT",
+  "keywords": [
+    "ioBroker",
+    "discovery",
+    "home automation",
+    "iot"
+  ],
+  "optionalDependencies": {
+    "serialport": "^8.0.7",
+    "mdns-discovery": "^0.2.6"
+  },
+  "dependencies": {
+    "node-ssdp": "^4.0.0",
+    "netmask": "^1.0.6",
+    "@iobroker/adapter-core": "^2.4.0",
+    "node-mndp": "^0.0.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ioBroker/ioBroker.discovery"
+  },
+  "devDependencies": {
+    "@alcalzone/release-script": "^1.4.1",
+    "axios": "^0.19.2",
+    "gulp": "^4.0.2",
+    "mocha": "^8.0.1",
+    "chai": "^4.2.0",
+    "eslint": "^7.2.0"
+  },
+  "bugs": {
+    "url": "https://github.com/ioBroker/ioBroker.discovery/issues"
+  },
+  "main": "main.js",
+  "scripts": {
+    "test": "node node_modules/mocha/bin/mocha --exit",
+    "release": "release-script"
+  }
 }

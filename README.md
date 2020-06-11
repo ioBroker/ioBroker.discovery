@@ -121,6 +121,10 @@ Just now it can detect via ping, UPnP (serial planned).
 - xs1 (frankjoke)
 
 ## Changelog
+
+### 2.3.7 (2020-06-11)
+* (Apollon) Add error handling for Synology detection (Sentry IOBROKER-DISCOVERY-E)
+
 ### 2.3.6 (2020-05-02)
 * (Garfonso) add mydlink adapter
 * (haba1234) New adapter added: Onvif
