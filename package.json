@@ -20,9 +20,9 @@
         "mdns-discovery": "^0.2.6"
     },
     "dependencies": {
-        "node-ssdp": "^3.3.0",
+        "node-ssdp": "^4.0.0",
         "netmask": "^1.0.6",
-        "@iobroker/adapter-core": "^2.3.0",
+        "@iobroker/adapter-core": "^2.4.0",
         "node-mndp": "^0.0.2"
     },
     "repository": {
@@ -30,17 +30,19 @@
         "url": "https://github.com/ioBroker/ioBroker.discovery"
     },
     "devDependencies": {
+        "@alcalzone/release-script": "^1.4.1",
         "axios": "^0.19.2",
         "gulp": "^4.0.2",
-        "mocha": "^7.1.2",
+        "mocha": "^8.0.1",
         "chai": "^4.2.0",
-        "eslint": "^6.8.0"
+        "eslint": "^7.2.0"
     },
     "bugs": {
         "url": "https://github.com/ioBroker/ioBroker.discovery/issues"
     },
     "main": "main.js",
     "scripts": {
-        "test": "node node_modules/mocha/bin/mocha --exit"
+        "test": "node node_modules/mocha/bin/mocha --exit",
+        "release": "release-script"
     }
 }
