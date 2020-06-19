@@ -65,6 +65,7 @@ Just now it can detect via ping, UPnP (serial planned).
 - Musiccast
 - myDlink
 - Mysensors USB/Serial (9600, 38400, 57600, 115200)
+- nanoleaf Light Panels / Canvas
 - Nuki2
 - Nut
 - Onkyo
