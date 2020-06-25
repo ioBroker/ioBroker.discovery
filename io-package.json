@@ -1,31 +1,31 @@
 {
     "common": {
         "name": "discovery",
-        "version": "2.3.5",
+        "version": "2.3.7",
         "news": {
-            "2.3.5": {
-                "en": "serial device discovery fixed",
-                "de": "Erkennung serieller Geräte behoben",
-                "ru": "исправлено обнаружение серийного устройства",
-                "pt": "descoberta de dispositivo serial corrigida",
-                "nl": "seriële apparaatdetectie opgelost",
-                "fr": "détection de périphérique série corrigée",
-                "it": "rilevamento dispositivo seriale fisso",
-                "es": "descubrimiento de dispositivo en serie arreglado",
-                "pl": "naprawiono wykrywanie urządzeń szeregowych",
-                "zh-cn": "修复了串行设备发现"
+            "2.3.7": {
+                "en": "Add error handling for Synology detection (Sentry IOBROKER-DISCOVERY-E)",
+                "de": "Fehlerbehandlung für die Synologieerkennung hinzufügen (Sentry IOBROKER-DISCOVERY-E)",
+                "ru": "Добавить обработку ошибок для обнаружения Synology (Sentry IOBROKER-DISCOVERY-E)",
+                "pt": "Adicionar tratamento de erros para detecção de Synology (Sentry IOBROKER-DISCOVERY-E)",
+                "nl": "Foutafhandeling voor Synology-detectie toevoegen (Sentry IOBROKER-DISCOVERY-E)",
+                "fr": "Ajout de la gestion des erreurs pour la détection de Synology (Sentry IOBROKER-DISCOVERY-E)",
+                "it": "Aggiungi la gestione degli errori per il rilevamento di Synology (Sentry IOBROKER-DISCOVERY-E)",
+                "es": "Agregar manejo de errores para la detección de Synology (Sentry IOBROKER-DISCOVERY-E)",
+                "pl": "Dodaj obsługę błędów do wykrywania Synology (Sentry IOBROKER-DISCOVERY-E)",
+                "zh-cn": "添加用于Synology检测的错误处理（Sentry IOBROKER-DISCOVERY-E）"
             },
-            "2.3.4": {
-                "en": "potential crash case fixed",
-                "de": "Möglicher Crash-Fall behoben",
-                "ru": "случай возможного сбоя исправлен",
-                "pt": "possível caso de falha corrigido",
-                "nl": "mogelijke crash case opgelost",
-                "fr": "cas de crash potentiel corrigé",
-                "it": "potenziale caso di crash risolto",
-                "es": "caso de bloqueo potencial solucionado",
-                "pl": "naprawiono potencjalną awarię",
-                "zh-cn": "修复潜在的崩溃案例"
+            "2.3.6": {
+                "en": "potential crash case fixed\nserial device discovery fixed\nDiscovery added for Onvif",
+                "de": "Möglicher Crash-Fall behoben\nErkennung serieller Geräte behoben\nEntdeckung für Onvif hinzugefügt",
+                "ru": "случай возможного сбоя исправлен\nисправлено обнаружение серийного устройства\nДобавлено обнаружение для Onvif",
+                "pt": "possível caso de falha corrigido\ndescoberta de dispositivo serial corrigida\nDescoberta adicionada para Onvif",
+                "nl": "mogelijke crash case opgelost\nseriële apparaatdetectie opgelost\nDiscovery toegevoegd voor Onvif",
+                "fr": "cas de crash potentiel corrigé\ndétection de périphérique série corrigée\nDécouverte ajoutée pour Onvif",
+                "it": "potenziale caso di crash risolto\nrilevamento dispositivo seriale fisso\nDiscovery aggiunto per Onvif",
+                "es": "caso de bloqueo potencial solucionado\ndescubrimiento de dispositivo en serie arreglado\nDescubrimiento agregado para Onvif",
+                "pl": "naprawiono potencjalną awarię\nnaprawiono wykrywanie urządzeń szeregowych\nDodano wykrywanie dla Onvif",
+                "zh-cn": "修复潜在的崩溃案例\n修复了串行设备发现\n为Onvif添加了发现"
             },
             "2.3.3": {
                 "en": "potential crash case fixed",

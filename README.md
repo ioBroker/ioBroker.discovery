@@ -63,7 +63,9 @@ Just now it can detect via ping, UPnP (serial planned).
 - MiLight bridge (v6)
 - Mpd
 - Musiccast
+- myDlink
 - Mysensors USB/Serial (9600, 38400, 57600, 115200)
+- nanoleaf Light Panels / Canvas
 - Nuki2
 - Nut
 - Onkyo
@@ -121,7 +123,12 @@ Just now it can detect via ping, UPnP (serial planned).
 
 ## Changelog
 
-### 2.3.5 (2020-05-01)
+### 2.3.7 (2020-06-11)
+* (Apollon) Add error handling for Synology detection (Sentry IOBROKER-DISCOVERY-E)
+
+### 2.3.6 (2020-05-02)
+* (Garfonso) add mydlink adapter
+* (haba1234) New adapter added: Onvif
 * (Apollon77) serial device discovery fixed
 
 ### 2.3.4 (2020-04-30)
