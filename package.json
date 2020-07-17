@@ -23,7 +23,7 @@
     "node-ssdp": "^4.0.0",
     "netmask": "^1.0.6",
     "@iobroker/adapter-core": "^2.4.0",
-    "node-mndp": "^0.0.2"
+    "node-mndp": "^0.0.3"
   },
   "repository": {
     "type": "git",
@@ -35,7 +35,7 @@
     "gulp": "^4.0.2",
     "mocha": "^8.0.1",
     "chai": "^4.2.0",
-    "eslint": "^7.2.0"
+    "eslint": "^7.4.0"
   },
   "bugs": {
     "url": "https://github.com/ioBroker/ioBroker.discovery/issues"
