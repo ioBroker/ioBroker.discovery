@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "discovery",
-        "version": "2.3.8",
+        "version": "2.3.9",
         "news": {
+            "2.3.9": {
+                "en": "Add error handling to onvif discovery (Sentry IOBROKER-DISCOVERY-13)\nAdd error handling to smapee discovery (Sentry IOBROKER-DISCOVERY-14)\nAdd error handling to synology discovery (Sentry IOBROKER-DISCOVERY-1A)\nUpdate mndp library to prevent crashes (Sentry IOBROKER-DISCOVERY-15+)",
+                "de": "Hinzufügen der Fehlerbehandlung zur Onvif-Erkennung (Sentry IOBROKER-DISCOVERY-13)\nFehlerbehandlung zur Smapee-Erkennung hinzufügen (Sentry IOBROKER-DISCOVERY-14)\nHinzufügen einer Fehlerbehandlung zur Synologieerkennung (Sentry IOBROKER-DISCOVERY-1A)\nAktualisieren Sie die mndp-Bibliothek, um Abstürze zu vermeiden (Sentry IOBROKER-DISCOVERY-15 +).",
+                "ru": "Добавить обработку ошибок в обнаружение onvif (Sentry IOBROKER-DISCOVERY-13)\nДобавить обработку ошибок для обнаружения smapee (Sentry IOBROKER-DISCOVERY-14)\nДобавить обработку ошибок в обнаружение синологии (Sentry IOBROKER-DISCOVERY-1A)\nОбновление библиотеки mndp для предотвращения сбоев (Sentry IOBROKER-DISCOVERY-15 +)",
+                "pt": "Adicionar tratamento de erros à descoberta onvif (Sentry IOBROKER-DISCOVERY-13)\nAdicionar tratamento de erros à descoberta de smapee (Sentry IOBROKER-DISCOVERY-14)\nAdicionar tratamento de erros à descoberta de sinologia (Sentry IOBROKER-DISCOVERY-1A)\nAtualizar a biblioteca mndp para evitar falhas (Sentry IOBROKER-DISCOVERY-15 +)",
+                "nl": "Foutafhandeling toevoegen aan onvif-detectie (Sentry IOBROKER-DISCOVERY-13)\nFoutafhandeling toevoegen aan smapee-detectie (Sentry IOBROKER-DISCOVERY-14)\nFoutafhandeling toevoegen aan synologiedetectie (Sentry IOBROKER-DISCOVERY-1A)\nUpdate mndp-bibliotheek om crashes te voorkomen (Sentry IOBROKER-DISCOVERY-15 +)",
+                "fr": "Ajouter la gestion des erreurs à la découverte onvif (Sentry IOBROKER-DISCOVERY-13)\nAjouter la gestion des erreurs à la découverte de smapee (Sentry IOBROKER-DISCOVERY-14)\nAjouter la gestion des erreurs à la découverte de synologie (Sentry IOBROKER-DISCOVERY-1A)\nMettre à jour la bibliothèque mndp pour éviter les plantages (Sentry IOBROKER-DISCOVERY-15 +)",
+                "it": "Aggiungi la gestione degli errori al rilevamento onvif (Sentry IOBROKER-DISCOVERY-13)\nAggiungi la gestione degli errori allo smapee discovery (Sentry IOBROKER-DISCOVERY-14)\nAggiungi la gestione degli errori al rilevamento della sinologia (Sentry IOBROKER-DISCOVERY-1A)\nAggiorna la libreria mndp per prevenire arresti anomali (Sentry IOBROKER-DISCOVERY-15 +)",
+                "es": "Agregar manejo de errores al descubrimiento onvif (Sentry IOBROKER-DISCOVERY-13)\nAgregue manejo de errores al descubrimiento de smapee (Sentry IOBROKER-DISCOVERY-14)\nAgregue manejo de errores al descubrimiento de sincronización (Sentry IOBROKER-DISCOVERY-1A)\nActualice la biblioteca mndp para evitar bloqueos (Sentry IOBROKER-DISCOVERY-15 +)",
+                "pl": "Dodaj obsługę błędów do wykrywania onvif (Sentry IOBROKER-DISCOVERY-13)\nDodaj obsługę błędów do wykrywania smapee (Sentry IOBROKER-DISCOVERY-14)\nDodaj obsługę błędów do wykrywania synologii (Sentry IOBROKER-DISCOVERY-1A)\nZaktualizuj bibliotekę mndp, aby zapobiec awariom (Sentry IOBROKER-DISCOVERY-15 +)",
+                "zh-cn": "将错误处理添加到onvif发现（Sentry IOBROKER-DISCOVERY-13）\n将错误处理添加到smapee发现（Sentry IOBROKER-DISCOVERY-14）\n向Synology发现中添加错误处理（Sentry IOBROKER-DISCOVERY-1A）\n更新mndp库以防止崩溃（Sentry IOBROKER-DISCOVERY-15 +）"
+            },
             "2.3.8": {
                 "en": "Add error handling to onvif discovery (Sentry IOBROKER-DISCOVERY-13)\nAdd error handling to smapee discovery (Sentry IOBROKER-DISCOVERY-14)\nAdd error handling to synology discovery (Sentry IOBROKER-DISCOVERY-1A)\nUpdate mndp library to prevent crashes (Sentry IOBROKER-DISCOVERY-15+)",
                 "de": "Hinzufügen der Fehlerbehandlung zur Onvif-Erkennung (Sentry IOBROKER-DISCOVERY-13)\nFehlerbehandlung zur Smapee-Erkennung hinzufügen (Sentry IOBROKER-DISCOVERY-14)\nHinzufügen einer Fehlerbehandlung zur Synologieerkennung (Sentry IOBROKER-DISCOVERY-1A)\nAktualisieren Sie die mndp-Bibliothek, um Abstürze zu vermeiden (Sentry IOBROKER-DISCOVERY-15 +).",
