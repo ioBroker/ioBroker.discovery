@@ -123,7 +123,7 @@ Just now it can detect via ping, UPnP (serial planned).
 
 ## Changelog
 
-### __WORK IN PROGRESS__
+### 2.3.8 (2020-07-17)
 * (Apollon77) Add error handling to onvif discovery (Sentry IOBROKER-DISCOVERY-13)
 * (Apollon77) Add error handling to smapee discovery (Sentry IOBROKER-DISCOVERY-14)
 * (Apollon77) Add error handling to synology discovery (Sentry IOBROKER-DISCOVERY-1A)
