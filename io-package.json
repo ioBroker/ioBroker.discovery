@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "discovery",
-        "version": "2.3.9",
+        "version": "2.3.10",
         "news": {
+            "2.3.10": {
+                "en": "Discovery Velux KLF-200 updated to new firmware",
+                "de": "Discovery Velux KLF-200 auf neue Firmware aktualisiert",
+                "ru": "Discovery Velux KLF-200 обновлен до новой прошивки",
+                "pt": "Descoberta Velux KLF-200 atualizada para novo firmware",
+                "nl": "Discovery Velux KLF-200 geüpdatet naar nieuwe firmware",
+                "fr": "Discovery Velux KLF-200 mis à jour avec un nouveau firmware",
+                "it": "Discovery Velux KLF-200 aggiornato al nuovo firmware",
+                "es": "Discovery Velux KLF-200 actualizado a nuevo firmware",
+                "pl": "Aktualizacja Discovery Velux KLF-200 do nowego oprogramowania",
+                "zh-cn": "Discovery Velux KLF-200已更新至新固件"
+            },
             "2.3.9": {
                 "en": "Add error handling to onvif discovery (Sentry IOBROKER-DISCOVERY-13)\nAdd error handling to smapee discovery (Sentry IOBROKER-DISCOVERY-14)\nAdd error handling to synology discovery (Sentry IOBROKER-DISCOVERY-1A)\nUpdate mndp library to prevent crashes (Sentry IOBROKER-DISCOVERY-15+)",
                 "de": "Hinzufügen der Fehlerbehandlung zur Onvif-Erkennung (Sentry IOBROKER-DISCOVERY-13)\nFehlerbehandlung zur Smapee-Erkennung hinzufügen (Sentry IOBROKER-DISCOVERY-14)\nHinzufügen einer Fehlerbehandlung zur Synologieerkennung (Sentry IOBROKER-DISCOVERY-1A)\nAktualisieren Sie die mndp-Bibliothek, um Abstürze zu vermeiden (Sentry IOBROKER-DISCOVERY-15 +).",
