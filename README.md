@@ -58,6 +58,7 @@ Just now it can detect via ping, UPnP (serial planned).
 - McLighting
 - MegaD
 - Miele
+- Miele Cloud Service
 - Mi Home Smarthome
 - Mikrotik
 - MiLight bridge (v6)
@@ -121,7 +122,13 @@ Just now it can detect via ping, UPnP (serial planned).
 - wolf (smiling-jack)
 - xs1 (frankjoke)
 
+<!--
+	Placeholder for the next version (at the beginning of the line):
+	### __WORK IN PROGRESS__
+-->
 ## Changelog
+### __WORK IN PROGRESS__
+* (Grizzelbee) Added MieleCloudService 
 
 ### 2.3.10 (2020-07-26)
 * (MiSchroe) Discovery Velux KLF-200 updated to new firmware
