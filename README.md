@@ -129,7 +129,7 @@ Just now it can detect via ping, UPnP (serial planned).
 	### __WORK IN PROGRESS__
 -->
 ## Changelog
-### __WORK IN PROGRESS__
+### 2.3.11 (2020-08-08)
 * (Grizzelbee) Added MieleCloudService 
 
 ### 2.3.10 (2020-07-26)

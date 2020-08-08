@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "discovery",
-        "version": "2.3.10",
+        "version": "2.3.11",
         "news": {
+            "2.3.11": {
+                "en": "Added MieleCloudService",
+                "de": "MieleCloudService hinzugefügt",
+                "ru": "Добавлен MieleCloudService",
+                "pt": "Adicionado MieleCloudService",
+                "nl": "MieleCloudService toegevoegd",
+                "fr": "Ajout de MieleCloudService",
+                "it": "Aggiunto MieleCloudService",
+                "es": "Se agregó MieleCloudService",
+                "pl": "Dodano MieleCloudService",
+                "zh-cn": "添加了MieleCloudService"
+            },
             "2.3.10": {
                 "en": "Discovery Velux KLF-200 updated to new firmware",
                 "de": "Discovery Velux KLF-200 auf neue Firmware aktualisiert",
