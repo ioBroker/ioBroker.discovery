@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "discovery",
-        "version": "2.3.11",
+        "version": "2.4.0",
         "news": {
+            "2.4.0": {
+                "en": "add heos",
+                "de": "füge heos hinzu",
+                "ru": "добавить heos",
+                "pt": "adicionar heos",
+                "nl": "heos toevoegen",
+                "fr": "ajouter heos",
+                "it": "aggiungi heos",
+                "es": "agregar heos",
+                "pl": "dodaj heos",
+                "zh-cn": "添加heos"
+            },
             "2.3.11": {
                 "en": "Added MieleCloudService",
                 "de": "MieleCloudService hinzugefügt",

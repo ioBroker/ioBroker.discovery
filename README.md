@@ -131,7 +131,7 @@ Just now it can detect via ping, UPnP (serial planned).
 -->
 ## Changelog
 
-### __WORK IN PROGRESS__
+### 2.4.0 (2020-11-29)
 * (withstu) add heos
 
 ### 2.3.11 (2020-08-08)
