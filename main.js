@@ -49,7 +49,13 @@ function startAdapter(options) {
 }
 
 function enumAdapters(repository) {
-    const dir = fs.readdirSync(__dirname + '/lib/adapters');
+    let dir;
+    try {
+        dir = fs.readdirSync(__dirname + '/lib/adapters');
+    } catch (err) {
+        adapter.log.warn('Adapter scan classes not found: ' + err);
+        dir = [];
+    }
 
     for (let f = 0; f < dir.length; f++) {
         const parts = dir[f].split('.');

@@ -131,6 +131,10 @@ Just now it can detect via ping, UPnP (serial planned).
 -->
 ## Changelog
 
+### __WORK IN PROGRESS__
+* (Apollon77) Fix potential crash case in lightify (Sentry IOBROKER-DISCOVERY-2D)
+* (Apollon77) Fix potential crash case (Sentry IOBROKER-DISCOVERY-2C)
+
 ### 2.4.0 (2020-11-29)
 * (withstu) add heos
 
