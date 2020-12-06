@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "discovery",
-        "version": "2.4.0",
+        "version": "2.4.1",
         "news": {
+            "2.4.1": {
+                "en": "Fix potential crash case in lightify (Sentry IOBROKER-DISCOVERY-2D)\nFix potential crash case (Sentry IOBROKER-DISCOVERY-2C)",
+                "de": "Behebung eines möglichen Absturzfalls in lightify (Sentry IOBROKER-DISCOVERY-2D)\nBehebung eines möglichen Absturzfalls (Sentry IOBROKER-DISCOVERY-2C)",
+                "ru": "Исправить потенциальный сбой в lightify (Sentry IOBROKER-DISCOVERY-2D)\nУстранение потенциального сбоя (Sentry IOBROKER-DISCOVERY-2C)",
+                "pt": "Corrigir caso de falha potencial no lightify (Sentry IOBROKER-DISCOVERY-2D)\nCorrigir caso de falha potencial (Sentry IOBROKER-DISCOVERY-2C)",
+                "nl": "Mogelijke crash case repareren in Lightify (Sentry IOBROKER-DISCOVERY-2D)\nMogelijke crash case repareren (Sentry IOBROKER-DISCOVERY-2C)",
+                "fr": "Correction d'un cas de crash potentiel dans Lightify (Sentry IOBROKER-DISCOVERY-2D)\nCorrection d'un cas de crash potentiel (Sentry IOBROKER-DISCOVERY-2C)",
+                "it": "Risolvi potenziali casi di crash in lightify (Sentry IOBROKER-DISCOVERY-2D)\nRisolvi potenziali casi di crash (Sentry IOBROKER-DISCOVERY-2C)",
+                "es": "Soluciona un posible caso de bloqueo en Lightify (Sentry IOBROKER-DISCOVERY-2D)\nSolucionar un posible caso de bloqueo (Sentry IOBROKER-DISCOVERY-2C)",
+                "pl": "Napraw potencjalną awarię w lightify (Sentry IOBROKER-DISCOVERY-2D)\nNapraw potencjalną awarię (Sentry IOBROKER-DISCOVERY-2C)",
+                "zh-cn": "修复lightify中潜在的崩溃情况（Sentry IOBROKER-DISCOVERY-2D）\n修复潜在的崩溃情况（Sentry IOBROKER-DISCOVERY-2C）"
+            },
             "2.4.0": {
                 "en": "add heos",
                 "de": "füge heos hinzu",
