@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "discovery",
-        "version": "2.4.1",
+        "version": "2.5.0",
         "news": {
+            "2.5.0": {
+                "en": "Replace nuki2 with nuki-extended\nSuggest jarvis for discovery as advice\nAdd checks on broadlink2 discovery to prevent crash case (Sentry IOBROKER-DISCOVERY-2H)",
+                "de": "Ersetzen Sie nuki2 durch nuki-erweitert\nSchlagen Sie jarvis zur Entdeckung als Rat vor\nFügen Sie Überprüfungen der Broadlink2-Erkennung hinzu, um einen Absturz zu verhindern (Sentry IOBROKER-DISCOVERY-2H).",
+                "ru": "Заменить nuki2 на nuki-extended\nПредложите Джарвиса для открытия в качестве совета\nДобавлены проверки обнаружения Broadlink2 для предотвращения сбоя (Sentry IOBROKER-DISCOVERY-2H)",
+                "pt": "Substitua nuki2 por nuki estendido\nSugira jarvis para descoberta como conselho\nAdicionar verificações na descoberta do broadlink2 para evitar caso de falha (Sentry IOBROKER-DISCOVERY-2H)",
+                "nl": "Vervang nuki2 door nuki-extended\nStel jarvis voor voor ontdekking als advies\nVoeg controles toe voor broadlink2-detectie om een crashcase te voorkomen (Sentry IOBROKER-DISCOVERY-2H)",
+                "fr": "Remplacer nuki2 par nuki-extended\nSuggérer des Jarvis pour la découverte comme conseil\nAjouter des vérifications sur la découverte Broadlink2 pour éviter les cas de crash (Sentry IOBROKER-DISCOVERY-2H)",
+                "it": "Sostituisci nuki2 con nuki-extended\nSuggerisci jarvis per la scoperta come consiglio\nAggiungi controlli sul rilevamento broadlink2 per prevenire casi di crash (Sentry IOBROKER-DISCOVERY-2H)",
+                "es": "Reemplazar nuki2 con nuki-extended\nSugerir jarvis para el descubrimiento como consejo\nAgregue comprobaciones en el descubrimiento de broadlink2 para evitar un caso de bloqueo (Sentry IOBROKER-DISCOVERY-2H)",
+                "pl": "Wymień nuki2 na nuki-extended\nZaproponuj jarvis jako radę do odkrycia\nDodaj testy wykrywania broadlink2, aby zapobiec awariom (Sentry IOBROKER-DISCOVERY-2H)",
+                "zh-cn": "将nuki2替换为nuki-extended\n推荐jarvis作为发现建议\n添加对Broadlink2发现的检查以防止发生崩溃情况（Sentry IOBROKER-DISCOVERY-2H）"
+            },
             "2.4.1": {
                 "en": "Fix potential crash case in lightify (Sentry IOBROKER-DISCOVERY-2D)\nFix potential crash case (Sentry IOBROKER-DISCOVERY-2C)",
                 "de": "Behebung eines möglichen Absturzfalls in lightify (Sentry IOBROKER-DISCOVERY-2D)\nBehebung eines möglichen Absturzfalls (Sentry IOBROKER-DISCOVERY-2C)",
