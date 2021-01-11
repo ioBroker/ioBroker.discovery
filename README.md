@@ -131,7 +131,7 @@ Just now it can detect via ping, UPnP (serial planned).
 -->
 ## Changelog
 
-### __WORk IN PROGRESS__
+### __WORK IN PROGRESS__
 * (Zefau) Replace nuki2 with nuki-extended
 * (Zefau) Suggest jarvis for discovery as advice
 * (Apollon77) Add checks on broadlink2 discovery to prevent crash case (Sentry IOBROKER-DISCOVERY-2H)
