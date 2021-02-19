@@ -102,7 +102,6 @@ Just now it can detect via ping, UPnP (serial planned).
 - flot (offered when a History-Adapter is present)
 - JavaScript
 - Info
-- Mobile
 - Vis
 - Web
 
