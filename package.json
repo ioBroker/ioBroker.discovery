@@ -16,11 +16,11 @@
     "iot"
   ],
   "optionalDependencies": {
-    "serialport": "^9.0.2",
+    "serialport": "^9.0.7",
     "mdns-discovery": "^0.2.6"
   },
   "dependencies": {
-    "node-ssdp": "^4.0.0",
+    "node-ssdp": "^4.0.1",
     "netmask": "^1.0.6",
     "@iobroker/adapter-core": "^2.4.0",
     "node-mndp": "^0.0.3"
@@ -30,12 +30,12 @@
     "url": "https://github.com/ioBroker/ioBroker.discovery"
   },
   "devDependencies": {
-    "@alcalzone/release-script": "^1.8.1",
-    "axios": "^0.21.0",
+    "@alcalzone/release-script": "^1.8.3",
+    "axios": "^0.21.1",
     "gulp": "^4.0.2",
-    "mocha": "^8.2.1",
-    "chai": "^4.2.0",
-    "eslint": "^7.14.0"
+    "mocha": "^8.3.0",
+    "chai": "^4.3.0",
+    "eslint": "^7.20.0"
   },
   "bugs": {
     "url": "https://github.com/ioBroker/ioBroker.discovery/issues"

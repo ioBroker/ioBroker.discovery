@@ -132,6 +132,12 @@ Just now it can detect via ping, UPnP (serial planned).
 -->
 ## Changelog
 
+### __WORK IN PROGRESS__
+* (Apollon77) Fix crash cases (Sentry IOBROKER-DISCOVERY-2Q)
+* (JeyCee) removed mobile
+* (JeyCee) added iot and net-tools
+* (JeyCee) UI adjustments
+
 ### 2.5.0 (2021-01-11)
 * (Zefau) Replace nuki2 with nuki-extended
 * (Zefau) Suggest jarvis for discovery as advice
