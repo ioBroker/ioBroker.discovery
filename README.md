@@ -70,6 +70,7 @@ Just now it can detect via ping, UPnP (serial planned).
 - myDlink
 - Mysensors USB/Serial (9600, 38400, 57600, 115200)
 - nanoleaf Light Panels / Canvas
+- Net Tools
 - Nuki2
 - Nut
 - Onkyo
@@ -98,11 +99,11 @@ Just now it can detect via ping, UPnP (serial planned).
 
 ### Offered as additional adapters
 - Cloud
-- History (if no SQL or InfluxDB found)
+- History (if no SQL or InfluxDB found) 
+- IoT
 - flot (offered when a History-Adapter is present)
 - JavaScript
 - Info
-- Mobile
 - Vis
 - Web
 

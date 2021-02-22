@@ -311,9 +311,9 @@
                     } else if (systemConfig.common.language === 'en') {
                         systemConfig.common.currency = '$';
                     } else if (systemConfig.common.language === 'pl') {
-                        systemConfig.common.currency = 'PLN';                    
+                        systemConfig.common.currency = 'PLN';
                     } else if (systemConfig.common.language === 'zh-cn') {
-                        systemConfig.common.currency = '￥';                    
+                        systemConfig.common.currency = '￥';
                     } else {
                         systemConfig.common.currency = '€';
                     }
@@ -1761,6 +1761,12 @@
             resize: none;
             height: inherit;
         }
+        #dialog-license{
+            z-index: 99999;
+        }
+        .modal-footer>button>i {
+            vertical-align: bottom;
+        }
 
     </style>
 </head>
@@ -2338,8 +2344,8 @@
             </div>
         </div>
         <div class="modal-footer">
-            <a class="modal-action modal-close waves-effect waves-green btn btn-set"  ><i class="large material-icons">check</i><span class="translate">Apply</span></a>
-            <a class="modal-action modal-close waves-effect waves-green btn btn-close"><i class="large material-icons">close</i><span class="translate">Close</span></a>
+            <button class="btn btn-set waves-effect waves-green modal-close modal-action"><i class="large material-icons">check</i><span class="translate">Apply</span></button>
+            <button class="btn waves-effect waves-green modal-close modal-action"><i class="large material-icons">close</i><span class="translate">Close</span></button>
         </div>
     </div>
 
