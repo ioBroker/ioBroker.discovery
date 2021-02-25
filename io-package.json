@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "discovery",
-        "version": "2.5.0",
+        "version": "2.6.0",
         "news": {
             "2.5.0": {
                 "en": "Replace nuki2 with nuki-extended\nSuggest jarvis for discovery as advice\nAdd checks on broadlink2 discovery to prevent crash case (Sentry IOBROKER-DISCOVERY-2H)",
