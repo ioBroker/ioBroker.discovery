@@ -283,6 +283,8 @@
     },
     "native": {
         "pingTimeout": 1000,
+        "pingOwnIP": "",
+        "pingOwnNetmask": "",
         "pingBlock": 20,
         "onlyLocal": false
     },
