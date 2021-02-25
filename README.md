@@ -144,6 +144,7 @@ If not all IPs are found then please check that the iobroker user can execute /b
 * (Apollon77) Add option to specify the "own IP address" and netmask to also allow discovery for e.g. docker cases where an external network should be scanned
 * (Apollon77) Fix ping progress counter when scanning multiple ip ranges
 * (JeyCee) removed mobile
+* (Apollon77) fix sonos and synology
 * (JeyCee) UI adjustments
 * (Apollon77) Fix crash cases (Sentry IOBROKER-DISCOVERY-2Q)
 
