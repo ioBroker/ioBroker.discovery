@@ -142,6 +142,7 @@ If not all IPs are found then please check that the iobroker user can execute /b
 * (JeyCee) added iot and net-tools
 * (Apollon77) Adjust and optimize UDP discoveries
 * (Apollon77) Add option to specify the "own IP address" and netmask to also allow discovery for e.g. docker cases where an external network should be scanned
+* (Apollon77) Fix ping progress counter when scanning multiple ip ranges
 * (JeyCee) removed mobile
 * (JeyCee) UI adjustments
 * (Apollon77) Fix crash cases (Sentry IOBROKER-DISCOVERY-2Q)
