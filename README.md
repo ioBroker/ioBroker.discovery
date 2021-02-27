@@ -138,7 +138,7 @@ If not all IPs are found then please check that the iobroker user can execute /b
 -->
 ## Changelog
 
-### __WORK IN PROGRESS__
+### 2.6.1 (2021-02-28)
 * (JeyCee) added iot and net-tools
 * (Apollon77) Adjust and optimize UDP and UPnP discoveries
 * (Apollon77) Add option to specify the "own IP address" and netmask to also allow discovery for e.g. docker cases where an external network should be scanned
