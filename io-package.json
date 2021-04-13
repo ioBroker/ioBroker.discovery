@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "discovery",
-        "version": "2.6.1",
+        "version": "2.6.2",
         "news": {
+            "2.6.2": {
+                "en": "Fix crash case in mihome discovery (Sentry IOBROKER-DISCOVERY-30)\nFix crash case in ping logic (Sentry IOBROKER-DISCOVERY-2Y)\nFix crash case in hf-lpb100 logic (Sentry IOBROKER-DISCOVERY-34)",
+                "de": "Absturz bei Mihome-Entdeckung behoben (Sentry IOBROKER-DISCOVERY-30)\nAbsturz in Ping-Logik behoben (Sentry IOBROKER-DISCOVERY-2Y)\nAbsturz in der hf-lpb100-Logik behoben (Sentry IOBROKER-DISCOVERY-34)",
+                "ru": "Исправить сбой в обнаружении mihome (Sentry IOBROKER-DISCOVERY-30)\nИсправить сбой в логике ping (Sentry IOBROKER-DISCOVERY-2Y)\nИсправить случай сбоя в логике hf-lpb100 (Sentry IOBROKER-DISCOVERY-34)",
+                "pt": "Corrigir caso de falha na descoberta mihome (Sentry IOBROKER-DISCOVERY-30)\nCorrigir caso de falha na lógica de ping (Sentry IOBROKER-DISCOVERY-2Y)\nCorrigir caso de falha na lógica hf-lpb100 (Sentry IOBROKER-DISCOVERY-34)",
+                "nl": "Crash case repareren in mihome discovery (Sentry IOBROKER-DISCOVERY-30)\nFix crash case in ping logic (Sentry IOBROKER-DISCOVERY-2Y)\nCrashcase in hf-lpb100-logica repareren (Sentry IOBROKER-DISCOVERY-34)",
+                "fr": "Correction d'un cas de crash dans mihome Discovery (Sentry IOBROKER-DISCOVERY-30)\nCorrection d'un cas de crash dans la logique de ping (Sentry IOBROKER-DISCOVERY-2Y)\nCorrection d'un cas de crash dans la logique hf-lpb100 (Sentry IOBROKER-DISCOVERY-34)",
+                "it": "Risolto il crash case in mihome discovery (Sentry IOBROKER-DISCOVERY-30)\nRisolve il caso di arresto anomalo nella logica ping (Sentry IOBROKER-DISCOVERY-2Y)\nRisolve il caso di arresto anomalo nella logica hf-lpb100 (Sentry IOBROKER-DISCOVERY-34)",
+                "es": "Reparar caso de bloqueo en mihome discovery (Sentry IOBROKER-DISCOVERY-30)\nArreglar caso de falla en la lógica de ping (Sentry IOBROKER-DISCOVERY-2Y)\nReparar caso de bloqueo en lógica hf-lpb100 (Sentry IOBROKER-DISCOVERY-34)",
+                "pl": "Napraw awarię w wykrywaniu mihome (Sentry IOBROKER-DISCOVERY-30)\nNapraw przypadek awarii w logice ping (Sentry IOBROKER-DISCOVERY-2Y)\nNapraw przypadek awarii w logice HF-LPB100 (Sentry IOBROKER-DISCOVERY-34)",
+                "zh-cn": "修复mihome发现中的崩溃情况（Sentry IOBROKER-DISCOVERY-30）\n修复ping逻辑中的崩溃情况（Sentry IOBROKER-DISCOVERY-2Y）\n修复HF-LPB100逻辑中的崩溃情况（Sentry IOBROKER-DISCOVERY-34）"
+            },
             "2.6.1": {
                 "en": "added iot and net-tools\nAdjust and optimize UDP and UPnP discoveries\nAdd option to specify the \"own IP address\" and netmask to also allow discovery for e.g. docker cases where an external network should be scanned\nFix ping progress counter when scanning multiple ip ranges\nremoved mobile\nfix sonos and synology\nUI adjustments\nFix crash cases (Sentry IOBROKER-DISCOVERY-2Q)",
                 "de": "iot und net-tools hinzugefügt\nPassen Sie UDP- und UPnP-Erkennungen an und optimieren Sie sie\nOption hinzufügen, um die \"eigene IP-Adresse\" und die Netzmaske anzugeben, um auch die Erkennung für z. Docker-Fälle, in denen ein externes Netzwerk gescannt werden sollte\nKorrektur des Ping-Fortschrittszählers beim Scannen mehrerer IP-Bereiche\nHandy entfernt\nFix Sonos und Synologie\nUI-Anpassungen\nAbsturzfälle beheben (Sentry IOBROKER-DISCOVERY-2Q)",
