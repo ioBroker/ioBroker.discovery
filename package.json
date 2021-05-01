@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "node-ssdp": "^4.0.1",
-    "netmask": "^1.0.6",
+    "netmask": "^2.0.2",
     "@iobroker/adapter-core": "^2.4.0",
     "node-mndp": "^0.0.3"
   },
