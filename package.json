@@ -30,7 +30,7 @@
     "url": "https://github.com/ioBroker/ioBroker.discovery"
   },
   "devDependencies": {
-    "@alcalzone/release-script": "^1.8.3",
+    "@alcalzone/release-script": "^1.10.0",
     "axios": "^0.21.1",
     "gulp": "^4.0.2",
     "mocha": "^8.3.2",
