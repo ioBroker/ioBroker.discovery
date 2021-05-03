@@ -122,126 +122,6 @@
                 "es": "Agregar manejo de errores para la detección de Synology (Sentry IOBROKER-DISCOVERY-E)",
                 "pl": "Dodaj obsługę błędów do wykrywania Synology (Sentry IOBROKER-DISCOVERY-E)",
                 "zh-cn": "添加用于Synology检测的错误处理（Sentry IOBROKER-DISCOVERY-E）"
-            },
-            "2.3.6": {
-                "en": "potential crash case fixed\nserial device discovery fixed\nDiscovery added for Onvif",
-                "de": "Möglicher Crash-Fall behoben\nErkennung serieller Geräte behoben\nEntdeckung für Onvif hinzugefügt",
-                "ru": "случай возможного сбоя исправлен\nисправлено обнаружение серийного устройства\nДобавлено обнаружение для Onvif",
-                "pt": "possível caso de falha corrigido\ndescoberta de dispositivo serial corrigida\nDescoberta adicionada para Onvif",
-                "nl": "mogelijke crash case opgelost\nseriële apparaatdetectie opgelost\nDiscovery toegevoegd voor Onvif",
-                "fr": "cas de crash potentiel corrigé\ndétection de périphérique série corrigée\nDécouverte ajoutée pour Onvif",
-                "it": "potenziale caso di crash risolto\nrilevamento dispositivo seriale fisso\nDiscovery aggiunto per Onvif",
-                "es": "caso de bloqueo potencial solucionado\ndescubrimiento de dispositivo en serie arreglado\nDescubrimiento agregado para Onvif",
-                "pl": "naprawiono potencjalną awarię\nnaprawiono wykrywanie urządzeń szeregowych\nDodano wykrywanie dla Onvif",
-                "zh-cn": "修复潜在的崩溃案例\n修复了串行设备发现\n为Onvif添加了发现"
-            },
-            "2.3.3": {
-                "en": "potential crash case fixed",
-                "de": "Möglicher Crash-Fall behoben",
-                "ru": "случай возможного сбоя исправлен",
-                "pt": "possível caso de falha corrigido",
-                "nl": "mogelijke crash case opgelost",
-                "fr": "cas de crash potentiel corrigé",
-                "it": "potenziale caso di crash risolto",
-                "es": "caso de bloqueo potencial solucionado",
-                "pl": "naprawiono potencjalną awarię",
-                "zh-cn": "修复潜在的崩溃案例"
-            },
-            "2.3.2": {
-                "en": "fix potential crash in knx discovery",
-                "de": "Behebung eines möglichen Absturzes bei der knx-Erkennung",
-                "ru": "исправить возможный сбой в открытии knx",
-                "pt": "corrigir falha potencial na descoberta do knx",
-                "nl": "potentiële crash in knx-ontdekking oplossen",
-                "fr": "correction d'un crash potentiel dans la découverte de knx",
-                "it": "risolve potenziali crash nella scoperta di knx",
-                "es": "Solucionar un posible bloqueo en el descubrimiento de KNX",
-                "pl": "napraw potencjalną awarię w wykrywaniu KNX",
-                "zh-cn": "修复knx发现中的潜在崩溃"
-            },
-            "2.3.1": {
-                "en": "Discovery added for Synology, Onkyo, Mpd, Mikrotik, optimizations and fixes, Added Sentry for use with js-controller 3.0",
-                "de": "Entdeckung für Synology, Onkyo, Mpd, Mikrotik, Optimierungen und Korrekturen hinzugefügt, Sentry für die Verwendung mit js-controller 3.0 hinzugefügt",
-                "ru": "Добавлено обнаружение для Synology, Onkyo, Mpd, Mikrotik, оптимизаций и исправлений, добавлен Sentry для использования с js-controller 3.0",
-                "pt": "Adicionada descoberta para Synology, Onkyo, Mpd, Mikrotik, otimizações e correções, Added Sentry para uso com o js-controller 3.0",
-                "nl": "Discovery toegevoegd voor Synology, Onkyo, Mpd, Mikrotik, optimalisaties en fixes, Sentry toegevoegd voor gebruik met js-controller 3.0",
-                "fr": "Découverte ajoutée pour Synology, Onkyo, Mpd, Mikrotik, optimisations et correctifs, Sentry ajouté pour une utilisation avec js-controller 3.0",
-                "it": "Discovery aggiunto per Synology, Onkyo, Mpd, Mikrotik, ottimizzazioni e correzioni, Sentry aggiunto per l'uso con js-controller 3.0",
-                "es": "Descubrimiento agregado para Synology, Onkyo, Mpd, Mikrotik, optimizaciones y correcciones, Sentry agregado para usar con js-controller 3.0",
-                "pl": "Dodano Discovery dla Synology, Onkyo, Mpd, Mikrotik, optymalizacje i poprawki, Dodano Sentry do użytku z js-controller 3.0",
-                "zh-cn": "为Synology，Onkyo，Mpd，Mikrotik，优化和修复添加了发现功能，添加了与js-controller 3.0一起使用的Sentry"
-            },
-            "2.2.2": {
-                "en": "Added discovery for Beckhoff PLC\nAdded discovery for Solarlog\nAdded discovery for SqueezeboxRPC",
-                "de": "Entdeckung für Beckhoff PLC hinzugefügt\nEntdeckung für Solarlog hinzugefügt\nEntdeckung für SqueezeboxRPC hinzugefügt",
-                "ru": "Добавлено открытие для Beckhoff PLC\nДобавлено открытие для Solarlog\nДобавлено открытие для SqueezeboxRPC",
-                "pt": "Adicionada descoberta para o Beckhoff PLC\nAdicionada descoberta para o Solarlog\nAdicionada descoberta para o SqueezeboxRPC",
-                "nl": "Detectie toegevoegd voor Beckhoff PLC\nOntdekking voor Solarlog toegevoegd\nDetectie toegevoegd voor SqueezeboxRPC",
-                "fr": "Découverte supplémentaire pour Beckhoff PLC\nDécouverte ajoutée pour Solarlog\nDécouverte ajoutée pour SqueezeboxRPC",
-                "it": "Aggiunta scoperta per Beckhoff PLC\nAggiunto rilevamento per Solarlog\nAggiunto rilevamento per SqueezeboxRPC",
-                "es": "Descubrimiento agregado para Beckhoff PLC\nDescubrimiento agregado para Solarlog\nDescubrimiento agregado para SqueezeboxRPC",
-                "pl": "Dodano odkrycie dla Beckhoff PLC\nDodano odkrycie dla Solarlog\nDodano odkrycie dla SqueezeboxRPC",
-                "zh-cn": "增加了对Beckhoff PLC的发现\n增加了对Solarlog的发现\n添加了对SqueezeboxRPC的发现"
-            },
-            "2.1.0": {
-                "en": "removed usage of adapter.objects",
-                "de": "Verwendung von adapter.objects entfernt",
-                "ru": "удалено использование файла adapter.objects",
-                "pt": "removido o uso de adapter.objects",
-                "nl": "gebruik van adapter.objects verwijderd",
-                "fr": "utilisation supprimée de adapter.objects",
-                "it": "rimosso l'utilizzo di adapter.objects",
-                "es": "uso eliminado de adaptador.objetos",
-                "pl": "usunięto użycie adapter.objects",
-                "zh-cn": "删除了adapter.objects的用法"
-            },
-            "2.0.0": {
-                "en": "Support for nodejs 12 added, nodejs 4 is no longer supported!",
-                "de": "Unterstützung für NodeJS 12 hinzugefügt, NodeJS 4 wird nicht mehr unterstützt!",
-                "ru": "Добавлена ​​поддержка nodejs 12, nodejs 4 больше не поддерживается!",
-                "pt": "Suporte para nodejs 12 adicionado, nodejs 4 não é mais suportado!",
-                "nl": "Ondersteuning voor nodejs 12 toegevoegd, nodejs 4 wordt niet langer ondersteund!",
-                "fr": "Prise en charge de nodejs 12 ajoutée, nodejs 4 n'est plus prise en charge!",
-                "it": "Supporto per nodejs 12 aggiunto, nodejs 4 non è più supportato!",
-                "es": "Se agregó soporte para nodejs 12, ¡nodejs 4 ya no es compatible!",
-                "pl": "Dodano wsparcie dla nodejs 12, nodejs 4 nie jest już obsługiwany!",
-                "zh-cn": "添加了对nodejs 12的支持，不再支持nodejs 4！"
-            },
-            "1.4.0": {
-                "en": "Code refactoring\nadded emby\nboradlink => broadlink2",
-                "de": "Code Refactoring\nfügte emby hinzu\nBroadlink => Broadlink 2",
-                "ru": "Рефакторинг кода\nдобавлена ​​Эмби\nbroadlink => broadlink 2",
-                "pt": "Refatoração de código\nadicionado emby\nbroadlink => broadlink 2",
-                "nl": "Code refactoring\ntoegevoegd emby\nbroadlink => breedband 2",
-                "fr": "Refactoring de code\najout d'embry\nbroadlink => broadlink 2",
-                "it": "Refactoring del codice\naggiunto emby\nbroadlink => broadlink 2",
-                "es": "Código de refactorización\nagregado emby\nbroadlink => broadlink 2",
-                "pl": "Refaktoryzacja kodu\ndodano emby\nbroadlink => broadlink 2",
-                "zh-cn": "代码重构\n添加了emby\nbroadlink => broadlink 2"
-            },
-            "1.3.0": {
-                "en": "Support of compact mode was added",
-                "de": "Unterstützung des Kompaktmodus wurde hinzugefügt",
-                "ru": "Добавлена ​​поддержка компактного режима",
-                "pt": "Suporte de modo compacto foi adicionado",
-                "nl": "Ondersteuning van de compacte modus is toegevoegd",
-                "fr": "Support du mode compact a été ajouté",
-                "it": "È stato aggiunto il supporto della modalità compatta",
-                "es": "Se agregó soporte de modo compacto.",
-                "pl": "Dodano obsługę trybu kompaktowego",
-                "zh-cn": "支持紧凑模式"
-            },
-            "1.2.4": {
-                "en": "Small GUI update was made\nAdded ebus",
-                "de": "Ein kleines GUI-Update wurde vorgenommen\nEBus hinzugefügt",
-                "ru": "Было сделано небольшое обновление графического интерфейса пользователя\nДобавлен ebus",
-                "pt": "Atualização de pequena GUI foi feita\nAdicionado ebus",
-                "nl": "Kleine GUI-update is gemaakt\nEbus toegevoegd",
-                "fr": "Petite mise à jour de l'interface graphique a été faite\nEbus ajouté",
-                "it": "È stato effettuato un piccolo aggiornamento della GUI\nEbus aggiunto",
-                "es": "Se realizó una pequeña actualización de la GUI\nEbus añadido",
-                "pl": "Dokonano niewielkiej aktualizacji GUI\nDodano ebus",
-                "zh-cn": "进行了小型GUI更新\n"
             }
         },
         "title": "Discovery devices",
@@ -295,10 +175,6 @@
         ],
         "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.discovery/master/admin/discovery.png",
         "type": "general",
-        "config": {
-            "width": 1224,
-            "height": 700
-        },
         "plugins": {
             "sentry": {
                 "dsn": "https://464b38d930eb4ee7b3e426620f52d256@sentry.iobroker.net/31"

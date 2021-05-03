@@ -2,8 +2,8 @@
 /*global systemDictionary:true */
 'use strict';
 
-if (typeof module !== "undefined" && module.parent) {
-    const systemDictionary;
+if (typeof module !== 'undefined' && module.parent) {
+    var systemDictionary;
 }
 systemDictionary = {
     "E-Mail": {                                      "en": "E-Mail",                                          "de": "E-Mail",                                          "ru": "Электронное письмо",                              "pt": "O email",                                         "nl": "E-mail",                                          "fr": "E-mail",                                          "it": "E-mail",                                          "es": "Email",                                           "pl": "E-mail",                                          "zh-cn": "电子邮件"},
@@ -345,12 +345,12 @@ function _translate(lang, word, arg1, arg2) {
     if (systemDictionary[word]) {
         word = systemDictionary[word][lang] || systemDictionary[word].en || word;
     }
-    word = word.replace("%s", arg1);
-    word = word.replace("%s", arg2);
+    word = word.replace('%s', arg1);
+    word = word.replace('%s', arg2);
     return word;
 }
 
-if (typeof module !== "undefined" && module.parent) {
+if (typeof module !== 'undefined' && module.parent) {
     module.exports = {
         words:    systemDictionary,
         translate: _translate

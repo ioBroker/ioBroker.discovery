@@ -2,13 +2,12 @@
  *
  *      ioBroker Discovery Adapter
  *
- *      Copyright (c) 2017-2020 Bluefox <dogafox@gmail.com>
+ *      Copyright (c) 2017-2021 Bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
  */
 
-/* global __dirname */
 /* jshint -W097 */
 /* jshint strict: false */
 /* jslint node: true */
