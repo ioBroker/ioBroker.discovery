@@ -137,7 +137,7 @@ If not all IPs are found then please check that the iobroker user can execute /b
 	### __WORK IN PROGRESS__
 -->
 ## Changelog
-### __WORK IN PROGRESS__
+### 2.6.3 (2021-05-03)
 * (bluefox) Adde support of Admin5 
 
 ### 2.6.2 (2021-04-13)

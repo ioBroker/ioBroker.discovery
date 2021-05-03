@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "discovery",
-        "version": "2.6.2",
+        "version": "2.6.3",
         "news": {
+            "2.6.3": {
+                "en": "Adde support of Admin5",
+                "de": "Adde-Unterstützung von Admin5",
+                "ru": "Добавить поддержку Admin5",
+                "pt": "Suporte Adde de Admin5",
+                "nl": "Voeg ondersteuning toe van Admin5",
+                "fr": "Prise en charge d'Adde d'Admin5",
+                "it": "Supporto aggiuntivo di Admin5",
+                "es": "Agregar soporte de Admin5",
+                "pl": "Dodatkowa obsługa Admin5",
+                "zh-cn": "添加对Admin5的支持"
+            },
             "2.6.2": {
                 "en": "Fix crash case in mihome discovery (Sentry IOBROKER-DISCOVERY-30)\nFix crash case in ping logic (Sentry IOBROKER-DISCOVERY-2Y)\nFix crash case in hf-lpb100 logic (Sentry IOBROKER-DISCOVERY-34)",
                 "de": "Absturz bei Mihome-Entdeckung behoben (Sentry IOBROKER-DISCOVERY-30)\nAbsturz in Ping-Logik behoben (Sentry IOBROKER-DISCOVERY-2Y)\nAbsturz in der hf-lpb100-Logik behoben (Sentry IOBROKER-DISCOVERY-34)",
