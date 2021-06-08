@@ -11,7 +11,7 @@
 
 **Detect devices with all known methods.**
 
-This is special adapters, that tries to find all possible devices, that can be reachable from host.
+This is a special adapter, that tries to find all possible devices, that can be reachable from host.
 Just now it can detect via ping, UPnP (serial planned).
 
 **This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.** For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry reporting is used starting with js-controller 3.0.
@@ -51,6 +51,7 @@ Just now it can detect via ping, UPnP (serial planned).
 - InfluxDB
 - KLF-200
 - KNX (disabled actually)
+- Keba KeContact P30
 - Kodi
 - Landroid
 - LGTV
@@ -137,6 +138,9 @@ If not all IPs are found then please check that the iobroker user can execute /b
 	### __WORK IN PROGRESS__
 -->
 ## Changelog
+### 2.6.4 (2021-06-08)
+* (Sneak-L8) support KeBa KeContact P30
+
 ### 2.6.3 (2021-05-03)
 * (bluefox) Added support of Admin5 
 

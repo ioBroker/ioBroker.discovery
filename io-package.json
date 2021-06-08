@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "discovery",
-        "version": "2.6.3",
+        "version": "2.6.4",
         "news": {
+            "2.6.4": {
+                "en": "Support KeBa KeContact P30",
+                "de": "Unterstützung für KeBa KeContact P30",
+                "ru": "Поддержка KeBa KeContact P30",
+                "pt": "Suporte KeBa KeContact P30",
+                "nl": "Ondersteuning KeBa KeContact P30",
+                "fr": "Assistance KeBa KeContact P30",
+                "it": "Supporta KeBa KeContatta P30",
+                "es": "Soporte KeBa KeContact P30",
+                "pl": "Wsparcie KeBa KeContact P30",
+                "zh-cn": "支持KeBa KeContact P30"
+            },
             "2.6.3": {
                 "en": "Added support of Admin5",
                 "de": "Unterstützung von Admin5 hinzugefügt",
