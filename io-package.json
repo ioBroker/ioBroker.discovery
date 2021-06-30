@@ -191,7 +191,10 @@
             "sentry": {
                 "dsn": "https://464b38d930eb4ee7b3e426620f52d256@sentry.iobroker.net/31"
             }
-        }
+        },
+        "connectionType": "local",
+        "dataSource": "none",
+        "tier": 3
     },
     "native": {
         "pingTimeout": 1000,

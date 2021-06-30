@@ -92,7 +92,7 @@ function writeWordJs(data, src) {
     text += '/*global systemDictionary:true */\n';
     text += '\'use strict\';\n\n';
     text += 'if (typeof module !== "undefined" && module.parent) {\n';
-    text += '    const systemDictionary;\n';
+    text += '    var systemDictionary;\n';
     text += '}\n';
     text += 'systemDictionary = {\n';
     for (const word in data) {
