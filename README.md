@@ -139,7 +139,7 @@ If not all IPs are found then please check that the iobroker user can execute /b
 -->
 ## Changelog
 
-### __WORK IN PROGRESS__
+### 2.7.0 (2021-07-01)
 * (hacki11) Add discovery for BSBLan and ValloxMV
 * (Apollon77) Optimize for js-controller 3.3
 

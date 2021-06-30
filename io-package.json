@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "discovery",
-        "version": "2.6.3",
+        "version": "2.7.0",
         "news": {
+            "2.7.0": {
+                "en": "Add discovery for BSBLan and ValloxMV\nOptimize for js-controller 3.3",
+                "de": "Erkennung für BSBLan und ValloxMV . hinzufügen\nOptimieren Sie für js-Controller 3.3",
+                "ru": "Добавить обнаружение для BSBLan и ValloxMV\nОптимизировать под js-controller 3.3",
+                "pt": "Adicionar descoberta para BSBLan e ValloxMV\nOtimize para js-controller 3.3",
+                "nl": "Ontdekking toevoegen voor BSBlan en ValloxMV\nOptimaliseren voor js-controller 3.3",
+                "fr": "Ajout de la découverte pour BSBLan et ValloxMV\nOptimiser pour js-controller 3.3",
+                "it": "Aggiungi discovery per BSBLan e ValloxMV\nOttimizza per js-controller 3.3",
+                "es": "Agregar descubrimiento para BSBLan y ValloxMV\nOptimizar para js-controller 3.3",
+                "pl": "Dodaj wykrywanie dla BSBLan i ValloxMV\nOptymalizacja dla kontrolera js 3.3",
+                "zh-cn": "为 BSBLan 和 ValloxMV 添加发现\n针对 js-controller 3.3 优化"
+            },
             "2.6.3": {
                 "en": "Added support of Admin5",
                 "de": "Unterstützung von Admin5 hinzugefügt",
