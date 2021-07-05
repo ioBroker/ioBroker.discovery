@@ -3,7 +3,7 @@
 'use strict';
 
 if (typeof module !== "undefined" && module.parent) {
-    const systemDictionary;
+    var systemDictionary;
 }
 systemDictionary = {
     "E-Mail": {                                      "en": "E-Mail",                                          "de": "E-Mail",                                          "ru": "Электронное письмо",                              "pt": "O email",                                         "nl": "E-mail",                                          "fr": "E-mail",                                          "it": "E-mail",                                          "es": "Email",                                           "pl": "E-mail",                                          "zh-cn": "电子邮件"},
