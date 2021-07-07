@@ -139,7 +139,7 @@ If not all IPs are found then please check that the iobroker user can execute /b
 	### __WORK IN PROGRESS__
 -->
 ## Changelog
-### __WORK IN PROGRESS__
+### 2.7.1 (2021-07-07)
 * (Sneak-L8) support KeBa KeContact P30
 
 ### 2.7.0 (2021-07-01)
