@@ -22,7 +22,7 @@
   "dependencies": {
     "node-ssdp": "^4.0.1",
     "netmask": "^2.0.2",
-    "@iobroker/adapter-core": "^2.5.0",
+    "@iobroker/adapter-core": "^2.5.1",
     "node-mndp": "^0.0.3"
   },
   "repository": {
