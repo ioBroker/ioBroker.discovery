@@ -13,7 +13,8 @@
 This is a special adapter, that tries to find all possible devices, that can be reachable from host.
 Just now it can detect via ping, UPnP (serial planned).
 
-**This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.** For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry reporting is used starting with js-controller 3.0.
+**This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.** 
+For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry reporting is used starting with js-controller 3.0.
 
 ## Actually supported
 
@@ -110,10 +111,10 @@ Just now it can detect via ping, UPnP (serial planned).
 - Web
 
 ## If the adapter can not find IPs ...
-The adapter pings the network of the IP of the current host (x.y.z.1..255). Additionally UPnP and mDNS is used to detect IPs. 
+The adapter pings the network of the IP of the current host (x.y.z.1..255). Additionally, UPnP and mDNS is used to detect IPs. 
 
-If not all IPs are found then please check that the iobroker user can execute /bin/ping. Pot execute `sudo setcap cap_net_raw+p /bin/ping` to add missing capabilities/permissions.
-
+If not all IPs are found then please check that the iobroker user can execute `/bin/ping`. 
+You can execute `sudo setcap cap_net_raw+p /bin/ping` to add missing capabilities/permissions.
 
 ## Todo
 - artnet? (Bluefox)
@@ -139,7 +140,7 @@ If not all IPs are found then please check that the iobroker user can execute /b
 	### __WORK IN PROGRESS__
 -->
 ## Changelog
-### 2.7.1 (2021-07-07)
+### __WORK IN PROGRESS__
 * (Sneak-L8) support KeBa KeContact P30
 
 ### 2.7.0 (2021-07-01)
@@ -220,7 +221,7 @@ If not all IPs are found then please check that the iobroker user can execute /b
 * (oweitman) Add discovery for SqueezeboxRPC
 
 ### 2.1.0 (2020-01-21)
-* (foxriver76) no longer use adapter.objects
+* (foxriver76) no longer use `adapter.objects`
 * __js-controller > 2.0.0 required__
 
 ### 2.0.0 (2019-05-15)
