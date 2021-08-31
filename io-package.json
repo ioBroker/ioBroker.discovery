@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "discovery",
-        "version": "2.7.1",
+        "version": "2.7.2",
         "news": {
+            "2.7.2": {
+                "en": "support KeBa KeContact P30",
+                "de": "unterstützen KeBa KeContact P30",
+                "ru": "поддержка KeBa KeContact P30",
+                "pt": "suporte KeBa KeContact P30",
+                "nl": "ondersteuning KeBa KeContact P30",
+                "fr": "soutenir KeBa KeContact P30",
+                "it": "supporto KeBa KeContatta P30",
+                "es": "soporte KeBa KeContact P30",
+                "pl": "wsparcie KeBa KeContact P30",
+                "zh-cn": "支持KeBa KeContact P30"
+            },
             "2.7.1": {
                 "en": "Support KeBa KeContact P30",
                 "de": "Unterstützung für KeBa KeContact P30",

@@ -140,7 +140,7 @@ You can execute `sudo setcap cap_net_raw+p /bin/ping` to add missing capabilitie
 	### __WORK IN PROGRESS__
 -->
 ## Changelog
-### __WORK IN PROGRESS__
+### 2.7.2 (2021-08-31)
 * (Sneak-L8) support KeBa KeContact P30
 
 ### 2.7.0 (2021-07-01)
