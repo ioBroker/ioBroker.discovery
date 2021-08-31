@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "discovery",
-        "version": "2.7.0",
+        "version": "2.7.1",
         "news": {
+            "2.7.1": {
+                "en": "Support KeBa KeContact P30",
+                "de": "Unterstützung für KeBa KeContact P30",
+                "ru": "Поддержка KeBa KeContact P30",
+                "pt": "Suporte KeBa KeContact P30",
+                "nl": "Ondersteuning KeBa KeContact P30",
+                "fr": "Assistance KeBa KeContact P30",
+                "it": "Supporta KeBa KeContatta P30",
+                "es": "Soporte KeBa KeContact P30",
+                "pl": "Wsparcie KeBa KeContact P30",
+                "zh-cn": "支持KeBa KeContact P30"
+            },
             "2.7.0": {
                 "en": "Add discovery for BSBLan and ValloxMV\nOptimize for js-controller 3.3",
                 "de": "Erkennung für BSBLan und ValloxMV . hinzufügen\nOptimieren Sie für js-Controller 3.3",
