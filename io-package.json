@@ -1,324 +1,240 @@
 {
-    "common": {
-        "name": "discovery",
-        "version": "2.7.2",
-        "news": {
-            "2.7.2": {
-                "en": "support KeBa KeContact P30",
-                "de": "unterstützen KeBa KeContact P30",
-                "ru": "поддержка KeBa KeContact P30",
-                "pt": "suporte KeBa KeContact P30",
-                "nl": "ondersteuning KeBa KeContact P30",
-                "fr": "soutenir KeBa KeContact P30",
-                "it": "supporto KeBa KeContatta P30",
-                "es": "soporte KeBa KeContact P30",
-                "pl": "wsparcie KeBa KeContact P30",
-                "zh-cn": "支持KeBa KeContact P30"
-            },
-            "2.7.1": {
-                "en": "Support KeBa KeContact P30",
-                "de": "Unterstützung für KeBa KeContact P30",
-                "ru": "Поддержка KeBa KeContact P30",
-                "pt": "Suporte KeBa KeContact P30",
-                "nl": "Ondersteuning KeBa KeContact P30",
-                "fr": "Assistance KeBa KeContact P30",
-                "it": "Supporta KeBa KeContatta P30",
-                "es": "Soporte KeBa KeContact P30",
-                "pl": "Wsparcie KeBa KeContact P30",
-                "zh-cn": "支持KeBa KeContact P30"
-            },
-            "2.7.0": {
-                "en": "Add discovery for BSBLan and ValloxMV\nOptimize for js-controller 3.3",
-                "de": "Erkennung für BSBLan und ValloxMV . hinzufügen\nOptimieren Sie für js-Controller 3.3",
-                "ru": "Добавить обнаружение для BSBLan и ValloxMV\nОптимизировать под js-controller 3.3",
-                "pt": "Adicionar descoberta para BSBLan e ValloxMV\nOtimize para js-controller 3.3",
-                "nl": "Ontdekking toevoegen voor BSBlan en ValloxMV\nOptimaliseren voor js-controller 3.3",
-                "fr": "Ajout de la découverte pour BSBLan et ValloxMV\nOptimiser pour js-controller 3.3",
-                "it": "Aggiungi discovery per BSBLan e ValloxMV\nOttimizza per js-controller 3.3",
-                "es": "Agregar descubrimiento para BSBLan y ValloxMV\nOptimizar para js-controller 3.3",
-                "pl": "Dodaj wykrywanie dla BSBLan i ValloxMV\nOptymalizacja dla kontrolera js 3.3",
-                "zh-cn": "为 BSBLan 和 ValloxMV 添加发现\n针对 js-controller 3.3 优化"
-            },
-            "2.6.3": {
-                "en": "Added support of Admin5",
-                "de": "Unterstützung von Admin5 hinzugefügt",
-                "ru": "Добавлена поддержка Admin5",
-                "pt": "Suporte Adde de Admin5",
-                "nl": "Voeg ondersteuning toe van Admin5",
-                "fr": "Prise en charge d'Adde d'Admin5",
-                "it": "Supporto aggiuntivo di Admin5",
-                "es": "Agregar soporte de Admin5",
-                "pl": "Dodatkowa obsługa Admin5",
-                "zh-cn": "添加对Admin5的支持"
-            },
-            "2.6.2": {
-                "en": "Fix crash case in mihome discovery (Sentry IOBROKER-DISCOVERY-30)\nFix crash case in ping logic (Sentry IOBROKER-DISCOVERY-2Y)\nFix crash case in hf-lpb100 logic (Sentry IOBROKER-DISCOVERY-34)",
-                "de": "Absturz bei Mihome-Entdeckung behoben (Sentry IOBROKER-DISCOVERY-30)\nAbsturz in Ping-Logik behoben (Sentry IOBROKER-DISCOVERY-2Y)\nAbsturz in der hf-lpb100-Logik behoben (Sentry IOBROKER-DISCOVERY-34)",
-                "ru": "Исправить сбой в обнаружении mihome (Sentry IOBROKER-DISCOVERY-30)\nИсправить сбой в логике ping (Sentry IOBROKER-DISCOVERY-2Y)\nИсправить случай сбоя в логике hf-lpb100 (Sentry IOBROKER-DISCOVERY-34)",
-                "pt": "Corrigir caso de falha na descoberta mihome (Sentry IOBROKER-DISCOVERY-30)\nCorrigir caso de falha na lógica de ping (Sentry IOBROKER-DISCOVERY-2Y)\nCorrigir caso de falha na lógica hf-lpb100 (Sentry IOBROKER-DISCOVERY-34)",
-                "nl": "Crash case repareren in mihome discovery (Sentry IOBROKER-DISCOVERY-30)\nFix crash case in ping logic (Sentry IOBROKER-DISCOVERY-2Y)\nCrashcase in hf-lpb100-logica repareren (Sentry IOBROKER-DISCOVERY-34)",
-                "fr": "Correction d'un cas de crash dans mihome Discovery (Sentry IOBROKER-DISCOVERY-30)\nCorrection d'un cas de crash dans la logique de ping (Sentry IOBROKER-DISCOVERY-2Y)\nCorrection d'un cas de crash dans la logique hf-lpb100 (Sentry IOBROKER-DISCOVERY-34)",
-                "it": "Risolto il crash case in mihome discovery (Sentry IOBROKER-DISCOVERY-30)\nRisolve il caso di arresto anomalo nella logica ping (Sentry IOBROKER-DISCOVERY-2Y)\nRisolve il caso di arresto anomalo nella logica hf-lpb100 (Sentry IOBROKER-DISCOVERY-34)",
-                "es": "Reparar caso de bloqueo en mihome discovery (Sentry IOBROKER-DISCOVERY-30)\nArreglar caso de falla en la lógica de ping (Sentry IOBROKER-DISCOVERY-2Y)\nReparar caso de bloqueo en lógica hf-lpb100 (Sentry IOBROKER-DISCOVERY-34)",
-                "pl": "Napraw awarię w wykrywaniu mihome (Sentry IOBROKER-DISCOVERY-30)\nNapraw przypadek awarii w logice ping (Sentry IOBROKER-DISCOVERY-2Y)\nNapraw przypadek awarii w logice HF-LPB100 (Sentry IOBROKER-DISCOVERY-34)",
-                "zh-cn": "修复mihome发现中的崩溃情况（Sentry IOBROKER-DISCOVERY-30）\n修复ping逻辑中的崩溃情况（Sentry IOBROKER-DISCOVERY-2Y）\n修复HF-LPB100逻辑中的崩溃情况（Sentry IOBROKER-DISCOVERY-34）"
-            },
-            "2.6.1": {
-                "en": "added iot and net-tools\nAdjust and optimize UDP and UPnP discoveries\nAdd option to specify the \"own IP address\" and netmask to also allow discovery for e.g. docker cases where an external network should be scanned\nFix ping progress counter when scanning multiple ip ranges\nremoved mobile\nfix sonos and synology\nUI adjustments\nFix crash cases (Sentry IOBROKER-DISCOVERY-2Q)",
-                "de": "iot und net-tools hinzugefügt\nPassen Sie UDP- und UPnP-Erkennungen an und optimieren Sie sie\nOption hinzufügen, um die \"eigene IP-Adresse\" und die Netzmaske anzugeben, um auch die Erkennung für z. Docker-Fälle, in denen ein externes Netzwerk gescannt werden sollte\nKorrektur des Ping-Fortschrittszählers beim Scannen mehrerer IP-Bereiche\nHandy entfernt\nFix Sonos und Synologie\nUI-Anpassungen\nAbsturzfälle beheben (Sentry IOBROKER-DISCOVERY-2Q)",
-                "ru": "добавлены iot и net-tools\nНастройте и оптимизируйте обнаружение UDP и UPnP\nДобавьте параметр, чтобы указать «собственный IP-адрес» и маску сети, чтобы также разрешить обнаружение, например докеры, когда нужно сканировать внешнюю сеть\nИсправить счетчик прогресса ping при сканировании нескольких диапазонов IP\nудален мобильный\nисправить сонос и синологию\nНастройки пользовательского интерфейса\nУстранение сбоев (Sentry IOBROKER-DISCOVERY-2Q)",
-                "pt": "adicionadas ferramentas iot e net\nAjustar e otimizar descobertas UDP e UPnP\nAdicione a opção de especificar o \"próprio endereço IP\" e a máscara de rede para permitir a descoberta, por exemplo, casos docker em que uma rede externa deve ser verificada\nCorrigir o contador de progresso de ping ao verificar vários intervalos de IP\ncelular removido\nconsertar sonos e sinologia\nAjustes de IU\nCorrigir casos de falha (Sentry IOBROKER-DISCOVERY-2Q)",
-                "nl": "iot en net-tools toegevoegd\nPas en optimaliseer UDP- en UPnP-ontdekkingen\nOptie toevoegen om het \"eigen IP-adres\" en netmasker te specificeren om ook detectie mogelijk te maken voor bijv. docker-gevallen waarin een extern netwerk moet worden gescand\nPing-voortgangsteller repareren bij het scannen van meerdere IP-bereiken\nverwijderde mobiel\nrepareer sonos en synology\nUI-aanpassingen\nCrash gevallen repareren (Sentry IOBROKER-DISCOVERY-2Q)",
-                "fr": "ajout de iot et net-tools\nAjuster et optimiser les découvertes UDP et UPnP\nAjoutez une option pour spécifier la \"propre adresse IP\" et le masque de réseau pour permettre également la découverte pour par exemple cas de docker où un réseau externe doit être analysé\nCorrection du compteur de progression du ping lors de l'analyse de plusieurs plages d'adresses IP\nmobile supprimé\nréparer les sonos et la synologie\nAjustements de l'interface utilisateur\nCorrection des cas de crash (Sentry IOBROKER-DISCOVERY-2Q)",
-                "it": "aggiunto iot e net-tools\nRegola e ottimizza le scoperte UDP e UPnP\nAggiungi l'opzione per specificare il \"proprio indirizzo IP\" e la maschera di rete per consentire anche il rilevamento ad es. casi di finestra mobile in cui è necessario scansionare una rete esterna\nRisolve il contatore di avanzamento del ping durante la scansione di più intervalli IP\ncellulare rimosso\ncorreggere sonos e synology\nRegolazioni dell'interfaccia utente\nRisolvi i casi di crash (Sentry IOBROKER-DISCOVERY-2Q)",
-                "es": "iot y net-tools añadidas\nAjustar y optimizar los descubrimientos de UDP y UPnP\nAgregue la opción para especificar la \"propia dirección IP\" y la máscara de red para permitir también el descubrimiento de p. Ej. Casos de Docker en los que se debe escanear una red externa\nReparar el contador de progreso de ping al escanear múltiples rangos de ip\nmóvil eliminado\narreglar sonos y synology\nAjustes de UI\nReparar casos de fallas (Sentry IOBROKER-DISCOVERY-2Q)",
-                "pl": "dodane narzędzia iot i net-tools\nDostosuj i zoptymalizuj wykrywanie UDP i UPnP\nDodaj opcję określenia „własnego adresu IP” i maski sieci, aby umożliwić wykrywanie, np. Docker przypadków, w których należy przeskanować sieć zewnętrzną\nNaprawiono licznik postępu ping podczas skanowania wielu zakresów adresów IP\nusunięty telefon komórkowy\nnapraw sonos i synology\nDostosowania interfejsu użytkownika\nNapraw przypadki awarii (Sentry IOBROKER-DISCOVERY-2Q)",
-                "zh-cn": "添加了物联网和网络工具\n调整和优化UDP和UPnP发现\n添加选项以指定“自己的IP地址”和网络掩码，以便也可以发现例如应当扫描外部网络的docker案例\n扫描多个IP范围时修复ping进度计数器\n移除手机\n修复Sonos和Synology\n用户界面调整\n修复崩溃案例（Sentry IOBROKER-DISCOVERY-2Q）"
-            },
-            "2.5.0": {
-                "en": "Replace nuki2 with nuki-extended\nSuggest jarvis for discovery as advice\nAdd checks on broadlink2 discovery to prevent crash case (Sentry IOBROKER-DISCOVERY-2H)",
-                "de": "Ersetzen Sie nuki2 durch nuki-erweitert\nSchlagen Sie jarvis zur Entdeckung als Rat vor\nFügen Sie Überprüfungen der Broadlink2-Erkennung hinzu, um einen Absturz zu verhindern (Sentry IOBROKER-DISCOVERY-2H).",
-                "ru": "Заменить nuki2 на nuki-extended\nПредложите Джарвиса для открытия в качестве совета\nДобавлены проверки обнаружения Broadlink2 для предотвращения сбоя (Sentry IOBROKER-DISCOVERY-2H)",
-                "pt": "Substitua nuki2 por nuki estendido\nSugira jarvis para descoberta como conselho\nAdicionar verificações na descoberta do broadlink2 para evitar caso de falha (Sentry IOBROKER-DISCOVERY-2H)",
-                "nl": "Vervang nuki2 door nuki-extended\nStel jarvis voor voor ontdekking als advies\nVoeg controles toe voor broadlink2-detectie om een crashcase te voorkomen (Sentry IOBROKER-DISCOVERY-2H)",
-                "fr": "Remplacer nuki2 par nuki-extended\nSuggérer des Jarvis pour la découverte comme conseil\nAjouter des vérifications sur la découverte Broadlink2 pour éviter les cas de crash (Sentry IOBROKER-DISCOVERY-2H)",
-                "it": "Sostituisci nuki2 con nuki-extended\nSuggerisci jarvis per la scoperta come consiglio\nAggiungi controlli sul rilevamento broadlink2 per prevenire casi di crash (Sentry IOBROKER-DISCOVERY-2H)",
-                "es": "Reemplazar nuki2 con nuki-extended\nSugerir jarvis para el descubrimiento como consejo\nAgregue comprobaciones en el descubrimiento de broadlink2 para evitar un caso de bloqueo (Sentry IOBROKER-DISCOVERY-2H)",
-                "pl": "Wymień nuki2 na nuki-extended\nZaproponuj jarvis jako radę do odkrycia\nDodaj testy wykrywania broadlink2, aby zapobiec awariom (Sentry IOBROKER-DISCOVERY-2H)",
-                "zh-cn": "将nuki2替换为nuki-extended\n推荐jarvis作为发现建议\n添加对Broadlink2发现的检查以防止发生崩溃情况（Sentry IOBROKER-DISCOVERY-2H）"
-            },
-            "2.4.1": {
-                "en": "Fix potential crash case in lightify (Sentry IOBROKER-DISCOVERY-2D)\nFix potential crash case (Sentry IOBROKER-DISCOVERY-2C)",
-                "de": "Behebung eines möglichen Absturzfalls in lightify (Sentry IOBROKER-DISCOVERY-2D)\nBehebung eines möglichen Absturzfalls (Sentry IOBROKER-DISCOVERY-2C)",
-                "ru": "Исправить потенциальный сбой в lightify (Sentry IOBROKER-DISCOVERY-2D)\nУстранение потенциального сбоя (Sentry IOBROKER-DISCOVERY-2C)",
-                "pt": "Corrigir caso de falha potencial no lightify (Sentry IOBROKER-DISCOVERY-2D)\nCorrigir caso de falha potencial (Sentry IOBROKER-DISCOVERY-2C)",
-                "nl": "Mogelijke crash case repareren in Lightify (Sentry IOBROKER-DISCOVERY-2D)\nMogelijke crash case repareren (Sentry IOBROKER-DISCOVERY-2C)",
-                "fr": "Correction d'un cas de crash potentiel dans Lightify (Sentry IOBROKER-DISCOVERY-2D)\nCorrection d'un cas de crash potentiel (Sentry IOBROKER-DISCOVERY-2C)",
-                "it": "Risolvi potenziali casi di crash in lightify (Sentry IOBROKER-DISCOVERY-2D)\nRisolvi potenziali casi di crash (Sentry IOBROKER-DISCOVERY-2C)",
-                "es": "Soluciona un posible caso de bloqueo en Lightify (Sentry IOBROKER-DISCOVERY-2D)\nSolucionar un posible caso de bloqueo (Sentry IOBROKER-DISCOVERY-2C)",
-                "pl": "Napraw potencjalną awarię w lightify (Sentry IOBROKER-DISCOVERY-2D)\nNapraw potencjalną awarię (Sentry IOBROKER-DISCOVERY-2C)",
-                "zh-cn": "修复lightify中潜在的崩溃情况（Sentry IOBROKER-DISCOVERY-2D）\n修复潜在的崩溃情况（Sentry IOBROKER-DISCOVERY-2C）"
-            },
-            "2.4.0": {
-                "en": "add heos",
-                "de": "füge heos hinzu",
-                "ru": "добавить heos",
-                "pt": "adicionar heos",
-                "nl": "heos toevoegen",
-                "fr": "ajouter heos",
-                "it": "aggiungi heos",
-                "es": "agregar heos",
-                "pl": "dodaj heos",
-                "zh-cn": "添加heos"
-            },
-            "2.3.11": {
-                "en": "Added MieleCloudService",
-                "de": "MieleCloudService hinzugefügt",
-                "ru": "Добавлен MieleCloudService",
-                "pt": "Adicionado MieleCloudService",
-                "nl": "MieleCloudService toegevoegd",
-                "fr": "Ajout de MieleCloudService",
-                "it": "Aggiunto MieleCloudService",
-                "es": "Se agregó MieleCloudService",
-                "pl": "Dodano MieleCloudService",
-                "zh-cn": "添加了MieleCloudService"
-            },
-            "2.3.10": {
-                "en": "Discovery Velux KLF-200 updated to new firmware",
-                "de": "Discovery Velux KLF-200 auf neue Firmware aktualisiert",
-                "ru": "Discovery Velux KLF-200 обновлен до новой прошивки",
-                "pt": "Descoberta Velux KLF-200 atualizada para novo firmware",
-                "nl": "Discovery Velux KLF-200 geüpdatet naar nieuwe firmware",
-                "fr": "Discovery Velux KLF-200 mis à jour avec un nouveau firmware",
-                "it": "Discovery Velux KLF-200 aggiornato al nuovo firmware",
-                "es": "Discovery Velux KLF-200 actualizado a nuevo firmware",
-                "pl": "Aktualizacja Discovery Velux KLF-200 do nowego oprogramowania",
-                "zh-cn": "Discovery Velux KLF-200已更新至新固件"
-            },
-            "2.3.9": {
-                "en": "Add error handling to onvif discovery (Sentry IOBROKER-DISCOVERY-13)\nAdd error handling to smapee discovery (Sentry IOBROKER-DISCOVERY-14)\nAdd error handling to synology discovery (Sentry IOBROKER-DISCOVERY-1A)\nUpdate mndp library to prevent crashes (Sentry IOBROKER-DISCOVERY-15+)",
-                "de": "Hinzufügen der Fehlerbehandlung zur Onvif-Erkennung (Sentry IOBROKER-DISCOVERY-13)\nFehlerbehandlung zur Smapee-Erkennung hinzufügen (Sentry IOBROKER-DISCOVERY-14)\nHinzufügen einer Fehlerbehandlung zur Synologieerkennung (Sentry IOBROKER-DISCOVERY-1A)\nAktualisieren Sie die mndp-Bibliothek, um Abstürze zu vermeiden (Sentry IOBROKER-DISCOVERY-15 +).",
-                "ru": "Добавить обработку ошибок в обнаружение onvif (Sentry IOBROKER-DISCOVERY-13)\nДобавить обработку ошибок для обнаружения smapee (Sentry IOBROKER-DISCOVERY-14)\nДобавить обработку ошибок в обнаружение синологии (Sentry IOBROKER-DISCOVERY-1A)\nОбновление библиотеки mndp для предотвращения сбоев (Sentry IOBROKER-DISCOVERY-15 +)",
-                "pt": "Adicionar tratamento de erros à descoberta onvif (Sentry IOBROKER-DISCOVERY-13)\nAdicionar tratamento de erros à descoberta de smapee (Sentry IOBROKER-DISCOVERY-14)\nAdicionar tratamento de erros à descoberta de sinologia (Sentry IOBROKER-DISCOVERY-1A)\nAtualizar a biblioteca mndp para evitar falhas (Sentry IOBROKER-DISCOVERY-15 +)",
-                "nl": "Foutafhandeling toevoegen aan onvif-detectie (Sentry IOBROKER-DISCOVERY-13)\nFoutafhandeling toevoegen aan smapee-detectie (Sentry IOBROKER-DISCOVERY-14)\nFoutafhandeling toevoegen aan synologiedetectie (Sentry IOBROKER-DISCOVERY-1A)\nUpdate mndp-bibliotheek om crashes te voorkomen (Sentry IOBROKER-DISCOVERY-15 +)",
-                "fr": "Ajouter la gestion des erreurs à la découverte onvif (Sentry IOBROKER-DISCOVERY-13)\nAjouter la gestion des erreurs à la découverte de smapee (Sentry IOBROKER-DISCOVERY-14)\nAjouter la gestion des erreurs à la découverte de synologie (Sentry IOBROKER-DISCOVERY-1A)\nMettre à jour la bibliothèque mndp pour éviter les plantages (Sentry IOBROKER-DISCOVERY-15 +)",
-                "it": "Aggiungi la gestione degli errori al rilevamento onvif (Sentry IOBROKER-DISCOVERY-13)\nAggiungi la gestione degli errori allo smapee discovery (Sentry IOBROKER-DISCOVERY-14)\nAggiungi la gestione degli errori al rilevamento della sinologia (Sentry IOBROKER-DISCOVERY-1A)\nAggiorna la libreria mndp per prevenire arresti anomali (Sentry IOBROKER-DISCOVERY-15 +)",
-                "es": "Agregar manejo de errores al descubrimiento onvif (Sentry IOBROKER-DISCOVERY-13)\nAgregue manejo de errores al descubrimiento de smapee (Sentry IOBROKER-DISCOVERY-14)\nAgregue manejo de errores al descubrimiento de sincronización (Sentry IOBROKER-DISCOVERY-1A)\nActualice la biblioteca mndp para evitar bloqueos (Sentry IOBROKER-DISCOVERY-15 +)",
-                "pl": "Dodaj obsługę błędów do wykrywania onvif (Sentry IOBROKER-DISCOVERY-13)\nDodaj obsługę błędów do wykrywania smapee (Sentry IOBROKER-DISCOVERY-14)\nDodaj obsługę błędów do wykrywania synologii (Sentry IOBROKER-DISCOVERY-1A)\nZaktualizuj bibliotekę mndp, aby zapobiec awariom (Sentry IOBROKER-DISCOVERY-15 +)",
-                "zh-cn": "将错误处理添加到onvif发现（Sentry IOBROKER-DISCOVERY-13）\n将错误处理添加到smapee发现（Sentry IOBROKER-DISCOVERY-14）\n向Synology发现中添加错误处理（Sentry IOBROKER-DISCOVERY-1A）\n更新mndp库以防止崩溃（Sentry IOBROKER-DISCOVERY-15 +）"
-            },
-            "2.3.8": {
-                "en": "Add error handling to onvif discovery (Sentry IOBROKER-DISCOVERY-13)\nAdd error handling to smapee discovery (Sentry IOBROKER-DISCOVERY-14)\nAdd error handling to synology discovery (Sentry IOBROKER-DISCOVERY-1A)\nUpdate mndp library to prevent crashes (Sentry IOBROKER-DISCOVERY-15+)",
-                "de": "Hinzufügen der Fehlerbehandlung zur Onvif-Erkennung (Sentry IOBROKER-DISCOVERY-13)\nFehlerbehandlung zur Smapee-Erkennung hinzufügen (Sentry IOBROKER-DISCOVERY-14)\nHinzufügen einer Fehlerbehandlung zur Synologieerkennung (Sentry IOBROKER-DISCOVERY-1A)\nAktualisieren Sie die mndp-Bibliothek, um Abstürze zu vermeiden (Sentry IOBROKER-DISCOVERY-15 +).",
-                "ru": "Добавить обработку ошибок в обнаружение onvif (Sentry IOBROKER-DISCOVERY-13)\nДобавить обработку ошибок для обнаружения smapee (Sentry IOBROKER-DISCOVERY-14)\nДобавить обработку ошибок в обнаружение синологии (Sentry IOBROKER-DISCOVERY-1A)\nОбновление библиотеки mndp для предотвращения сбоев (Sentry IOBROKER-DISCOVERY-15 +)",
-                "pt": "Adicionar tratamento de erros à descoberta onvif (Sentry IOBROKER-DISCOVERY-13)\nAdicionar tratamento de erros à descoberta de smapee (Sentry IOBROKER-DISCOVERY-14)\nAdicionar tratamento de erros à descoberta de sinologia (Sentry IOBROKER-DISCOVERY-1A)\nAtualizar a biblioteca mndp para evitar falhas (Sentry IOBROKER-DISCOVERY-15 +)",
-                "nl": "Foutafhandeling toevoegen aan onvif-detectie (Sentry IOBROKER-DISCOVERY-13)\nFoutafhandeling toevoegen aan smapee-detectie (Sentry IOBROKER-DISCOVERY-14)\nFoutafhandeling toevoegen aan synologiedetectie (Sentry IOBROKER-DISCOVERY-1A)\nUpdate mndp-bibliotheek om crashes te voorkomen (Sentry IOBROKER-DISCOVERY-15 +)",
-                "fr": "Ajouter la gestion des erreurs à la découverte onvif (Sentry IOBROKER-DISCOVERY-13)\nAjouter la gestion des erreurs à la découverte de smapee (Sentry IOBROKER-DISCOVERY-14)\nAjouter la gestion des erreurs à la découverte de synologie (Sentry IOBROKER-DISCOVERY-1A)\nMettre à jour la bibliothèque mndp pour éviter les plantages (Sentry IOBROKER-DISCOVERY-15 +)",
-                "it": "Aggiungi la gestione degli errori al rilevamento onvif (Sentry IOBROKER-DISCOVERY-13)\nAggiungi la gestione degli errori allo smapee discovery (Sentry IOBROKER-DISCOVERY-14)\nAggiungi la gestione degli errori al rilevamento della sinologia (Sentry IOBROKER-DISCOVERY-1A)\nAggiorna la libreria mndp per prevenire arresti anomali (Sentry IOBROKER-DISCOVERY-15 +)",
-                "es": "Agregar manejo de errores al descubrimiento onvif (Sentry IOBROKER-DISCOVERY-13)\nAgregue manejo de errores al descubrimiento de smapee (Sentry IOBROKER-DISCOVERY-14)\nAgregue manejo de errores al descubrimiento de sincronización (Sentry IOBROKER-DISCOVERY-1A)\nActualice la biblioteca mndp para evitar bloqueos (Sentry IOBROKER-DISCOVERY-15 +)",
-                "pl": "Dodaj obsługę błędów do wykrywania onvif (Sentry IOBROKER-DISCOVERY-13)\nDodaj obsługę błędów do wykrywania smapee (Sentry IOBROKER-DISCOVERY-14)\nDodaj obsługę błędów do wykrywania synologii (Sentry IOBROKER-DISCOVERY-1A)\nZaktualizuj bibliotekę mndp, aby zapobiec awariom (Sentry IOBROKER-DISCOVERY-15 +)",
-                "zh-cn": "将错误处理添加到onvif发现（Sentry IOBROKER-DISCOVERY-13）\n将错误处理添加到smapee发现（Sentry IOBROKER-DISCOVERY-14）\n向Synology发现中添加错误处理（Sentry IOBROKER-DISCOVERY-1A）\n更新mndp库以防止崩溃（Sentry IOBROKER-DISCOVERY-15 +）"
-            },
-            "2.3.7": {
-                "en": "Add error handling for Synology detection (Sentry IOBROKER-DISCOVERY-E)",
-                "de": "Fehlerbehandlung für die Synologieerkennung hinzufügen (Sentry IOBROKER-DISCOVERY-E)",
-                "ru": "Добавить обработку ошибок для обнаружения Synology (Sentry IOBROKER-DISCOVERY-E)",
-                "pt": "Adicionar tratamento de erros para detecção de Synology (Sentry IOBROKER-DISCOVERY-E)",
-                "nl": "Foutafhandeling voor Synology-detectie toevoegen (Sentry IOBROKER-DISCOVERY-E)",
-                "fr": "Ajout de la gestion des erreurs pour la détection de Synology (Sentry IOBROKER-DISCOVERY-E)",
-                "it": "Aggiungi la gestione degli errori per il rilevamento di Synology (Sentry IOBROKER-DISCOVERY-E)",
-                "es": "Agregar manejo de errores para la detección de Synology (Sentry IOBROKER-DISCOVERY-E)",
-                "pl": "Dodaj obsługę błędów do wykrywania Synology (Sentry IOBROKER-DISCOVERY-E)",
-                "zh-cn": "添加用于Synology检测的错误处理（Sentry IOBROKER-DISCOVERY-E）"
-            }
-        },
-        "title": "Discovery devices",
-        "titleLang": {
-            "en": "Discovery devices",
-            "de": "Gerätesuche",
-            "ru": "Драйвер поиска устройств",
-            "pt": "Dispositivos de descoberta",
-            "nl": "Ontdekkingsapparaten",
-            "fr": "Dispositifs de découverte",
-            "it": "Dispositivi di scoperta",
-            "es": "Dispositivos de descubrimiento",
-            "pl": "Urządzenia Discovery",
-            "zh-cn": "发现设备"
-        },
-        "desc": {
-            "en": "This adapter tries to discover all known devices in your network and on your machine",
-            "de": "Dieser Adapter versucht, alle bekannten Geräte in Ihrem Netzwerk und auf Ihrem Computer zu finden",
-            "ru": "Этот адаптер пытается обнаружить все известные устройства в вашей сети и на вашем компьютере",
-            "pt": "Este adaptador tenta descobrir todos os dispositivos conhecidos da sua rede e da sua máquina",
-            "nl": "Deze adapter probeert alle bekende apparaten in uw netwerk en op uw computer te ontdekken",
-            "fr": "Cet adaptateur essaie de découvrir tous les périphériques connus sur votre réseau et sur votre machine",
-            "it": "Questo adattatore tenta di rilevare tutti i dispositivi noti nella rete e sulla macchina",
-            "es": "Este adaptador intenta descubrir todos los dispositivos conocidos en su red y en su máquina",
-            "pl": "Ten adapter próbuje wykryć wszystkie znane urządzenia w sieci i na twoim komputerze",
-            "zh-cn": "这个适配器将尝试发现在您局域网和主机上的所有已知设备"
-        },
-        "authors": [
-            "bluefox <dogafox@gmail.com>"
-        ],
-        "license": "MIT",
-        "platform": "Javascript/Node.js",
-        "mode": "daemon",
-        "enabled": true,
-        "compact": true,
-        "singletonHost": true,
-        "materialize": true,
-        "messagebox": true,
-        "readme": "https://github.com/ioBroker/ioBroker.discovery/blob/master/README.md",
-        "dependencies": [
-            {
-                "js-controller": ">=2.0.0"
-            }
-        ],
-        "loglevel": "info",
-        "icon": "discovery.png",
-        "keywords": [
-            "poll",
-            "discovery",
-            "ip"
-        ],
-        "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.discovery/master/admin/discovery.png",
-        "type": "general",
-        "plugins": {
-            "sentry": {
-                "dsn": "https://464b38d930eb4ee7b3e426620f52d256@sentry.iobroker.net/31"
-            }
-        },
-        "connectionType": "local",
-        "dataSource": "none",
-        "tier": 3
+  "common": {
+    "name": "discovery",
+    "version": "2.7.3",
+    "news": {
+      "2.7.3": {
+        "en": "updated kecontact detection",
+        "de": "kecontact-Erkennung aktualisiert",
+        "ru": "обновленное обнаружение контактов kecontact",
+        "pt": "detecção de kecontact atualizada",
+        "nl": "bijgewerkte kecontact-detectie",
+        "fr": "détection de kecontact mise à jour",
+        "it": "aggiornato kecontact rilevamento",
+        "es": "detección kecontact actualizada",
+        "pl": "zaktualizowane wykrywanie kecontact",
+        "zh-cn": "更新 kecontact 检测"
+      },
+      "2.7.2": {
+        "en": "support KeBa KeContact P30",
+        "de": "unterstützen KeBa KeContact P30",
+        "ru": "поддержка KeBa KeContact P30",
+        "pt": "suporte KeBa KeContact P30",
+        "nl": "ondersteuning KeBa KeContact P30",
+        "fr": "soutenir KeBa KeContact P30",
+        "it": "supporto KeBa KeContatta P30",
+        "es": "soporte KeBa KeContact P30",
+        "pl": "wsparcie KeBa KeContact P30",
+        "zh-cn": "支持KeBa KeContact P30"
+      },
+      "2.7.1": {
+        "en": "Support KeBa KeContact P30",
+        "de": "Unterstützung für KeBa KeContact P30",
+        "ru": "Поддержка KeBa KeContact P30",
+        "pt": "Suporte KeBa KeContact P30",
+        "nl": "Ondersteuning KeBa KeContact P30",
+        "fr": "Assistance KeBa KeContact P30",
+        "it": "Supporta KeBa KeContatta P30",
+        "es": "Soporte KeBa KeContact P30",
+        "pl": "Wsparcie KeBa KeContact P30",
+        "zh-cn": "支持KeBa KeContact P30"
+      },
+      "2.7.0": {
+        "en": "Add discovery for BSBLan and ValloxMV\nOptimize for js-controller 3.3",
+        "de": "Erkennung für BSBLan und ValloxMV . hinzufügen\nOptimieren Sie für js-Controller 3.3",
+        "ru": "Добавить обнаружение для BSBLan и ValloxMV\nОптимизировать под js-controller 3.3",
+        "pt": "Adicionar descoberta para BSBLan e ValloxMV\nOtimize para js-controller 3.3",
+        "nl": "Ontdekking toevoegen voor BSBlan en ValloxMV\nOptimaliseren voor js-controller 3.3",
+        "fr": "Ajout de la découverte pour BSBLan et ValloxMV\nOptimiser pour js-controller 3.3",
+        "it": "Aggiungi discovery per BSBLan e ValloxMV\nOttimizza per js-controller 3.3",
+        "es": "Agregar descubrimiento para BSBLan y ValloxMV\nOptimizar para js-controller 3.3",
+        "pl": "Dodaj wykrywanie dla BSBLan i ValloxMV\nOptymalizacja dla kontrolera js 3.3",
+        "zh-cn": "为 BSBLan 和 ValloxMV 添加发现\n针对 js-controller 3.3 优化"
+      },
+      "2.6.3": {
+        "en": "Added support of Admin5",
+        "de": "Unterstützung von Admin5 hinzugefügt",
+        "ru": "Добавлена поддержка Admin5",
+        "pt": "Suporte Adde de Admin5",
+        "nl": "Voeg ondersteuning toe van Admin5",
+        "fr": "Prise en charge d'Adde d'Admin5",
+        "it": "Supporto aggiuntivo di Admin5",
+        "es": "Agregar soporte de Admin5",
+        "pl": "Dodatkowa obsługa Admin5",
+        "zh-cn": "添加对Admin5的支持"
+      },
+      "2.6.2": {
+        "en": "Fix crash case in mihome discovery (Sentry IOBROKER-DISCOVERY-30)\nFix crash case in ping logic (Sentry IOBROKER-DISCOVERY-2Y)\nFix crash case in hf-lpb100 logic (Sentry IOBROKER-DISCOVERY-34)",
+        "de": "Absturz bei Mihome-Entdeckung behoben (Sentry IOBROKER-DISCOVERY-30)\nAbsturz in Ping-Logik behoben (Sentry IOBROKER-DISCOVERY-2Y)\nAbsturz in der hf-lpb100-Logik behoben (Sentry IOBROKER-DISCOVERY-34)",
+        "ru": "Исправить сбой в обнаружении mihome (Sentry IOBROKER-DISCOVERY-30)\nИсправить сбой в логике ping (Sentry IOBROKER-DISCOVERY-2Y)\nИсправить случай сбоя в логике hf-lpb100 (Sentry IOBROKER-DISCOVERY-34)",
+        "pt": "Corrigir caso de falha na descoberta mihome (Sentry IOBROKER-DISCOVERY-30)\nCorrigir caso de falha na lógica de ping (Sentry IOBROKER-DISCOVERY-2Y)\nCorrigir caso de falha na lógica hf-lpb100 (Sentry IOBROKER-DISCOVERY-34)",
+        "nl": "Crash case repareren in mihome discovery (Sentry IOBROKER-DISCOVERY-30)\nFix crash case in ping logic (Sentry IOBROKER-DISCOVERY-2Y)\nCrashcase in hf-lpb100-logica repareren (Sentry IOBROKER-DISCOVERY-34)",
+        "fr": "Correction d'un cas de crash dans mihome Discovery (Sentry IOBROKER-DISCOVERY-30)\nCorrection d'un cas de crash dans la logique de ping (Sentry IOBROKER-DISCOVERY-2Y)\nCorrection d'un cas de crash dans la logique hf-lpb100 (Sentry IOBROKER-DISCOVERY-34)",
+        "it": "Risolto il crash case in mihome discovery (Sentry IOBROKER-DISCOVERY-30)\nRisolve il caso di arresto anomalo nella logica ping (Sentry IOBROKER-DISCOVERY-2Y)\nRisolve il caso di arresto anomalo nella logica hf-lpb100 (Sentry IOBROKER-DISCOVERY-34)",
+        "es": "Reparar caso de bloqueo en mihome discovery (Sentry IOBROKER-DISCOVERY-30)\nArreglar caso de falla en la lógica de ping (Sentry IOBROKER-DISCOVERY-2Y)\nReparar caso de bloqueo en lógica hf-lpb100 (Sentry IOBROKER-DISCOVERY-34)",
+        "pl": "Napraw awarię w wykrywaniu mihome (Sentry IOBROKER-DISCOVERY-30)\nNapraw przypadek awarii w logice ping (Sentry IOBROKER-DISCOVERY-2Y)\nNapraw przypadek awarii w logice HF-LPB100 (Sentry IOBROKER-DISCOVERY-34)",
+        "zh-cn": "修复mihome发现中的崩溃情况（Sentry IOBROKER-DISCOVERY-30）\n修复ping逻辑中的崩溃情况（Sentry IOBROKER-DISCOVERY-2Y）\n修复HF-LPB100逻辑中的崩溃情况（Sentry IOBROKER-DISCOVERY-34）"
+      },
+      "2.6.1": {
+        "en": "added iot and net-tools\nAdjust and optimize UDP and UPnP discoveries\nAdd option to specify the \"own IP address\" and netmask to also allow discovery for e.g. docker cases where an external network should be scanned\nFix ping progress counter when scanning multiple ip ranges\nremoved mobile\nfix sonos and synology\nUI adjustments\nFix crash cases (Sentry IOBROKER-DISCOVERY-2Q)",
+        "de": "iot und net-tools hinzugefügt\nPassen Sie UDP- und UPnP-Erkennungen an und optimieren Sie sie\nOption hinzufügen, um die \"eigene IP-Adresse\" und die Netzmaske anzugeben, um auch die Erkennung für z. Docker-Fälle, in denen ein externes Netzwerk gescannt werden sollte\nKorrektur des Ping-Fortschrittszählers beim Scannen mehrerer IP-Bereiche\nHandy entfernt\nFix Sonos und Synologie\nUI-Anpassungen\nAbsturzfälle beheben (Sentry IOBROKER-DISCOVERY-2Q)",
+        "ru": "добавлены iot и net-tools\nНастройте и оптимизируйте обнаружение UDP и UPnP\nДобавьте параметр, чтобы указать «собственный IP-адрес» и маску сети, чтобы также разрешить обнаружение, например докеры, когда нужно сканировать внешнюю сеть\nИсправить счетчик прогресса ping при сканировании нескольких диапазонов IP\nудален мобильный\nисправить сонос и синологию\nНастройки пользовательского интерфейса\nУстранение сбоев (Sentry IOBROKER-DISCOVERY-2Q)",
+        "pt": "adicionadas ferramentas iot e net\nAjustar e otimizar descobertas UDP e UPnP\nAdicione a opção de especificar o \"próprio endereço IP\" e a máscara de rede para permitir a descoberta, por exemplo, casos docker em que uma rede externa deve ser verificada\nCorrigir o contador de progresso de ping ao verificar vários intervalos de IP\ncelular removido\nconsertar sonos e sinologia\nAjustes de IU\nCorrigir casos de falha (Sentry IOBROKER-DISCOVERY-2Q)",
+        "nl": "iot en net-tools toegevoegd\nPas en optimaliseer UDP- en UPnP-ontdekkingen\nOptie toevoegen om het \"eigen IP-adres\" en netmasker te specificeren om ook detectie mogelijk te maken voor bijv. docker-gevallen waarin een extern netwerk moet worden gescand\nPing-voortgangsteller repareren bij het scannen van meerdere IP-bereiken\nverwijderde mobiel\nrepareer sonos en synology\nUI-aanpassingen\nCrash gevallen repareren (Sentry IOBROKER-DISCOVERY-2Q)",
+        "fr": "ajout de iot et net-tools\nAjuster et optimiser les découvertes UDP et UPnP\nAjoutez une option pour spécifier la \"propre adresse IP\" et le masque de réseau pour permettre également la découverte pour par exemple cas de docker où un réseau externe doit être analysé\nCorrection du compteur de progression du ping lors de l'analyse de plusieurs plages d'adresses IP\nmobile supprimé\nréparer les sonos et la synologie\nAjustements de l'interface utilisateur\nCorrection des cas de crash (Sentry IOBROKER-DISCOVERY-2Q)",
+        "it": "aggiunto iot e net-tools\nRegola e ottimizza le scoperte UDP e UPnP\nAggiungi l'opzione per specificare il \"proprio indirizzo IP\" e la maschera di rete per consentire anche il rilevamento ad es. casi di finestra mobile in cui è necessario scansionare una rete esterna\nRisolve il contatore di avanzamento del ping durante la scansione di più intervalli IP\ncellulare rimosso\ncorreggere sonos e synology\nRegolazioni dell'interfaccia utente\nRisolvi i casi di crash (Sentry IOBROKER-DISCOVERY-2Q)",
+        "es": "iot y net-tools añadidas\nAjustar y optimizar los descubrimientos de UDP y UPnP\nAgregue la opción para especificar la \"propia dirección IP\" y la máscara de red para permitir también el descubrimiento de p. Ej. Casos de Docker en los que se debe escanear una red externa\nReparar el contador de progreso de ping al escanear múltiples rangos de ip\nmóvil eliminado\narreglar sonos y synology\nAjustes de UI\nReparar casos de fallas (Sentry IOBROKER-DISCOVERY-2Q)",
+        "pl": "dodane narzędzia iot i net-tools\nDostosuj i zoptymalizuj wykrywanie UDP i UPnP\nDodaj opcję określenia „własnego adresu IP” i maski sieci, aby umożliwić wykrywanie, np. Docker przypadków, w których należy przeskanować sieć zewnętrzną\nNaprawiono licznik postępu ping podczas skanowania wielu zakresów adresów IP\nusunięty telefon komórkowy\nnapraw sonos i synology\nDostosowania interfejsu użytkownika\nNapraw przypadki awarii (Sentry IOBROKER-DISCOVERY-2Q)",
+        "zh-cn": "添加了物联网和网络工具\n调整和优化UDP和UPnP发现\n添加选项以指定“自己的IP地址”和网络掩码，以便也可以发现例如应当扫描外部网络的docker案例\n扫描多个IP范围时修复ping进度计数器\n移除手机\n修复Sonos和Synology\n用户界面调整\n修复崩溃案例（Sentry IOBROKER-DISCOVERY-2Q）"
+      }
     },
-    "native": {
-        "pingTimeout": 1000,
-        "pingOwnIP": "",
-        "pingOwnNetmask": "",
-        "pingBlock": 20,
-        "onlyLocal": false
+    "title": "Discovery devices",
+    "titleLang": {
+      "en": "Discovery devices",
+      "de": "Gerätesuche",
+      "ru": "Драйвер поиска устройств",
+      "pt": "Dispositivos de descoberta",
+      "nl": "Ontdekkingsapparaten",
+      "fr": "Dispositifs de découverte",
+      "it": "Dispositivi di scoperta",
+      "es": "Dispositivos de descubrimiento",
+      "pl": "Urządzenia Discovery",
+      "zh-cn": "发现设备"
     },
-    "_objects": [
-        {
-            "_id": "system.discovery",
-            "common": {
-                "name": "Information about found devices"
-            },
-            "native": {
-                "devices": [],
-                "lastScan": 0,
-                "newInstances": []
-            },
-            "type": "config"
-        }
+    "desc": {
+      "en": "This adapter tries to discover all known devices in your network and on your machine",
+      "de": "Dieser Adapter versucht, alle bekannten Geräte in Ihrem Netzwerk und auf Ihrem Computer zu finden",
+      "ru": "Этот адаптер пытается обнаружить все известные устройства в вашей сети и на вашем компьютере",
+      "pt": "Este adaptador tenta descobrir todos os dispositivos conhecidos da sua rede e da sua máquina",
+      "nl": "Deze adapter probeert alle bekende apparaten in uw netwerk en op uw computer te ontdekken",
+      "fr": "Cet adaptateur essaie de découvrir tous les périphériques connus sur votre réseau et sur votre machine",
+      "it": "Questo adattatore tenta di rilevare tutti i dispositivi noti nella rete e sulla macchina",
+      "es": "Este adaptador intenta descubrir todos los dispositivos conocidos en su red y en su máquina",
+      "pl": "Ten adapter próbuje wykryć wszystkie znane urządzenia w sieci i na twoim komputerze",
+      "zh-cn": "这个适配器将尝试发现在您局域网和主机上的所有已知设备"
+    },
+    "authors": [
+      "bluefox <dogafox@gmail.com>"
     ],
-    "instanceObjects": [
-        {
-            "_id": "devicesProgress",
-            "type": "state",
-            "common": {
-                "role": "value",
-                "name": "Find devices progress",
-                "min": 0,
-                "max": 100,
-                "type": "number",
-                "unit": "%",
-                "read": true,
-                "write": false
-            },
-            "native": {}
-        },
-        {
-            "_id": "servicesProgress",
-            "type": "state",
-            "common": {
-                "role": "value",
-                "name": "Find services on devices progress",
-                "min": 0,
-                "max": 100,
-                "type": "number",
-                "unit": "%",
-                "read": true,
-                "write": false
-            },
-            "native": {}
-        },
-        {
-            "_id": "instancesFound",
-            "type": "state",
-            "common": {
-                "role": "value",
-                "name": "Found services",
-                "type": "number",
-                "read": true,
-                "write": false
-            },
-            "native": {}
-        },
-        {
-            "_id": "devicesFound",
-            "type": "state",
-            "common": {
-                "role": "value",
-                "name": "Found devices",
-                "type": "number",
-                "read": true,
-                "write": false
-            },
-            "native": {}
-        },
-        {
-            "_id": "scanRunning",
-            "type": "state",
-            "common": {
-                "role": "indicator",
-                "name": "Is scan now running",
-                "type": "boolean",
-                "read": true,
-                "write": false
-            },
-            "native": {}
-        }
-    ]
+    "license": "MIT",
+    "platform": "Javascript/Node.js",
+    "mode": "daemon",
+    "enabled": true,
+    "compact": true,
+    "singletonHost": true,
+    "materialize": true,
+    "messagebox": true,
+    "readme": "https://github.com/ioBroker/ioBroker.discovery/blob/master/README.md",
+    "dependencies": [
+      {
+        "js-controller": ">=2.0.0"
+      }
+    ],
+    "loglevel": "info",
+    "icon": "discovery.png",
+    "keywords": [
+      "poll",
+      "discovery",
+      "ip"
+    ],
+    "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.discovery/master/admin/discovery.png",
+    "type": "general",
+    "plugins": {
+      "sentry": {
+        "dsn": "https://464b38d930eb4ee7b3e426620f52d256@sentry.iobroker.net/31"
+      }
+    },
+    "connectionType": "local",
+    "dataSource": "none",
+    "tier": 3
+  },
+  "native": {
+    "pingTimeout": 1000,
+    "pingOwnIP": "",
+    "pingOwnNetmask": "",
+    "pingBlock": 20,
+    "onlyLocal": false
+  },
+  "_objects": [
+    {
+      "_id": "system.discovery",
+      "common": {
+        "name": "Information about found devices"
+      },
+      "native": {
+        "devices": [],
+        "lastScan": 0,
+        "newInstances": []
+      },
+      "type": "config"
+    }
+  ],
+  "instanceObjects": [
+    {
+      "_id": "devicesProgress",
+      "type": "state",
+      "common": {
+        "role": "value",
+        "name": "Find devices progress",
+        "min": 0,
+        "max": 100,
+        "type": "number",
+        "unit": "%",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "servicesProgress",
+      "type": "state",
+      "common": {
+        "role": "value",
+        "name": "Find services on devices progress",
+        "min": 0,
+        "max": 100,
+        "type": "number",
+        "unit": "%",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "instancesFound",
+      "type": "state",
+      "common": {
+        "role": "value",
+        "name": "Found services",
+        "type": "number",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "devicesFound",
+      "type": "state",
+      "common": {
+        "role": "value",
+        "name": "Found devices",
+        "type": "number",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "scanRunning",
+      "type": "state",
+      "common": {
+        "role": "indicator",
+        "name": "Is scan now running",
+        "type": "boolean",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    }
+  ]
 }
