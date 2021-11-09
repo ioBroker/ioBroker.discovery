@@ -140,6 +140,9 @@ You can execute `sudo setcap cap_net_raw+p /bin/ping` to add missing capabilitie
 	### __WORK IN PROGRESS__
 -->
 ## Changelog
+### 2.7.5 (2021-11-09)
+* (Apollon77) Fix kecontact detection (Sentry IOBROKER-DISCOVERY-3P)
+
 ### 2.7.4 (2021-11-09)
 * (bluefox) Replaced flot with eCharts
 * (bluefox) info Adapter removed

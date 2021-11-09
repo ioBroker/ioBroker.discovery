@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "discovery",
-    "version": "2.7.4",
+    "version": "2.7.5",
     "news": {
+      "2.7.5": {
+        "en": "Fix kecontact detection (Sentry IOBROKER-DISCOVERY-3P)",
+        "de": "kecontact-Erkennung behoben (Sentry IOBROKER-DISCOVERY-3P)",
+        "ru": "Исправить обнаружение контакта (Sentry IOBROKER-DISCOVERY-3P)",
+        "pt": "Corrigir detecção de kecontact (Sentry IOBROKER-DISCOVERY-3P)",
+        "nl": "Kecontact-detectie repareren (Sentry IOBROKER-DISCOVERY-3P)",
+        "fr": "Correction de la détection de contact (Sentry IOBROKER-DISCOVERY-3P)",
+        "it": "Fix rilevamento kecontact (Sentry IOBROKER-DISCOVERY-3P)",
+        "es": "Corregir la detección de contacto (Sentry IOBROKER-DISCOVERY-3P)",
+        "pl": "Napraw wykrywanie kontaktów (Sentry IOBROKER-DISCOVERY-3P)",
+        "zh-cn": "修复 kecontact 检测 (Sentry IOBROKER-DISCOVERY-3P)"
+      },
       "2.7.4": {
         "en": "Replaced flot with eCharts\ninfo Adapter removed",
         "de": "Flot durch eCharts ersetzt\ninfo Adapter entfernt",
@@ -74,18 +86,6 @@
         "es": "Agregar soporte de Admin5",
         "pl": "Dodatkowa obsługa Admin5",
         "zh-cn": "添加对Admin5的支持"
-      },
-      "2.6.2": {
-        "en": "Fix crash case in mihome discovery (Sentry IOBROKER-DISCOVERY-30)\nFix crash case in ping logic (Sentry IOBROKER-DISCOVERY-2Y)\nFix crash case in hf-lpb100 logic (Sentry IOBROKER-DISCOVERY-34)",
-        "de": "Absturz bei Mihome-Entdeckung behoben (Sentry IOBROKER-DISCOVERY-30)\nAbsturz in Ping-Logik behoben (Sentry IOBROKER-DISCOVERY-2Y)\nAbsturz in der hf-lpb100-Logik behoben (Sentry IOBROKER-DISCOVERY-34)",
-        "ru": "Исправить сбой в обнаружении mihome (Sentry IOBROKER-DISCOVERY-30)\nИсправить сбой в логике ping (Sentry IOBROKER-DISCOVERY-2Y)\nИсправить случай сбоя в логике hf-lpb100 (Sentry IOBROKER-DISCOVERY-34)",
-        "pt": "Corrigir caso de falha na descoberta mihome (Sentry IOBROKER-DISCOVERY-30)\nCorrigir caso de falha na lógica de ping (Sentry IOBROKER-DISCOVERY-2Y)\nCorrigir caso de falha na lógica hf-lpb100 (Sentry IOBROKER-DISCOVERY-34)",
-        "nl": "Crash case repareren in mihome discovery (Sentry IOBROKER-DISCOVERY-30)\nFix crash case in ping logic (Sentry IOBROKER-DISCOVERY-2Y)\nCrashcase in hf-lpb100-logica repareren (Sentry IOBROKER-DISCOVERY-34)",
-        "fr": "Correction d'un cas de crash dans mihome Discovery (Sentry IOBROKER-DISCOVERY-30)\nCorrection d'un cas de crash dans la logique de ping (Sentry IOBROKER-DISCOVERY-2Y)\nCorrection d'un cas de crash dans la logique hf-lpb100 (Sentry IOBROKER-DISCOVERY-34)",
-        "it": "Risolto il crash case in mihome discovery (Sentry IOBROKER-DISCOVERY-30)\nRisolve il caso di arresto anomalo nella logica ping (Sentry IOBROKER-DISCOVERY-2Y)\nRisolve il caso di arresto anomalo nella logica hf-lpb100 (Sentry IOBROKER-DISCOVERY-34)",
-        "es": "Reparar caso de bloqueo en mihome discovery (Sentry IOBROKER-DISCOVERY-30)\nArreglar caso de falla en la lógica de ping (Sentry IOBROKER-DISCOVERY-2Y)\nReparar caso de bloqueo en lógica hf-lpb100 (Sentry IOBROKER-DISCOVERY-34)",
-        "pl": "Napraw awarię w wykrywaniu mihome (Sentry IOBROKER-DISCOVERY-30)\nNapraw przypadek awarii w logice ping (Sentry IOBROKER-DISCOVERY-2Y)\nNapraw przypadek awarii w logice HF-LPB100 (Sentry IOBROKER-DISCOVERY-34)",
-        "zh-cn": "修复mihome发现中的崩溃情况（Sentry IOBROKER-DISCOVERY-30）\n修复ping逻辑中的崩溃情况（Sentry IOBROKER-DISCOVERY-2Y）\n修复HF-LPB100逻辑中的崩溃情况（Sentry IOBROKER-DISCOVERY-34）"
       }
     },
     "title": "Discovery devices",
