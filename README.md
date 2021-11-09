@@ -140,10 +140,10 @@ You can execute `sudo setcap cap_net_raw+p /bin/ping` to add missing capabilitie
 	### __WORK IN PROGRESS__
 -->
 ## Changelog
-### __WORK IN PROGRESS__
+### 2.7.4 (2021-11-09)
 * (bluefox) Replaced flot with eCharts
 * (bluefox) info Adapter removed
- 
+
 ### 2.7.3 (2021-10-05)
 * (Sneak-L8) updated kecontact detection
 

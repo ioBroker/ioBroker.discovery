@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "discovery",
-    "version": "2.7.3",
+    "version": "2.7.4",
     "news": {
+      "2.7.4": {
+        "en": "Replaced flot with eCharts\ninfo Adapter removed",
+        "de": "Flot durch eCharts ersetzt\ninfo Adapter entfernt",
+        "ru": "Заменен flot на eCharts\nинформация Адаптер удален",
+        "pt": "Flot substituído por eCharts\nAdaptador de informações removido",
+        "nl": "Flot vervangen door eCharts\ninfo Adapter verwijderd",
+        "fr": "Flot remplacé par des eCharts\ninfo Adaptateur retiré",
+        "it": "Flot sostituito con eCharts\ninfo Adattatore rimosso",
+        "es": "Flot reemplazado con eCharts\nadaptador de información eliminado",
+        "pl": "Zastąpiono flotę eCharts\ninformacje Usunięto adapter",
+        "zh-cn": "用 eCharts 替换了浮点数\n信息适配器已移除"
+      },
       "2.7.3": {
         "en": "updated kecontact detection",
         "de": "kecontact-Erkennung aktualisiert",
@@ -74,18 +86,6 @@
         "es": "Reparar caso de bloqueo en mihome discovery (Sentry IOBROKER-DISCOVERY-30)\nArreglar caso de falla en la lógica de ping (Sentry IOBROKER-DISCOVERY-2Y)\nReparar caso de bloqueo en lógica hf-lpb100 (Sentry IOBROKER-DISCOVERY-34)",
         "pl": "Napraw awarię w wykrywaniu mihome (Sentry IOBROKER-DISCOVERY-30)\nNapraw przypadek awarii w logice ping (Sentry IOBROKER-DISCOVERY-2Y)\nNapraw przypadek awarii w logice HF-LPB100 (Sentry IOBROKER-DISCOVERY-34)",
         "zh-cn": "修复mihome发现中的崩溃情况（Sentry IOBROKER-DISCOVERY-30）\n修复ping逻辑中的崩溃情况（Sentry IOBROKER-DISCOVERY-2Y）\n修复HF-LPB100逻辑中的崩溃情况（Sentry IOBROKER-DISCOVERY-34）"
-      },
-      "2.6.1": {
-        "en": "added iot and net-tools\nAdjust and optimize UDP and UPnP discoveries\nAdd option to specify the \"own IP address\" and netmask to also allow discovery for e.g. docker cases where an external network should be scanned\nFix ping progress counter when scanning multiple ip ranges\nremoved mobile\nfix sonos and synology\nUI adjustments\nFix crash cases (Sentry IOBROKER-DISCOVERY-2Q)",
-        "de": "iot und net-tools hinzugefügt\nPassen Sie UDP- und UPnP-Erkennungen an und optimieren Sie sie\nOption hinzufügen, um die \"eigene IP-Adresse\" und die Netzmaske anzugeben, um auch die Erkennung für z. Docker-Fälle, in denen ein externes Netzwerk gescannt werden sollte\nKorrektur des Ping-Fortschrittszählers beim Scannen mehrerer IP-Bereiche\nHandy entfernt\nFix Sonos und Synologie\nUI-Anpassungen\nAbsturzfälle beheben (Sentry IOBROKER-DISCOVERY-2Q)",
-        "ru": "добавлены iot и net-tools\nНастройте и оптимизируйте обнаружение UDP и UPnP\nДобавьте параметр, чтобы указать «собственный IP-адрес» и маску сети, чтобы также разрешить обнаружение, например докеры, когда нужно сканировать внешнюю сеть\nИсправить счетчик прогресса ping при сканировании нескольких диапазонов IP\nудален мобильный\nисправить сонос и синологию\nНастройки пользовательского интерфейса\nУстранение сбоев (Sentry IOBROKER-DISCOVERY-2Q)",
-        "pt": "adicionadas ferramentas iot e net\nAjustar e otimizar descobertas UDP e UPnP\nAdicione a opção de especificar o \"próprio endereço IP\" e a máscara de rede para permitir a descoberta, por exemplo, casos docker em que uma rede externa deve ser verificada\nCorrigir o contador de progresso de ping ao verificar vários intervalos de IP\ncelular removido\nconsertar sonos e sinologia\nAjustes de IU\nCorrigir casos de falha (Sentry IOBROKER-DISCOVERY-2Q)",
-        "nl": "iot en net-tools toegevoegd\nPas en optimaliseer UDP- en UPnP-ontdekkingen\nOptie toevoegen om het \"eigen IP-adres\" en netmasker te specificeren om ook detectie mogelijk te maken voor bijv. docker-gevallen waarin een extern netwerk moet worden gescand\nPing-voortgangsteller repareren bij het scannen van meerdere IP-bereiken\nverwijderde mobiel\nrepareer sonos en synology\nUI-aanpassingen\nCrash gevallen repareren (Sentry IOBROKER-DISCOVERY-2Q)",
-        "fr": "ajout de iot et net-tools\nAjuster et optimiser les découvertes UDP et UPnP\nAjoutez une option pour spécifier la \"propre adresse IP\" et le masque de réseau pour permettre également la découverte pour par exemple cas de docker où un réseau externe doit être analysé\nCorrection du compteur de progression du ping lors de l'analyse de plusieurs plages d'adresses IP\nmobile supprimé\nréparer les sonos et la synologie\nAjustements de l'interface utilisateur\nCorrection des cas de crash (Sentry IOBROKER-DISCOVERY-2Q)",
-        "it": "aggiunto iot e net-tools\nRegola e ottimizza le scoperte UDP e UPnP\nAggiungi l'opzione per specificare il \"proprio indirizzo IP\" e la maschera di rete per consentire anche il rilevamento ad es. casi di finestra mobile in cui è necessario scansionare una rete esterna\nRisolve il contatore di avanzamento del ping durante la scansione di più intervalli IP\ncellulare rimosso\ncorreggere sonos e synology\nRegolazioni dell'interfaccia utente\nRisolvi i casi di crash (Sentry IOBROKER-DISCOVERY-2Q)",
-        "es": "iot y net-tools añadidas\nAjustar y optimizar los descubrimientos de UDP y UPnP\nAgregue la opción para especificar la \"propia dirección IP\" y la máscara de red para permitir también el descubrimiento de p. Ej. Casos de Docker en los que se debe escanear una red externa\nReparar el contador de progreso de ping al escanear múltiples rangos de ip\nmóvil eliminado\narreglar sonos y synology\nAjustes de UI\nReparar casos de fallas (Sentry IOBROKER-DISCOVERY-2Q)",
-        "pl": "dodane narzędzia iot i net-tools\nDostosuj i zoptymalizuj wykrywanie UDP i UPnP\nDodaj opcję określenia „własnego adresu IP” i maski sieci, aby umożliwić wykrywanie, np. Docker przypadków, w których należy przeskanować sieć zewnętrzną\nNaprawiono licznik postępu ping podczas skanowania wielu zakresów adresów IP\nusunięty telefon komórkowy\nnapraw sonos i synology\nDostosowania interfejsu użytkownika\nNapraw przypadki awarii (Sentry IOBROKER-DISCOVERY-2Q)",
-        "zh-cn": "添加了物联网和网络工具\n调整和优化UDP和UPnP发现\n添加选项以指定“自己的IP地址”和网络掩码，以便也可以发现例如应当扫描外部网络的docker案例\n扫描多个IP范围时修复ping进度计数器\n移除手机\n修复Sonos和Synology\n用户界面调整\n修复崩溃案例（Sentry IOBROKER-DISCOVERY-2Q）"
       }
     },
     "title": "Discovery devices",
