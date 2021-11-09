@@ -104,7 +104,7 @@ For more details and for information how to disable the error reporting see [Sen
 - Cloud
 - History (if no SQL or InfluxDB found) 
 - IoT
-- flot (offered when a History-Adapter is present)
+- eCharts (offered when a History-Adapter is present)
 - JavaScript
 - Info
 - Vis
@@ -140,6 +140,10 @@ You can execute `sudo setcap cap_net_raw+p /bin/ping` to add missing capabilitie
 	### __WORK IN PROGRESS__
 -->
 ## Changelog
+### __WORK IN PROGRESS__
+* (bluefox) Replaced flot with eCharts
+* (bluefox) info Adapter removed
+ 
 ### 2.7.3 (2021-10-05)
 * (Sneak-L8) updated kecontact detection
 

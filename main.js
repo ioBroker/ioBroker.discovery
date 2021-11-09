@@ -94,7 +94,9 @@ let isStopping = false;
 let isRunning = false;
 
 function processMessage(obj) {
-    if (!obj || !obj.command) return;
+    if (!obj || !obj.command) {
+        return;
+    }
     switch (obj.command) {
         case 'browse': {
             if (obj.callback) {
@@ -103,9 +105,9 @@ function processMessage(obj) {
                     adapter.log.debug('Browse finished');
                     adapter.setState('scanRunning', false, true);
                     adapter.sendTo(obj.from, obj.command, {
-                        error:        error,
-                        devices:      devices,
-                        newInstances: newInstances
+                        error,
+                        devices,
+                        newInstances
                     }, obj.callback);
                 });
             }
@@ -738,7 +740,7 @@ function browse(options, callback) {
             method.browse(method);
         });
 
-        if (methodsArray.length === 0) {
+        if (!methodsArray.length) {
             self.done();
         }
     }

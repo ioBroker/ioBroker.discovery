@@ -519,16 +519,16 @@
         function getExistingInstances(callback) {
             socket.emit('getObjectView', 'system', 'instance', {startkey: 'system.adapter.', endkey: 'system.adapter.\u9999'}, function (err, doc) {
                 if (err) {
-                    if (callback) callback ([]);
+                    callback && callback ([]);
                 } else {
                     if (doc.rows.length === 0) {
-                        if (callback) callback ([]);
+                        callback && callback ([]);
                     } else {
                         var res = [];
                         for (var i = 0; i < doc.rows.length; i++) {
                             res.push(doc.rows[i].value);
                         }
-                        if (callback) callback (res);
+                        callback && callback (res);
                     }
                 }
             });
@@ -611,7 +611,9 @@
                 var index = $(this).data('id');
                 if ($(this).prop('checked')) {
                     if (newInstances[index].comment && newInstances[index].comment.required) {
-                        if (typeof newInstances[index].comment.required === 'string') newInstances[index].comment.required = [newInstances[index].comment.required];
+                        if (typeof newInstances[index].comment.required === 'string') {
+                            newInstances[index].comment.required = [newInstances[index].comment.required];
+                        }
                         for (var r = 0; r < newInstances[index].comment.required.length; r++) {
                             for (var i = 0; i < newInstances.length; i++) {
                                 if (newInstances[i]._id === newInstances[index].comment.required[r]) {
@@ -651,7 +653,7 @@
                             hosts.push(res.rows[i].id.substring('system.host.'.length));
                         }
                     }
-                    if (callback) callback(hosts);
+                    callback && callback(hosts);
                 });
 
             }
@@ -711,8 +713,6 @@
                     });
                     step2CheckNextAllow();
                 });
-
-
 
                 $('#step2-show-acknowledged').off('click').on('click', function () {
                     var isShow = $(this).hasClass('green');
