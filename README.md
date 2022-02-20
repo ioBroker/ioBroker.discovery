@@ -142,8 +142,7 @@ You can execute `sudo setcap cap_net_raw+p /bin/ping` to add missing capabilitie
 	### __WORK IN PROGRESS__
 -->
 ## Changelog
-
-### __WORK IN PROGRESS__
+### 2.7.6 (2022-02-20)
 * (boellner) add openknx
 * (git-kick) add e3dc-rscp
 

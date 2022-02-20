@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "discovery",
-    "version": "2.7.5",
+    "version": "2.7.6",
     "news": {
+      "2.7.6": {
+        "en": "add openknx\nadd e3dc-rscp",
+        "de": "openknx hinzufügen\ne3dc-rscp hinzufügen",
+        "ru": "добавить openknx\nдобавить e3dc-rscp",
+        "pt": "adicionar openknx\nadicionar e3dc-rscp",
+        "nl": "voeg openknx toe\nvoeg e3dc-rscp toe",
+        "fr": "ajouter openknx\najouter e3dc-rscp",
+        "it": "aggiungi openknx\naggiungi e3dc-rscp",
+        "es": "añadir openknx\nañadir e3dc-rscp",
+        "pl": "dodaj openknx\ndodaj e3dc-rscp",
+        "zh-cn": "添加openknx\n添加 e3dc-rscp"
+      },
       "2.7.5": {
         "en": "Fix kecontact detection (Sentry IOBROKER-DISCOVERY-3P)",
         "de": "kecontact-Erkennung behoben (Sentry IOBROKER-DISCOVERY-3P)",
@@ -74,18 +86,6 @@
         "es": "Agregar descubrimiento para BSBLan y ValloxMV\nOptimizar para js-controller 3.3",
         "pl": "Dodaj wykrywanie dla BSBLan i ValloxMV\nOptymalizacja dla kontrolera js 3.3",
         "zh-cn": "为 BSBLan 和 ValloxMV 添加发现\n针对 js-controller 3.3 优化"
-      },
-      "2.6.3": {
-        "en": "Added support of Admin5",
-        "de": "Unterstützung von Admin5 hinzugefügt",
-        "ru": "Добавлена поддержка Admin5",
-        "pt": "Suporte Adde de Admin5",
-        "nl": "Voeg ondersteuning toe van Admin5",
-        "fr": "Prise en charge d'Adde d'Admin5",
-        "it": "Supporto aggiuntivo di Admin5",
-        "es": "Agregar soporte de Admin5",
-        "pl": "Dodatkowa obsługa Admin5",
-        "zh-cn": "添加对Admin5的支持"
       }
     },
     "title": "Discovery devices",
