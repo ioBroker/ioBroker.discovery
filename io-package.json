@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "discovery",
-    "version": "2.7.6",
+    "version": "2.8.0",
     "news": {
+      "2.8.0": {
+        "en": "add openknx\nadd e3dc-rscp",
+        "de": "openknx hinzufügen\ne3dc-rscp hinzufügen",
+        "ru": "добавить openknx\nдобавить e3dc-rscp",
+        "pt": "adicionar openknx\nadicionar e3dc-rscp",
+        "nl": "voeg openknx toe\nvoeg e3dc-rscp toe",
+        "fr": "ajouter openknx\najouter e3dc-rscp",
+        "it": "aggiungi openknx\naggiungi e3dc-rscp",
+        "es": "añadir openknx\nañadir e3dc-rscp",
+        "pl": "dodaj openknx\ndodaj e3dc-rscp",
+        "zh-cn": "添加openknx\n添加 e3dc-rscp"
+      },
       "2.7.5": {
         "en": "Fix kecontact detection (Sentry IOBROKER-DISCOVERY-3P)",
         "de": "kecontact-Erkennung behoben (Sentry IOBROKER-DISCOVERY-3P)",
