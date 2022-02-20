@@ -30,6 +30,7 @@ For more details and for information how to disable the error reporting see [Sen
 - deConz
 - Denon /Marantz
 - DoorBird
+- e3dc-rscp
 - ebus
 - ekey
 - energymanager (E.ON/Solarwatt)
