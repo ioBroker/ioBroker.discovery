@@ -142,7 +142,7 @@ You can execute `sudo setcap cap_net_raw+p /bin/ping` to add missing capabilitie
 	### **WORK IN PROGRESS**
 -->
 ## Changelog
-### **WORK IN PROGRESS**
+### 3.0.0 (2022-03-20)
 * (bluefox) Updated serialport package
 
 ### 2.8.0 (2022-02-20)
