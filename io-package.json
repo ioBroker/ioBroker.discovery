@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "discovery",
-    "version": "3.0.1",
+    "version": "3.0.2",
     "news": {
+      "3.0.2": {
+        "en": "Updated serialport package",
+        "de": "Serialport-Paket aktualisiert",
+        "ru": "Обновленный пакет последовательного порта",
+        "pt": "Pacote de porta serial atualizado",
+        "nl": "Bijgewerkt serialport-pakket",
+        "fr": "Paquet de port série mis à jour",
+        "it": "Pacchetto porta seriale aggiornato",
+        "es": "Paquete de puerto serie actualizado",
+        "pl": "Zaktualizowany pakiet portu szeregowego",
+        "zh-cn": "更新了串口包"
+      },
       "3.0.1": {
         "en": "Updated serialport package",
         "de": "Serialport-Paket aktualisiert",
@@ -74,18 +86,6 @@
         "es": "detección kecontact actualizada",
         "pl": "zaktualizowane wykrywanie kecontact",
         "zh-cn": "更新 kecontact 检测"
-      },
-      "2.7.2": {
-        "en": "support KeBa KeContact P30",
-        "de": "unterstützen KeBa KeContact P30",
-        "ru": "поддержка KeBa KeContact P30",
-        "pt": "suporte KeBa KeContact P30",
-        "nl": "ondersteuning KeBa KeContact P30",
-        "fr": "soutenir KeBa KeContact P30",
-        "it": "supporto KeBa KeContatta P30",
-        "es": "soporte KeBa KeContact P30",
-        "pl": "wsparcie KeBa KeContact P30",
-        "zh-cn": "支持KeBa KeContact P30"
       }
     },
     "title": "Discovery devices",
