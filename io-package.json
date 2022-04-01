@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "discovery",
-    "version": "3.0.2",
+    "version": "3.0.3",
     "news": {
+      "3.0.3": {
+        "en": "Fix crash cases reported by Sentry",
+        "de": "Von Sentry gemeldete Absturzfälle beheben",
+        "ru": "Исправить случаи сбоев, о которых сообщил Sentry",
+        "pt": "Corrigir casos de travamento relatados pelo Sentinela",
+        "nl": "Herstel crashgevallen gemeld door Sentry",
+        "fr": "Correction des cas de plantage signalés par Sentry",
+        "it": "Risolvi i casi di crash segnalati da Sentry",
+        "es": "Solucionar casos de fallas informados por Sentry",
+        "pl": "Napraw przypadki awarii zgłoszone przez Sentry",
+        "zh-cn": "修复 Sentry 报告的崩溃案例"
+      },
       "3.0.2": {
         "en": "Updated serialport package",
         "de": "Serialport-Paket aktualisiert",
@@ -74,18 +86,6 @@
         "es": "Flot reemplazado con eCharts\nadaptador de información eliminado",
         "pl": "Zastąpiono flotę eCharts\ninformacje Usunięto adapter",
         "zh-cn": "用 eCharts 替换了浮点数\n信息适配器已移除"
-      },
-      "2.7.3": {
-        "en": "updated kecontact detection",
-        "de": "kecontact-Erkennung aktualisiert",
-        "ru": "обновленное обнаружение контактов kecontact",
-        "pt": "detecção de kecontact atualizada",
-        "nl": "bijgewerkte kecontact-detectie",
-        "fr": "détection de kecontact mise à jour",
-        "it": "aggiornato kecontact rilevamento",
-        "es": "detección kecontact actualizada",
-        "pl": "zaktualizowane wykrywanie kecontact",
-        "zh-cn": "更新 kecontact 检测"
       }
     },
     "title": "Discovery devices",
