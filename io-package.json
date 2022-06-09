@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "discovery",
-    "version": "3.0.3",
+    "version": "3.0.4",
     "news": {
+      "3.0.4": {
+        "en": "Disable configuration settings for this adapter",
+        "de": "Konfigurationseinstellungen für diesen Adapter deaktivieren",
+        "ru": "Отключить настройки конфигурации для этого адаптера",
+        "pt": "Desativar configurações para este adaptador",
+        "nl": "Disable configuratie setting voor deze aanpassing",
+        "fr": "Paramètres de configuration pour cet adaptateur",
+        "it": "Disattivare le impostazioni di configurazione per questo adattatore",
+        "es": "Ajustes de configuración desactivados para este adaptador",
+        "pl": "Dyskretne ustawienia dla tego adaptera",
+        "zh-cn": "这种适应环境的可变性环境"
+      },
       "3.0.3": {
         "en": "Fix crash cases reported by Sentry",
         "de": "Von Sentry gemeldete Absturzfälle beheben",
@@ -74,18 +86,6 @@
         "es": "Corregir la detección de contacto (Sentry IOBROKER-DISCOVERY-3P)",
         "pl": "Napraw wykrywanie kontaktów (Sentry IOBROKER-DISCOVERY-3P)",
         "zh-cn": "修复 kecontact 检测 (Sentry IOBROKER-DISCOVERY-3P)"
-      },
-      "2.7.4": {
-        "en": "Replaced flot with eCharts\ninfo Adapter removed",
-        "de": "Flot durch eCharts ersetzt\ninfo Adapter entfernt",
-        "ru": "Заменен flot на eCharts\nинформация Адаптер удален",
-        "pt": "Flot substituído por eCharts\nAdaptador de informações removido",
-        "nl": "Flot vervangen door eCharts\ninfo Adapter verwijderd",
-        "fr": "Flot remplacé par des eCharts\ninfo Adaptateur retiré",
-        "it": "Flot sostituito con eCharts\ninfo Adattatore rimosso",
-        "es": "Flot reemplazado con eCharts\nadaptador de información eliminado",
-        "pl": "Zastąpiono flotę eCharts\ninformacje Usunięto adapter",
-        "zh-cn": "用 eCharts 替换了浮点数\n信息适配器已移除"
       }
     },
     "title": "Discovery devices",
