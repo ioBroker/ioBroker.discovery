@@ -2,7 +2,7 @@
  *
  *      ioBroker Discovery Adapter
  *
- *      Copyright (c) 2017-2021 Bluefox <dogafox@gmail.com>
+ *      Copyright (c) 2017-2022 Bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
@@ -13,13 +13,13 @@
 /* jslint node: true */
 
 'use strict';
-const utils       = require('@iobroker/adapter-core'); // Get common adapter utils
-const tools       = require(utils.controllerDir + '/lib/tools');
+const utils = require('@iobroker/adapter-core'); // Get common adapter utils
+const getAdapterDir = utils.commonTools.getAdapterDir;
 const adapterName = require('./package.json').name.split('.').pop();
-const fs          = require('fs');
-const dns         = require('dns');
-const adapters    = {};
-let   methods     = null;
+const fs = require('fs');
+const dns = require('dns');
+const adapters = {};
+let   methods = null;
 
 let adapter;
 function startAdapter(options) {
@@ -388,7 +388,7 @@ function discoveryEnd(devices, callback) {
 
             // use only installed adapter if onlyLocal flag activated
             if (adapter.config.onlyLocal) {
-                repository = repository.filter(a => tools.getAdapterDir(a));
+                repository = repository.filter(a => getAdapterDir(a));
             }
 
             // Get the list of adapters with auto-discovery

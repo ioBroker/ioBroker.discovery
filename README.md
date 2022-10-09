@@ -142,6 +142,11 @@ You can execute `sudo setcap cap_net_raw+p /bin/ping` to add missing capabilitie
 	### **WORK IN PROGRESS**
 -->
 ## Changelog
+
+### __WORK IN PROGRESS__
+* (Apollon77) Prepare for future js-controller versions
+* (Apollon77) Prevent crash cases
+
 ### 3.0.5 (2022-06-16)
 * (Apollon77) Fix potential crash cases reported by Sentry
 
