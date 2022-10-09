@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "discovery",
-    "version": "3.0.5",
+    "version": "3.0.6",
     "news": {
+      "3.0.6": {
+        "en": "Prepare for future js-controller versions\nPrevent crash cases",
+        "de": "Bereiten Sie sich auf zukünftige js-Controller-Versionen\nCrashfälle verhindern",
+        "ru": "Подготовьтесь к будущим версиям js-controller\nПредотвратить случаи аварии",
+        "pt": "Prepare-se para futuras versões js-controller\nEvite casos de acidente",
+        "nl": "Bereid je voor op toekomstige Js-controller versie\nVertaling:",
+        "fr": "Préparez-vous pour les versions futures de js-controller\nPrévenir les accidents",
+        "it": "Prepararsi per le future versioni js-controller\nPrevenire casi di crash",
+        "es": "Prepararse para futuras versiones js-controller\nEvitar casos de choque",
+        "pl": "Prepare for future js-controller version\nPrzypadek przednich",
+        "zh-cn": "今后防污版本的编制\n预防事故"
+      },
       "3.0.5": {
         "en": "Fix potential crash cases reported by Sentry",
         "de": "Behebt mögliche Crashfälle, die von Sentry gemeldet wurden",
@@ -74,18 +86,6 @@
         "es": "Paquete de puerto serie actualizado",
         "pl": "Zaktualizowany pakiet portu szeregowego",
         "zh-cn": "更新了串口包"
-      },
-      "2.8.0": {
-        "en": "add openknx\nadd e3dc-rscp",
-        "de": "openknx hinzufügen\ne3dc-rscp hinzufügen",
-        "ru": "добавить openknx\nдобавить e3dc-rscp",
-        "pt": "adicionar openknx\nadicionar e3dc-rscp",
-        "nl": "voeg openknx toe\nvoeg e3dc-rscp toe",
-        "fr": "ajouter openknx\najouter e3dc-rscp",
-        "it": "aggiungi openknx\naggiungi e3dc-rscp",
-        "es": "añadir openknx\nañadir e3dc-rscp",
-        "pl": "dodaj openknx\ndodaj e3dc-rscp",
-        "zh-cn": "添加openknx\n添加 e3dc-rscp"
       }
     },
     "title": "Discovery devices",
