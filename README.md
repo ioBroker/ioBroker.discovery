@@ -142,7 +142,7 @@ You can execute `sudo setcap cap_net_raw+p /bin/ping` to add missing capabilitie
 	### **WORK IN PROGRESS**
 -->
 ## Changelog
-### **WORK IN PROGRESS**
+### 3.1.0 (2022-10-10)
 * (bluefox) Corrected syntax error in the german translation
 
 ### 3.0.6 (2022-10-09)

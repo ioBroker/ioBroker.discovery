@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "discovery",
-    "version": "3.0.6",
+    "version": "3.1.0",
     "news": {
+      "3.1.0": {
+        "en": "Corrected syntax error in the german translation",
+        "de": "Korrigierter Syntaxfehler in der deutschen Übersetzung",
+        "ru": "Исправлена ошибка синтаксиса в немецком переводе",
+        "pt": "Erro de sintaxe corrigido na tradução alemã",
+        "nl": "Vertaling:",
+        "fr": "Erreur de syntaxe corrigée dans la traduction allemande",
+        "it": "Errore sintassi corretto nella traduzione tedesca",
+        "es": "Error de sintaxis corregido en la traducción alemana",
+        "pl": "Poprawiony błąd składniowy w tłumaczeniu języka niemieckiego",
+        "zh-cn": "传票机票错误"
+      },
       "3.0.6": {
         "en": "Prepare for future js-controller versions\nPrevent crash cases",
         "de": "Bereiten Sie sich auf zukünftige js-Controller-Versionen\nCrashfälle verhindern",
@@ -64,18 +76,6 @@
         "zh-cn": "更新了串口包"
       },
       "3.0.1": {
-        "en": "Updated serialport package",
-        "de": "Serialport-Paket aktualisiert",
-        "ru": "Обновленный пакет последовательного порта",
-        "pt": "Pacote de porta serial atualizado",
-        "nl": "Bijgewerkt serialport-pakket",
-        "fr": "Paquet de port série mis à jour",
-        "it": "Pacchetto porta seriale aggiornato",
-        "es": "Paquete de puerto serie actualizado",
-        "pl": "Zaktualizowany pakiet portu szeregowego",
-        "zh-cn": "更新了串口包"
-      },
-      "3.0.0": {
         "en": "Updated serialport package",
         "de": "Serialport-Paket aktualisiert",
         "ru": "Обновленный пакет последовательного порта",
