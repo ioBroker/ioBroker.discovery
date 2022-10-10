@@ -24,6 +24,7 @@ const languages =  {
     it: {},
     es: {},
     pl: {},
+    uk: {},
     'zh-cn': {}
 };
 

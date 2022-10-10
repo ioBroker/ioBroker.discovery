@@ -142,6 +142,9 @@ You can execute `sudo setcap cap_net_raw+p /bin/ping` to add missing capabilitie
 	### **WORK IN PROGRESS**
 -->
 ## Changelog
+### **WORK IN PROGRESS**
+* (bluefox) Corrected syntax error in the german translation
+
 ### 3.0.6 (2022-10-09)
 * (Apollon77) Prepare for future js-controller versions
 * (Apollon77) Prevent crash cases
@@ -156,27 +159,27 @@ You can execute `sudo setcap cap_net_raw+p /bin/ping` to add missing capabilitie
 * (Apollon77) Fix crash cases reported by Sentry
 
 ### 3.0.2 (2022-03-21)
-* (bluefox) Updated serialport package
+* (bluefox) Updated `serialport` package
 
 ### 2.8.0 (2022-02-20)
-* (boellner) added openknx
-* (git-kick) added e3dc-rscp
+* (boellner) added `openknx`
+* (git-kick) added `e3dc-rscp`
 
 ### 2.7.5 (2021-11-09)
-* (Apollon77) Fix kecontact detection (Sentry IOBROKER-DISCOVERY-3P)
+* (Apollon77) Fix `kecontact` detection (Sentry IOBROKER-DISCOVERY-3P)
 
 ### 2.7.4 (2021-11-09)
-* (bluefox) Replaced flot with eCharts
+* (bluefox) Replaced `flot` with `eCharts`
 * (bluefox) info Adapter removed
 
 ### 2.7.3 (2021-10-05)
-* (Sneak-L8) updated kecontact detection
+* (Sneak-L8) updated `kecontact` detection
 
 ### 2.7.2 (2021-08-31)
-* (Sneak-L8) support KeBa KeContact P30
+* (Sneak-L8) support `KeBa KeContact P30`
 
 ### 2.7.0 (2021-07-01)
-* (hacki11) Added discovery for BSBLan and ValloxMV
+* (hacki11) Added discovery for `BSBLan` and `ValloxMV`
 * (Apollon77) Optimize for js-controller 3.3
 
 ### 2.6.3 (2021-05-03)
