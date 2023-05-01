@@ -16,7 +16,7 @@
     "iot"
   ],
   "optionalDependencies": {
-    "serialport": "^10.5.0",
+    "serialport": "^11.0.0",
     "mdns-discovery": "^0.2.6"
   },
   "dependencies": {
