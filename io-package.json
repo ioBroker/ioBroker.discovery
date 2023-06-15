@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "discovery",
-    "version": "3.1.0",
+    "version": "3.2.0",
     "news": {
+      "3.2.0": {
+        "en": "Added iControl to the suggested adapters",
+        "de": "IControl zu den vorgeschlagenen Adaptern hinzugefügt",
+        "ru": "Добавлен iControl в предложенные адаптеры",
+        "pt": "Adicionado iControl para os adaptadores sugeridos",
+        "nl": "_",
+        "fr": "Ajout d'iControl aux adaptateurs proposés",
+        "it": "Aggiunto iControl agli adattatori consigliati",
+        "es": "Añadido iControl a los adaptadores sugeridos",
+        "pl": "Added iControl to the implied adapter adapter",
+        "uk": "Додано iControl на запропоновані адаптери",
+        "zh-cn": "加入建议的适应者"
+      },
       "3.1.0": {
         "en": "Corrected syntax error in the german translation",
         "de": "Korrigierter Syntaxfehler in der deutschen Übersetzung",
@@ -64,18 +77,6 @@
         "zh-cn": "修复 Sentry 报告的崩溃案例"
       },
       "3.0.2": {
-        "en": "Updated serialport package",
-        "de": "Serialport-Paket aktualisiert",
-        "ru": "Обновленный пакет последовательного порта",
-        "pt": "Pacote de porta serial atualizado",
-        "nl": "Bijgewerkt serialport-pakket",
-        "fr": "Paquet de port série mis à jour",
-        "it": "Pacchetto porta seriale aggiornato",
-        "es": "Paquete de puerto serie actualizado",
-        "pl": "Zaktualizowany pakiet portu szeregowego",
-        "zh-cn": "更新了串口包"
-      },
-      "3.0.1": {
         "en": "Updated serialport package",
         "de": "Serialport-Paket aktualisiert",
         "ru": "Обновленный пакет последовательного порта",

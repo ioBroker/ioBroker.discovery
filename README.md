@@ -143,7 +143,7 @@ You can execute `sudo setcap cap_net_raw+p /bin/ping` to add missing capabilitie
 	### **WORK IN PROGRESS**
 -->
 ## Changelog
-### **WORK IN PROGRESS**
+### 3.2.0 (2023-06-15)
 * (sbormann) Added iControl to the suggested adapters
 
 ### 3.1.0 (2022-10-10)
