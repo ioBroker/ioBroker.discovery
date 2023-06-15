@@ -38,7 +38,7 @@
     "gulp": "^4.0.2",
     "mocha": "^10.2.0",
     "chai": "^4.3.7",
-    "eslint": "^8.41.0"
+    "eslint": "^8.42.0"
   },
   "bugs": {
     "url": "https://github.com/ioBroker/ioBroker.discovery/issues"
@@ -61,6 +61,7 @@
     "release": "release-script",
     "release-minor": "release-script minor --yes",
     "release-major": "release-script major --yes",
-    "release-patch": "release-script patch --yes"
+    "release-patch": "release-script patch --yes",
+    "update-packages": "ncu --upgrade"
   }
 }
