@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "discovery",
-    "version": "3.2.0",
+    "version": "4.0.0",
     "news": {
+      "4.0.0": {
+        "en": "Added: frontier_silicon, sma-em, and speedwire\nDropped node14 support, refactoring",
+        "de": "Hinzugefügt: frontier_silicon, sma-em, and speedwire\nDropped node14 Unterstützung, Refactoring",
+        "ru": "Добавлена: frontier_silicon, sma-em и speedwire\nDropped node14 поддержка, рефакторинг",
+        "pt": "Adicionado: border_silicon, sma-em, e speedwire\nSuporte node14 dropped, refactoring",
+        "nl": "Vertaling:\nLaat Node14 steun vallen, refactoren",
+        "fr": "Ajouté: frontier_silicon, sma-em, and speedwire\nSoutien node14 abandonné, refactoring",
+        "it": "Aggiunto: frontiera_silicon, sma-em, and speedwire\nSupporto goccia node14, refactoring",
+        "es": "Añadido: border_silicon, sma-em, and speedwire\nSoporte de nodo 14, refactorización",
+        "pl": "Dostęp: frontier_silicon, sma-em i speedwire\nObsługa węzła 14",
+        "uk": "Доданий: Frontier_silicon, sma-em, і Speedwire\nDropped node14 підтримка, рефакторинг",
+        "zh-cn": "增加:边界:硅、马西姆和速度\n复员方案"
+      },
       "3.2.0": {
         "en": "Added iControl to the suggested adapters",
         "de": "IControl zu den vorgeschlagenen Adaptern hinzugefügt",
@@ -75,18 +88,6 @@
         "es": "Solucionar casos de fallas informados por Sentry",
         "pl": "Napraw przypadki awarii zgłoszone przez Sentry",
         "zh-cn": "修复 Sentry 报告的崩溃案例"
-      },
-      "3.0.2": {
-        "en": "Updated serialport package",
-        "de": "Serialport-Paket aktualisiert",
-        "ru": "Обновленный пакет последовательного порта",
-        "pt": "Pacote de porta serial atualizado",
-        "nl": "Bijgewerkt serialport-pakket",
-        "fr": "Paquet de port série mis à jour",
-        "it": "Pacchetto porta seriale aggiornato",
-        "es": "Paquete de puerto serie actualizado",
-        "pl": "Zaktualizowany pakiet portu szeregowego",
-        "zh-cn": "更新了串口包"
       }
     },
     "title": "Discovery devices",
