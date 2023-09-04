@@ -430,9 +430,9 @@ function discoveryEnd(devices, callback) {
 
                             // try to encrypt all passwords
                             options.newInstances.forEach(instance => {
-                                if (instance.encryptWithLegacy) {
-                                    const list = instance.encryptWithLegacy;
-                                    delete instance.encryptWithLegacy;
+                                if (instance.encryptedNativeLegacy) {
+                                    const list = instance.encryptedNativeLegacy;
+                                    delete instance.encryptedNativeLegacy;
                                     list.forEach(attr => {
                                         if (instance.native[attr]) {
                                             instance.native[attr] = adapter.encrypt(secret, instance.native[attr]);
