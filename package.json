@@ -16,14 +16,14 @@
     "iot"
   ],
   "optionalDependencies": {
-    "serialport": "^11.0.1",
+    "serialport": "^12.0.0",
     "mdns-discovery": "^0.2.6"
   },
   "dependencies": {
     "node-ssdp": "^4.0.1",
     "netmask": "^2.0.2",
     "ipaddr.js": "^2.1.0",
-    "@iobroker/adapter-core": "^2.6.8",
+    "@iobroker/adapter-core": "^3.0.3",
     "node-mndp": "^0.0.3"
   },
   "repository": {
@@ -54,7 +54,7 @@
     "main.js"
   ],
   "engines": {
-    "node": ">=12.17.0 <13.0 || >=14.0.0"
+    "node": ">=16.0.0"
   },
   "scripts": {
     "test": "node node_modules/mocha/bin/mocha --exit",
