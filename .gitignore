@@ -7,3 +7,6 @@ admin/i18n/*/flat.txt
 .vscode
 ioBroker.discovery.iml
 package-lock.json
+
+# ioBroker dev-server
+.dev-server/
