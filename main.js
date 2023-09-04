@@ -672,7 +672,9 @@ function browse(options, callback) {
         this.getMissedNames = function (devices, callback) {
             let cnt = 0;
             (function doIt() {
-                if (cnt >= devices.length) return callback();
+                if (cnt >= devices.length) {
+                    return callback();
+                }
                 const dev = devices[cnt++];
 
                 if (dev._name) {
@@ -742,11 +744,11 @@ function browse(options, callback) {
                     } else {
                         let uneq = true;
                         const namex = `${name}x`;
-                        if (specialEntryNames.indexOf(name) >= 0 && dest[name] && from[name] !== undefined && (uneq = (dest[name] !== from[name]))) {
+                        if (specialEntryNames.includes(name) && dest[name] && from[name] !== undefined && (uneq = (dest[name] !== from[name]))) {
                             if (dest[namex] === undefined) {
                                 dest[namex] = [dest[name]];
                             }
-                            if (from[name] && dest[namex].indexOf(from[name]) < 0) {
+                            if (from[name] && !dest[namex].includes(from[name])) {
                                 dest[namex].push(from[name]);
                             }
                         }
