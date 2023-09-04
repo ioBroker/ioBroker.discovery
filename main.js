@@ -2,7 +2,7 @@
  *
  *      ioBroker Discovery Adapter
  *
- *      Copyright (c) 2017-2022 Bluefox <dogafox@gmail.com>
+ *      Copyright (c) 2017-2023 Denis Haev ak Bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
@@ -36,7 +36,6 @@ function startAdapter(options) {
         if (isRunning) {
             adapter && adapter.setState && adapter.setState('scanRunning', false, true);
             isRunning = false;
-            isStopping = true;
             haltAllMethods();
             setTimeout(() => callback && callback(), 1000);
         } else if (callback) {
@@ -50,9 +49,9 @@ function startAdapter(options) {
 function enumAdapters(repository) {
     let dir;
     try {
-        dir = fs.readdirSync(__dirname + '/lib/adapters');
+        dir = fs.readdirSync(`${__dirname}/lib/adapters`);
     } catch (err) {
-        adapter.log.warn('Adapter scan classes not found: ' + err);
+        adapter.log.warn(`Adapter scan classes not found: ${err}`);
         dir = [];
     }
 
@@ -61,7 +60,7 @@ function enumAdapters(repository) {
         if (parts[parts.length - 1] === 'js') {
             parts.pop();
 
-            const moduleName = __dirname + '/lib/adapters/' + dir[f];
+            const moduleName = `${__dirname}/lib/adapters/${dir[f]}`;
             const aName      = parts.join('.');
 
             if (adapters && adapters[aName] && adapters[aName].reloadModule) {
@@ -71,7 +70,7 @@ function enumAdapters(repository) {
             }
 
             // check if this adapter available in repository
-            if (!adapters[aName] && (!repository || repository.indexOf(aName) !== -1)) {
+            if (!adapters[aName] && (!repository || repository.includes(aName))) {
                 adapters[aName] = require(moduleName);
             }
         }
@@ -79,18 +78,17 @@ function enumAdapters(repository) {
 }
 
 function enumMethods() {
-    const dir = fs.readdirSync(__dirname + '/lib/methods');
+    const dir = fs.readdirSync(`${__dirname}/lib/methods`);
     methods = {};
     for (let f = 0; f < dir.length; f++) {
         const parts = dir[f].split('.');
         if (parts[parts.length - 1] === 'js' && parts[0] !== '_') {
             parts.pop();
-            methods[parts.join('.')] = require(__dirname + '/lib/methods/' + dir[f]);
+            methods[parts.join('.')] = require(`${__dirname}/lib/methods/${dir[f]}`);
         }
     }
 }
 
-let isStopping = false;
 let isRunning = false;
 
 function processMessage(obj) {
@@ -128,18 +126,17 @@ function processMessage(obj) {
 }
 
 function isValidAdapter(adapterName, type, dependencies) {
-    if (!adapters.hasOwnProperty(adapterName)) {
+    if (!Object.prototype.hasOwnProperty.call(adapters, adapterName)) {
         return false;
     }
     const adapter = adapters[adapterName];
 
     if (typeof adapter.type === 'string' && adapter.type !== type) {
         return false;
-    } else
-    if (typeof adapter.type === 'object' && adapter.type.indexOf(type) === -1) {
+    } else if (typeof adapter.type === 'object' && !adapter.type.includes(type)) {
         return false;
     } else {
-        return ((!!adapter.dependencies) === dependencies);
+        return (!!adapter.dependencies) === dependencies;
     }
 }
 
@@ -151,7 +148,7 @@ function forEachValidAdapter(device, dependencies, callback) {
     let cnt  = 0;
     const type = typeof device === 'object' ? device._type : device;
     for (const a in adapters) {
-        if (adapters.hasOwnProperty(a) && isValidAdapter(a, type, dependencies)) {
+        if (Object.prototype.hasOwnProperty.call(adapters, a) && isValidAdapter(a, type, dependencies)) {
             callback && callback(adapters[a], a);
             cnt += 1;
         }
@@ -176,18 +173,17 @@ function analyseDeviceDependencies(device, options, callback) {
 
 
         (function (adpr) {
-            adapter.log.debug('Test ' + device._type + ' ' + device._addr + ' ' + adpr);
-
-            // expected, that detect method will add to _instances one instance of specific type or extend existing one
-            adapters[a].detect(device._addr, device, options, (err, isFound, addr) => {
+            adapter.log.debug(`Test ${device._type} ${device._addr} ${adpr}`);
+            // expected, that detect method will add to _instances one instance of a specific type or extend existing one
+            adapters[adpr].detect(device._addr, device, options, (err, isFound /* , addr */) => {
                 if (callbacks[adpr]) {
-                    adapter.log.error('Double callback by "' + adpr + '"');
+                    adapter.log.error(`Double callback by "${adpr}"`);
                 } else {
                     callbacks[adpr] = true;
                 }
 
                 if (isFound) {
-                    adapter.log.debug('Test ' + device._type + ' ' + device._addr + ' ' + adpr + ' DETECTED!');
+                    adapter.log.debug(`Test ${device._type} ${device._addr} ${adpr} DETECTED!`);
                 }
                 if (timeout) {
                     clearTimeout(timeout);
@@ -201,7 +197,9 @@ function analyseDeviceDependencies(device, options, callback) {
         })(a);
     });
 
-    if (count === 0) callback(null);
+    if (count === 0) {
+        callback(null);
+    }
 }
 
 function analyseDeviceSerial(device, options, list, callback) {
@@ -209,7 +207,7 @@ function analyseDeviceSerial(device, options, list, callback) {
         callback();
     } else {
         const adpr = list.shift();
-        adapter.log.debug('Test ' + device._addr + ' ' + adpr);
+        adapter.log.debug(`Test ${device._addr} ${adpr}`);
 
         let done = false;
         let timeout = setTimeout(() => {
@@ -220,11 +218,11 @@ function analyseDeviceSerial(device, options, list, callback) {
 
 
         try {
-            // expected, that detect method will add to _instances one instance of specific type or extend existing one
-            adapters[adpr].detect(device._addr, device, options, (err, isFound, addr) => {
+            // expected, that detect method will add to _instances one instance of a specific type or extend existing one
+            adapters[adpr].detect(device._addr, device, options, (err, isFound /* , addr */) => {
                 if (timeout) {
                     if (done) {
-                        adapter.log.error('Double callback by "' + adpr + '"');
+                        adapter.log.error(`Double callback by "${adpr}"`);
                     } else {
                         done = true;
                     }
@@ -234,11 +232,11 @@ function analyseDeviceSerial(device, options, list, callback) {
                     setTimeout(analyseDeviceSerial, 0, device, options, list, callback);
                 }
                 if (isFound) {
-                    adapter.log.debug('Test ' + device._addr + ' ' + adpr + ' DETECTED!');
+                    adapter.log.debug(`Test ${device._addr} ${adpr} DETECTED!`);
                 }
             });
         } catch (e) {
-            options.log.error('Cannot detect "' + adpr + '" on "' + device._addr + '": ' + e);
+            options.log.error(`Cannot detect "${adpr}" on "${device._addr}": ${e}`);
             setTimeout(analyseDeviceSerial, 0, device, options, list, callback);
         }
     }
@@ -258,7 +256,7 @@ function analyseDevice(device, options, callback) {
         forEachValidAdapter(device, false, (_adapter, a) => {
 
             (function (adpr) {
-                adapter.log.debug('Test ' + device._type + ' ' + device._addr + ' ' + adpr);
+                adapter.log.debug(`Test ${device._type} ${device._addr} ${adpr}`);
 
                 let timeout = setTimeout(() => {
                     timeout = null;
@@ -270,11 +268,11 @@ function analyseDevice(device, options, callback) {
                 }, adapters[adpr].timeout || 2000);
 
                 try {
-                    // expected, that detect method will add to _instances one instance of specific type or extend existing one
-                    adapters[adpr].detect(device._addr, device, options, (err, isFound, addr) => {
+                    // expected, that detect method will add to _instances one instance of a specific type or extend existing one
+                    adapters[adpr].detect(device._addr, device, options, (err, isFound /* , addr */) => {
                         if (timeout) {
                             if (callbacks[adpr]) {
-                                adapter.log.error('Double callback by "' + adpr + '"');
+                                adapter.log.error(`Double callback by "${adpr}"`);
                             } else {
                                 callbacks[adpr] = true;
                             }
@@ -288,11 +286,11 @@ function analyseDevice(device, options, callback) {
                         }
 
                         if (isFound) {
-                            adapter.log.debug('Test ' + device._addr + ' ' + adpr + ' DETECTED!');
+                            adapter.log.debug(`Test ${device._addr} ${adpr} DETECTED!`);
                         }
                     });
                 } catch (e) {
-                    adapter.log.error('Cannot detect "' + adpr + '" on "' + device._addr + '": ' + e);
+                    adapter.log.error(`Cannot detect "${adpr}" on "${device._addr}": ${e}`);
                     if (count !== false && !--count) {
                         analyseDeviceDependencies(device, options, callback);
                         count = false;
@@ -315,8 +313,12 @@ function analyseDevices(devices, options, index, callback) {
     if (!devices || index >= devices.length) {
         let count = 0;
         for (const aa in adapters) {
-            if (!adapters.hasOwnProperty(aa)) continue;
-            if (adapters[aa].type !== 'advice') continue;
+            if (!Object.prototype.hasOwnProperty.call(adapters, aa)) {
+                continue;
+            }
+            if (adapters[aa].type !== 'advice') {
+                continue;
+            }
 
             count++;
         }
@@ -324,20 +326,24 @@ function analyseDevices(devices, options, index, callback) {
         const callbacks = {};
         // add suggested adapters
         for (const a in adapters) {
-            if (!adapters.hasOwnProperty(a)) continue;
-            if (adapters[a].type !== 'advice') continue;
+            if (!Object.prototype.hasOwnProperty.call(adapters, a)) {
+                continue;
+            }
+            if (adapters[a].type !== 'advice') {
+                continue;
+            }
 
             (function (adpr) {
                 try {
-                    // expected, that detect method will add to _instances one instance of specific type or extend existing one
+                    // expected, that detect method will add to _instances one instance of a specific type or extend existing one
                     adapters[adpr].detect(null, null, options, (err, isFound, name) => {
                         if (callbacks[adpr]) {
-                            adapter.log.error('Double callback by "' + adpr + '"');
+                            adapter.log.error(`Double callback by "${adpr}"`);
                         } else {
                             callbacks[adpr] = true;
                         }
                         if (isFound) {
-                            adapter.log.debug('Added suggested adapter: ' + name);
+                            adapter.log.debug(`Added suggested adapter: ${name}`);
                         }
                         if (!--count && callback) {
                             adapter.setState('servicesProgress', 100, true);
@@ -347,7 +353,7 @@ function analyseDevices(devices, options, index, callback) {
                         }
                     });
                 } catch (e) {
-                    adapter.log.error('Cannot detect suggested adapter: ' + e);
+                    adapter.log.error(`Cannot detect suggested adapter: ${e}`);
                     count--;
                 }
             })(a);
@@ -360,7 +366,7 @@ function analyseDevices(devices, options, index, callback) {
         }
     } else {
         analyseDevice(devices[index], options, err => {
-            if (err) adapter.log.error('Error by analyse device: ' + err);
+            err && adapter.log.error(`Error by analyse device: ${err}`);
             setTimeout(analyseDevices, 0, devices, options, index + 1, callback);
         });
     }
@@ -376,7 +382,7 @@ function getInstances(callback) {
 }
 
 function discoveryEnd(devices, callback) {
-    adapter.log.info('Found ' + devices.length + ' addresses');
+    adapter.log.info(`Found ${devices.length} addresses`);
 
     adapter.getForeignObject('system.repositories', (err, repo) => {
         adapter.getForeignObject('system.config', (err, systemConfig) => {
@@ -411,56 +417,80 @@ function discoveryEnd(devices, callback) {
                             }
                         };
 
-                        options._devices = devices; // allow adapters to know all ips and their infos
+                        options._devices = devices; // allow adapters to know all IPs and their infos
                         options._g_devices = g_devices;
 
-                        // analyse every IP address
-                        analyseDevices(devices, options, 0, err => {
-                            adapter.log.info('Discovery finished. Found new or modified ' + options.newInstances.length + ' instances');
+                        // analyze every IP address
+                        analyseDevices(devices, options, 0, async (/* err */) => {
+                            adapter.log.info(`Discovery finished. Found new or modified ${options.newInstances.length} instances`);
+
+                            // read secret
+                            const systemConfig = await adapter.getForeignObjectAsync('system.config');
+                            const secret = (systemConfig && systemConfig.native && systemConfig.native.secret) || 'Zgfr56gFe87jJOM';
+
+                            // try to encrypt all passwords
+                            options.newInstances.forEach(instance => {
+                                if (instance.encryptWithLegacy) {
+                                    const list = instance.encryptWithLegacy;
+                                    delete instance.encryptWithLegacy;
+                                    list.forEach(attr => {
+                                        if (instance.native[attr]) {
+                                            instance.native[attr] = adapter.encrypt(secret, instance.native[attr]);
+                                        }
+                                    });
+                                }
+                            });
 
                             // add this information to system.discovery.host
-                            adapter.getForeignObject('system.discovery', (err, obj) => {
-                                if (!obj) {
-                                    obj = {
-                                        common: {
-                                            name: 'prepared update of discovery'
-                                        },
-                                        native: {},
-                                        type: 'config'
-                                    };
-                                }
-                                const oldInstances = obj.native.newInstances || [];
-                                obj.native.newInstances = options.newInstances;
-                                obj.native.devices = devices;
-                                obj.native.lastScan = new Date().getTime();
-                                for (let j = oldInstances.length - 1; j >= 0; j--) {
-                                    if (oldInstances[j].comment.ack) {
-                                        delete oldInstances[j].comment.ack;
-                                        oldInstances[j]._id = oldInstances[j]._id.replace(/\.\d+$/, '');
-                                        oldInstances[j]= JSON.stringify(oldInstances[j]);
-                                    } else {
-                                        oldInstances.splice(j, 1);
-                                    }
-                                }
-                                for (let i = 0; i < oldInstances.length; i++) {
-                                    for (let n = 0; n < options.newInstances.length; n++) {
-                                        const modified = JSON.parse(JSON.stringify(options.newInstances[n]));
-                                        modified._id = modified._id.replace(/\.\d+$/, '');
-                                        if (oldInstances[i] === JSON.stringify(modified)) {
-                                            options.newInstances[n].comment.ack = true;
-                                            break;
-                                        }
-                                    }
-                                }
+                            let obj;
+                            try {
+                                obj = await adapter.getForeignObjectAsync('system.discovery');
+                            } catch (e) {
+                                // ignore
+                            }
 
-                                adapter.setForeignObject('system.discovery', obj, err => {
-                                    isRunning = false;
-                                    if (err) adapter.log.error('Cannot update system.discovery: ' + err);
-                                    adapter.log.info('Discovery finished');
-                                    adapter.setState('scanRunning', false, true);
-                                    if (typeof callback === 'function') callback(null, options.newInstances, devices);
-                                });
-                            });
+                            if (!obj) {
+                                obj = {
+                                    common: {
+                                        name: 'prepared update of discovery',
+                                    },
+                                    native: {},
+                                    type: 'config',
+                                };
+                            }
+                            const oldInstances = obj.native.newInstances || [];
+                            obj.native.newInstances = options.newInstances;
+                            obj.native.devices = devices;
+                            obj.native.lastScan = new Date().getTime();
+                            for (let j = oldInstances.length - 1; j >= 0; j--) {
+                                if (oldInstances[j].comment.ack) {
+                                    delete oldInstances[j].comment.ack;
+                                    oldInstances[j]._id = oldInstances[j]._id.replace(/\.\d+$/, '');
+                                    oldInstances[j]= JSON.stringify(oldInstances[j]);
+                                } else {
+                                    oldInstances.splice(j, 1);
+                                }
+                            }
+
+                            for (let i = 0; i < oldInstances.length; i++) {
+                                for (let n = 0; n < options.newInstances.length; n++) {
+                                    const modified = JSON.parse(JSON.stringify(options.newInstances[n]));
+                                    modified._id = modified._id.replace(/\.\d+$/, '');
+                                    if (oldInstances[i] === JSON.stringify(modified)) {
+                                        options.newInstances[n].comment.ack = true;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            await adapter.setForeignObjectAsync('system.discovery', obj);
+                            isRunning = false;
+                            err && adapter.log.error(`Cannot update system.discovery: ${err}`);
+                            adapter.log.info('Discovery finished');
+                            adapter.setState('scanRunning', false, true);
+                            if (typeof callback === 'function') {
+                                callback(null, options.newInstances, devices);
+                            }
                         });
                     });
                 });
@@ -470,7 +500,7 @@ function discoveryEnd(devices, callback) {
 }
 
 let g_devices = {};
-let g_devices_count = 0;
+// let g_devices_count = 0;
 let g_browse = null;
 const specialEntryNames = 'name,data,LOCATION'.split(',');
 
@@ -484,7 +514,7 @@ function haltAllMethods() {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// wraper class for each method module
+// wrapper class for each method module
 
 const Method = function (methodName, parent) {
     if (!(this instanceof Method)) {
@@ -523,7 +553,7 @@ const Method = function (methodName, parent) {
 
     this.updateProgress = function (progress) {
         if (typeof progress === 'number') self.progress = Math.round(progress);
-        adapter.log.debug (self.source + ': ' + self.progress + '%, devices - ' + self.foundCount);
+        adapter.log.debug(`${self.source}: ${self.progress}%, devices - ${self.foundCount}`);
         parent.updateProgress ();
     };
 
@@ -541,7 +571,7 @@ const Method = function (methodName, parent) {
             interval = null;
         }
         self.progress = 100;
-        adapter.log.info ('Done discovering ' + self.source + ' devices. ' + self.foundCount + ' packages received');
+        adapter.log.info (`Done discovering ${self.source} devices. ${self.foundCount} packages received`);
         parent.done (self);
     };
     this.close = this.done; // * this.close should be overwriten. Is called to stop searching
@@ -585,7 +615,7 @@ function browse(options, callback) {
 
     isRunning = true;
     g_devices = {};
-    g_devices_count = 0;
+    // g_devices_count = 0;
 
     adapter.setState('scanRunning', true, true);
     enumMethods();
@@ -594,7 +624,7 @@ function browse(options, callback) {
         const self = this;
         adapter.config.stopPingOnTR064Ready = true; //
 
-        const methodsArray = Object.keys(methods).filter(m => methods[m].browse && (!options || options.indexOf(m) !== -1));
+        const methodsArray = Object.keys(methods).filter(m => methods[m].browse && (!options || options.includes(m)));
 
         this.count = methodsArray.length;
         this.foundCount = 0;
@@ -671,7 +701,7 @@ function browse(options, callback) {
 
             if (old && old._type === type) {
                 device = old;
-                adapter.log.debug('extended Device: ' + newDevice._addr + ' source=' + source);
+                adapter.log.debug(`extended Device: ${newDevice._addr} source=${source}`);
                 if (type === 'upnp' && !old._upnp) {
                     old._upnp = [];
                 }
@@ -682,13 +712,13 @@ function browse(options, callback) {
 
                 g_devices[type][newDevice._addr] = old;
             } else {
-                adapter.log.debug('main.addDevice: ip=' + newDevice._addr + ' source=' + source);
+                adapter.log.debug(`main.addDevice: ip=${newDevice._addr} source=${source}`);
 
                 if (type === 'upnp') {
                     newDevice._upnp = [newDevice._upnp];
                 }
 
-                g_devices_count += 1;
+                // g_devices_count += 1;
                 newDevice._source = source;
                 newDevice._type = type || 'ip';
                 newDevice._new = true;
@@ -711,7 +741,7 @@ function browse(options, callback) {
                         _merge(dest[name], from[name]);
                     } else {
                         let uneq = true;
-                        const namex = name + 'x';
+                        const namex = `${name}x`;
                         if (specialEntryNames.indexOf(name) >= 0 && dest[name] && from[name] !== undefined && (uneq = (dest[name] !== from[name]))) {
                             if (dest[namex] === undefined) {
                                 dest[namex] = [dest[name]];
@@ -734,7 +764,7 @@ function browse(options, callback) {
         };
 
         methodsArray.forEach(m => {
-            //if (m !== 'ping') return;
+            // if (m !== 'ping') return;
             const method = Method(m, self);
             methods[m] = method;
             method.browse(method);
