@@ -41,6 +41,7 @@ For more details and for information how to disable the error reporting see [Sen
 - FireTV
 - Fritzdect
 - Fronius
+- Frontier_silicon
 - G-Homa plugs
 - Harmony
 - Heos
@@ -84,6 +85,7 @@ For more details and for information how to disable the error reporting see [Sen
 - Proxmox
 - RFLink (Serial 57600baud)
 - SamsungTV
+- Sma-em
 - Smappee
 - Solarlog
 - Sonnen
