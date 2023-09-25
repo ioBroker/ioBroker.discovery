@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "discovery",
-    "version": "4.0.0",
+    "version": "4.1.0",
     "news": {
+      "4.1.0": {
+        "en": "Added detection of myvbus and resol",
+        "de": "Zusätzlicher Nachweis von Myvbus und Resol",
+        "ru": "Добавлено обнаружение myvbus и resol",
+        "pt": "Adicionado detecção de myvbus e resol",
+        "nl": "Vermelding van myvbus en resolutie",
+        "fr": "Ajout de détection de myvbus et de résolve",
+        "it": "Aggiunta il rilevamento di myvbus e risol",
+        "es": "Detección agregada de mivbus y resol",
+        "pl": "Wykrywanie myvbusa i resolu",
+        "uk": "Додана детекція мівбуса і розчину",
+        "zh-cn": "进一步探测我的包和溶解"
+      },
       "4.0.0": {
         "en": "Added: frontier_silicon, sma-em, and speedwire\nDropped node14 support, refactoring",
         "de": "Hinzugefügt: frontier_silicon, sma-em, and speedwire\nDropped node14 Unterstützung, Refactoring",
@@ -76,18 +89,6 @@
         "es": "Ajustes de configuración desactivados para este adaptador",
         "pl": "Dyskretne ustawienia dla tego adaptera",
         "zh-cn": "这种适应环境的可变性环境"
-      },
-      "3.0.3": {
-        "en": "Fix crash cases reported by Sentry",
-        "de": "Von Sentry gemeldete Absturzfälle beheben",
-        "ru": "Исправить случаи сбоев, о которых сообщил Sentry",
-        "pt": "Corrigir casos de travamento relatados pelo Sentinela",
-        "nl": "Herstel crashgevallen gemeld door Sentry",
-        "fr": "Correction des cas de plantage signalés par Sentry",
-        "it": "Risolvi i casi di crash segnalati da Sentry",
-        "es": "Solucionar casos de fallas informados por Sentry",
-        "pl": "Napraw przypadki awarii zgłoszone przez Sentry",
-        "zh-cn": "修复 Sentry 报告的崩溃案例"
       }
     },
     "title": "Discovery devices",
