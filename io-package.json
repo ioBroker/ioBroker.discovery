@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "discovery",
-    "version": "4.1.0",
+    "version": "4.2.0",
     "news": {
+      "4.2.0": {
+        "en": "Changed detection of myvbus and resol",
+        "de": "Geänderte Erkennung von Myvbus und Resol",
+        "ru": "Изменено обнаружение myvbus и resol",
+        "pt": "Detecção alterada de myvbus e resol",
+        "nl": "Veranderde detectie van myvbus en resolutie",
+        "fr": "Détection modifiée de myvbus et de résolve",
+        "it": "Rilevamento modificato di myvbus e risol",
+        "es": "Detección modificada de mivbus y resol",
+        "pl": "Zmiany wykrycia myvbusa i resolu",
+        "uk": "Змінене виявлення мівбусів і розчину",
+        "zh-cn": "B. 改变对我的布局和溶解的探测"
+      },
       "4.1.0": {
         "en": "Added detection of myvbus and resol",
         "de": "Zusätzlicher Nachweis von Myvbus und Resol",
@@ -77,18 +90,6 @@
         "es": "Fijar posibles casos de accidentes reportados por Sentry",
         "pl": "Fixowe przypadki katastrofy (ang.)",
         "zh-cn": "Sentry报告的潜在事故"
-      },
-      "3.0.4": {
-        "en": "Disable configuration settings for this adapter",
-        "de": "Konfigurationseinstellungen für diesen Adapter deaktivieren",
-        "ru": "Отключить настройки конфигурации для этого адаптера",
-        "pt": "Desativar configurações para este adaptador",
-        "nl": "Disable configuratie setting voor deze aanpassing",
-        "fr": "Paramètres de configuration pour cet adaptateur",
-        "it": "Disattivare le impostazioni di configurazione per questo adattatore",
-        "es": "Ajustes de configuración desactivados para este adaptador",
-        "pl": "Dyskretne ustawienia dla tego adaptera",
-        "zh-cn": "这种适应环境的可变性环境"
       }
     },
     "title": "Discovery devices",
