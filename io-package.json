@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "discovery",
-    "version": "4.2.0",
+    "version": "4.3.0",
     "news": {
+      "4.3.0": {
+        "en": "Replaced vis with vis-2",
+        "de": "Ersatz vis mit vis-2",
+        "ru": "Заменить vis на vis-2",
+        "pt": "Vis deslocado com vis-2",
+        "nl": "Vervangen vis door vis-2",
+        "fr": "Remplacé vis par vis-2",
+        "it": "Vis sostituito con vis-2",
+        "es": "Sustitúyase por vis-2",
+        "pl": "Zastąpione vis vis-2",
+        "uk": "Замінені віси з вісом-2",
+        "zh-cn": "改为:"
+      },
       "4.2.0": {
         "en": "Changed detection of myvbus and resol",
         "de": "Geänderte Erkennung von Myvbus und Resol",
@@ -78,18 +91,6 @@
         "es": "Prepararse para futuras versiones js-controller\nEvitar casos de choque",
         "pl": "Prepare for future js-controller version\nPrzypadek przednich",
         "zh-cn": "今后防污版本的编制\n预防事故"
-      },
-      "3.0.5": {
-        "en": "Fix potential crash cases reported by Sentry",
-        "de": "Behebt mögliche Crashfälle, die von Sentry gemeldet wurden",
-        "ru": "Исправление потенциальных аварийных случаев, сообщенных Sentry",
-        "pt": "Corrigir casos potenciais de acidente relatados pela Sentry",
-        "nl": "Vertaling:",
-        "fr": "Correction des cas de crash potentiels signalés par Sentry",
-        "it": "Fissare potenziali casi di crash segnalati da Sentry",
-        "es": "Fijar posibles casos de accidentes reportados por Sentry",
-        "pl": "Fixowe przypadki katastrofy (ang.)",
-        "zh-cn": "Sentry报告的潜在事故"
       }
     },
     "title": "Discovery devices",

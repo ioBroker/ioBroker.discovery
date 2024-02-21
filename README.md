@@ -148,7 +148,7 @@ You can execute `sudo setcap cap_net_raw+p /bin/ping` to add missing capabilitie
 	### **WORK IN PROGRESS**
 -->
 ## Changelog
-### **WORK IN PROGRESS**
+### 4.3.0 (2024-02-21)
 * (bluefox) Replaced vis with vis-2
 
 ### 4.2.0 (2023-10-09)
