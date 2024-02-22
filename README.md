@@ -101,6 +101,7 @@ For more details and for information how to disable the error reporting see [Sen
 - UPnP
 - ValloxMV
 - Wifilight
+- WLED
 - Yamaha
 - Yeelight
 - Z-wave USB (Tested with Aeon Labs)
