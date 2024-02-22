@@ -56,6 +56,7 @@ For more details and for information how to disable the error reporting see [Sen
 - KNX (disabled actually)
 - Keba KeContact P30
 - Kodi
+- LaMetric
 - Landroid
 - LGTV
 - Lightify
@@ -151,6 +152,7 @@ You can execute `sudo setcap cap_net_raw+p /bin/ping` to add missing capabilitie
 ## Changelog
 ### **WORK IN PROGRESS**
 * (klein0r) Added WLED
+* (klein0r) Added LaMetric
 
 ### 4.3.0 (2024-02-21)
 * (bluefox) Replaced vis with vis-2
