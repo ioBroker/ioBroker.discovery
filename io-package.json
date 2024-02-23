@@ -4,8 +4,8 @@
     "version": "4.4.0",
     "news": {
       "4.4.0": {
-        "en": "Added WLED\nAdded LaMetric\nRemove net-tools from proposals",
-        "de": "Hinzugefügt WLED\nHinzugefügt LaMetric\nNet-Tools von Vorschlägen entfernen",
+        "en": "Added WLED\nAdded LaMetric\nRemoved net-tools from proposals",
+        "de": "Hinzugefügt WLED\nHinzugefügt LaMetric\nNet-Tools von Vorschlägen entfernt",
         "ru": "Добавлено WLED\nДобавлено LaMetric\nУдаление сетевых инструментов из предложений",
         "pt": "Adicionado WLED\nAdicionado LaMetric\nRemover ferramentas líquidas de propostas",
         "nl": "WLED toegevoegd\nToegevoegd LaMetric\nVerwijder net-tools uit voorstellen",
