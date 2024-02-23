@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "discovery",
-    "version": "4.3.0",
+    "version": "4.4.0",
     "news": {
+      "4.4.0": {
+        "en": "Added WLED\nAdded LaMetric\nRemove net-tools from proposals",
+        "de": "Hinzugefügt WLED\nHinzugefügt LaMetric\nNet-Tools von Vorschlägen entfernen",
+        "ru": "Добавлено WLED\nДобавлено LaMetric\nУдаление сетевых инструментов из предложений",
+        "pt": "Adicionado WLED\nAdicionado LaMetric\nRemover ferramentas líquidas de propostas",
+        "nl": "WLED toegevoegd\nToegevoegd LaMetric\nVerwijder net-tools uit voorstellen",
+        "fr": "Ajouté WLED\nAjouté LaMetric\nSupprimer les outils nets des propositions",
+        "it": "Aggiunto il WLED\nAggiunto LaMetric\nRimuovere gli strumenti netti dalle proposte",
+        "es": "Añadido WLED\nAñadido LaMetric\nEliminar las herramientas netas de las propuestas",
+        "pl": "Dodano WLED\nDodano LaMetric\nUsunięcie narzędzi sieciowych z wniosków",
+        "uk": "Додати WLED\nДоданий LaMetric\nВидаліть net-tools з пропозицій",
+        "zh-cn": "已添加 WLED\n添加的实验室\n从提案中删除净工具"
+      },
       "4.3.0": {
         "en": "Replaced vis with vis-2",
         "de": "Ersatz vis mit vis-2",
@@ -79,18 +92,6 @@
         "es": "Error de sintaxis corregido en la traducción alemana",
         "pl": "Poprawiony błąd składniowy w tłumaczeniu języka niemieckiego",
         "zh-cn": "传票机票错误"
-      },
-      "3.0.6": {
-        "en": "Prepare for future js-controller versions\nPrevent crash cases",
-        "de": "Bereiten Sie sich auf zukünftige js-Controller-Versionen\nCrashfälle verhindern",
-        "ru": "Подготовьтесь к будущим версиям js-controller\nПредотвратить случаи аварии",
-        "pt": "Prepare-se para futuras versões js-controller\nEvite casos de acidente",
-        "nl": "Bereid je voor op toekomstige Js-controller versie\nVertaling:",
-        "fr": "Préparez-vous pour les versions futures de js-controller\nPrévenir les accidents",
-        "it": "Prepararsi per le future versioni js-controller\nPrevenire casi di crash",
-        "es": "Prepararse para futuras versiones js-controller\nEvitar casos de choque",
-        "pl": "Prepare for future js-controller version\nPrzypadek przednich",
-        "zh-cn": "今后防污版本的编制\n预防事故"
       }
     },
     "title": "Discovery devices",
