@@ -23,7 +23,7 @@
     "node-ssdp": "^4.0.1",
     "netmask": "^2.0.2",
     "ipaddr.js": "^2.1.0",
-    "@iobroker/adapter-core": "^3.0.4",
+    "@iobroker/adapter-core": "^3.0.6",
     "node-mndp": "^0.0.3"
   },
   "repository": {
