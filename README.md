@@ -20,6 +20,7 @@ For more details and for information how to disable the error reporting see [Sen
 
 ### Automatically Discovered
 
+- Air-Q
 - Beckhoff PLC
 - Bosch Smart Home
 - Bose Soundtouch
@@ -150,6 +151,10 @@ You can execute `sudo setcap cap_net_raw+p /bin/ping` to add missing capabilitie
 	### **WORK IN PROGRESS**
 -->
 ## Changelog
+
+### __WORK IN PROGRESS__
+* (pr0crstntr) Added Air-Q
+
 ### 4.4.0 (2024-02-23)
 * (klein0r) Added WLED
 * (klein0r) Added LaMetric
