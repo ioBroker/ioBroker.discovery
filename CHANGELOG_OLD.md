@@ -1,4 +1,8 @@
 # Older changes
+## 4.0.0 (2023-09-04)
+* (pdbjjens) Added: frontier_silicon, sma-em, and speedwire
+* (bluefox) Dropped node14 support, refactoring
+
 ## 3.2.0 (2023-06-15)
 * (sbormann) Added iControl to the suggested adapters
 

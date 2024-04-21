@@ -151,8 +151,7 @@ You can execute `sudo setcap cap_net_raw+p /bin/ping` to add missing capabilitie
 	### **WORK IN PROGRESS**
 -->
 ## Changelog
-
-### __WORK IN PROGRESS__
+### 4.5.0 (2024-04-21)
 * (pr0crstntr) Added Air-Q
 
 ### 4.4.0 (2024-02-23)
@@ -168,10 +167,6 @@ You can execute `sudo setcap cap_net_raw+p /bin/ping` to add missing capabilitie
 
 ### 4.1.0 (2023-09-25)
 * (pdbjjens) Added detection of myvbus and resol
-
-### 4.0.0 (2023-09-04)
-* (pdbjjens) Added: frontier_silicon, sma-em, and speedwire
-* (bluefox) Dropped node14 support, refactoring
 
 ## License
 

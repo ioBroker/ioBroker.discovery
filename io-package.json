@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "discovery",
-    "version": "4.4.0",
+    "version": "4.5.0",
     "news": {
+      "4.5.0": {
+        "en": "Added Air-Q",
+        "de": "Air-Q hinzugefügt",
+        "ru": "Добавлено Air-Q",
+        "pt": "Adicionado Air-Q",
+        "nl": "Toegevoegde lucht-Q",
+        "fr": "Ajouté Air-Q",
+        "it": "Aggiunto Air-Q",
+        "es": "Añadido Air-Q",
+        "pl": "Dodano Air- Q",
+        "uk": "Додано Air-Q",
+        "zh-cn": "添加空气Q"
+      },
       "4.4.0": {
         "en": "Added WLED\nAdded LaMetric\nRemoved net-tools from proposals",
         "de": "Hinzugefügt WLED\nHinzugefügt LaMetric\nNet-Tools von Vorschlägen entfernt",
@@ -80,18 +93,6 @@
         "pl": "Added iControl to the implied adapter adapter",
         "uk": "Додано iControl на запропоновані адаптери",
         "zh-cn": "加入建议的适应者"
-      },
-      "3.1.0": {
-        "en": "Corrected syntax error in the german translation",
-        "de": "Korrigierter Syntaxfehler in der deutschen Übersetzung",
-        "ru": "Исправлена ошибка синтаксиса в немецком переводе",
-        "pt": "Erro de sintaxe corrigido na tradução alemã",
-        "nl": "Vertaling:",
-        "fr": "Erreur de syntaxe corrigée dans la traduction allemande",
-        "it": "Errore sintassi corretto nella traduzione tedesca",
-        "es": "Error de sintaxis corregido en la traducción alemana",
-        "pl": "Poprawiony błąd składniowy w tłumaczeniu języka niemieckiego",
-        "zh-cn": "传票机票错误"
       }
     },
     "title": "Discovery devices",
