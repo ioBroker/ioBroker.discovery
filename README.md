@@ -151,6 +151,10 @@ You can execute `sudo setcap cap_net_raw+p /bin/ping` to add missing capabilitie
 	### **WORK IN PROGRESS**
 -->
 ## Changelog
+### **WORK IN PROGRESS**
+* (bluefox) Packages updated
+* (bluefox) Minimum node.js version is 18.x
+
 ### 4.5.0 (2024-04-21)
 * (pr0crstntr) Added Air-Q
 
