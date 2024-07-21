@@ -156,7 +156,11 @@
     },
     "connectionType": "local",
     "dataSource": "none",
-    "tier": 3
+    "tier": 3,
+    "licenseInformation": {
+      "license": "MIT",
+      "type": "free"
+    }
   },
   "native": {
     "pingTimeout": 1000,

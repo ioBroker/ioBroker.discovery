@@ -540,7 +540,7 @@ const Method = function (methodName, parent) {
             return self.done();
         }
         self.foundCount += 1;
-        return parent.addDevice (newDevice, self.source, self.type);
+        return parent.addDevice(newDevice, self.source, self.type);
     };
 
     this.get = this.getDevice = function (ip, type) {
@@ -552,16 +552,20 @@ const Method = function (methodName, parent) {
     };
 
     this.updateProgress = function (progress) {
-        if (typeof progress === 'number') self.progress = Math.round(progress);
+        if (typeof progress === 'number') {
+            self.progress = Math.round(progress);
+        }
         adapter.log.debug(`${self.source}: ${self.progress}%, devices - ${self.foundCount}`);
-        parent.updateProgress ();
+        parent.updateProgress();
     };
 
     this.done = function (err) {
         if (err) {
             adapter.log.warn(err);
         }
-        if (doneCalled++) return;  // only one call accepted
+        if (doneCalled++) {
+            return;
+        }  // only one call accepted
         if (timer) {
             clearTimeout(timer);
             timer = null;
@@ -574,7 +578,7 @@ const Method = function (methodName, parent) {
         adapter.log.info (`Done discovering ${self.source} devices. ${self.foundCount} packages received`);
         parent.done (self);
     };
-    this.close = this.done; // * this.close should be overwriten. Is called to stop searching
+    this.close = this.done; // * this.close should be overwritten. Is called to stop searching
 
     let timer;
     let interval;
@@ -632,7 +636,9 @@ function browse(options, callback) {
 
         let timeoutProgress;
         this.updateProgress = function () {
-            if (timeoutProgress) return;
+            if (timeoutProgress) {
+                return;
+            }
             timeoutProgress = setTimeout(() => {
                 timeoutProgress = null;
                 let value = 0;
@@ -649,7 +655,7 @@ function browse(options, callback) {
             self.updateProgress();
             if (!self.count) {
                 self.count = -1;
-                if (timeoutProgress) clearTimeout(timeoutProgress);
+                timeoutProgress && clearTimeout(timeoutProgress);
                 const devices = [];
 
                 Object.keys(g_devices).sort().forEach(t =>
@@ -664,7 +670,7 @@ function browse(options, callback) {
                         _name: 'localhost',
                         _type: 'once'
                     });
-                    discoveryEnd (devices, callback);
+                    discoveryEnd(devices, callback);
                 });
             }
         };
@@ -691,7 +697,7 @@ function browse(options, callback) {
             })();
         };
 
-        this.addDevice = function (newDevice, source/*methodName*/, type) {
+        this.addDevice = function (newDevice, source /* methodName */, type) {
             let device;
             if (!newDevice || !newDevice._addr) {
                 return;
@@ -735,7 +741,9 @@ function browse(options, callback) {
 
             (function _merge(dest, from) {
                 Object.getOwnPropertyNames(from).forEach(name => {
-                    if (name === '__debug') return;
+                    if (name === '__debug') {
+                        return;
+                    }
                     if (typeof from[name] === 'object') {
                         if (typeof dest[name] !== 'object') {
                             dest[name] = {};
