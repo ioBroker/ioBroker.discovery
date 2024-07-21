@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "discovery",
-    "version": "4.5.0",
+    "version": "5.0.0",
     "news": {
+      "5.0.0": {
+        "en": "Packages updated\nMinimum node.js version is 18.x\nUpdated licenses for knx and jarvis",
+        "de": "Pakete aktualisiert\nMinimal node.js version is 18.x\nAktualisierte Lizenzen für knx und jarvis",
+        "ru": "Обновленные пакеты\nМинимальная версия node.js - 18.x\nОбновленные лицензии на knx и jarvis",
+        "pt": "Pacotes atualizados\nA versão mínima do node.js é 18.x\nLicenças atualizadas para knx e jarvis",
+        "nl": "Pakketten bijgewerkt\nMinimale node.js versie is 18.x\nBijgewerkte licenties voor knx en jarvis",
+        "fr": "Mise à jour des paquets\nLa version minimum node.js est 18.x\nMise à jour des licences pour knx et jarvis",
+        "it": "Pacchetti aggiornati\nVersione minima node.js è 18.x\nLicenze aggiornate per knx e jarvis",
+        "es": "Paquetes actualizados\nVersión mínima node.js es 18.x\nLicencias actualizadas para knx y jarvis",
+        "pl": "Aktualizacja pakietów\nMinimalna node.js wersja 18.x\nAktualizacja licencji na knx i jarvis",
+        "uk": "Пакети оновлені\nМінімальний вузол.js версія 18.x\nОновлені ліцензії на кс і банвіс",
+        "zh-cn": "更新软件包\n最小节点.js版本为18.x\nKnx 和 jarvis 更新许可证"
+      },
       "4.5.0": {
         "en": "Added Air-Q",
         "de": "Air-Q hinzugefügt",
@@ -80,19 +93,6 @@
         "pl": "Dostęp: frontier_silicon, sma-em i speedwire\nObsługa węzła 14",
         "uk": "Доданий: Frontier_silicon, sma-em, і Speedwire\nDropped node14 підтримка, рефакторинг",
         "zh-cn": "增加:边界:硅、马西姆和速度\n复员方案"
-      },
-      "3.2.0": {
-        "en": "Added iControl to the suggested adapters",
-        "de": "IControl zu den vorgeschlagenen Adaptern hinzugefügt",
-        "ru": "Добавлен iControl в предложенные адаптеры",
-        "pt": "Adicionado iControl para os adaptadores sugeridos",
-        "nl": "_",
-        "fr": "Ajout d'iControl aux adaptateurs proposés",
-        "it": "Aggiunto iControl agli adattatori consigliati",
-        "es": "Añadido iControl a los adaptadores sugeridos",
-        "pl": "Added iControl to the implied adapter adapter",
-        "uk": "Додано iControl на запропоновані адаптери",
-        "zh-cn": "加入建议的适应者"
       }
     },
     "title": "Discovery devices",
