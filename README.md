@@ -151,6 +151,9 @@ You can execute `sudo setcap cap_net_raw+p /bin/ping` to add missing capabilitie
 	### **WORK IN PROGRESS**
 -->
 ## Changelog
+
+### **WORK IN PROGRESS**
+- (iobroker-bot) Adapter requires node.js >= 20 now.
 ### 5.0.0 (2024-07-21)
 * (bluefox) Packages updated
 * (bluefox) Minimum node.js version is 18.x
