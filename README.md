@@ -95,7 +95,6 @@ For more details and for information how to disable the error reporting see [Sen
 - Sonos
 - Stiebel-Eltron/Tecalor ISG (plus)
 - SQL (MySQL, MSSQL, PostgreSQL)
-- Squeezebox
 - SqueezeboxRPC
 - Synology
 - TR-064
@@ -151,6 +150,9 @@ You can execute `sudo setcap cap_net_raw+p /bin/ping` to add missing capabilitie
 	### **WORK IN PROGRESS**
 -->
 ## Changelog
+### **WORK IN PROGRESS**
+* (UncleSamSwiss) Remove obsolete squeezebox adapter
+
 ### 5.0.0 (2024-07-21)
 * (bluefox) Packages updated
 * (bluefox) Minimum node.js version is 18.x
