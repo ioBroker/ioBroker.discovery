@@ -37,10 +37,12 @@ before(function (done) {
     mockServer = http.createServer((req, res) => {
         if (req.url === '/ping') {
             res.writeHead(200, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({
-                id: 'aabbcc1234567890aabbcc1234567890',
-                content: 'encrypted-test-data'
-            }));
+            res.end(
+                JSON.stringify({
+                    id: 'aabbcc1234567890aabbcc1234567890',
+                    content: 'encrypted-test-data',
+                }),
+            );
         } else {
             res.writeHead(404);
             res.end();
@@ -66,7 +68,6 @@ after(function (done) {
 // The discovery framework would wait 1500ms then skip this adapter.
 // ===========================================================================
 describe('callback is always called', function () {
-
     it('calls callback with (null, true, ip) on DNS match', function (done) {
         const opts = freshOptions();
         const device = { _dns: { hostnames: ['aabbc_air-q.fritz.box'] } };
@@ -119,7 +120,6 @@ describe('callback is always called', function () {
 // Result: discovery created an instance the adapter couldn't use.
 // ===========================================================================
 describe('native config has correct field names', function () {
-
     it('sets native.deviceIP (not native.ip)', function (done) {
         const opts = freshOptions();
         const device = { _dns: { hostnames: ['aabbc_air-q.fritz.box'] } };
@@ -165,7 +165,6 @@ describe('native config has correct field names', function () {
 // the device is missed.
 // ===========================================================================
 describe('DNS hostname matching', function () {
-
     it('matches "{shortId}_air-q.fritz.box"', function (done) {
         const opts = freshOptions();
         const device = { _dns: { hostnames: ['aabbc_air-q.fritz.box'] } };
@@ -226,7 +225,6 @@ describe('DNS hostname matching', function () {
 // New code: falls back to HTTP GET /ping on the device.
 // ===========================================================================
 describe('HTTP /ping fallback', function () {
-
     it('falls back to /ping when DNS hostnames are empty', function (done) {
         const opts = freshOptions();
         const device = { _dns: { hostnames: [] } };
@@ -258,7 +256,6 @@ describe('HTTP /ping fallback', function () {
 // After fixing the field names, duplicate check must use deviceIP.
 // ===========================================================================
 describe('duplicate prevention', function () {
-
     it('does not create a second instance for the same IP', function (done) {
         const opts = freshOptions();
         const device = { _dns: { hostnames: ['aabbc_air-q.fritz.box'] } };
