@@ -48,6 +48,7 @@ For more details and for information how to disable the error reporting see [Sen
 - Heos
 - Home Assistant
 - Homematic CCU (hm-rpc, hm-rega)
+- Hoymiles HMS inverters (hoymiles)
 - Homepilot
 - HP-lio
 - Philips HUE
@@ -95,7 +96,6 @@ For more details and for information how to disable the error reporting see [Sen
 - Sonos
 - Stiebel-Eltron/Tecalor ISG (plus)
 - SQL (MySQL, MSSQL, PostgreSQL)
-- Squeezebox
 - SqueezeboxRPC
 - Synology
 - TR-064
@@ -151,9 +151,10 @@ You can execute `sudo setcap cap_net_raw+p /bin/ping` to add missing capabilitie
 	### **WORK IN PROGRESS**
 -->
 ## Changelog
-
 ### **WORK IN PROGRESS**
 - (iobroker-bot) Adapter requires node.js >= 20 now.
+* (UncleSamSwiss) Remove obsolete squeezebox adapter
+
 ### 5.0.0 (2024-07-21)
 * (bluefox) Packages updated
 * (bluefox) Minimum node.js version is 18.x
@@ -177,7 +178,7 @@ You can execute `sudo setcap cap_net_raw+p /bin/ping` to add missing capabilitie
 
 The MIT License (MIT)
 
-Copyright (c) 2017-2024, Denis Haev ak Bluefox <dogafox@gmail.com>
+Copyright (c) 2017-2026, Denis Haev ak Bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
