@@ -16,7 +16,7 @@
  */
 
 const expect = require('chai').expect;
-const http = require('http');
+const http = require('node:http');
 const airq = require('../../lib/adapters/air-q.js');
 
 // ---------------------------------------------------------------------------

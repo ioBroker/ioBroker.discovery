@@ -14,7 +14,7 @@ This is a special adapter that tries to find all possible devices that can be re
 Just now it can detect via ping, UPnP (serial planned).
 
 **This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.** 
-For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry reporting is used starting with js-controller 3.0.
+For more details and for information on how to disable the error reporting, see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry reporting is used starting with js-controller 3.0.
 
 ## Actually supported
 
@@ -154,6 +154,7 @@ You can execute `sudo setcap cap_net_raw+p /bin/ping` to add missing capabilitie
 ### **WORK IN PROGRESS**
 * (iobroker-bot) Adapter requires node.js >= 20 now.
 * (UncleSamSwiss) Remove obsolete squeezebox adapter
+* (GermanBluefox) Packages were updated
 
 ### 5.0.0 (2024-07-21)
 * (bluefox) Packages updated
