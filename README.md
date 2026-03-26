@@ -152,6 +152,7 @@ You can execute `sudo setcap cap_net_raw+p /bin/ping` to add missing capabilitie
 -->
 ## Changelog
 ### **WORK IN PROGRESS**
+* (iobroker-bot) Adapter requires node.js >= 20 now.
 * (UncleSamSwiss) Remove obsolete squeezebox adapter
 
 ### 5.0.0 (2024-07-21)
