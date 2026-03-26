@@ -22,7 +22,7 @@
   "dependencies": {
     "node-ssdp": "^4.0.1",
     "netmask": "^2.0.2",
-    "ipaddr.js": "^2.2.0",
+    "ipaddr.js": "^2.3.0",
     "@iobroker/adapter-core": "^3.1.6",
     "node-mndp": "^0.0.3"
   },
