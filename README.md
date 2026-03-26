@@ -48,7 +48,6 @@ For more details and for information how to disable the error reporting see [Sen
 - Heos
 - Home Assistant
 - Homematic CCU (hm-rpc, hm-rega)
-- Hoymiles HMS inverters (hoymiles)
 - Homepilot
 - HP-lio
 - Philips HUE
