@@ -175,6 +175,8 @@ You can execute `sudo setcap cap_net_raw+p /bin/ping` to add missing capabilitie
 ### 4.2.0 (2023-10-09)
 * (pdbjjens) Changed detection of myvbus and resol
 
+[Older changelogs can be found there](CHANGELOG_OLD.md)
+
 ## License
 
 The MIT License (MIT)
