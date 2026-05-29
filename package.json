@@ -16,15 +16,15 @@
     "iot"
   ],
   "optionalDependencies": {
-    "serialport": "^13.0.0",
-    "mdns-discovery": "^0.2.6"
+    "mdns-discovery": "^0.2.6",
+    "serialport": "^13.0.0"
   },
   "dependencies": {
-    "node-ssdp": "^4.0.1",
-    "netmask": "^2.0.2",
-    "ipaddr.js": "^2.3.0",
     "@iobroker/adapter-core": "^3.3.2",
-    "node-mndp": "^0.0.3"
+    "ipaddr.js": "^2.3.0",
+    "netmask": "^2.0.2",
+    "node-mndp": "^0.0.3",
+    "node-ssdp": "^4.0.1"
   },
   "repository": {
     "type": "git",
@@ -36,6 +36,7 @@
     "@alcalzone/release-script-plugin-license": "^5.1.1",
     "@iobroker/eslint-config": "^2.2.0",
     "@iobroker/testing": "^5.2.2",
+    "@tsconfig/node20": "^20.1.9",
     "axios": "^1.13.6"
   },
   "bugs": {
