@@ -826,9 +826,6 @@ class DiscoveryAdapter extends Adapter {
 
 if (module.parent) {
     // Export the constructor in compact mode
-    /**
-     * @param [options]
-     */
     module.exports = options => new DiscoveryAdapter(options);
 } else {
     // otherwise start the instance directly

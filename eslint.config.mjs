@@ -22,6 +22,14 @@ export default [
         },
     },
     {
-        ignores: ['build/**/*', 'admin/**/*', 'test/**/*', 'tmp/**/*', '**/*.mjs'],
+        ignores: [
+            'build/**/*',
+            'node_modules/**/*',
+            'admin/**/*',
+            'test/**/*',
+            'tmp/**/*',
+            '**/*.mjs',
+            'lib/i18n/*.json',
+        ],
     },
 ];
