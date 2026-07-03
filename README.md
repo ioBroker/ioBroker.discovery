@@ -102,6 +102,7 @@ For more details and for information on how to disable the error reporting, see 
 - Trådfri
 - UPnP
 - ValloxMV
+- VictronCerbo
 - Wifilight
 - WLED
 - Yamaha
@@ -155,6 +156,7 @@ You can execute `sudo setcap cap_net_raw+p /bin/ping` to add missing capabilitie
 * (iobroker-bot) Adapter requires node.js >= 20 now.
 * (UncleSamSwiss) Remove obsolete squeezebox adapter
 * (GermanBluefox) Packages were updated
+* (GermanBluefox) Added victron-cerbo
 
 ### 5.0.0 (2024-07-21)
 * (bluefox) Packages updated
