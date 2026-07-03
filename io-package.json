@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "discovery",
-    "version": "5.0.0",
+    "version": "5.1.0",
     "news": {
+      "5.1.0": {
+        "en": "Adapter requires js-controller >= 6.0.11 now.\nAdapter requires js-controller >= 6.0.11 now.\nFix Hoymiles HMS discovery: correct require path and align native config with hoymiles 0.3.4 device-array schema\nAdapter requires node.js >= 20 now.\nRemove obsolete squeezebox adapter\nPackages were updated\nAdded victron-cerbo",
+        "de": "Der Adapter benötigt jetzt js-controller >= 6.0.11.\nDer Adapter benötigt jetzt js-controller >= 6.0.11.\nHoymiles HMS-Erkennung korrigiert: Pfad für require-Anweisungen korrigiert und native Konfiguration an das Gerätearray-Schema von Hoymiles 0.3.4 angepasst.\nDer Adapter benötigt jetzt node.js >= 20.\nEntfernen Sie den veralteten Quetschbox-Adapter.\nDie Pakete wurden aktualisiert\nVictron-Cerbo hinzugefügt",
+        "ru": "Для работы адаптера теперь требуется js-controller версии не ниже 6.0.11.\nДля работы адаптера теперь требуется js-controller версии >= 6.0.11.\nИсправлена ошибка обнаружения Hoymiles HMS: исправлен путь к исполняемым файлам и приведена в соответствие собственная конфигурация со схемой device-array в Hoymiles 0.3.4.\nДля работы адаптера теперь требуется Node.js версии >= 20.\nУдалите устаревший адаптер Squeezebox.\nПакеты обновлены\nДобавлен victron-cerbo",
+        "pt": "O adaptador agora requer js-controller >= 6.0.11.\nO adaptador agora requer js-controller >= 6.0.11.\nCorreção na descoberta do Hoymiles HMS: correção do caminho necessário e alinhamento da configuração nativa com o esquema de matriz de dispositivos do Hoymiles 0.3.4.\nO adaptador agora requer Node.js versão 20 ou superior.\nRemova o adaptador de caixa de compressão obsoleto.\nOs pacotes foram atualizados.\nAdicionado victron-cerbo",
+        "nl": "De adapter vereist nu js-controller >= 6.0.11.\nDe adapter vereist nu js-controller >= 6.0.11.\nOplossing voor Hoymiles HMS-detectie: correct pad voor vereisten instellen en native configuratie afstemmen op het apparaatarrayschema van Hoymiles 0.3.4\nAdapter vereist nu Node.js versie 20 of hoger.\nVerwijder de verouderde accordeonadapter.\nPakketten zijn bijgewerkt\nVictron-Cerbo toegevoegd",
+        "fr": "L'adaptateur requiert désormais js-controller >= 6.0.11.\nL'adaptateur requiert désormais js-controller >= 6.0.11.\nCorrection de la découverte HMS de Hoymiles : correction du chemin requis et alignement de la configuration native avec le schéma de la matrice de périphériques Hoymiles 0.3.4\nL'adaptateur requiert désormais node.js >= 20.\nRetirez l'adaptateur de boîte à air obsolète\nLes paquets ont été mis à jour\nAjout de victron-cerbo",
+        "it": "L'adattatore ora richiede js-controller >= 6.0.11.\nL'adattatore ora richiede js-controller >= 6.0.11.\nCorrezione del rilevamento HMS di Hoymiles: corretto il percorso di richiesta e allineata la configurazione nativa con lo schema dell'array di dispositivi di Hoymiles 0.3.4\nL'adattatore ora richiede Node.js >= 20.\nRimuovere l'adattatore per la scatola di compressione obsoleto\nI pacchetti sono stati aggiornati\nAggiunto victron-cerbo",
+        "es": "El adaptador ahora requiere js-controller >= 6.0.11.\nEl adaptador ahora requiere js-controller >= 6.0.11.\nCorrección del descubrimiento de Hoymiles HMS: corregir la ruta requerida y alinear la configuración nativa con el esquema device-array de Hoymiles 0.3.4.\nEl adaptador ahora requiere node.js >= 20.\nRetire el adaptador de caja de resonancia obsoleto\nLos paquetes se actualizaron.\nSe agregó victron-cerbo",
+        "pl": "Adapter wymaga teraz js-controller w wersji >= 6.0.11.\nAdapter wymaga teraz js-controller w wersji >= 6.0.11.\nNaprawiono wykrywanie Hoymiles HMS: popraw ścieżkę wymaganą i wyrównaj natywną konfigurację ze schematem tablicy urządzeń Hoymiles 0.3.4\nAdapter wymaga teraz node.js >= 20.\nUsuń przestarzały adapter Squeezebox\nPakiety zostały zaktualizowane\nDodano victron-cerbo",
+        "uk": "Адаптер тепер вимагає js-controller >= 6.0.11.\nАдаптер тепер вимагає js-controller >= 6.0.11.\nВиправлено виявлення HMS Hoymiles: виправлено шлях require та вирівняно нативну конфігурацію зі схемою масиву пристроїв hoymiles 0.3.4\nАдаптер тепер вимагає node.js >= 20.\nЗніміть застарілий адаптер для стискання\nПакети оновлено\nДодано віктрон-цербо",
+        "zh-cn": "适配器现在需要 js-controller >= 6.0.11。\n适配器现在需要 js-controller >= 6.0.11。\n修复 Hoymiles HMS 发现问题：更正 require 路径并使原生配置与 hoymiles 0.3.4 设备数组模式保持一致\n适配器现在需要 node.js >= 20。\n移除过时的手风琴适配器\n软件包已更新\n添加了 victron-cerbo"
+      },
       "5.0.0": {
         "en": "Packages updated\nMinimum node.js version is 18.x\nUpdated licenses for knx and jarvis",
         "de": "Pakete aktualisiert\nMinimal node.js version is 18.x\nAktualisierte Lizenzen für knx und jarvis",
@@ -80,19 +93,6 @@
         "pl": "Wykrywanie myvbusa i resolu",
         "uk": "Додана детекція мівбуса і розчину",
         "zh-cn": "进一步探测我的包和溶解"
-      },
-      "4.0.0": {
-        "en": "Added: frontier_silicon, sma-em, and speedwire\nDropped node14 support, refactoring",
-        "de": "Hinzugefügt: frontier_silicon, sma-em, and speedwire\nDropped node14 Unterstützung, Refactoring",
-        "ru": "Добавлена: frontier_silicon, sma-em и speedwire\nDropped node14 поддержка, рефакторинг",
-        "pt": "Adicionado: border_silicon, sma-em, e speedwire\nSuporte node14 dropped, refactoring",
-        "nl": "Vertaling:\nLaat Node14 steun vallen, refactoren",
-        "fr": "Ajouté: frontier_silicon, sma-em, and speedwire\nSoutien node14 abandonné, refactoring",
-        "it": "Aggiunto: frontiera_silicon, sma-em, and speedwire\nSupporto goccia node14, refactoring",
-        "es": "Añadido: border_silicon, sma-em, and speedwire\nSoporte de nodo 14, refactorización",
-        "pl": "Dostęp: frontier_silicon, sma-em i speedwire\nObsługa węzła 14",
-        "uk": "Доданий: Frontier_silicon, sma-em, і Speedwire\nDropped node14 підтримка, рефакторинг",
-        "zh-cn": "增加:边界:硅、马西姆和速度\n复员方案"
       }
     },
     "titleLang": {

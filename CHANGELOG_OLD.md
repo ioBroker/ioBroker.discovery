@@ -1,4 +1,7 @@
 # Older changes
+## 4.2.0 (2023-10-09)
+* (pdbjjens) Changed detection of myvbus and resol
+
 ## 4.1.0 (2023-09-25)
 * (pdbjjens) Added detection of myvbus and resol
 
