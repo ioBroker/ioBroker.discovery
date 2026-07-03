@@ -128,12 +128,11 @@
     "enabled": true,
     "compact": true,
     "singletonHost": true,
-    "materialize": true,
     "messagebox": true,
     "readme": "https://github.com/ioBroker/ioBroker.discovery/blob/master/README.md",
     "dependencies": [
       {
-        "js-controller": ">=2.0.0"
+        "js-controller": ">=6.0.11"
       }
     ],
     "loglevel": "info",
