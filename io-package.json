@@ -128,7 +128,6 @@
     "enabled": true,
     "compact": true,
     "singletonHost": true,
-    "materialize": true,
     "messagebox": true,
     "readme": "https://github.com/ioBroker/ioBroker.discovery/blob/master/README.md",
     "dependencies": [
