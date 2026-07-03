@@ -75,7 +75,7 @@ jobs:
       - uses: ioBroker/testing-action-deploy@v1
         with:
           node-version: '24.x'
-          build: true
+          build: false
           # Uncomment the following line if your adapter cannot be installed using 'npm ci'
           # install-command: 'npm install'
           # npm-token: ${{ secrets.NPM_TOKEN }}
