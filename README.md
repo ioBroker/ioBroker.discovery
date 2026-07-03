@@ -153,6 +153,7 @@ You can execute `sudo setcap cap_net_raw+p /bin/ping` to add missing capabilitie
 -->
 ## Changelog
 ### **WORK IN PROGRESS**
+* (ioBroker-Bot) Adapter requires js-controller >= 6.0.11 now.
 * (Eistee82) Fix Hoymiles HMS discovery: correct require path and align native config with hoymiles 0.3.4 device-array schema
 * (iobroker-bot) Adapter requires node.js >= 20 now.
 * (UncleSamSwiss) Remove obsolete squeezebox adapter
