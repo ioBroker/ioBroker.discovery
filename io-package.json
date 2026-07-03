@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "discovery",
-    "version": "5.0.0",
+    "version": "5.0.1",
     "news": {
+      "5.0.1": {
+        "en": "Adapter requires js-controller >= 6.0.11 now.\nFix Hoymiles HMS discovery: correct a require path and align native config with hoymiles 0.3.4 device-array schema\nAdapter requires node.js >= 20 now.\nRemove obsolete squeezebox adapter\nPackages were updated\nAdded victron-cerbo",
+        "de": "Der Adapter benötigt jetzt js-controller >= 6.0.11.\nHoymiles HMS-Erkennung korrigiert: Pfad für benötigte Dienste korrigiert und native Konfiguration an das Gerätearray-Schema von Hoymiles 0.3.4 angepasst.\nDer Adapter benötigt jetzt node.js >= 20.\nEntfernen Sie den veralteten Quetschbox-Adapter.\nDie Pakete wurden aktualisiert\nVictron-Cerbo hinzugefügt",
+        "ru": "Для работы адаптера теперь требуется js-controller версии не ниже 6.0.11.\nИсправлена ошибка обнаружения HMS в Hoymiles: исправлен путь подключения и приведена в соответствие собственная конфигурация со схемой массива устройств Hoymiles 0.3.4.\nДля работы адаптера теперь требуется Node.js версии >= 20.\nУдалите устаревший адаптер Squeezebox.\nПакеты обновлены\nДобавлен victron-cerbo",
+        "pt": "O adaptador agora requer js-controller >= 6.0.11.\nCorreção na descoberta do Hoymiles HMS: correção de um caminho necessário e alinhamento da configuração nativa com o esquema de matriz de dispositivos do Hoymiles 0.3.4.\nO adaptador agora requer o Node.js versão 20 ou superior.\nRemova o adaptador de caixa de compressão obsoleto.\nOs pacotes foram atualizados.\nAdicionado victron-cerbo",
+        "nl": "De adapter vereist nu js-controller >= 6.0.11.\nOplossing voor Hoymiles HMS-detectie: corrigeer een vereist pad en stem de native configuratie af op het apparaatarrayschema van Hoymiles 0.3.4.\nAdapter vereist nu Node.js versie 20 of hoger.\nVerwijder de verouderde accordeonadapter.\nPakketten zijn bijgewerkt\nVictron-Cerbo toegevoegd",
+        "fr": "L'adaptateur requiert désormais js-controller >= 6.0.11.\nCorrection de la découverte HMS de Hoymiles : correction d’un chemin requis et alignement de la configuration native avec le schéma de la matrice de périphériques Hoymiles 0.3.4\nL'adaptateur requiert désormais node.js >= 20.\nRetirez l'adaptateur de boîte à air obsolète\nLes paquets ont été mis à jour\nAjout de victron-cerbo",
+        "it": "L'adattatore ora richiede js-controller >= 6.0.11.\nCorrezione del rilevamento HMS di Hoymiles: correzione di un percorso di richiesta e allineamento della configurazione nativa con lo schema dell'array di dispositivi di Hoymiles 0.3.4\nL'adattatore ora richiede Node.js >= 20.\nRimuovere l'adattatore per la scatola di compressione obsoleto\nI pacchetti sono stati aggiornati\nAggiunto victron-cerbo",
+        "es": "El adaptador ahora requiere js-controller >= 6.0.11.\nCorrección del descubrimiento de Hoymiles HMS: se corrige una ruta requerida y se alinea la configuración nativa con el esquema device-array de Hoymiles 0.3.4.\nEl adaptador ahora requiere node.js >= 20.\nRetire el adaptador de caja de resonancia obsoleto\nLos paquetes se actualizaron.\nSe agregó victron-cerbo",
+        "pl": "Adapter wymaga teraz js-controller w wersji >= 6.0.11.\nNapraw wykrywanie Hoymiles HMS: popraw ścieżkę wymaganą i dopasuj natywną konfigurację do schematu tablicy urządzeń Hoymiles 0.3.4\nAdapter wymaga teraz node.js >= 20.\nUsuń przestarzały adapter Squeezebox\nPakiety zostały zaktualizowane\nDodano victron-cerbo",
+        "uk": "Адаптер тепер вимагає js-controller >= 6.0.11.\nВиправлення виявлення HMS Hoymiles: виправлення шляху require та узгодження нативної конфігурації зі схемою масиву пристроїв hoymiles 0.3.4\nАдаптер тепер вимагає node.js >= 20.\nЗніміть застарілий адаптер для стискання\nПакети оновлено\nДодано віктрон-цербо",
+        "zh-cn": "适配器现在需要 js-controller >= 6.0.11。\n修复 Hoymiles HMS 发现问题：修正 require 路径，并使原生配置与 hoymiles 0.3.4 设备数组模式保持一致。\n适配器现在需要 node.js >= 20。\n移除过时的手风琴适配器\n软件包已更新\n添加了 victron-cerbo"
+      },
       "5.0.0": {
         "en": "Packages updated\nMinimum node.js version is 18.x\nUpdated licenses for knx and jarvis",
         "de": "Pakete aktualisiert\nMinimal node.js version is 18.x\nAktualisierte Lizenzen für knx und jarvis",
