@@ -55,6 +55,8 @@
         "node": ">=20.0.0"
     },
     "scripts": {
+        "test:package": "mocha test/testPackageFiles.js --exit",
+        "test:integration": "mocha test/**/*.test.js --exit",
         "test": "mocha --exit",
         "lint": "eslint -c eslint.config.mjs",
         "release": "release-script",
