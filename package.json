@@ -16,15 +16,15 @@
         "iot"
     ],
     "optionalDependencies": {
-        "serialport": "^13.0.0",
-        "mdns-discovery": "^0.2.6"
+        "mdns-discovery": "^0.2.6",
+        "serialport": "^13.0.0"
     },
     "dependencies": {
-        "node-ssdp": "^4.0.1",
-        "netmask": "^2.1.1",
-        "ipaddr.js": "^2.4.0",
         "@iobroker/adapter-core": "^3.4.1",
-        "node-mndp": "^0.0.3"
+        "ipaddr.js": "^2.4.0",
+        "netmask": "^2.1.1",
+        "node-mndp": "^0.0.3",
+        "node-ssdp": "^4.0.1"
     },
     "repository": {
         "type": "git",
