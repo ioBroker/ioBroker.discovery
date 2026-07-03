@@ -1,7 +1,7 @@
 {
   "name": "iobroker.discovery",
   "description": "This adapter tries to detect devices in local network.",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "author": "bluefox <dogafox@gmail.com>",
   "contributors": [
     "bluefox <dogafox@gmail.com>",
@@ -60,9 +60,9 @@
     "test": "mocha --exit",
     "lint": "eslint -c eslint.config.mjs",
     "release": "release-script",
+    "release-patch": "release-script patch --yes",
     "release-minor": "release-script minor --yes",
     "release-major": "release-script major --yes",
-    "release-patch": "release-script patch --yes",
     "update-packages": "npx -y npm-check-updates --upgrade"
   }
 }
