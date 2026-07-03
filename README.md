@@ -102,6 +102,7 @@ For more details and for information on how to disable the error reporting, see 
 - Trådfri
 - UPnP
 - ValloxMV
+- VictronCerbo
 - Wifilight
 - WLED
 - Yamaha
@@ -152,10 +153,12 @@ You can execute `sudo setcap cap_net_raw+p /bin/ping` to add missing capabilitie
 -->
 ## Changelog
 ### **WORK IN PROGRESS**
-- (ioBroker-Bot) Adapter requires js-controller >= 6.0.11 now.
+* (ioBroker-Bot) Adapter requires js-controller >= 6.0.11 now.
+* (Eistee82) Fix Hoymiles HMS discovery: correct require path and align native config with hoymiles 0.3.4 device-array schema
 * (iobroker-bot) Adapter requires node.js >= 20 now.
 * (UncleSamSwiss) Remove obsolete squeezebox adapter
 * (GermanBluefox) Packages were updated
+* (GermanBluefox) Added victron-cerbo
 
 ### 5.0.0 (2024-07-21)
 * (bluefox) Packages updated
@@ -175,6 +178,8 @@ You can execute `sudo setcap cap_net_raw+p /bin/ping` to add missing capabilitie
 
 ### 4.2.0 (2023-10-09)
 * (pdbjjens) Changed detection of myvbus and resol
+
+[Older changelogs can be found there](CHANGELOG_OLD.md)
 
 ## License
 
