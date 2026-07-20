@@ -20,7 +20,7 @@
     "serialport": "^13.0.0"
   },
   "dependencies": {
-    "@iobroker/adapter-core": "^3.4.1",
+    "@iobroker/adapter-core": "^3.4.2",
     "ipaddr.js": "^2.4.0",
     "netmask": "^2.1.1",
     "node-mndp": "^0.0.3",
