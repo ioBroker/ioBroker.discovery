@@ -52,7 +52,7 @@
     "main.js"
   ],
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=22.0.0"
   },
   "scripts": {
     "test:package": "mocha test/testPackageFiles.js --exit",
