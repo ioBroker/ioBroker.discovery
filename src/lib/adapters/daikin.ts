@@ -1,0 +1,84 @@
+import * as tools from '../tools';
+import type { DetectCallback, DetectOptions, DiscoveryDevice, ProtocolData } from '../types';
+
+function addDaikin(ip: string, device: DiscoveryDevice, data: ProtocolData, options: DetectOptions): boolean {
+    let foundNew = false;
+    let instance = tools.findInstance(options, 'daikin', obj => {
+        const matchFound = obj.native.daikinIp === ip || obj.native.daikinIp === device._name;
+        options.log.debug(`Check existing Daikin instances for Device ${ip}/ ${device._name}:${matchFound}`);
+        return matchFound;
+    });
+
+    if (!instance) {
+        foundNew = true;
+        instance = {
+            _id: tools.getNextInstanceID('daikin', options),
+            common: {
+                name: 'daikin',
+                title: `Daikin climate control (${decodeURIComponent(data.name)})`,
+            },
+            native: {
+                daikinIp: ip,
+            },
+            comment: {
+                add: [`Daikin climate control (${decodeURIComponent(data.name)})@${ip}`],
+            },
+        };
+        options.newInstances.push(instance);
+        options.log.debug(`Add new Daikin Instance ${ip}`);
+    }
+    return foundNew;
+}
+
+// just check if IP exists
+export function detect(ip: string, device: DiscoveryDevice, options: DetectOptions, callback: DetectCallback): void {
+    let found = false;
+    tools.udpScan(
+        ip,
+        30050,
+        '0.0.0.0',
+        30000,
+        'DAIKIN_UDP/common/basic_info',
+        3000,
+        true,
+        (err, result, remote): void => {
+            if (!result) {
+                callback(err, found, ip);
+                return;
+            }
+            // Daikin systems respond with HTTP response strings, not JSON objects. JSON is much easier to
+            // parse, so we convert it with some RegExp here.
+
+            function escapeRegExp(str: string): string {
+                return str.replace(/([.*+?^=!:${}()|[\]/\\]")/g, '\\$1');
+                // From https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions#Using_Special_Characters
+            }
+
+            function replaceAll(str: string, find: string, replace: string): string {
+                return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
+                // From http://stackoverflow.com/a/1144788
+            }
+
+            if (Buffer.isBuffer(result)) {
+                result = result.toString();
+            }
+            let result2 = replaceAll(result, '=', '":"');
+            result2 = replaceAll(result2, ',', '","');
+
+            let responseData = null;
+            try {
+                responseData = JSON.parse(`{"${result2}"}`);
+            } catch (e) {
+                options.log.debug(`Invalid response from Daikin device: {${result2}}: ${e.message}`);
+                return;
+            }
+
+            if (responseData?.ret === 'OK') {
+                found ||= addDaikin(remote!.address, device, responseData, options);
+            }
+        },
+    );
+}
+
+export const type = ['ip']; // make type=serial for USB sticks // TODO make to once
+export const timeout = 500;

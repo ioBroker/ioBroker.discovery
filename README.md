@@ -152,6 +152,10 @@ You can execute `sudo setcap cap_net_raw+p /bin/ping` to add missing capabilitie
 	### **WORK IN PROGRESS**
 -->
 ## Changelog
+### **WORK IN PROGRESS**
+* (bluefox) The adapter was refactored to TypeScript: sources moved to `src/`, the build output to `build/`
+* (bluefox) Minimum node.js version is 22.19.0 now
+
 ### 5.0.1 (2026-07-03)
 * (ioBroker-Bot) Adapter requires js-controller >= 6.0.11 now.
 * (Eistee82) Fix Hoymiles HMS discovery: correct a require path and align native config with hoymiles 0.3.4 device-array schema

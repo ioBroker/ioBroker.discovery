@@ -5,20 +5,19 @@ export default [
     {
         languageOptions: {
             parserOptions: {
-                allowDefaultProject: {
-                    allow: ['*.js', '*.mjs'],
-                },
+                projectService: { allowDefaultProject: ['*.mjs'] },
                 tsconfigRootDir: import.meta.dirname,
-                // project: './tsconfig.json',
             },
         },
     },
     {
-        // disable temporary the rule 'jsdoc/require-param' and enable 'jsdoc/require-jsdoc'
+        // The detection modules are data-driven wrappers around foreign protocols,
+        // JSDoc on every helper would be noise.
         rules: {
             'jsdoc/require-jsdoc': 'off',
             'jsdoc/require-param': 'off',
             'jsdoc/check-param-names': 'off',
+            '@typescript-eslint/no-require-imports': 'off',
         },
     },
     {
@@ -29,7 +28,6 @@ export default [
             'test/**/*',
             'tmp/**/*',
             '**/*.mjs',
-            'lib/i18n/*.json',
         ],
     },
 ];

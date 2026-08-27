@@ -13,3 +13,7 @@ ioBroker.discovery.iml
 #ignore .commitinfo created by ioBroker release script
 .commitinfo
 /.claude/settings.local.json
+
+# TypeScript build output
+build
+*.tsbuildinfo

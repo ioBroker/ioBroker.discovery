@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * Tests for the hoymiles detection file (lib/adapters/hoymiles.js).
+ * Tests for the hoymiles detection file (src/lib/adapters/hoymiles.js).
  *
  * Covers the two bugs in the as-merged version (PR #386 + linter cleanup ea93fb0):
  *
@@ -37,10 +37,10 @@ require.cache[STUB_ID] = {
     paths: [],
 };
 
-const expect = require('chai').expect;
+const assert = require('node:assert');
 const net = require('node:net');
 const path = require('node:path');
-const hoymiles = require(path.join('..', '..', 'lib', 'adapters', 'hoymiles.js'));
+const hoymiles = require(path.join('..', '..', 'build', 'lib', 'adapters', 'hoymiles.js'));
 
 const DTU_SERIAL = '116181234567';
 
@@ -70,9 +70,9 @@ function buildMockInfoResponse() {
 
 describe('hoymiles discovery — module loading', function () {
     it('module loads without throwing (require path is correct)', function () {
-        expect(hoymiles).to.be.an('object');
-        expect(hoymiles.detect).to.be.a('function');
-        expect(hoymiles.type).to.deep.equal(['ip']);
+        assert.strictEqual(typeof hoymiles, 'object');
+        assert.strictEqual(typeof hoymiles.detect, 'function');
+        assert.deepStrictEqual(hoymiles.type, ['ip']);
     });
 });
 
@@ -96,26 +96,27 @@ describe('hoymiles discovery — native config schema', function () {
             hoymiles.detect('127.0.0.1', { _addr: '127.0.0.1' }, opts, (err, found) => {
                 server.close(() => {
                     try {
-                        expect(err).to.be.null;
-                        expect(found).to.equal(true);
-                        expect(opts.newInstances).to.have.lengthOf(1);
+                        assert.strictEqual(err, null);
+                        assert.strictEqual(found, true);
+                        assert.strictEqual(opts.newInstances.length, 1);
 
                         const inst = opts.newInstances[0];
-                        expect(inst.common.name).to.equal('hoymiles');
-                        expect(inst.common.title).to.include(DTU_SERIAL);
+                        assert.strictEqual(inst.common.name, 'hoymiles');
+                        assert.ok(inst.common.title.includes(DTU_SERIAL));
 
                         // Bug #2: must be device-array, not flat host
-                        expect(inst.native).to.have.property('devices');
-                        expect(inst.native.devices).to.be.an('array').with.lengthOf(1);
-                        expect(inst.native.devices[0]).to.deep.equal({
+                        assert.ok(Object.prototype.hasOwnProperty.call(inst.native, 'devices'));
+                        assert.ok(Array.isArray(inst.native.devices));
+                        assert.strictEqual(inst.native.devices.length, 1);
+                        assert.deepStrictEqual(inst.native.devices[0], {
                             host: '127.0.0.1',
                             enabled: true,
                         });
-                        expect(inst.native).to.have.property('dataInterval', 5);
-                        expect(inst.native).to.have.property('slowPollFactor', 6);
-                        expect(inst.native).to.have.property('enableLocal', true);
-                        expect(inst.native).to.not.have.property('host');
-                        expect(inst.native).to.not.have.property('pollInterval');
+                        assert.strictEqual(inst.native.dataInterval, 5);
+                        assert.strictEqual(inst.native.slowPollFactor, 6);
+                        assert.strictEqual(inst.native.enableLocal, true);
+                        assert.ok(!Object.prototype.hasOwnProperty.call(inst.native, 'host'));
+                        assert.ok(!Object.prototype.hasOwnProperty.call(inst.native, 'pollInterval'));
 
                         done();
                     } catch (e) {
@@ -145,10 +146,10 @@ describe('hoymiles discovery — duplicate prevention', function () {
 
         hoymiles.detect('10.20.30.40', { _addr: '10.20.30.40' }, opts, (err, found, ip) => {
             try {
-                expect(err).to.be.null;
-                expect(found).to.equal(false);
-                expect(ip).to.equal('10.20.30.40');
-                expect(opts.newInstances).to.have.lengthOf(1);
+                assert.strictEqual(err, null);
+                assert.strictEqual(found, false);
+                assert.strictEqual(ip, '10.20.30.40');
+                assert.strictEqual(opts.newInstances.length, 1);
                 done();
             } catch (e) {
                 done(e);
@@ -170,8 +171,8 @@ describe('hoymiles discovery — duplicate prevention', function () {
 
         hoymiles.detect('10.20.30.41', { _addr: '10.20.30.41' }, opts, (err, found) => {
             try {
-                expect(err).to.be.null;
-                expect(found).to.equal(false);
+                assert.strictEqual(err, null);
+                assert.strictEqual(found, false);
                 done();
             } catch (e) {
                 done(e);

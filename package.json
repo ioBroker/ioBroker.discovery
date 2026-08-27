@@ -36,28 +36,36 @@
         "@alcalzone/release-script-plugin-license": "^5.2.2",
         "@iobroker/eslint-config": "^2.3.4",
         "@iobroker/testing": "^5.3.0",
-        "@tsconfig/node20": "^20.1.10",
-        "axios": "^1.20.0",
-        "typescript": "^6.0.3"
+        "@iobroker/types": "^7.2.2",
+        "@tsconfig/node22": "^22.0.6",
+        "@types/mocha": "^10.0.10",
+        "@types/netmask": "^2.0.6",
+        "@types/node": "^22.20.1",
+        "@types/node-ssdp": "^4.0.5",
+        "typescript": "~6.0.3"
     },
     "bugs": {
         "url": "https://github.com/ioBroker/ioBroker.discovery/issues"
     },
-    "main": "main.js",
+    "main": "build/main.js",
     "files": [
+        "build/",
         "admin/",
-        "lib/",
+        "lib/i18n/",
         "io-package.json",
-        "LICENSE",
-        "main.js"
+        "LICENSE"
     ],
     "engines": {
         "node": ">=22.19.0"
     },
     "scripts": {
-        "test:package": "mocha test/testPackageFiles.js --exit",
+        "build": "tsc -p tsconfig.build.json",
+        "watch": "tsc -p tsconfig.build.json --watch",
+        "check": "tsc -p tsconfig.json --noEmit",
+        "prepare": "npm run build",
+        "test:package": "mocha test/packageFiles.js --exit",
         "test:integration": "mocha test/**/*.test.js --exit",
-        "test": "mocha --exit",
+        "test": "npm run test:package",
         "lint": "eslint -c eslint.config.mjs",
         "release": "release-script",
         "release-patch": "release-script patch --yes",

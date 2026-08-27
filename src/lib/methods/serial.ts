@@ -1,0 +1,78 @@
+import type { DiscoveryDevice, MethodInstance, ProtocolData } from '../types';
+
+function listPorts(self: MethodInstance): void {
+    let SerialPort;
+    const fs = require('node:fs');
+
+    if (process.platform.match(/^win/)) {
+        try {
+            SerialPort = require('serialport').SerialPort;
+        } catch {
+            self.adapter.log.warn('Cannot load serialport module');
+        }
+    }
+
+    const list: DiscoveryDevice[] = [];
+    let wait = false;
+    if (SerialPort) {
+        wait = true;
+        SerialPort.list()
+            .then((ports: ProtocolData[]): void => {
+                ports.forEach((port: ProtocolData): void => {
+                    let found = false;
+                    for (let f = 0; f < list.length; f++) {
+                        if (list[f]._addr === port.path) {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) {
+                        const device = {
+                            _addr: port.path,
+                            _name: port.manufacturer,
+                            _data: port,
+                        };
+                        list.push(device);
+                        self.addDevice(device);
+                    }
+                });
+                self.done();
+            })
+            .catch((e: unknown): void => self.adapter.log.warn(`Some error by listing of serial ports: ${String(e)}`));
+    } else if (fs.existsSync('/dev/')) {
+        try {
+            const names = fs.readdirSync('/dev/');
+            for (let n = 0; n < names.length; n++) {
+                if (names[n].match(/^tty[A-Z]/) || names[n].match(/usb/i)) {
+                    let found = false;
+                    for (let f = 0; f < list.length; f++) {
+                        if (list[f]._addr === names[n]) {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) {
+                        const device = {
+                            _addr: `/dev/${names[n]}`,
+                            _name: names[n],
+                        };
+                        list.push(device);
+                        self.addDevice(device);
+                    }
+                }
+            }
+        } catch (e) {
+            self.adapter.log.warn(`Some error by listing of /dev/: ${e}`);
+        }
+    }
+
+    if (!wait) {
+        self.done();
+    }
+}
+
+export const browse = listPorts;
+export const type = 'serial';
+export const source = 'serial';
+
+export const options = {};

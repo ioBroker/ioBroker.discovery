@@ -1,0 +1,72 @@
+import * as tools from '../tools';
+import type { DetectCallback, DetectOptions } from '../types';
+
+export function detect(ignore1: unknown, ignore2: unknown, options: DetectOptions, callback: DetectCallback): void {
+    // options.newInstances
+    // options.existingInstances
+    // device - additional info about device
+    // options.log - logger
+    // options.language - system language
+    tools.words['used for visualisations'] = {
+        en: 'used for visualisations',
+        de: 'Stellt ein Werkzeug zur Visualisierung bereit, mit dem sich eine Visualisierung erstellen lässt die auf verschiedenen Geräten angezeigt werden kann.',
+        ru: 'используется for visualisations',
+        pt: 'usado para visualizações',
+        nl: 'gebruikt voor visualisaties',
+        fr: 'utilisé pour les visualisations',
+        it: 'usato per le visualizzazioni',
+        es: 'utilizado para visualizaciones',
+        pl: 'używany do wizualizacji',
+        uk: 'використовується для візуалізації',
+        'zh-cn': '用于可视化',
+    };
+
+    let instance = tools.findInstance(options, 'jarvis');
+    if (!instance) {
+        // jarvis requires a web instance so check and install it too
+        let webInstance = tools.findInstance(options, 'web', obj => obj && obj.native);
+
+        const id = tools.getNextInstanceID('jarvis', options);
+
+        if (!webInstance) {
+            webInstance = {
+                _id: tools.getNextInstanceID('web', options),
+                common: {
+                    name: 'web',
+                    title: 'ioBroker web Adapter',
+                },
+                native: {},
+                comment: {
+                    add: [tools.translate(options.language, 'Required for %s', id.substring('system.adapter.'.length))],
+                },
+            };
+            options.newInstances.push(webInstance);
+        }
+
+        instance = {
+            _id: id,
+            common: {
+                name: 'jarvis',
+                title: 'jarvis - just another remarkable vis',
+                licenseUrl: 'https://raw.githubusercontent.com/Zefau/ioBroker.jarvis/master/LICENSE',
+            },
+            native: {
+                license: 'CC BY-NC-ND 4.0',
+                instance: webInstance._id,
+            },
+            comment: {
+                add: [tools.translate(options.language, 'used for visualisations')],
+                advice: true,
+                required: [webInstance._id],
+            },
+        };
+
+        options.newInstances.push(instance);
+        callback(null, true, instance._id.substring('system.adapter.'.length));
+    } else {
+        callback(null, false);
+    }
+}
+
+export const type = 'advice'; // make type=serial for USB sticks
+export const timeout = 100;

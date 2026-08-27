@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * Tests for the air-Q detection file (lib/adapters/air-q.js).
+ * Tests for the air-Q detection file (src/lib/adapters/air-q.js).
  *
  * These tests are written to capture specific bugs that existed in the
  * original implementation. Every test here FAILS against the old code
@@ -15,9 +15,9 @@
  *   5. npm test                   → tests PASS
  */
 
-const expect = require('chai').expect;
+const assert = require('node:assert');
 const http = require('node:http');
-const airq = require('../../lib/adapters/air-q.js');
+const airq = require('../../build/lib/adapters/air-q.js');
 
 // ---------------------------------------------------------------------------
 // Helper: creates a fresh options object (mimics what ioBroker.discovery passes)
@@ -73,9 +73,9 @@ describe('callback is always called', function () {
         const device = { _dns: { hostnames: ['aabbc_air-q.fritz.box'] } };
 
         airq.detect('10.0.0.1', device, opts, (err, found, ip) => {
-            expect(err).to.be.null;
-            expect(found).to.equal(true);
-            expect(ip).to.equal('10.0.0.1');
+            assert.strictEqual(err, null);
+            assert.strictEqual(found, true);
+            assert.strictEqual(ip, '10.0.0.1');
             done();
         });
     });
@@ -87,9 +87,9 @@ describe('callback is always called', function () {
         const device = { _dns: { hostnames: ['some-printer.local'] } };
 
         airq.detect('127.0.0.1:1', device, opts, (err, found, ip) => {
-            expect(err).to.be.null;
-            expect(found).to.equal(false);
-            expect(ip).to.equal('127.0.0.1:1');
+            assert.strictEqual(err, null);
+            assert.strictEqual(found, false);
+            assert.strictEqual(ip, '127.0.0.1:1');
             done();
         });
     });
@@ -99,8 +99,8 @@ describe('callback is always called', function () {
         const device = {};
 
         airq.detect('127.0.0.1:1', device, opts, (err, found, ip) => {
-            expect(err).to.be.null;
-            expect(found).to.equal(false);
+            assert.strictEqual(err, null);
+            assert.strictEqual(found, false);
             done();
         });
     });
@@ -126,8 +126,8 @@ describe('native config has correct field names', function () {
 
         airq.detect('10.0.0.1', device, opts, () => {
             const inst = opts.newInstances[0];
-            expect(inst.native).to.have.property('deviceIP', '10.0.0.1');
-            expect(inst.native).to.not.have.property('ip');
+            assert.strictEqual(inst.native.deviceIP, '10.0.0.1');
+            assert.ok(!Object.prototype.hasOwnProperty.call(inst.native, 'ip'));
             done();
         });
     });
@@ -138,7 +138,7 @@ describe('native config has correct field names', function () {
 
         airq.detect('10.0.0.1', device, opts, () => {
             const inst = opts.newInstances[0];
-            expect(inst.native).to.have.property('shortId', 'aabbc');
+            assert.strictEqual(inst.native.shortId, 'aabbc');
             done();
         });
     });
@@ -149,7 +149,7 @@ describe('native config has correct field names', function () {
 
         airq.detect('10.0.0.1', device, opts, () => {
             const inst = opts.newInstances[0];
-            expect(inst.native).to.have.property('connectViaIP', true);
+            assert.strictEqual(inst.native.connectViaIP, true);
             done();
         });
     });
@@ -170,7 +170,7 @@ describe('DNS hostname matching', function () {
         const device = { _dns: { hostnames: ['aabbc_air-q.fritz.box'] } };
 
         airq.detect('10.0.0.1', device, opts, (err, found) => {
-            expect(found).to.equal(true);
+            assert.strictEqual(found, true);
             done();
         });
     });
@@ -181,7 +181,7 @@ describe('DNS hostname matching', function () {
         const device = { _dns: { hostnames: ['aabbc-air-q.fritz.box'] } };
 
         airq.detect('10.0.0.2', device, opts, (err, found) => {
-            expect(found).to.equal(true);
+            assert.strictEqual(found, true);
             done();
         });
     });
@@ -191,7 +191,7 @@ describe('DNS hostname matching', function () {
         const device = { _dns: { hostnames: ['apple-tv.fritz.box'] } };
 
         airq.detect('127.0.0.1:1', device, opts, (err, found) => {
-            expect(found).to.equal(false);
+            assert.strictEqual(found, false);
             done();
         });
     });
@@ -202,7 +202,7 @@ describe('DNS hostname matching', function () {
         const device = { _dns: { hostnames: ['192.168.2.22', 'aabbc_air-q.fritz.box'] } };
 
         airq.detect('10.0.0.4', device, opts, (err, found) => {
-            expect(found).to.equal(true);
+            assert.strictEqual(found, true);
             done();
         });
     });
@@ -212,7 +212,7 @@ describe('DNS hostname matching', function () {
         const device = { _dns: { hostnames: ['f00ba_air-q.fritz.box'] } };
 
         airq.detect('10.0.0.5', device, opts, () => {
-            expect(opts.newInstances[0].native.shortId).to.equal('f00ba');
+            assert.strictEqual(opts.newInstances[0].native.shortId, 'f00ba');
             done();
         });
     });
@@ -231,7 +231,7 @@ describe('HTTP /ping fallback', function () {
 
         // Point at our mock server instead of a real device
         airq.detect('127.0.0.1:' + mockPort, device, opts, (err, found) => {
-            expect(found).to.equal(true);
+            assert.strictEqual(found, true);
             done();
         });
     });
@@ -242,7 +242,7 @@ describe('HTTP /ping fallback', function () {
 
         airq.detect('127.0.0.1:' + mockPort, device, opts, () => {
             // Mock server returns id "aabbcc1234567890..." → shortId "aabbc"
-            expect(opts.newInstances[0].native.shortId).to.equal('aabbc');
+            assert.strictEqual(opts.newInstances[0].native.shortId, 'aabbc');
             done();
         });
     });
@@ -262,13 +262,13 @@ describe('duplicate prevention', function () {
 
         // First detection — should create instance
         airq.detect('10.0.0.50', device, opts, (err, found1) => {
-            expect(found1).to.equal(true);
-            expect(opts.newInstances).to.have.lengthOf(1);
+            assert.strictEqual(found1, true);
+            assert.strictEqual(opts.newInstances.length, 1);
 
             // Second detection with same IP — should NOT create duplicate
             airq.detect('10.0.0.50', device, opts, (err, found2) => {
-                expect(found2).to.equal(false);
-                expect(opts.newInstances).to.have.lengthOf(1);
+                assert.strictEqual(found2, false);
+                assert.strictEqual(opts.newInstances.length, 1);
                 done();
             });
         });
