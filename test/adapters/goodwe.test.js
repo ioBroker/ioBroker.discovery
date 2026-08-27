@@ -61,6 +61,33 @@ function startResponder(answerFactory) {
     });
 }
 
+// Receives on the probed address but answers from a second loopback address, so that the
+// detection sees a valid GoodWe frame with a foreign remote.address.
+function startSpoofingResponder(answerFactory) {
+    const sender = dgram.createSocket('udp4');
+
+    return new Promise((resolve, reject) => {
+        const receiver = dgram.createSocket('udp4');
+        const close = () => {
+            receiver.close();
+            sender.close();
+        };
+
+        receiver.on('error', reject);
+        sender.on('error', reject);
+        receiver.on('message', (message, remote) => {
+            const answer = answerFactory(message);
+
+            if (answer) {
+                sender.send(answer, remote.port, remote.address);
+            }
+        });
+        sender.bind(0, '127.0.0.2', () =>
+            receiver.bind(GOODWE_UDP_PORT, '127.0.0.1', () => resolve({ close })),
+        );
+    });
+}
+
 function detect(options) {
     return new Promise(resolve => {
         goodwe.detect('127.0.0.1', {}, options, (err, found) => resolve({ err, found }));
@@ -111,6 +138,22 @@ describe('GoodWe detection', () => {
         this.timeout(5000);
 
         const responder = await startResponder(() => Buffer.from('not a goodwe inverter'));
+        const options = freshOptions();
+
+        try {
+            const { found } = await detect(options);
+
+            expect(found).to.be.false;
+            expect(options.newInstances).to.be.empty;
+        } finally {
+            responder.close();
+        }
+    });
+
+    it('ignores a valid answer that comes from another address', async function () {
+        this.timeout(5000);
+
+        const responder = await startSpoofingResponder(() => buildIdInfoResponse('GW10K-ET', '9010KETU231W1723'));
         const options = freshOptions();
 
         try {
