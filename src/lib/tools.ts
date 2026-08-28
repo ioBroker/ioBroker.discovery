@@ -515,24 +515,44 @@ export function findInstance(options: DetectOptions, name: string, compare?: Ins
 
 export type HttpGetCallback = (error: unknown, result: string | null, link: string) => void;
 
+export interface HttpGetOptions {
+    /** how long to wait for the answer, in ms (default 500) */
+    timeout?: number;
+    /**
+     * Accept a certificate the system does not trust. Needed for devices that ship a
+     * self-signed certificate - many IP cameras do. Only ever set this for a probe on the
+     * local network, never for anything that carries credentials to the outside.
+     */
+    rejectUnauthorized?: boolean;
+}
+
 /**
  * Read an HTTP(S) page. Without a callback a promise is returned instead.
+ *
+ * The second argument may be the timeout in ms or an {@link HttpGetOptions} object; the
+ * plain-number form is the one every existing call uses and behaves exactly as before.
  */
 export function httpGet(link: string, timeout?: number): Promise<string | null>;
 export function httpGet(link: string, callback: HttpGetCallback): void;
 export function httpGet(link: string, timeout: number, callback: HttpGetCallback): void;
+export function httpGet(link: string, options: HttpGetOptions, callback: HttpGetCallback): void;
 export function httpGet(
     link: string,
-    timeout?: number | HttpGetCallback,
+    timeout?: number | HttpGetOptions | HttpGetCallback,
     callback?: HttpGetCallback,
 ): Promise<string | null> | void {
     const HTTP = link && link.startsWith('https') ? https : http;
 
     let cb: HttpGetCallback | null;
     let ms: number;
+    let opts: HttpGetOptions = {};
     if (typeof timeout === 'function') {
         cb = timeout;
         ms = 500;
+    } else if (typeof timeout === 'object' && timeout !== null) {
+        cb = callback || null;
+        opts = timeout;
+        ms = timeout.timeout || 500;
     } else {
         cb = callback || null;
         ms = timeout || 500;
@@ -540,7 +560,7 @@ export function httpGet(
 
     if (!cb) {
         return new Promise((resolve, reject): void => {
-            httpGet(link, ms, (err, res): void => {
+            httpGet(link, { ...opts, timeout: ms }, (err, res): void => {
                 if (err) {
                     reject(err instanceof Error ? err : new Error(String(err as any)));
                 } else {
@@ -557,7 +577,11 @@ export function httpGet(
     }
 
     try {
-        const req = HTTP.get(link, res => {
+        // Only pass a request options object when something actually has to be set - the
+        // two-argument call is what every existing caller has always used.
+        const requestOptions =
+            opts.rejectUnauthorized === undefined ? undefined : { rejectUnauthorized: opts.rejectUnauthorized };
+        const handleResponse = (res: http.IncomingMessage): void => {
             const statusCode = res.statusCode;
 
             if (statusCode !== 200) {
@@ -572,7 +596,10 @@ export function httpGet(
             let rawData = '';
             res.on('data', chunk => (rawData += chunk));
             res.on('end', (): void | undefined => cb?.(null, rawData ? rawData.toString() : null, link));
-        }).on('error', e => cb?.(e.message, null, link));
+        };
+
+        const req = requestOptions ? HTTP.get(link, requestOptions, handleResponse) : HTTP.get(link, handleResponse);
+        req.on('error', e => cb?.(e.message, null, link));
 
         req.setTimeout(ms, (): void => {
             req.destroy();

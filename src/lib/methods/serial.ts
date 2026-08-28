@@ -1,74 +1,74 @@
+import type * as nodeFs from 'node:fs';
 import type { DiscoveryDevice, MethodInstance, ProtocolData } from '../types';
 
+/**
+ * List the serial ports of this host.
+ *
+ * `SerialPort.list()` is asked on every platform, not only on Windows as before: on Linux it
+ * is what supplies vendor and product id, manufacturer and serial number, and without those
+ * a detection module can only guess from the device path. The `/dev/` scan stays as a
+ * supplement - it also finds ports that carry no USB descriptor at all, such as the built-in
+ * `ttyAMA0` of a Raspberry Pi - and never overwrites an entry that already has metadata.
+ */
 function listPorts(self: MethodInstance): void {
-    let SerialPort;
-    const fs = require('node:fs');
+    const fs = require('node:fs') as typeof nodeFs;
+    const known = new Map<string, DiscoveryDevice>();
 
-    if (process.platform.match(/^win/)) {
-        try {
-            SerialPort = require('serialport').SerialPort;
-        } catch {
-            self.adapter.log.warn('Cannot load serialport module');
+    const report = (device: DiscoveryDevice): void => {
+        if (known.has(device._addr)) {
+            return;
         }
-    }
+        known.set(device._addr, device);
+        self.addDevice(device);
+    };
 
-    const list: DiscoveryDevice[] = [];
-    let wait = false;
-    if (SerialPort) {
-        wait = true;
-        SerialPort.list()
-            .then((ports: ProtocolData[]): void => {
-                ports.forEach((port: ProtocolData): void => {
-                    let found = false;
-                    for (let f = 0; f < list.length; f++) {
-                        if (list[f]._addr === port.path) {
-                            found = true;
-                            break;
-                        }
-                    }
-                    if (!found) {
-                        const device = {
-                            _addr: port.path,
-                            _name: port.manufacturer,
-                            _data: port,
-                        };
-                        list.push(device);
-                        self.addDevice(device);
-                    }
-                });
-                self.done();
-            })
-            .catch((e: unknown): void => self.adapter.log.warn(`Some error by listing of serial ports: ${String(e)}`));
-    } else if (fs.existsSync('/dev/')) {
+    /** Ports found by reading the device directory - the fallback with no USB descriptor */
+    const scanDevDirectory = (): void => {
+        if (!fs.existsSync('/dev/')) {
+            return;
+        }
         try {
-            const names = fs.readdirSync('/dev/');
-            for (let n = 0; n < names.length; n++) {
-                if (names[n].match(/^tty[A-Z]/) || names[n].match(/usb/i)) {
-                    let found = false;
-                    for (let f = 0; f < list.length; f++) {
-                        if (list[f]._addr === names[n]) {
-                            found = true;
-                            break;
-                        }
-                    }
-                    if (!found) {
-                        const device = {
-                            _addr: `/dev/${names[n]}`,
-                            _name: names[n],
-                        };
-                        list.push(device);
-                        self.addDevice(device);
-                    }
+            for (const name of fs.readdirSync('/dev/')) {
+                if (name.match(/^tty[A-Z]/) || name.match(/usb/i)) {
+                    report({ _addr: `/dev/${name}`, _name: name });
                 }
             }
         } catch (e) {
             self.adapter.log.warn(`Some error by listing of /dev/: ${e}`);
         }
+    };
+
+    let SerialPort;
+    try {
+        // optional dependency - a host without the native module still gets the /dev/ scan
+        SerialPort = require('serialport').SerialPort;
+    } catch {
+        self.adapter.log.debug('serialport module not available, falling back to the device directory');
     }
 
-    if (!wait) {
-        self.done();
+    if (!SerialPort) {
+        scanDevDirectory();
+        return self.done();
     }
+
+    SerialPort.list()
+        .then((ports: ProtocolData[]): void => {
+            for (const port of ports) {
+                report({
+                    _addr: port.path,
+                    _name: port.friendlyName || port.manufacturer || port.path,
+                    // vendorId, productId, manufacturer and serialNumber travel in here
+                    _data: port,
+                });
+            }
+            scanDevDirectory();
+            self.done();
+        })
+        .catch((e: unknown): void => {
+            self.adapter.log.warn(`Some error by listing of serial ports: ${String(e)}`);
+            scanDevDirectory();
+            self.done();
+        });
 }
 
 export const browse = listPorts;
