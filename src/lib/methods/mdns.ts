@@ -41,6 +41,17 @@ export function browse(this: MethodInstance, self: MethodInstance): void {
             '_coap._udp.local', // used to discover tradfri devices
             '_dhnap._tcp.local', // used to discover mydlink devices
             'venus.local', // For Victron devices
+            // Service types below were read out of the respective adapter's own discovery code
+            '_shelly._tcp.local', // Shelly generation 2 and newer; generation 1 answers on _http._tcp
+            '_elg._tcp.local', // Elgato Key Light
+            '_hwenergy._tcp.local', // HomeWizard Energy
+            '_homewizard._tcp.local', // HomeWizard, older firmware
+            '_zapp._tcp.local', // Feller zeptrion / zApp
+            '_samsungmsf._tcp.local', // Samsung TV, multiscreen framework
+            '_samsungtv._tcp.local',
+            '_esphomelib._tcp.local', // ESPHome, from @2colors/esphome-native-api
+            '_matterc._udp.local', // Matter node waiting to be commissioned
+            '_matter._tcp.local', // Matter node already in a fabric
         ],
         find: '*',
         broadcast: false,

@@ -1,4 +1,11 @@
-import type { DiscoveryLogger, DetectOptions, DiscoveryDevice, DiscoveryInstance, InstanceFilter } from './types';
+import type {
+    DiscoveryLogger,
+    DetectOptions,
+    DiscoveryDevice,
+    DiscoveryInstance,
+    InstanceFilter,
+    ProtocolData,
+} from './types';
 import { networkInterfaces, type NetworkInterfaceInfo } from 'node:os';
 import * as udp from 'node:dgram';
 import * as http from 'node:http';
@@ -813,4 +820,161 @@ export function getLocationDesc(
 /** Tests if `str` starts with `search` */
 export function startsWith(str: string, search: string): boolean {
     return str.substring(0, search.length) === search;
+}
+
+/**
+ * Collect one field of an mDNS record.
+ *
+ * The discovery core merges every answer for the same address into one device. When two
+ * answers disagree on `name` or `data`, the differing values end up in a `namex`/`datax`
+ * array instead of overwriting each other - so both shapes have to be read.
+ *
+ * @param device the device as delivered by the mdns method
+ * @param record DNS record type, e.g. `PTR`, `SRV`, `TXT`, `A`
+ * @param field `name` or `data`
+ */
+export function mdnsValues(device: DiscoveryDevice, record: string, field: 'name' | 'data'): string[] {
+    const entry = device._mdns?.[record];
+    if (!entry) {
+        return [];
+    }
+    const values: string[] = [];
+    const single = entry[field];
+    if (typeof single === 'string') {
+        values.push(single);
+    }
+    const many = entry[`${field}x`];
+    if (Array.isArray(many)) {
+        for (const value of many) {
+            if (typeof value === 'string') {
+                values.push(value);
+            }
+        }
+    }
+    return values;
+}
+
+/**
+ * Tests whether a device announced a given DNS-SD service.
+ *
+ * @param device the device as delivered by the mdns method
+ * @param service service type without the domain, e.g. `_elg._tcp`
+ */
+export function hasMdnsService(device: DiscoveryDevice, service: string): boolean {
+    if (!device?._mdns) {
+        return false;
+    }
+    const needle = service.toLowerCase();
+    for (const record of ['PTR', 'SRV', 'TXT', 'A']) {
+        for (const field of ['name', 'data'] as const) {
+            if (mdnsValues(device, record, field).some(v => v.toLowerCase().includes(needle))) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+/**
+ * The most speaking name a device announced over mDNS, or an empty string.
+ *
+ * @param device the device as delivered by the mdns method
+ */
+export function mdnsName(device: DiscoveryDevice): string {
+    const candidates = [
+        ...mdnsValues(device, 'SRV', 'name'),
+        ...mdnsValues(device, 'A', 'name'),
+        ...mdnsValues(device, 'PTR', 'data'),
+        typeof device._name === 'string' ? device._name : '',
+    ];
+    const name = candidates.find(v => v && !v.startsWith('_'));
+    return (name || '').replace(/\.local\.?$/i, '');
+}
+
+/**
+ * Propose the single instance of an adapter that handles every device of its kind itself.
+ *
+ * Several modern adapters (shelly, elgato-key-light, homewizard, samsungtv, ...) run their
+ * own discovery and keep no per-device address in `native`. For those, discovery's job is
+ * not to fill in an address but to say "devices of this kind are on the network". So the
+ * first find creates one proposal and every further find is only listed in its comment.
+ *
+ * @param adapterName adapter to propose
+ * @param label what to show for this device, e.g. `shelly1-A4CF12 (192.168.1.7)`
+ * @param options the detection options
+ * @param native optional `native` block for a newly created proposal
+ * @returns `true` only if this call added a new proposal
+ */
+export function proposeSharedInstance(
+    adapterName: string,
+    label: string,
+    options: DetectOptions,
+    native?: ProtocolData,
+): boolean {
+    const before = options.newInstances.length;
+    let instance = findInstance(options, adapterName);
+
+    if (!instance) {
+        instance = {
+            _id: getNextInstanceID(adapterName, options),
+            common: { name: adapterName },
+            native: native || {},
+            comment: { add: [] },
+        };
+        options.newInstances.push(instance);
+    } else if (instance._existing) {
+        // Already configured: offer the find as an addition to the existing instance
+        options.newInstances.push(instance);
+    }
+
+    instance.comment ||= {};
+    if (instance.comment.ack) {
+        instance.comment.ack = false;
+    }
+    // `add` on a fresh proposal, `extended` when we are adding to an existing instance
+    const list: string[] = instance.comment.add || (instance.comment.extended ||= []);
+    if (!list.includes(label)) {
+        list.push(label);
+    }
+
+    return before !== options.newInstances.length;
+}
+
+/**
+ * Parse the TXT record of an mDNS answer into key/value pairs.
+ *
+ * A TXT record is a sequence of length-prefixed strings on the wire. Depending on how far
+ * the mDNS library got, it reaches us as that raw buffer, as an array of already split
+ * strings, or as a single string - all three are accepted here.
+ *
+ * @param device the device as delivered by the mdns method
+ */
+export function mdnsTxt(device: DiscoveryDevice): Record<string, string> {
+    const raw = device._mdns?.TXT?.data;
+    const parts: string[] = [];
+
+    if (Buffer.isBuffer(raw)) {
+        let pos = 0;
+        while (pos < raw.length) {
+            const length = raw[pos];
+            if (!length || pos + 1 + length > raw.length) {
+                break;
+            }
+            parts.push(raw.toString('utf8', pos + 1, pos + 1 + length));
+            pos += 1 + length;
+        }
+    } else if (Array.isArray(raw)) {
+        parts.push(...raw.filter((v): v is string => typeof v === 'string'));
+    } else if (typeof raw === 'string') {
+        parts.push(raw);
+    }
+
+    const result: Record<string, string> = {};
+    for (const part of parts) {
+        const pos = part.indexOf('=');
+        if (pos > 0) {
+            result[part.substring(0, pos)] = part.substring(pos + 1);
+        }
+    }
+    return result;
 }
