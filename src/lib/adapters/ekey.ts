@@ -82,11 +82,15 @@ export function detect(
         if (!err && data) {
             addInstance(ip, device, options, callback);
         } else {
-            err && options.log.error(`eky error ${String(err as any)}`);
+            err && options.log.error(`eky error ${err as any}`);
             callback?.(null, false, ip);
         }
     });
 }
 
 export const type = ['ip']; // make type=serial for USB sticks // TODO check if udp
-export const timeout = 500;
+// The probe itself runs up to 1400 ms. main.js arms its watchdog with the value below *before* it
+// calls detect(), so it has to be the larger of the two - otherwise the watchdog wins the race and
+// a late answer is thrown away.
+const EKEY_PROBE_TIMEOUT = 1400;
+export const timeout = EKEY_PROBE_TIMEOUT + 300;

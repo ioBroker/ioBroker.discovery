@@ -290,4 +290,7 @@ function getOwnAddresses(): string[] {
 }
 
 export const type = ['udp'];
-export const timeout = openknxTimeout;
+// main.js arms its watchdog with the value below *before* it calls detect(), so it has
+// to be larger than the probe - otherwise the watchdog wins the race and a late answer
+// is thrown away.
+export const timeout = openknxTimeout + 300;

@@ -535,7 +535,7 @@ export function httpGet(
         return new Promise((resolve, reject): void => {
             httpGet(link, ms, (err, res): void => {
                 if (err) {
-                    reject(err instanceof Error ? err : new Error(String(String(err as any))));
+                    reject(err instanceof Error ? err : new Error(String(err as any)));
                 } else {
                     resolve(res);
                 }
@@ -743,14 +743,14 @@ export function testSerialPort(
 
         port.on('error', (err: unknown): void => {
             if (err) {
-                serialDebug && options.log.error(`Error on port ${name}: ${String(err as any)}`);
+                serialDebug && options.log.error(`Error on port ${name}: ${err as any}`);
                 closePort?.(6);
             }
         });
 
         port.open((err: unknown): void => {
             if (err) {
-                serialDebug && options.log.warn(`Cannot open port, ${name}: ${String(err as any)}`);
+                serialDebug && options.log.warn(`Cannot open port, ${name}: ${err as any}`);
                 closePort?.(7);
             }
         });

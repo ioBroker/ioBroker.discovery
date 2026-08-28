@@ -29,7 +29,7 @@ function pingAll(self: MethodInstance): void {
     self.options.pingBlock = parseInt(self.options.pingBlock as unknown as string, 10) || 20;
     self.pingBlock = self.options.pingBlock;
 
-    let ranges: ProtocolData[] = [];
+    let ranges!: ProtocolData[];
     let blockCount;
     let ipCount;
     let rangeCount = 0;
@@ -129,7 +129,7 @@ function pingAll(self: MethodInstance): void {
                         return pingIp('halt');
                     }
 
-                    err && self.adapter.log.error(String(String(err as any)));
+                    err && self.adapter.log.error(String(err as any));
 
                     if (!res || !res.alive) {
                         return;

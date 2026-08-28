@@ -32,4 +32,8 @@ export function detect(ip: string, device: DiscoveryDevice, options: DetectOptio
 }
 
 export const type = ['ip']; // make type=serial for USB sticks
-export const timeout = 1500;
+// The probe itself runs up to 1500 ms. main.js arms its watchdog with the value below *before* it
+// calls detect(), so it has to be the larger of the two - otherwise the watchdog wins the race and
+// a late answer is thrown away.
+const ISG_PROBE_TIMEOUT = 1500;
+export const timeout = ISG_PROBE_TIMEOUT + 300;

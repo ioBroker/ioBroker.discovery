@@ -79,7 +79,7 @@ export function detect(
                 options.log.debug('mihome: found one');
                 addInstance(ipAddr, device, options, (isAdded: boolean): void => cb(null, isAdded, ip));
             } else {
-                err && options.log.warn(`Mihome err: ${String(err as any)}`);
+                err && options.log.warn(`Mihome err: ${err as any}`);
                 cb(null, false, ip);
             }
         });
@@ -89,4 +89,8 @@ export function detect(
 }
 
 export const type = ['ip']; // TODO check if udp
-export const timeout = 500;
+// The probe itself runs up to 500 ms. main.js arms its watchdog with the value below *before* it
+// calls detect(), so it has to be the larger of the two - otherwise the watchdog wins the race and
+// a late answer is thrown away.
+const MIHOME_PROBE_TIMEOUT = 500;
+export const timeout = MIHOME_PROBE_TIMEOUT + 300;

@@ -74,7 +74,7 @@ export function detect(
                 cb(null, false, ip);
             }
         } else {
-            err && options.log.warn(`Onkyo AVR discovery error ${String(err as any)}`);
+            err && options.log.warn(`Onkyo AVR discovery error ${err as any}`);
             cb(null, false, ip);
         }
     });
@@ -104,11 +104,16 @@ export function detect(
                 cb(null, false, ip);
             }
         } else {
-            err && options.log.warn(`Pioneer AVR discovery error ${String(err as any)}`);
+            err && options.log.warn(`Pioneer AVR discovery error ${err as any}`);
             cb(null, false, ip);
         }
     });
 }
 
 export const type = ['ip'];
-export const timeout = 5000;
+// The probe itself runs up to 5000 ms - the Onkyo and the Pioneer scan run in parallel, so it is
+// 5000, not 10000. main.js arms its watchdog with the value below *before* it calls detect(), so it
+// has to be the larger of the two - otherwise the watchdog wins the race and a late answer is
+// thrown away.
+const ONKYO_PROBE_TIMEOUT = 5000;
+export const timeout = ONKYO_PROBE_TIMEOUT + 300;

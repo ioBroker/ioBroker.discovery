@@ -46,11 +46,15 @@ export function detect(ip: string, device: DiscoveryDevice, options: DetectOptio
                 callback(null, false, ip);
             }
         } else {
-            err && options.log.error(`emby error ${String(err as any)}`);
+            err && options.log.error(`emby error ${err as any}`);
             callback(null, false, ip);
         }
     });
 } // endDetect
 
 export const type = ['ip']; // TODO make to once and upd lookup
-export const timeout = 100;
+// The probe itself runs up to 1400 ms. main.js arms its watchdog with the value below *before* it
+// calls detect(), so it has to be the larger of the two - otherwise the watchdog wins the race and
+// a late answer is thrown away.
+const EMBY_PROBE_TIMEOUT = 1400;
+export const timeout = EMBY_PROBE_TIMEOUT + 300;

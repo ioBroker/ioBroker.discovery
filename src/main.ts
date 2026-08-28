@@ -94,7 +94,7 @@ class Method {
 
         self.done = (err?: unknown): void => {
             if (err) {
-                adapter.log.warn(String(err as any));
+                adapter.log.warn(err as any);
             }
             if (doneCalled++) {
                 return;
@@ -695,7 +695,7 @@ class DiscoveryAdapter extends Adapter {
             }
         } else {
             this.analyseDevice(devices[index], options, err => {
-                err && this.log.error(`Error by analyse device: ${String(err as any)}`);
+                err && this.log.error(`Error by analyse device: ${err as any}`);
                 setTimeout((): void => this.analyseDevices(devices, options, index + 1, callback), 0);
             });
         }

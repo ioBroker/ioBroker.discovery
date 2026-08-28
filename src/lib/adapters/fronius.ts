@@ -197,4 +197,9 @@ export function detect(
 }
 
 export const type = ['ip']; // make type=serial for USB sticks
-export const timeout = 1500;
+// The probe itself runs up to five chained 1400 ms requests - but only for a device that answers
+// every step, a foreign IP is done after the first one. main.js arms its watchdog with the value
+// below *before* it calls detect(), so it has to be the larger of the two - otherwise the watchdog
+// wins the race and a late answer is thrown away.
+const FRONIUS_PROBE_TIMEOUT = 5 * 1400;
+export const timeout = FRONIUS_PROBE_TIMEOUT + 300;

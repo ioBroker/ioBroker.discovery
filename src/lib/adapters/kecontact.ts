@@ -6,6 +6,10 @@ const DEFAULT_UDP_PORT = 7090;
 //const BROADCAST_UDP_PORT = 7092;
 const DETECT_MESSAGE = Buffer.from('i');
 const KEBA_TIMEOUT = 500;
+// main.js arms its own watchdog with exports.timeout before it calls detect(), so the
+// exported value has to be larger than the internal one. With both at 500 ms the watchdog
+// always won the race and an answer arriving close to the limit was thrown away.
+const KEBA_DETECT_TIMEOUT = KEBA_TIMEOUT + 300;
 let socket: dgram.Socket | null = null;
 let timer: NodeJS.Timeout | null = null;
 
@@ -67,7 +71,7 @@ export function detect(
             DETECT_MESSAGE.length,
             DEFAULT_UDP_PORT,
             ip,
-            (err: unknown): unknown => err && options.log.warn(`Error from KeContact: ${String(err as any)}`),
+            (err: unknown): unknown => err && options.log.warn(`Error from KeContact: ${err as any}`),
         );
     });
 
@@ -106,4 +110,4 @@ function cleanup(ip: string, callback: DetectCallback | null, callbackResult: bo
 }
 
 export const type = ['ip']; // normally detection should wok with UDP, but charging station isn't responding on broadcast messages, only on concrete IP
-export const timeout = KEBA_TIMEOUT;
+export const timeout = KEBA_DETECT_TIMEOUT;

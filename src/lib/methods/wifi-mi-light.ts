@@ -124,7 +124,7 @@ export const scanForAllDevices = function scanForAllDevices(
     cb: (...args: any[]) => void,
 ): void {
     // exports.scanForDevices(checkCb, function(result) {
-    exports.scanForMiLightDevices(checkCb, (result2: ProtocolData): void => cb?.(/*result.concat( */ result2 /*)*/));
+    scanForMiLightDevices(checkCb, (result2: ProtocolData): void => cb?.(/*result.concat( */ result2 /*)*/));
     // });
 };
 
@@ -136,7 +136,7 @@ function discover(self: MethodInstance): void {
     self.setTimeout(DURATION1 + DURATION2, { timeout: false });
 
     self.adapter.log.info(`Discovering ${methodName} devices...`);
-    exports.scanForAllDevices(
+    scanForAllDevices(
         (/* entry */): boolean => true,
         (result: ProtocolData): void => {
             result.forEach((entry: ProtocolData): void => {

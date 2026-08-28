@@ -51,7 +51,13 @@ function uuidv4(): string {
     });
 }
 
-export function detect(ip: string, device: DiscoveryDevice, options: DetectOptions, callback: DetectCallback): void {
+export function detect(
+    this: any,
+    ip: string,
+    device: DiscoveryDevice,
+    options: DetectOptions,
+    callback: DetectCallback,
+): void {
     options.log.debug(`bshb detection for: ${ip}`);
     const requestOptions: Record<string, any> = {};
     requestOptions.hostname = ip;
@@ -59,7 +65,7 @@ export function detect(ip: string, device: DiscoveryDevice, options: DetectOptio
     requestOptions.path = '/smarthome/public/information';
     requestOptions.method = 'GET';
     requestOptions.ca = ca;
-    requestOptions.checkServerIdentity = function (this: any, host: string): false | undefined {
+    requestOptions.checkServerIdentity = (host: string): false | undefined => {
         host = `${host}`;
 
         if (host === ip) {

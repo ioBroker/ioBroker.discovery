@@ -107,7 +107,7 @@ export function detect(
         if (!err && ipAddr) {
             addInstance(ipAddr, device, options, (isAdded: boolean): void => cb(null, isAdded, ip));
         } else if (err) {
-            options.log.warn(`MAX! Cube err: ${String(err as any)}`);
+            options.log.warn(`MAX! Cube err: ${err as any}`);
             cb(null, false, ip);
         } else {
             cb(null, false, ip);
@@ -116,4 +116,8 @@ export function detect(
 }
 
 export const type = ['ip']; // TODO udp
-export const timeout = 500;
+// The probe itself runs up to 1000 ms. main.js arms its watchdog with the value below *before* it
+// calls detect(), so it has to be the larger of the two - otherwise the watchdog wins the race and
+// a late answer is thrown away.
+const MAXCUBE_PROBE_TIMEOUT = 1000;
+export const timeout = MAXCUBE_PROBE_TIMEOUT + 300;

@@ -81,4 +81,8 @@ export function detect(ip: string, device: DiscoveryDevice, options: DetectOptio
 }
 
 export const type = ['ip']; // make type=serial for USB sticks // TODO make to once
-export const timeout = 500;
+// The probe itself runs up to 3000 ms - a UDP scan waits for the full duration even for foreign
+// devices. main.js arms its watchdog with the value below *before* it calls detect(), so it has to
+// be the larger of the two - otherwise the watchdog wins the race and a late answer is thrown away.
+const DAIKIN_PROBE_TIMEOUT = 3000;
+export const timeout = DAIKIN_PROBE_TIMEOUT + 300;

@@ -56,3 +56,9 @@ export function detect(
 }
 
 export const type = ['ip'];
+
+// The probe itself runs up to 2000 ms, which is exactly the default budget. main.js arms its
+// watchdog with the value below *before* it calls detect(), so it has to be the larger of the two -
+// otherwise the watchdog wins the race and a late answer is thrown away.
+const MCLIGHTING_PROBE_TIMEOUT = 2000;
+export const timeout = MCLIGHTING_PROBE_TIMEOUT + 300;
