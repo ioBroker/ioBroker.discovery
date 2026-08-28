@@ -128,6 +128,9 @@ describe('enigma2 detection', () => {
 
     it('creates an instance and asks for the credentials', async function () {
         this.timeout(5000);
+        if (!(await portUsable(80))) {
+            return this.skip();
+        }
         const server = await serveHttp(80, url => (url === '/web/about' ? [200, ABOUT, 'text/xml'] : null));
         const options = freshOptions();
 
@@ -146,6 +149,9 @@ describe('enigma2 detection', () => {
 
     it('ignores an ordinary web server on port 80', async function () {
         this.timeout(5000);
+        if (!(await portUsable(80))) {
+            return this.skip();
+        }
         const server = await serveHttp(80, () => [200, '<html>hi</html>', 'text/html']);
         const options = freshOptions();
 

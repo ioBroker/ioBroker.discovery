@@ -129,6 +129,9 @@ describe('awtrix-light detection', () => {
 
     it('creates an instance and names the firmware version', async function () {
         this.timeout(5000);
+        if (!(await portUsable(80))) {
+            return this.skip();
+        }
         const server = await serveHttp(80, url => (url === '/api/stats' ? [200, STATS] : null));
         const options = freshOptions();
 
@@ -194,6 +197,9 @@ describe('pi-hole2 detection', () => {
     it('reads the session answer even though it comes with 401', async function () {
         this.timeout(5000);
         // the v6 API answers an unauthenticated /api/auth with 401 *and* a body
+        if (!(await portUsable(80))) {
+            return this.skip();
+        }
         const server = await serveTcp(80, request =>
             request.startsWith('GET /api/auth')
                 ? `HTTP/1.1 401 Unauthorized\r\nContent-Type: application/json\r\nContent-Length: ${SESSION.length}\r\nConnection: close\r\n\r\n${SESSION}`
@@ -215,6 +221,9 @@ describe('pi-hole2 detection', () => {
 
     it('ignores another web server on port 80', async function () {
         this.timeout(5000);
+        if (!(await portUsable(80))) {
+            return this.skip();
+        }
         const server = await serveTcp(
             80,
             () => 'HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nConnection: close\r\n\r\n<html>hello</html>',

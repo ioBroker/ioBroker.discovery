@@ -919,6 +919,21 @@ export function mdnsName(device: DiscoveryDevice): string {
 }
 
 /**
+ * The proposal this scan has already made for an adapter, if there is one.
+ *
+ * Not the same question as {@link findInstance}: that one looks at the instances that are
+ * already configured first and returns a fresh deep copy every time it is asked. A module
+ * that collects several devices in one proposal has to find its own earlier proposal, or it
+ * writes a new one per device.
+ *
+ * @param options the detection state of this scan
+ * @param adapterName name of the adapter
+ */
+export function pendingProposal(options: DetectOptions, adapterName: string): DiscoveryInstance | null {
+    return options.newInstances.find(entry => entry.common?.name === adapterName) || null;
+}
+
+/**
  * Propose the single instance of an adapter that handles every device of its kind itself.
  *
  * Several modern adapters (shelly, elgato-key-light, homewizard, samsungtv, ...) run their
@@ -939,19 +954,26 @@ export function proposeSharedInstance(
     native?: ProtocolData,
 ): boolean {
     const before = options.newInstances.length;
-    let instance = findInstance(options, adapterName);
+    // A proposal this scan already made wins over findInstance(): that one looks at the
+    // configured instances first and hands out a fresh deep copy on every call, so a second
+    // device would end up in a second proposal instead of joining the first one.
+    let instance = pendingProposal(options, adapterName);
 
     if (!instance) {
-        instance = {
-            _id: getNextInstanceID(adapterName, options),
-            common: { name: adapterName },
-            native: native || {},
-            comment: { add: [] },
-        };
-        options.newInstances.push(instance);
-    } else if (instance._existing) {
-        // Already configured: offer the find as an addition to the existing instance
-        options.newInstances.push(instance);
+        instance = findInstance(options, adapterName);
+
+        if (!instance) {
+            instance = {
+                _id: getNextInstanceID(adapterName, options),
+                common: { name: adapterName },
+                native: native || {},
+                comment: { add: [] },
+            };
+            options.newInstances.push(instance);
+        } else if (instance._existing) {
+            // Already configured: offer the find as an addition to the existing instance
+            options.newInstances.push(instance);
+        }
     }
 
     instance.comment ||= {};
@@ -1004,4 +1026,81 @@ export function mdnsTxt(device: DiscoveryDevice): Record<string, string> {
         }
     }
     return result;
+}
+
+export type ModbusCallback = (error: unknown, registers: Buffer | null) => void;
+
+/**
+ * Read holding registers from a Modbus TCP device (function code 3).
+ *
+ * Hand-rolled on purpose: the request is a twelve byte packet and the answer a nine byte
+ * header plus payload, which is less code than wiring in a Modbus library - and this
+ * adapter builds its protocols itself throughout (goodwe, knx, sma-em).
+ *
+ * Note what this does *not* do: it never writes. A detection module only ever reads an
+ * identification register, and some inverters take offence at anything more.
+ *
+ * @param ip address of the device
+ * @param port TCP port, 502 by convention
+ * @param unitId Modbus unit (slave) id
+ * @param start first register to read
+ * @param count how many registers
+ * @param timeout ms to wait for the answer
+ * @param callback receives the raw register bytes, `count * 2` of them
+ */
+export function readHoldingRegisters(
+    ip: string,
+    port: number,
+    unitId: number,
+    start: number,
+    count: number,
+    timeout: number,
+    callback: ModbusCallback,
+): void {
+    // one transaction per call is enough; the id only has to come back unchanged
+    const transaction = Math.floor(Math.random() * 0xffff);
+    const request = Buffer.alloc(12);
+    request.writeUInt16BE(transaction, 0);
+    request.writeUInt16BE(0, 2); // protocol id, always 0 for Modbus TCP
+    request.writeUInt16BE(6, 4); // length of everything after this field
+    request.writeUInt8(unitId & 0xff, 6);
+    request.writeUInt8(3, 7); // read holding registers
+    request.writeUInt16BE(start & 0xffff, 8);
+    request.writeUInt16BE(count & 0xffff, 10);
+
+    let answer = Buffer.alloc(0);
+    let registers: Buffer | null = null;
+
+    testPort(
+        ip,
+        port,
+        timeout,
+        {
+            onConnect: (_ip, _port, client): void => {
+                client.write(request);
+            },
+            onReceive: (data): PortReceiveResult => {
+                answer = Buffer.concat([answer, data]);
+                if (answer.length < 9) {
+                    return null; // header not complete yet
+                }
+                if (answer.readUInt16BE(0) !== transaction || answer.readUInt16BE(2) !== 0) {
+                    return false; // not our answer, or not Modbus at all
+                }
+                const functionCode = answer.readUInt8(7);
+                if (functionCode !== 3) {
+                    // 0x83 is an exception answer - the device speaks Modbus but refuses this
+                    // register, which for a detection is a clear "not this one"
+                    return false;
+                }
+                const byteCount = answer.readUInt8(8);
+                if (answer.length < 9 + byteCount) {
+                    return null; // payload still arriving
+                }
+                registers = answer.subarray(9, 9 + byteCount);
+                return true;
+            },
+        },
+        (err, found): void => callback(err, found && registers ? registers : null),
+    );
 }

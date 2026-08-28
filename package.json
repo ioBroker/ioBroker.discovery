@@ -62,7 +62,6 @@
         "build": "tsc -p tsconfig.build.json",
         "watch": "tsc -p tsconfig.build.json --watch",
         "check": "tsc -p tsconfig.json --noEmit",
-        "prepare": "npm run build",
         "test:package": "mocha --require ./test/mocha.setup.js test/packageFiles.js --exit",
         "test:integration": "mocha --require ./test/mocha.setup.js test/**/*.test.js --exit",
         "test": "npm run test:package",

@@ -725,6 +725,18 @@ const systemDictionary: Record<string, Record<string, string>> = {
         pl: 'na %s',
         'zh-cn': '在%s上',
     },
+    bambulab: {
+        en: 'Bambu Lab',
+        de: 'Bambu Lab',
+        ru: 'Bambu Lab',
+        pt: 'Bambu Lab',
+        nl: 'Bambu Lab',
+        fr: 'Bambu Lab',
+        it: 'Bambu Lab',
+        es: 'Bambu Lab',
+        pl: 'Bambu Lab',
+        'zh-cn': 'Bambu Lab',
+    },
     mdns: {
         en: 'mDNS',
         de: 'mDNS',
