@@ -489,7 +489,7 @@ class DiscoveryAdapter extends Adapter {
                     break;
                 }
 
-                this.log.info(`Scan started from the settings (${methodList ? methodList.join(', ') : 'all methods'})`);
+                this.log.info(`Scan started from the settings (${methodList.join(', ')})`);
                 this.browse(methodList, (error, newInstances): void => {
                     if (error) {
                         this.log.warn(`Scan failed: ${error as any}`);
@@ -1081,7 +1081,7 @@ class DiscoveryAdapter extends Adapter {
             return this.scheduleAutoDetect();
         }
 
-        this.log.info(`Scheduled scan started (${methodList ? methodList.join(', ') : 'all methods'})`);
+        this.log.info(`Scheduled scan started (${methodList.join(', ')})`);
         this.browse(methodList, (error, newInstances): void => {
             if (error) {
                 this.log.warn(`Scheduled scan failed: ${error as any}`);
@@ -1138,10 +1138,7 @@ class DiscoveryAdapter extends Adapter {
 
         if (this.config.autoDetect) {
             const methodList = discoveryStates.autoDetectMethods(this.config);
-            this.log.info(
-                `Scheduled scan every ${this.config.autoDetectInterval} minutes ` +
-                    `(${methodList ? methodList.join(', ') : 'all methods'})`,
-            );
+            this.log.info(`Scheduled scan every ${this.config.autoDetectInterval} minutes (${methodList.join(', ')})`);
             // not right at start-up: the host is still busy and the network may not be up yet
             this.scheduleAutoDetect(discoveryStates.FIRST_AUTO_DETECT_DELAY);
         }

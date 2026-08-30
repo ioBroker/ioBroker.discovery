@@ -251,9 +251,10 @@ in the `system.discovery` object.
 ## Changelog
 ### **WORK IN PROGRESS**
 * (bluefox) The ping scan says so when this host may not send ICMP and sweeps the range over TCP instead (#247)
-* (bluefox) The scan can now run on a timer, with a selectable set of methods
+* (bluefox) The scan can now run on a timer, with a selectable set of methods - mdns, ping, udp and upnp by default
 * (bluefox) Every finished scan writes the devices it found below `discovery.0.devices`
 * (bluefox) The instance has settings again: two tabs with a start button, the live scan state and the device list
+* (bluefox) The texts of the settings dialog moved into `admin/i18n`, complete in all eleven languages
 * (bluefox) `adminUI.config` is repaired at start-up, js-controller does not update that field on an upgrade
 * (bluefox) The adapter was refactored to TypeScript: sources moved to `src/`, the build output to `build/`
 * (bluefox) Minimum node.js version is 22.19.0 now

@@ -1,38 +1,15 @@
 {
+    "i18n": true,
     "type": "tabs",
     "items": {
         "tabSettings": {
             "type": "panel",
-            "label": {
-                "en": "Settings",
-                "de": "Einstellungen",
-                "ru": "Настройки",
-                "pt": "Configurações",
-                "nl": "Instellingen",
-                "fr": "Paramètres",
-                "it": "Impostazioni",
-                "es": "Ajustes",
-                "pl": "Ustawienia",
-                "uk": "Налаштування",
-                "zh-cn": "设置"
-            },
+            "label": "Settings",
             "items": {
                 "_headerScan": {
                     "type": "header",
                     "size": 2,
-                    "text": {
-                        "en": "Scan",
-                        "de": "Suchlauf",
-                        "ru": "Сканирование",
-                        "pt": "Verificação",
-                        "nl": "Scan",
-                        "fr": "Recherche",
-                        "it": "Scansione",
-                        "es": "Búsqueda",
-                        "pl": "Wyszukiwanie",
-                        "uk": "Пошук",
-                        "zh-cn": "扫描"
-                    }
+                    "text": "Scan"
                 },
                 "startBrowse": {
                     "newLine": true,
@@ -42,23 +19,8 @@
                     "useNative": false,
                     "variant": "contained",
                     "showProcess": true,
-                    "label": {
-                        "en": "Start a scan now",
-                        "de": "Suchlauf jetzt starten",
-                        "ru": "Запустить сканирование сейчас",
-                        "pt": "Iniciar verificação agora",
-                        "nl": "Start nu een scan",
-                        "fr": "Lancer une recherche maintenant",
-                        "it": "Avvia subito una scansione",
-                        "es": "Iniciar una búsqueda ahora",
-                        "pl": "Uruchom wyszukiwanie teraz",
-                        "uk": "Запустити пошук зараз",
-                        "zh-cn": "立即开始扫描"
-                    },
-                    "help": {
-                        "en": "Runs the methods selected below. The scan keeps going after this dialog is closed.",
-                        "de": "Führt die unten gewählten Methoden aus. Der Suchlauf läuft weiter, auch wenn dieser Dialog geschlossen wird."
-                    },
+                    "label": "Start a scan now",
+                    "help": "Runs the methods selected below. The scan keeps going after this dialog is closed.",
                     "xs": 12,
                     "sm": 12,
                     "md": 6,
@@ -71,93 +33,54 @@
                     "oid": "scanRunning",
                     "control": "text",
                     "addColon": true,
-                    "label": {
-                        "en": "Scan running",
-                        "de": "Suchlauf läuft",
-                        "ru": "Сканирование выполняется",
-                        "pt": "Verificação em curso",
-                        "nl": "Scan actief",
-                        "fr": "Recherche en cours",
-                        "it": "Scansione in corso",
-                        "es": "Búsqueda en curso",
-                        "pl": "Wyszukiwanie trwa",
-                        "uk": "Пошук триває",
-                        "zh-cn": "正在扫描"
+                    "label": "Scan running",
+                    "falseText": "not running",
+                    "falseTextStyle": {
+                        "color": "grey"
+                    },
+                    "trueText": "running",
+                    "trueTextStyle": {
+                        "color": "green"
                     },
                     "xs": 12,
-                    "sm": 6,
-                    "md": 3,
-                    "lg": 2,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4,
                     "xl": 2
                 },
                 "devicesProgress": {
+                    "newLine": true,
                     "type": "state",
                     "oid": "devicesProgress",
                     "control": "text",
                     "unit": "%",
                     "addColon": true,
-                    "label": {
-                        "en": "Searching devices",
-                        "de": "Gerätesuche",
-                        "ru": "Поиск устройств",
-                        "pt": "Procura de dispositivos",
-                        "nl": "Apparaten zoeken",
-                        "fr": "Recherche d'appareils",
-                        "it": "Ricerca dispositivi",
-                        "es": "Buscando dispositivos",
-                        "pl": "Szukanie urządzeń",
-                        "uk": "Пошук пристроїв",
-                        "zh-cn": "搜索设备"
-                    },
+                    "label": "Searching devices",
                     "xs": 12,
-                    "sm": 6,
-                    "md": 3,
-                    "lg": 2,
-                    "xl": 2
+                    "sm": 12,
+                    "md": 12,
+                    "lg": 6
                 },
                 "servicesProgress": {
+                    "newLine": true,
                     "type": "state",
                     "oid": "servicesProgress",
                     "control": "text",
                     "unit": "%",
                     "addColon": true,
-                    "label": {
-                        "en": "Testing devices",
-                        "de": "Geräteprüfung",
-                        "ru": "Проверка устройств",
-                        "pt": "Teste de dispositivos",
-                        "nl": "Apparaten testen",
-                        "fr": "Test des appareils",
-                        "it": "Verifica dispositivi",
-                        "es": "Comprobando dispositivos",
-                        "pl": "Sprawdzanie urządzeń",
-                        "uk": "Перевірка пристроїв",
-                        "zh-cn": "测试设备"
-                    },
+                    "label": "Testing devices",
                     "xs": 12,
-                    "sm": 6,
-                    "md": 3,
-                    "lg": 2,
-                    "xl": 2
+                    "sm": 12,
+                    "md": 12,
+                    "lg": 6
                 },
                 "devicesFound": {
+                    "newLine": true,
                     "type": "state",
                     "oid": "devicesFound",
                     "control": "text",
                     "addColon": true,
-                    "label": {
-                        "en": "Devices found",
-                        "de": "Gefundene Geräte",
-                        "ru": "Найдено устройств",
-                        "pt": "Dispositivos encontrados",
-                        "nl": "Gevonden apparaten",
-                        "fr": "Appareils trouvés",
-                        "it": "Dispositivi trovati",
-                        "es": "Dispositivos encontrados",
-                        "pl": "Znalezione urządzenia",
-                        "uk": "Знайдені пристрої",
-                        "zh-cn": "找到的设备"
-                    },
+                    "label": "Devices found",
                     "xs": 12,
                     "sm": 6,
                     "md": 3,
@@ -169,19 +92,7 @@
                     "oid": "instancesFound",
                     "control": "text",
                     "addColon": true,
-                    "label": {
-                        "en": "Adapters proposed",
-                        "de": "Vorgeschlagene Adapter",
-                        "ru": "Предложено адаптеров",
-                        "pt": "Adaptadores propostos",
-                        "nl": "Voorgestelde adapters",
-                        "fr": "Adaptateurs proposés",
-                        "it": "Adattatori proposti",
-                        "es": "Adaptadores propuestos",
-                        "pl": "Proponowane adaptery",
-                        "uk": "Запропоновані адаптери",
-                        "zh-cn": "建议的适配器"
-                    },
+                    "label": "Adapters proposed",
                     "xs": 12,
                     "sm": 6,
                     "md": 3,
@@ -192,40 +103,13 @@
                     "newLine": true,
                     "type": "header",
                     "size": 2,
-                    "text": {
-                        "en": "Scheduled scan",
-                        "de": "Zeitgesteuerter Suchlauf",
-                        "ru": "Запланированное сканирование",
-                        "pt": "Verificação programada",
-                        "nl": "Geplande scan",
-                        "fr": "Recherche planifiée",
-                        "it": "Scansione pianificata",
-                        "es": "Búsqueda programada",
-                        "pl": "Zaplanowane wyszukiwanie",
-                        "uk": "Запланований пошук",
-                        "zh-cn": "定时扫描"
-                    }
+                    "text": "Scheduled scan"
                 },
                 "autoDetect": {
                     "newLine": true,
                     "type": "checkbox",
-                    "label": {
-                        "en": "Run a scan on a timer",
-                        "de": "Suchlauf zeitgesteuert ausführen",
-                        "ru": "Запускать сканирование по таймеру",
-                        "pt": "Executar verificação por temporizador",
-                        "nl": "Scan uitvoeren op een timer",
-                        "fr": "Lancer la recherche par minuterie",
-                        "it": "Esegui la scansione a intervalli",
-                        "es": "Ejecutar la búsqueda con temporizador",
-                        "pl": "Uruchamiaj wyszukiwanie cyklicznie",
-                        "uk": "Запускати пошук за таймером",
-                        "zh-cn": "定时运行扫描"
-                    },
-                    "help": {
-                        "en": "Without this the adapter only scans when it is asked to.",
-                        "de": "Ohne dies sucht der Adapter nur, wenn er dazu aufgefordert wird."
-                    },
+                    "label": "Run a scan on a timer",
+                    "help": "Without this the adapter only scans when it is asked to.",
                     "default": true,
                     "xs": 12,
                     "sm": 12,
@@ -240,23 +124,8 @@
                     "max": 10080,
                     "default": 60,
                     "disabled": "!data.autoDetect",
-                    "label": {
-                        "en": "Minutes between two scans",
-                        "de": "Minuten zwischen zwei Suchläufen",
-                        "ru": "Минут между сканированиями",
-                        "pt": "Minutos entre duas verificações",
-                        "nl": "Minuten tussen twee scans",
-                        "fr": "Minutes entre deux recherches",
-                        "it": "Minuti tra due scansioni",
-                        "es": "Minutos entre dos búsquedas",
-                        "pl": "Minuty między wyszukiwaniami",
-                        "uk": "Хвилин між пошуками",
-                        "zh-cn": "两次扫描之间的分钟数"
-                    },
-                    "help": {
-                        "en": "A scan puts load on the network, five minutes is the shortest interval accepted.",
-                        "de": "Ein Suchlauf belastet das Netz; fünf Minuten sind der kürzeste zulässige Abstand."
-                    },
+                    "label": "Minutes between two scans",
+                    "help": "A scan puts load on the network, five minutes is the shortest interval accepted.",
                     "xs": 12,
                     "sm": 12,
                     "md": 6,
@@ -268,23 +137,14 @@
                     "type": "selectSendTo",
                     "command": "getMethodList",
                     "multiple": true,
-                    "label": {
-                        "en": "Methods to run",
-                        "de": "Auszuführende Methoden",
-                        "ru": "Используемые методы",
-                        "pt": "Métodos a executar",
-                        "nl": "Uit te voeren methoden",
-                        "fr": "Méthodes à exécuter",
-                        "it": "Metodi da eseguire",
-                        "es": "Métodos a ejecutar",
-                        "pl": "Metody do uruchomienia",
-                        "uk": "Методи для запуску",
-                        "zh-cn": "要运行的方法"
-                    },
-                    "help": {
-                        "en": "Nothing selected means every method. Used by the scheduled scan and by the button above. mDNS and UPnP are cheap, a ping sweep is not.",
-                        "de": "Nichts ausgewählt bedeutet alle Methoden. Gilt für den zeitgesteuerten Suchlauf und für den Knopf oben. mDNS und UPnP sind günstig, ein Ping-Durchlauf nicht."
-                    },
+                    "default": [
+                        "mdns",
+                        "ping",
+                        "udp",
+                        "upnp"
+                    ],
+                    "label": "Methods to run",
+                    "help": "Used by the scheduled scan and by the button above. Nothing selected falls back to mdns, ping, udp and upnp: serial opens every serial port of this host, tr064 and SMA Speedwire only have something to say where such a device lives.",
                     "xs": 12,
                     "sm": 12,
                     "md": 12,
@@ -295,19 +155,7 @@
                     "newLine": true,
                     "type": "header",
                     "size": 2,
-                    "text": {
-                        "en": "Ping",
-                        "de": "Ping",
-                        "ru": "Ping",
-                        "pt": "Ping",
-                        "nl": "Ping",
-                        "fr": "Ping",
-                        "it": "Ping",
-                        "es": "Ping",
-                        "pl": "Ping",
-                        "uk": "Ping",
-                        "zh-cn": "Ping"
-                    }
+                    "text": "Ping"
                 },
                 "pingTimeout": {
                     "newLine": true,
@@ -315,10 +163,7 @@
                     "min": 100,
                     "max": 10000,
                     "default": 1000,
-                    "label": {
-                        "en": "Timeout of a single ping (ms)",
-                        "de": "Zeitlimit eines einzelnen Pings (ms)"
-                    },
+                    "label": "Timeout of a single ping (ms)",
                     "xs": 12,
                     "sm": 12,
                     "md": 6,
@@ -330,10 +175,7 @@
                     "min": 1,
                     "max": 255,
                     "default": 20,
-                    "label": {
-                        "en": "Addresses pinged at once",
-                        "de": "Gleichzeitig angepingte Adressen"
-                    },
+                    "label": "Addresses pinged at once",
                     "xs": 12,
                     "sm": 12,
                     "md": 6,
@@ -343,14 +185,8 @@
                 "pingOwnIP": {
                     "newLine": true,
                     "type": "text",
-                    "label": {
-                        "en": "Scan only this local address",
-                        "de": "Nur diese lokale Adresse durchsuchen"
-                    },
-                    "help": {
-                        "en": "Empty means every interface of this host.",
-                        "de": "Leer bedeutet jede Schnittstelle dieses Hosts."
-                    },
+                    "label": "Scan only this local address",
+                    "help": "Empty means every interface of this host.",
                     "xs": 12,
                     "sm": 12,
                     "md": 6,
@@ -359,10 +195,7 @@
                 },
                 "pingOwnNetmask": {
                     "type": "text",
-                    "label": {
-                        "en": "Netmask for that address",
-                        "de": "Netzmaske zu dieser Adresse"
-                    },
+                    "label": "Netmask for that address",
                     "xs": 12,
                     "sm": 12,
                     "md": 6,
@@ -373,14 +206,8 @@
                     "newLine": true,
                     "type": "checkbox",
                     "default": true,
-                    "label": {
-                        "en": "Scan with TCP when ping is not permitted",
-                        "de": "Mit TCP suchen, wenn Ping nicht erlaubt ist"
-                    },
-                    "help": {
-                        "en": "An unprivileged LXC container may not send ICMP packets. Instead of finding nothing, the scan then tries to connect to the ports below.",
-                        "de": "Ein unprivilegierter LXC-Container darf keine ICMP-Pakete senden. Statt nichts zu finden, versucht der Suchlauf dann eine Verbindung zu den unten genannten Ports."
-                    },
+                    "label": "Scan with TCP when ping is not permitted",
+                    "help": "An unprivileged LXC container may not send ICMP packets. Instead of finding nothing, the scan then tries to connect to the ports below.",
                     "xs": 12,
                     "sm": 12,
                     "md": 6,
@@ -391,14 +218,8 @@
                     "type": "text",
                     "default": "80,443,22,8080,8443,1883",
                     "disabled": "!data.pingFallbackTcp",
-                    "label": {
-                        "en": "Ports of the TCP scan",
-                        "de": "Ports des TCP-Suchlaufs"
-                    },
-                    "help": {
-                        "en": "A device that refuses the connection is found as well, so a closed port is not a wasted probe. Every port lengthens the scan.",
-                        "de": "Ein Gerät, das die Verbindung ablehnt, wird ebenfalls gefunden; ein geschlossener Port ist also nicht vergebens. Jeder Port verlängert den Suchlauf."
-                    },
+                    "label": "Ports of the TCP scan",
+                    "help": "A device that refuses the connection is found as well, so a closed port is not a wasted probe. Every port lengthens the scan.",
                     "xs": 12,
                     "sm": 12,
                     "md": 6,
@@ -409,27 +230,12 @@
                     "newLine": true,
                     "type": "header",
                     "size": 2,
-                    "text": {
-                        "en": "Proposals",
-                        "de": "Vorschläge",
-                        "ru": "Предложения",
-                        "pt": "Propostas",
-                        "nl": "Voorstellen",
-                        "fr": "Propositions",
-                        "it": "Proposte",
-                        "es": "Propuestas",
-                        "pl": "Propozycje",
-                        "uk": "Пропозиції",
-                        "zh-cn": "建议"
-                    }
+                    "text": "Proposals"
                 },
                 "onlyLocal": {
                     "newLine": true,
                     "type": "checkbox",
-                    "label": {
-                        "en": "Propose only adapters that are installed here",
-                        "de": "Nur Adapter vorschlagen, die hier installiert sind"
-                    },
+                    "label": "Propose only adapters that are installed here",
                     "xs": 12,
                     "sm": 12,
                     "md": 12,
@@ -440,35 +246,11 @@
         },
         "tabDevices": {
             "type": "panel",
-            "label": {
-                "en": "Devices",
-                "de": "Geräte",
-                "ru": "Устройства",
-                "pt": "Dispositivos",
-                "nl": "Apparaten",
-                "fr": "Appareils",
-                "it": "Dispositivi",
-                "es": "Dispositivos",
-                "pl": "Urządzenia",
-                "uk": "Пристрої",
-                "zh-cn": "设备"
-            },
+            "label": "Devices",
             "items": {
                 "_devicesHint": {
                     "type": "staticText",
-                    "text": {
-                        "en": "What the last scan found. The same information is in the object tree below discovery.0.devices.",
-                        "de": "Was der letzte Suchlauf gefunden hat. Dieselben Angaben stehen im Objektbaum unter discovery.0.devices.",
-                        "ru": "Результаты последнего сканирования. То же самое находится в дереве объектов в discovery.0.devices.",
-                        "pt": "O que a última verificação encontrou. A mesma informação está em discovery.0.devices.",
-                        "nl": "Wat de laatste scan vond. Dezelfde gegevens staan onder discovery.0.devices.",
-                        "fr": "Ce que la dernière recherche a trouvé. Les mêmes données sont sous discovery.0.devices.",
-                        "it": "Cosa ha trovato l'ultima scansione. Gli stessi dati sono in discovery.0.devices.",
-                        "es": "Lo que encontró la última búsqueda. Los mismos datos están en discovery.0.devices.",
-                        "pl": "Co znalazło ostatnie wyszukiwanie. Te same dane są w discovery.0.devices.",
-                        "uk": "Що знайшов останній пошук. Ті самі дані є в discovery.0.devices.",
-                        "zh-cn": "上次扫描的结果。相同的信息位于 discovery.0.devices 下。"
-                    },
+                    "text": "What the last scan found. The same information is in the object tree below discovery.0.devices.",
                     "xs": 12,
                     "sm": 12,
                     "md": 12,
@@ -480,7 +262,9 @@
                     "type": "textSendTo",
                     "command": "getFoundDevices",
                     "container": "html",
-                    "alsoDependsOn": ["startBrowse"],
+                    "alsoDependsOn": [
+                        "startBrowse"
+                    ],
                     "xs": 12,
                     "sm": 12,
                     "md": 12,

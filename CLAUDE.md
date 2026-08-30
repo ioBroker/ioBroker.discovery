@@ -47,8 +47,15 @@ src/
   lib/adapters/*.ts        156 detection modules
   lib/discovery-states.ts  the decisions behind the device tree and the scheduled scan
   types/*.d.ts             ambient declarations for npm packages without typings
-lib/i18n/*.json            translation data, not read by any code (Weblate target)
+lib/i18n/*.json            translation data for the discovery results, not read by any code (Weblate target)
+admin/jsonConfig.json      the settings dialog, English texts only
+admin/i18n/*.json          those texts in 11 languages, keyed by the English one
 ```
+
+The two i18n directories are unrelated: `lib/i18n` belongs to what a scan reports, `admin/i18n` to the settings
+dialog. `jsonConfig.json` carries `"i18n": true`, so every `label`, `help` and `text` in it is an English string
+that admin looks up in `admin/i18n/<lang>.json` - do not put language objects back into the config, and add the
+English text to all eleven files when a new one appears.
 
 ### Entry Point: src/main.ts
 
@@ -79,9 +86,14 @@ Two things happen around a scan besides writing `system.discovery`:
   device with `address`, `name`, `type`, `source`, `suggested` and `lastSeen`, plus `discovery.0.lastScan`. It shows
   the *last* scan, not a history: channels of devices that did not turn up again are deleted.
 - `scheduleAutoDetect()` / `runAutoDetect()` repeat a scan on a timer when `native.autoDetect` is set. A scan started
-  from the admin dialog wins; the scheduled one skips that turn.
+  from the admin dialog wins; the scheduled one skips that turn. Both the timer and the button of the settings
+  dialog go through `discoveryStates.autoDetectMethods()`, which never answers with "every method": an empty
+  selection falls back to `DEFAULT_AUTO_DETECT_METHODS` (`mdns`, `ping`, `udp`, `upnp`). `serial`, `tr064` and
+  `speedwire` are deliberately not in it - the first opens every serial port of the host, the other two only find
+  their own vendor. The `browse` message of the admin discovery dialog is not affected and still takes `null` for
+  a full scan.
 
-The settings dialog (`admin/jsonConfig.json`) has two tabs: the settings themselves, with a button that sends
+The settings dialog (`admin/jsonConfig.json`, texts in `admin/i18n/*.json`) has two tabs: the settings themselves, with a button that sends
 `startBrowse` and `state` controls showing `scanRunning`, the two progress states and the two counters live; and a
 device tab whose `textSendTo` renders the answer of `getFoundDevices`.
 

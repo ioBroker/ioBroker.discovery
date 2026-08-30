@@ -168,8 +168,8 @@
     "pingFallbackPorts": "80,443,22,8080,8443,1883",
     "onlyLocal": false,
     "autoDetect": true,
-    "autoDetectInterval": 60,
-    "autoDetectMethods": []
+    "autoDetectInterval": 240,
+    "autoDetectMethods": ["mdns", "ping", "udp", "upnp"]
   },
   "_objects": [
     {

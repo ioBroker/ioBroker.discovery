@@ -140,17 +140,43 @@ describe('cleaning up devices that are gone', () => {
 });
 
 describe('the scheduled scan', () => {
-    it('an empty selection means every method', () => {
-        // that is the shape browse() takes for a full scan
-        assert.strictEqual(states.autoDetectMethods({ autoDetectMethods: [] }), null);
-        assert.strictEqual(states.autoDetectMethods({}), null);
-        assert.strictEqual(states.autoDetectMethods({ autoDetectMethods: 'mdns' }), null);
+    it('an empty selection means the default methods', () => {
+        const wanted = ['mdns', 'ping', 'udp', 'upnp'];
+        assert.deepStrictEqual(states.DEFAULT_AUTO_DETECT_METHODS, wanted);
+        assert.deepStrictEqual(states.autoDetectMethods({ autoDetectMethods: [] }), wanted);
+        assert.deepStrictEqual(states.autoDetectMethods({}), wanted);
+        assert.deepStrictEqual(states.autoDetectMethods({ autoDetectMethods: 'mdns' }), wanted);
+    });
+
+    it('leaves out what a timer should not run unasked', () => {
+        // serial opens every serial port of the host, the other two only find their own vendor
+        for (const method of ['serial', 'tr064', 'speedwire']) {
+            assert.ok(!states.DEFAULT_AUTO_DETECT_METHODS.includes(method), method);
+        }
+    });
+
+    it('hands out a copy, so that a caller cannot edit the defaults', () => {
+        const methods = states.autoDetectMethods({});
+        methods.push('serial');
+        assert.ok(!states.DEFAULT_AUTO_DETECT_METHODS.includes('serial'));
     });
 
     it('passes a selection through and drops the empty entries', () => {
         assert.deepStrictEqual(states.autoDetectMethods({ autoDetectMethods: ['mdns', 'upnp'] }), ['mdns', 'upnp']);
         assert.deepStrictEqual(states.autoDetectMethods({ autoDetectMethods: ['mdns', '', null, 3] }), ['mdns']);
-        assert.strictEqual(states.autoDetectMethods({ autoDetectMethods: ['', null] }), null);
+        // a selection of nothing but junk is no selection
+        assert.deepStrictEqual(
+            states.autoDetectMethods({ autoDetectMethods: ['', null] }),
+            states.DEFAULT_AUTO_DETECT_METHODS,
+        );
+    });
+
+    it('every default method exists as a module', () => {
+        const fs = require('node:fs');
+        const files = fs.readdirSync(path.join(__dirname, '..', 'build', 'lib', 'methods'));
+        for (const method of states.DEFAULT_AUTO_DETECT_METHODS) {
+            assert.ok(files.includes(`${method}.js`), method);
+        }
     });
 
     it('holds the interval above the lower bound', () => {

@@ -126,20 +126,31 @@ export interface AutoDetectConfig {
 }
 
 /**
+ * The methods a scan runs when nobody picked any.
+ *
+ * The four that listen or send a few packets and are over in seconds. The ones left out cost
+ * more than they bring on a timer: `serial` opens every serial port of the host and can
+ * disturb whatever is talking on it, `tr064` only has something to say on a FRITZ!Box, and
+ * `speedwire` only where an SMA inverter lives. They are one click away in the settings.
+ */
+export const DEFAULT_AUTO_DETECT_METHODS = ['mdns', 'ping', 'udp', 'upnp'];
+
+/**
  * Which methods a scheduled scan should run.
  *
- * `null` means every method - the same shape `browse()` takes when the admin dialog asks for
- * a full scan.
+ * Never empty: a configuration without a selection - an instance from before the field
+ * existed, or a list the user emptied - falls back to {@link DEFAULT_AUTO_DETECT_METHODS}.
+ * The admin discovery dialog is not affected, it passes its own list straight to `browse()`.
  *
  * @param config the instance configuration
  */
-export function autoDetectMethods(config: AutoDetectConfig): string[] | null {
+export function autoDetectMethods(config: AutoDetectConfig): string[] {
     const selected = config?.autoDetectMethods;
     if (!Array.isArray(selected)) {
-        return null;
+        return [...DEFAULT_AUTO_DETECT_METHODS];
     }
     const names = selected.filter((name): name is string => typeof name === 'string' && !!name);
-    return names.length ? names : null;
+    return names.length ? names : [...DEFAULT_AUTO_DETECT_METHODS];
 }
 
 /**
