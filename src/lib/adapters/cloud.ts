@@ -58,7 +58,7 @@ export function detect(ignore1: unknown, ignore2: unknown, options: DetectOption
     let instance = tools.findInstance(options, 'cloud');
     if (!instance) {
         // cloud required web instance so check and install it too
-        let webInstance = tools.findInstance(options, 'web', obj => obj && obj.native && !obj.native.secure);
+        let webInstance = tools.findInstance(options, 'web', obj => obj?.native && !obj.native.secure);
 
         const id = tools.getNextInstanceID('cloud', options);
 

@@ -3,7 +3,7 @@ import type { DetectCallback, DetectOptions, DiscoveryDevice } from '../types';
 
 export function detect(ip: string, device: DiscoveryDevice, options: DetectOptions, callback: DetectCallback): void {
     tools.httpGet(`http://${ip}`, 1500, (err, data): void => {
-        if (data && data.includes('alt="Servicewelt"')) {
+        if (data?.includes('alt="Servicewelt"')) {
             let instance = tools.findInstance(options, 'stiebel-isg', obj => obj.native.isgAddress === ip);
 
             if (!instance) {

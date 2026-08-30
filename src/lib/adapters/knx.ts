@@ -67,7 +67,7 @@ export function detect(
             clearTimeout(timeout);
             timeout = null;
         }
-        if (message && message[2] === 2 && message[3] === 6) {
+        if (message?.[2] === 2 && message[3] === 6) {
             // if CONNECT_RESPONSE:  0x0206,
             const disconnect = [6, 16, 2, 9, 0, 16, 1, 0, 8, 1, 192, 168, 60, 102, 0, 0];
             disconnect[10] = message[10];

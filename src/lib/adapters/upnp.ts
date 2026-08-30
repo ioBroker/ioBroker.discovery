@@ -22,14 +22,14 @@ export function detect(ip: string, device: DiscoveryDevice, options: DetectOptio
         let instance;
         let fromOldInstances = false;
         for (let j = 0; j < options.newInstances.length; j++) {
-            if (options.newInstances[j].common && options.newInstances[j].common.name === 'upnp') {
+            if (options.newInstances[j].common?.name === 'upnp') {
                 instance = options.newInstances[j];
                 break;
             }
         }
         if (!instance) {
             for (let i = 0; i < options.existingInstances.length; i++) {
-                if (options.existingInstances[i].common && options.existingInstances[i].common.name === 'upnp') {
+                if (options.existingInstances[i].common?.name === 'upnp') {
                     instance = JSON.parse(JSON.stringify(options.existingInstances[i])); // do not modify existing instance
                     break;
                 }

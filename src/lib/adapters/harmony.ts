@@ -45,7 +45,7 @@ export function detect(ip: string, device: DiscoveryDevice, options: DetectOptio
     let foundInstance = false;
 
     device._upnp.forEach((upnp: ProtocolData): void => {
-        if (!foundInstance && upnp.USN && upnp.USN.includes('myharmony-com:device')) {
+        if (!foundInstance && upnp.USN?.includes('myharmony-com:device')) {
             options.log.debug(`Harmony Hub detected at: ${ip}`);
             const addHarmonyDev = addHarmony(ip, device, options);
             const addFakerokuDev = addFakeroku(ip, device, options);

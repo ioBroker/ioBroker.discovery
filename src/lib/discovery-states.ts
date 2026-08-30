@@ -1,0 +1,236 @@
+/**
+ * The decisions behind the two things a scan does besides writing `system.discovery`: it
+ * mirrors what it found into this instance's own object tree, and it can repeat itself on a
+ * timer.
+ *
+ * They live here rather than in `main.ts` because `main.ts` replaces its own `module.exports`
+ * for compact mode and therefore cannot export anything a test could reach.
+ */
+
+import type { DiscoveryDevice } from './types';
+
+/** How long after start-up the first scheduled scan runs - the host is busy right at boot */
+export const FIRST_AUTO_DETECT_DELAY = 120000;
+/** A scan costs minutes of network traffic, so anything below this is refused */
+export const MIN_AUTO_DETECT_MINUTES = 5;
+/** The `once` pseudo device stands for this host itself and is not a find */
+const NOT_A_DEVICE = '0.0.0.0';
+
+/**
+ * Turn an address into something that may stand in an ioBroker object id.
+ *
+ * An IPv4 address carries dots and a serial port carries slashes or backslashes - none of
+ * them are allowed in an id.
+ *
+ * @param address IP address or serial port name
+ */
+export function toObjectId(address: string): string {
+    return String(address).replace(/[^A-Za-z0-9_-]/g, '_');
+}
+
+/** True for a device that belongs in the object tree */
+export function isRealDevice(device: DiscoveryDevice): boolean {
+    return !!device?._addr && device._addr !== NOT_A_DEVICE;
+}
+
+/** One state below a device channel */
+export interface DeviceStateRow {
+    key: string;
+    label: string;
+    type: 'string' | 'number';
+    role: string;
+    value: string | number;
+}
+
+/**
+ * The name of the channel of one device - the speaking name plus the address it was found at,
+ * because a name alone is not unique on a network.
+ *
+ * @param device a device of the last scan
+ */
+export function deviceChannelName(device: DiscoveryDevice): string {
+    const name = device._name || device._addr;
+    return name === device._addr ? device._addr : `${name} (${device._addr})`;
+}
+
+/**
+ * The states that describe one device.
+ *
+ * @param device a device of the last scan
+ * @param now timestamp of the scan
+ */
+export function deviceStateRows(device: DiscoveryDevice, now: number): DeviceStateRow[] {
+    return [
+        { key: 'address', label: 'Address', type: 'string', role: 'info.ip', value: device._addr },
+        { key: 'name', label: 'Name', type: 'string', role: 'info.name', value: device._name || device._addr },
+        { key: 'type', label: 'Device type', type: 'string', role: 'text', value: device._type || 'ip' },
+        { key: 'source', label: 'Found by', type: 'string', role: 'text', value: device._source || '' },
+        {
+            key: 'suggested',
+            label: 'Adapters that recognised it',
+            type: 'string',
+            role: 'text',
+            // sorted so that two scans of an unchanged network write the same value
+            value: [...(device._detected || [])].sort().join(', '),
+        },
+        { key: 'lastSeen', label: 'Last seen', type: 'number', role: 'value.time', value: now },
+    ];
+}
+
+/**
+ * Which device channels the tree should hold after this scan, keyed by object id.
+ *
+ * @param devices what the scan found
+ */
+export function wantedChannels(devices: DiscoveryDevice[]): Map<string, DiscoveryDevice> {
+    const wanted = new Map<string, DiscoveryDevice>();
+    for (const device of devices || []) {
+        if (isRealDevice(device)) {
+            wanted.set(toObjectId(device._addr), device);
+        }
+    }
+    return wanted;
+}
+
+/**
+ * The device channels that are in the tree but not in this scan.
+ *
+ * The tree shows the *last* scan and not a history, so a device that did not turn up again is
+ * removed rather than left behind claiming to be there.
+ *
+ * @param objectIds every object id of this instance
+ * @param namespace the instance namespace, e.g. `discovery.0`
+ * @param wanted the channels this scan wants, as returned by {@link wantedChannels}
+ */
+export function staleChannels(objectIds: string[], namespace: string, wanted: Map<string, unknown>): string[] {
+    const prefix = `${namespace}.devices.`;
+    const stale = new Set<string>();
+
+    for (const id of objectIds) {
+        if (!id.startsWith(prefix)) {
+            continue;
+        }
+        const channel = id.substring(prefix.length).split('.')[0];
+        if (channel && !wanted.has(channel)) {
+            stale.add(channel);
+        }
+    }
+    return [...stale];
+}
+
+/** The part of the configuration the scheduled scan reads */
+export interface AutoDetectConfig {
+    autoDetect?: boolean;
+    autoDetectInterval?: number | string;
+    autoDetectMethods?: unknown;
+}
+
+/**
+ * Which methods a scheduled scan should run.
+ *
+ * `null` means every method - the same shape `browse()` takes when the admin dialog asks for
+ * a full scan.
+ *
+ * @param config the instance configuration
+ */
+export function autoDetectMethods(config: AutoDetectConfig): string[] | null {
+    const selected = config?.autoDetectMethods;
+    if (!Array.isArray(selected)) {
+        return null;
+    }
+    const names = selected.filter((name): name is string => typeof name === 'string' && !!name);
+    return names.length ? names : null;
+}
+
+/**
+ * Minutes between two scheduled scans, with the lower bound applied.
+ *
+ * The value can arrive as a string from an older instance configuration, and an empty or
+ * unreadable one falls back to an hour.
+ *
+ * @param config the instance configuration
+ */
+export function autoDetectMinutes(config: AutoDetectConfig): number {
+    const minutes = parseInt(config?.autoDetectInterval as string, 10);
+    if (!Number.isFinite(minutes)) {
+        // nothing usable was configured - an instance from before this field existed
+        return 60;
+    }
+    // a number was given, so it is honoured as far as the lower bound allows
+    return Math.max(MIN_AUTO_DETECT_MINUTES, minutes);
+}
+
+/**
+ * The devices of the last scan as an HTML table for the settings dialog.
+ *
+ * The dialog shows this through a `textSendTo` control, which renders whatever HTML the
+ * adapter answers with. Everything that comes off the network is escaped - a device is free to
+ * call itself `<script>` and some do.
+ *
+ * @param devices what the last scan found, as stored in `system.discovery`
+ * @param lastScan when that scan finished
+ */
+export function deviceTableHtml(devices: DiscoveryDevice[] | undefined, lastScan?: number): string {
+    const found = (devices || []).filter(isRealDevice);
+
+    if (!found.length) {
+        return '<i>No devices yet - start a scan on the settings tab.</i>';
+    }
+
+    const rows = found
+        .slice()
+        .sort((a, b) => compareAddresses(a._addr, b._addr))
+        .map(device => {
+            const detected = [...(device._detected || [])].sort();
+            return (
+                '<tr>' +
+                `<td style="padding:2px 12px 2px 0"><b>${escapeHtml(device._addr)}</b></td>` +
+                `<td style="padding:2px 12px 2px 0">${escapeHtml(device._name || '')}</td>` +
+                `<td style="padding:2px 12px 2px 0">${escapeHtml(device._type || 'ip')}</td>` +
+                `<td style="padding:2px 12px 2px 0">${escapeHtml(device._source || '')}</td>` +
+                `<td style="padding:2px 0">${detected.length ? escapeHtml(detected.join(', ')) : '&ndash;'}</td>` +
+                '</tr>'
+            );
+        })
+        .join('');
+
+    const header = `<tr>${['Address', 'Name', 'Type', 'Found by', 'Adapters that recognised it']
+        .map(text => `<th style="text-align:left;padding:2px 12px 2px 0">${text}</th>`)
+        .join('')}</tr>`;
+
+    const when = lastScan ? `<p>Last scan: ${new Date(lastScan).toLocaleString()}</p>` : '';
+
+    return `${when}<table style="border-collapse:collapse">${header}${rows}</table>`;
+}
+
+/** `<` and friends in a device name would otherwise land in the dialog as markup */
+function escapeHtml(text: string): string {
+    return String(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+/**
+ * Sort addresses the way a reader expects: IPv4 numerically, everything else alphabetically
+ * and behind them.
+ *
+ * @param a first address
+ * @param b second address
+ */
+function compareAddresses(a: string, b: string): number {
+    const asNumber = (address: string): number | null => {
+        const parts = /^(\d+)\.(\d+)\.(\d+)\.(\d+)$/.exec(address);
+        return parts ? ((+parts[1] * 256 + +parts[2]) * 256 + +parts[3]) * 256 + +parts[4] : null;
+    };
+    const na = asNumber(a);
+    const nb = asNumber(b);
+
+    if (na !== null && nb !== null) {
+        return na - nb;
+    }
+    if (na !== null) {
+        return -1;
+    }
+    if (nb !== null) {
+        return 1;
+    }
+    return a.localeCompare(b);
+}

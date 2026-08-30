@@ -38,13 +38,7 @@ export function detect(ip: string, device: DiscoveryDevice, options: DetectOptio
     let foundInstance = false;
 
     device._upnp.forEach((upnp: ProtocolData): void => {
-        if (
-            !foundInstance &&
-            upnp._location &&
-            upnp._location.includes('Kodi') &&
-            upnp.ST &&
-            upnp.ST.includes('MediaRenderer')
-        ) {
+        if (!foundInstance && upnp._location?.includes('Kodi') && upnp.ST?.includes('MediaRenderer')) {
             if (addDevice(ip, upnp._location, options)) {
                 foundInstance = true;
             }

@@ -27,7 +27,7 @@ export function detect(ip: string, device: DiscoveryDevice, options: DetectOptio
     let foundInstance = false;
 
     device._upnp.forEach((upnp: ProtocolData): void => {
-        if (!foundInstance && upnp.SERVER && upnp.SERVER.includes('RSCP_SERVICE_PROVIDER')) {
+        if (!foundInstance && upnp.SERVER?.includes('RSCP_SERVICE_PROVIDER')) {
             options.log.debug(`E3/DC RSCP device detected at: ${ip}`);
             if (addE3dcRscp(ip, device, options)) {
                 foundInstance = true;

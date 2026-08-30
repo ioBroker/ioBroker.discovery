@@ -13,7 +13,7 @@ function insertDevice(
     let i: any = ''; // starts empty, becomes the numeric suffix from the second device on
     let found;
 
-    name = name || '';
+    name ||= '';
     do {
         found = false;
         for (let d = 0; d < instance.native.devices.length; d++) {
@@ -44,7 +44,7 @@ function insertDevice(
 
     if (fromOldInstances) {
         options.newInstances.push(instance);
-        instance.comment = instance.comment || {};
+        instance.comment ||= {};
     }
     if (!instance.comment!.add) {
         instance.comment!.extended = instance.comment!.extended || [];
@@ -58,14 +58,14 @@ function addSonos(ip: string, data: ProtocolData, options: DetectOptions): false
     let instance;
     let fromOldInstances = false;
     for (let j = 0; j < options.newInstances.length; j++) {
-        if (options.newInstances[j].common && options.newInstances[j].common.name === 'sonos') {
+        if (options.newInstances[j].common?.name === 'sonos') {
             instance = options.newInstances[j];
             break;
         }
     }
     if (!instance) {
         for (let i = 0; i < options.existingInstances.length; i++) {
-            if (options.existingInstances[i].common && options.existingInstances[i].common.name === 'sonos') {
+            if (options.existingInstances[i].common?.name === 'sonos') {
                 instance = JSON.parse(JSON.stringify(options.existingInstances[i])); // do not modify existing instance
                 fromOldInstances = true;
                 break;
@@ -119,15 +119,15 @@ function addSonos(ip: string, data: ProtocolData, options: DetectOptions): false
     }
 
     if (!found) {
-        if (data && data._location) {
+        if (data?._location) {
             const mRoom = data._location.match(/<roomName>(.+)<\/roomName>/);
             const mName = data._location.match(/<displayName>(.+)<\/displayName>/);
             let name;
             let room;
-            if (mRoom && mRoom[1]) {
+            if (mRoom?.[1]) {
                 room = mRoom[1];
             }
-            if (mName && mName[1]) {
+            if (mName?.[1]) {
                 name = mName[1].replace(/[.:]/g, '_');
             }
             insertDevice(options, instance, fromOldInstances, ip, name, room);

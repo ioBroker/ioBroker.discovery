@@ -6,7 +6,7 @@ function listen(ip: string, options: DetectOptions, cb: (...args: any[]) => void
         options.log.debug(msg!);
         try {
             const parsed: ProtocolData = JSON.parse(msg!);
-            if (parsed && parsed.model && parsed.model === 'gateway') {
+            if (parsed?.model && parsed.model === 'gateway') {
                 options.log.debug(`mihome: ${ip}`);
                 options.log.debug(`mihome: ${JSON.stringify(parsed)}`);
                 cb?.(null, ip);

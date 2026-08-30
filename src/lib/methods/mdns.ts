@@ -52,6 +52,7 @@ export function browse(this: MethodInstance, self: MethodInstance): void {
             '_esphomelib._tcp.local', // ESPHome, from @2colors/esphome-native-api
             '_matterc._udp.local', // Matter node waiting to be commissioned
             '_matter._tcp.local', // Matter node already in a fabric
+            '_siegenia._tcp.local', // Siegenia windows and ventilation, the type its own browser matches on
         ],
         find: '*',
         broadcast: false,

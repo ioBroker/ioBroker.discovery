@@ -17,7 +17,7 @@ export function detect(ip: string, device: DiscoveryDevice, options: DetectOptio
     const name = ip + (device._name ? ` - ${device._name}` : '');
 
     tools.httpGet(`http://${ip}:49000/tr64desc.xml`, (err, data): void => {
-        if (data && data.includes('InternetGatewayDevice')) {
+        if (data?.includes('InternetGatewayDevice')) {
             let instance = tools.findInstance(
                 options,
                 'tr-064',

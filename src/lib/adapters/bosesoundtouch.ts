@@ -2,7 +2,7 @@ import * as tools from '../tools';
 import type { DetectCallback, DetectOptions, DiscoveryDevice, ProtocolData } from '../types';
 
 function addbosesoundtouch(ip: string, device: DiscoveryDevice, options: DetectOptions): boolean {
-    let instance = tools.findInstance(options, 'bosesoundtouch', obj => obj && obj.native && obj.native.address === ip);
+    let instance = tools.findInstance(options, 'bosesoundtouch', obj => obj?.native?.address === ip);
 
     if (!instance) {
         instance = {
@@ -30,7 +30,7 @@ export function detect(ip: string, device: DiscoveryDevice, options: DetectOptio
     let foundInstance = false;
 
     device._upnp.forEach((upnp: ProtocolData): void => {
-        if (!foundInstance && upnp.USN && upnp.USN.includes('BO5E') && upnp._location) {
+        if (!foundInstance && upnp.USN?.includes('BO5E') && upnp._location) {
             const name = upnp._location.substring(upnp._location.indexOf('<friendlyName>') + 14);
             device.bosename = name.substring(0, name.indexOf('<'));
             options.log.debug(`Bode discovered: ${device.bosename}`);

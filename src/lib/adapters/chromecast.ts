@@ -5,11 +5,7 @@ function addChromecast(ip: string, device: DiscoveryDevice, options: DetectOptio
     options.log.debug('chromecast FOUND!');
     const ownIp = tools.getOwnAddress(ip);
 
-    let instance = tools.findInstance(
-        options,
-        'chromecast',
-        obj => obj && obj.native && obj.native.webServer === ownIp,
-    );
+    let instance = tools.findInstance(options, 'chromecast', obj => obj?.native?.webServer === ownIp);
 
     if (!instance) {
         // chromecast required web instance so check and install it too

@@ -48,6 +48,8 @@ export interface DiscoveryDevice {
     _mdns?: ProtocolData;
     /** Result of the reverse DNS lookup */
     _dns?: { hostnames?: string[] | null };
+    /** Names of the detection modules that claimed this device during the last scan */
+    _detected?: string[];
     /** Cached body of the UPnP `LOCATION` document, filled by `tools.getLocationDesc()` */
     _locationDesc?: string;
     w_locationDesc?: string;

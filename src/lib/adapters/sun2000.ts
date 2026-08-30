@@ -26,10 +26,7 @@ const DETECT_TIMEOUT = UNIT_IDS.length * PROBE_TIMEOUT + 300;
  * @param registers the raw register bytes
  */
 export function readModelName(registers: Buffer | null): string | null {
-    if (!registers || !registers.length) {
-        return null;
-    }
-    const text = registers.toString('ascii').replace(/\0+$/, '').trim();
+    const text = tools.registerString(registers);
     if (!text || !/^[\x20-\x7e]+$/.test(text)) {
         return null;
     }

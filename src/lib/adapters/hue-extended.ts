@@ -2,7 +2,7 @@ import * as tools from '../tools';
 import type { DetectCallback, DetectOptions, DiscoveryDevice, ProtocolData } from '../types';
 
 function addHue(ip: string, device: DiscoveryDevice, options: DetectOptions): boolean {
-    let instance = tools.findInstance(options, 'hue-extended', obj => obj && obj.native && obj.native.bridgeIp === ip);
+    let instance = tools.findInstance(options, 'hue-extended', obj => obj?.native?.bridgeIp === ip);
 
     if (!instance) {
         const name = ip + (device._name ? ` - ${device._name}` : '');

@@ -149,7 +149,7 @@
       }
     },
     "adminUI": {
-      "config": "none"
+      "config": "json"
     },
     "connectionType": "local",
     "dataSource": "none",
@@ -164,7 +164,12 @@
     "pingOwnIP": "",
     "pingOwnNetmask": "",
     "pingBlock": 20,
-    "onlyLocal": false
+    "pingFallbackTcp": true,
+    "pingFallbackPorts": "80,443,22,8080,8443,1883",
+    "onlyLocal": false,
+    "autoDetect": true,
+    "autoDetectInterval": 60,
+    "autoDetectMethods": []
   },
   "_objects": [
     {
@@ -244,6 +249,19 @@
         "type": "boolean",
         "read": true,
         "write": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "lastScan",
+      "type": "state",
+      "common": {
+        "name": "Time of the last finished scan",
+        "type": "number",
+        "role": "value.time",
+        "read": true,
+        "write": false,
+        "def": 0
       },
       "native": {}
     }

@@ -29,7 +29,7 @@ function addInstance(ip: string, shortId: string, options: DetectOptions): boole
     let instance = tools.findInstance(
         options,
         adapterName,
-        obj => obj && obj.native && (obj.native.deviceIP === ip || obj.native.shortId === shortId),
+        obj => obj?.native && (obj.native.deviceIP === ip || obj.native.shortId === shortId),
     );
 
     if (!instance) {
@@ -109,8 +109,8 @@ function probeHttpPing(ip: string, options: DetectOptions, callback: DetectCallb
  */
 export function detect(ip: string, device: DiscoveryDevice, options: DetectOptions, callback: DetectCallback): void {
     // Stage 1: try reverse DNS hostname matching (instant, no network request)
-    const hostnames = device._dns && device._dns.hostnames;
-    if (hostnames && hostnames.length) {
+    const hostnames = device._dns?.hostnames;
+    if (hostnames?.length) {
         for (const hostname of hostnames) {
             const match = airQHostnameRegex.exec(hostname);
             if (match) {

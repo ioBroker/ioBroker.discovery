@@ -6,11 +6,11 @@ function addDevice(ip: string, device: DiscoveryDevice, options: DetectOptions, 
     // Try to find an existing instance for this IP
 
     //console.log('Found instance:', instance);
-    const existingInstances = options.existingInstances.filter(i => i.common && i.common.name === adapterName);
+    const existingInstances = options.existingInstances.filter(i => i.common?.name === adapterName);
     let instance;
     if (existingInstances.length) {
         for (const inst of existingInstances) {
-            if (inst.native && inst.native.devices) {
+            if (inst.native?.devices) {
                 if (inst.native.devices.find((d: ProtocolData): boolean => d.mac === device.mac)) {
                     console.log('Device', device.mac, '(', device.type, ') already configured. Skip.');
                     typeof callback === 'function' && callback(false);
@@ -108,7 +108,7 @@ function detect(ip: string, device: DiscoveryDevice, options: DetectOptions, cal
     }
 
     // We need to have mdns data with a TXT record
-    if (!device._mdns || !device._mdns.TXT || !device._mdns.TXT.data) {
+    if (!device._mdns?.TXT?.data) {
         return fail();
     }
 

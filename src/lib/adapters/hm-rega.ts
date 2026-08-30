@@ -59,19 +59,19 @@ export function detect(ip: string, device: DiscoveryDevice, options: DetectOptio
             let instances = options.existingInstances;
 
             for (let j = 0; j < instances.length; j++) {
-                if (instances[j].common && instances[j].common.name === 'hm-rpc') {
+                if (instances[j].common?.name === 'hm-rpc') {
                     if (instances[j].native.homematicAddress === ip && instances[j].native.daemon === 'rfd') {
                         if (!instance.native.rfdEnabled && instances[j]._id) {
                             instance.native.rfdEnabled = true;
                             modified = true;
-                            instance.comment = instance.comment || {};
+                            instance.comment ||= {};
                             if (instance.comment.ack) {
                                 instance.comment.ack = false;
                             }
                             if (instance.comment.add) {
                                 instance.comment.add.push('Wireless RF');
                             } else {
-                                instance.comment.extended = instance.comment.extended || [];
+                                instance.comment.extended ||= [];
                                 instance.comment.extended.push({ add: 'Wireless RF' });
                             }
                             instance.native.rfdAdapter = instances[j]._id.substring('system.adapter.'.length);
@@ -80,14 +80,14 @@ export function detect(ip: string, device: DiscoveryDevice, options: DetectOptio
                             if (!instance.native.hs485denabled && instances[j]._id) {
                                 instance.native.hs485denabled = true;
                                 modified = true;
-                                instance.comment = instance.comment || {};
+                                instance.comment ||= {};
                                 if (instance.comment.ack) {
                                     instance.comment.ack = false;
                                 }
                                 if (instance.comment.add) {
                                     instance.comment.add.push('HS485d');
                                 } else {
-                                    instance.comment.extended = instance.comment.extended || [];
+                                    instance.comment.extended ||= [];
                                     instance.comment.extended.push({ add: 'HS485d' });
                                 }
                                 instance.native.hs485dAdapter = instances[j]._id.substring('system.adapter.'.length);
@@ -96,14 +96,14 @@ export function detect(ip: string, device: DiscoveryDevice, options: DetectOptio
                         if (instances[j].native.homematicAddress === ip && instances[j].native.daemon === 'CUxD') {
                             if (!instance.native.cuxdEnabled && instances[j]._id) {
                                 instance.native.cuxdEnabled = true;
-                                instance.comment = instance.comment || {};
+                                instance.comment ||= {};
                                 if (instance.comment.ack) {
                                     instance.comment.ack = false;
                                 }
                                 if (instance.comment.add) {
                                     instance.comment.add.push('CUxD');
                                 } else {
-                                    instance.comment.extended = instance.comment.extended || [];
+                                    instance.comment.extended ||= [];
                                     instance.comment.extended.push({ add: 'CUxD' });
                                 }
                                 modified = true;
@@ -112,14 +112,14 @@ export function detect(ip: string, device: DiscoveryDevice, options: DetectOptio
                         }
                         if (instances[j].native.homematicAddress === ip && instances[j].native.daemon === 'HMIP') {
                             if (!instance.native.hmipEnabled && instances[j]._id) {
-                                instance.comment = instance.comment || {};
+                                instance.comment ||= {};
                                 if (instance.comment.ack) {
                                     instance.comment.ack = false;
                                 }
                                 if (instance.comment.add) {
                                     instance.comment.add.push('HMIP');
                                 } else {
-                                    instance.comment.extended = instance.comment.extended || [];
+                                    instance.comment.extended ||= [];
                                     instance.comment.extended.push({ add: 'HMIP' });
                                 }
                                 instance.native.hmipEnabled = true;
@@ -134,19 +134,19 @@ export function detect(ip: string, device: DiscoveryDevice, options: DetectOptio
             instances = options.newInstances;
 
             for (let j = 0; j < instances.length; j++) {
-                if (instances[j].common && instances[j].common.name === 'hm-rpc') {
+                if (instances[j].common?.name === 'hm-rpc') {
                     if (instances[j].native.homematicAddress === ip && instances[j].native.daemon === 'rfd') {
                         if (!instance.native.rfdEnabled && instances[j]._id) {
                             instance.native.rfdEnabled = true;
                             modified = true;
-                            instance.comment = instance.comment || {};
+                            instance.comment ||= {};
                             if (instance.comment.ack) {
                                 instance.comment.ack = false;
                             }
                             if (instance.comment.add) {
                                 instance.comment.add.push('Wireless RF');
                             } else {
-                                instance.comment.extended = instance.comment.extended || [];
+                                instance.comment.extended ||= [];
                                 instance.comment.extended.push({ add: 'Wireless RF' });
                             }
                             instance.native.rfdAdapter = instances[j]._id.substring('system.adapter.'.length);
@@ -156,14 +156,14 @@ export function detect(ip: string, device: DiscoveryDevice, options: DetectOptio
                         if (!instance.native.hs485denabled && instances[j]._id) {
                             instance.native.hs485denabled = true;
                             modified = true;
-                            instance.comment = instance.comment || {};
+                            instance.comment ||= {};
                             if (instance.comment.ack) {
                                 instance.comment.ack = false;
                             }
                             if (instance.comment.add) {
                                 instance.comment.add.push('HS485d');
                             } else {
-                                instance.comment.extended = instance.comment.extended || [];
+                                instance.comment.extended ||= [];
                                 instance.comment.extended.push({ add: 'HS485d' });
                             }
                             instance.native.hs485dAdapter = instances[j]._id.substring('system.adapter.'.length);
@@ -173,14 +173,14 @@ export function detect(ip: string, device: DiscoveryDevice, options: DetectOptio
                         if (!instance.native.cuxdEnabled && instances[j]._id) {
                             instance.native.cuxdEnabled = true;
                             modified = true;
-                            instance.comment = instance.comment || {};
+                            instance.comment ||= {};
                             if (instance.comment.ack) {
                                 instance.comment.ack = false;
                             }
                             if (instance.comment.add) {
                                 instance.comment.add.push('CUxD');
                             } else {
-                                instance.comment.extended = instance.comment.extended || [];
+                                instance.comment.extended ||= [];
                                 instance.comment.extended.push({ add: 'CUxD' });
                             }
                             instance.native.cuxdAdapter = instances[j]._id.substring('system.adapter.'.length);
@@ -189,14 +189,14 @@ export function detect(ip: string, device: DiscoveryDevice, options: DetectOptio
                     if (instances[j].native.homematicAddress === ip && instances[j].native.daemon === 'HMIP') {
                         if (!instance.native.hmipEnabled && instances[j]._id) {
                             instance.native.hmipEnabled = true;
-                            instance.comment = instance.comment || {};
+                            instance.comment ||= {};
                             if (instance.comment.ack) {
                                 instance.comment.ack = false;
                             }
                             if (instance.comment.add) {
                                 instance.comment.add.push('HMIP');
                             } else {
-                                instance.comment.extended = instance.comment.extended || [];
+                                instance.comment.extended ||= [];
                                 instance.comment.extended.push({ add: 'HMIP' });
                             }
                             modified = true;

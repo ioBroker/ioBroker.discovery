@@ -17,7 +17,7 @@ export function detect(ip: string, device: DiscoveryDevice, options: DetectOptio
     const name = ip + (device._name ? ` - ${device._name}` : '');
 
     tools.httpGet(`http://${ip}:8080/rest/services`, (err, data): void => {
-        if (data && data.includes('org.eclipse')) {
+        if (data?.includes('org.eclipse')) {
             let instance = tools.findInstance(
                 options,
                 'openhab',

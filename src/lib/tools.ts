@@ -147,7 +147,7 @@ export function testPort(
             opts = options || {};
         }
     }
-    ms = ms || 500;
+    ms ||= 500;
 
     const finish = (found: boolean): void => {
         if (timer) {
@@ -187,6 +187,9 @@ export function testPort(
         if (opts.onConnect && client) {
             opts.onConnect(ip, port, client);
         } else {
+            // Careful: without an onConnect handler an open port counts as a find and no
+            // answer is ever waited for. A module that only wants to read a banner
+            // (adapters/viessmann.ts) still has to pass an empty handler.
             finish(true);
         }
     });
@@ -472,12 +475,12 @@ export function getNextInstanceID(name: string, options: DetectOptions): string 
     const prefixLength = `system.adapter.${name}.`.length;
 
     for (const instance of options?.newInstances || []) {
-        if (instance.common && instance.common.name === name) {
+        if (instance.common?.name === name) {
             instances.push(parseInt(instance._id.substring(prefixLength), 10));
         }
     }
     for (const instance of options?.existingInstances || []) {
-        if (instance.common && instance.common.name === name) {
+        if (instance.common?.name === name) {
             instances.push(parseInt(instance._id.substring(prefixLength), 10));
         }
     }
@@ -498,7 +501,7 @@ export function getNextInstanceID(name: string, options: DetectOptions): string 
  */
 export function findInstance(options: DetectOptions, name: string, compare?: InstanceFilter): DiscoveryInstance | null {
     for (const existing of options.existingInstances) {
-        if (existing.common && existing.common.name === name && (!compare || compare(existing))) {
+        if (existing.common?.name === name && (!compare || compare(existing))) {
             const instance = JSON.parse(JSON.stringify(existing)) as DiscoveryInstance; // do not modify existing instance
             instance._existing = true;
             return instance;
@@ -506,7 +509,7 @@ export function findInstance(options: DetectOptions, name: string, compare?: Ins
     }
 
     for (const proposal of options.newInstances) {
-        if (proposal.common && proposal.common.name === name && (!compare || compare(proposal))) {
+        if (proposal.common?.name === name && (!compare || compare(proposal))) {
             return proposal;
         }
     }
@@ -541,7 +544,7 @@ export function httpGet(
     timeout?: number | HttpGetOptions | HttpGetCallback,
     callback?: HttpGetCallback,
 ): Promise<string | null> | void {
-    const HTTP = link && link.startsWith('https') ? https : http;
+    const HTTP = link?.startsWith('https') ? https : http;
 
     let cb: HttpGetCallback | null;
     let ms: number;
@@ -650,7 +653,7 @@ export function testSerialPort(
     callback: SerialCallback,
 ): void {
     if (typeof baudRates === 'object') {
-        if (!baudRates || !baudRates.length) {
+        if (!baudRates?.length) {
             serialDebug && options.log.error(`------------------- <<< <<< <<< <0< testSerialPort "${name}`);
             serialDebug && options.log.warn(`Stop scan port ${name}`);
             callback('not found', false, name);
@@ -695,7 +698,7 @@ export function testSerialPort(
 
         options.autoOpen = false;
         options.baudRate = parseInt(baudRates as unknown as string, 10);
-        options.timeout = options.timeout || 1000;
+        options.timeout ||= 1000;
         options.path = name;
 
         let port: any = new SerialPort(options as any);
@@ -709,7 +712,7 @@ export function testSerialPort(
                 timeout = null;
             }
             try {
-                if (port && port.isOpen) {
+                if (port?.isOpen) {
                     serialDebug && options.log.debug(`${new Date().toString()} close port ${name} ${baudRates}`);
                     closing = true;
                     port.close((): void => {
@@ -754,6 +757,9 @@ export function testSerialPort(
                     }
                 });
             } else {
+                // Careful: without an onOpen handler a port that merely opens counts as a
+                // find, and nothing is ever listened for. A module that only wants to listen
+                // (adapters/smartmeter.ts) still has to pass a handler that calls done().
                 closePort?.(2, true);
             }
         });
@@ -790,7 +796,7 @@ export function testSerialPort(
         });
     } catch (err) {
         serialDebug && options.log.error(`Cannot open_ port ${name}: ${err}`);
-        closePort && closePort(8);
+        closePort?.(8);
     }
 }
 
@@ -828,7 +834,7 @@ export function getLocationDesc(
         return cb?.(0, device._locationDesc);
     }
     const upnp = device._upnp;
-    if (!url && upnp && upnp.LOCATION) {
+    if (!url && upnp?.LOCATION) {
         url = upnp.LOCATION as string;
     }
 
@@ -915,7 +921,9 @@ export function mdnsName(device: DiscoveryDevice): string {
         typeof device._name === 'string' ? device._name : '',
     ];
     const name = candidates.find(v => v && !v.startsWith('_'));
-    return (name || '').replace(/\.local\.?$/i, '');
+    // An SRV or PTR record names an instance as `<name>._<service>._<proto>.local`, so the
+    // service part starts at the first `._` and is not part of the name.
+    return (name || '').replace(/\.local\.?$/i, '').replace(/\._[^.]+\._(tcp|udp)$/i, '');
 }
 
 /**
@@ -1028,10 +1036,30 @@ export function mdnsTxt(device: DiscoveryDevice): Record<string, string> {
     return result;
 }
 
+/**
+ * Turn the payload of a Modbus answer into the text it holds.
+ *
+ * Devices pad their identification strings with NUL bytes, so the text ends at the first one.
+ * Returns `null` for an empty result, which is what a register full of zeros comes to.
+ *
+ * @param registers the raw register bytes of the answer
+ */
+export function registerString(registers: Buffer | null): string | null {
+    if (!registers?.length) {
+        return null;
+    }
+    const end = registers.indexOf(0);
+    const text = registers
+        .subarray(0, end === -1 ? registers.length : end)
+        .toString('ascii')
+        .trim();
+    return text || null;
+}
+
 export type ModbusCallback = (error: unknown, registers: Buffer | null) => void;
 
 /**
- * Read holding registers from a Modbus TCP device (function code 3).
+ * Read registers from a Modbus TCP device.
  *
  * Hand-rolled on purpose: the request is a twelve byte packet and the answer a nine byte
  * header plus payload, which is less code than wiring in a Modbus library - and this
@@ -1043,15 +1071,17 @@ export type ModbusCallback = (error: unknown, registers: Buffer | null) => void;
  * @param ip address of the device
  * @param port TCP port, 502 by convention
  * @param unitId Modbus unit (slave) id
+ * @param functionCode 3 for holding registers, 4 for input registers
  * @param start first register to read
  * @param count how many registers
  * @param timeout ms to wait for the answer
  * @param callback receives the raw register bytes, `count * 2` of them
  */
-export function readHoldingRegisters(
+function readRegisters(
     ip: string,
     port: number,
     unitId: number,
+    functionCode: number,
     start: number,
     count: number,
     timeout: number,
@@ -1064,7 +1094,7 @@ export function readHoldingRegisters(
     request.writeUInt16BE(0, 2); // protocol id, always 0 for Modbus TCP
     request.writeUInt16BE(6, 4); // length of everything after this field
     request.writeUInt8(unitId & 0xff, 6);
-    request.writeUInt8(3, 7); // read holding registers
+    request.writeUInt8(functionCode, 7); // 3 = holding registers, 4 = input registers
     request.writeUInt16BE(start & 0xffff, 8);
     request.writeUInt16BE(count & 0xffff, 10);
 
@@ -1087,8 +1117,7 @@ export function readHoldingRegisters(
                 if (answer.readUInt16BE(0) !== transaction || answer.readUInt16BE(2) !== 0) {
                     return false; // not our answer, or not Modbus at all
                 }
-                const functionCode = answer.readUInt8(7);
-                if (functionCode !== 3) {
+                if (answer.readUInt8(7) !== functionCode) {
                     // 0x83 is an exception answer - the device speaks Modbus but refuses this
                     // register, which for a detection is a clear "not this one"
                     return false;
@@ -1103,4 +1132,54 @@ export function readHoldingRegisters(
         },
         (err, found): void => callback(err, found && registers ? registers : null),
     );
+}
+
+/**
+ * Read holding registers (function code 3).
+ *
+ * @param ip address of the device
+ * @param port TCP port, 502 by convention
+ * @param unitId Modbus unit (slave) id
+ * @param start first register to read
+ * @param count how many registers
+ * @param timeout ms to wait for the answer
+ * @param callback receives the raw register bytes, `count * 2` of them
+ */
+export function readHoldingRegisters(
+    ip: string,
+    port: number,
+    unitId: number,
+    start: number,
+    count: number,
+    timeout: number,
+    callback: ModbusCallback,
+): void {
+    readRegisters(ip, port, unitId, 3, start, count, timeout, callback);
+}
+
+/**
+ * Read input registers (function code 4).
+ *
+ * The same packet with one byte changed. Devices put their identification on one side or the
+ * other with no rule to it - the sonnen wallbox keeps serial and model in input registers,
+ * the inverters here in holding registers.
+ *
+ * @param ip address of the device
+ * @param port TCP port, 502 by convention
+ * @param unitId Modbus unit (slave) id
+ * @param start first register to read
+ * @param count how many registers
+ * @param timeout ms to wait for the answer
+ * @param callback receives the raw register bytes, `count * 2` of them
+ */
+export function readInputRegisters(
+    ip: string,
+    port: number,
+    unitId: number,
+    start: number,
+    count: number,
+    timeout: number,
+    callback: ModbusCallback,
+): void {
+    readRegisters(ip, port, unitId, 4, start, count, timeout, callback);
 }

@@ -17,7 +17,7 @@ const DETECT_TIMEOUT = UNIT_IDS.length * PROBE_TIMEOUT + 300;
 const MODEL = /^SUN2000/i;
 
 function modelName(registers: Buffer | null): string | null {
-    if (!registers || !registers.length) {
+    if (!registers?.length) {
         return null;
     }
     const text = registers.toString('ascii').replace(/\0+$/, '').trim();

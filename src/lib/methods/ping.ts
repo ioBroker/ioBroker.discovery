@@ -1,9 +1,12 @@
 import type { DetectCallback, MethodInstance, ProtocolData } from '../types';
+import type * as pingModule from './ping/ping';
+import type * as fallbackModule from './ping/fallback';
 
 // Lazily required so that a host without them can still run the other methods.
 // They are assigned in browse() before anything below touches them.
 let dns: any;
-let ping: any;
+let ping: typeof pingModule;
+let fallback: typeof fallbackModule;
 let os: any;
 let Netmask: any;
 let ownIPs: string[] = [];
@@ -22,6 +25,7 @@ function pingAll(self: MethodInstance): void {
 
     dns ||= require('node:dns');
     ping ||= require('./ping/ping');
+    fallback ||= require('./ping/fallback');
     os ||= require('node:os');
     Netmask ||= require('netmask').Netmask;
 
@@ -33,6 +37,16 @@ function pingAll(self: MethodInstance): void {
     let blockCount;
     let ipCount;
     let rangeCount = 0;
+
+    // Set when this host turned out to be unable to send ICMP - see checkPing()
+    let denied = false;
+    let useFallback = false;
+    const fallbackPorts = fallback.parsePorts(self.options.pingFallbackPorts);
+    // The probes are fired 50 ms apart and answer whenever they answer; this counts the ones
+    // still on the wire so that the method does not report itself done before they are back.
+    let pending = 0;
+
+    const pingConfig = (): ProtocolData => ({ log: self.adapter.log.debug, timeout: self.options.pingTimeout });
 
     function getRanges(): void {
         const interfaces = os.networkInterfaces();
@@ -100,9 +114,56 @@ function pingAll(self: MethodInstance): void {
         self.adapter.log.debug(`ranges: ${JSON.stringify(ranges)}`);
     }
 
+    /** Remember that ping is unusable here and say so once - see lib/methods/ping/fallback.ts */
+    function noteDenied(stderr?: string): void {
+        if (denied) {
+            return;
+        }
+        denied = true;
+        useFallback = self.options.pingFallbackTcp !== false;
+        fallback
+            .deniedHint(stderr, useFallback ? fallbackPorts : undefined)
+            .forEach(line => self.adapter.log.warn(line));
+    }
+
+    /**
+     * Ask the loopback whether ping may be used at all.
+     *
+     * 127.0.0.1 always answers, so a failure here is the binary and not the network: an
+     * unprivileged LXC container may not open the ICMP socket in the first place (issue #247)
+     * and would otherwise report the whole range as offline without a word in the log.
+     * Anything else than a permission problem is left alone - a host that simply does not
+     * answer on the loopback keeps its ping scan.
+     */
+    function checkPing(callback: () => void): void {
+        ping.probe('127.0.0.1', pingConfig(), (err: unknown, res?: pingModule.PingResult): void => {
+            if (err) {
+                // the binary is missing or could not be started at all
+                noteDenied((err as Error)?.message || String(err as any));
+            } else if (res && !res.alive && res.denied) {
+                noteDenied(res.error);
+            } else if (res && !res.alive) {
+                self.adapter.log.debug(`The loopback does not answer a ping: ${res.error || 'no output'}`);
+            }
+            callback();
+        });
+    }
+
+    function reportAlive(host: string, ms: number | undefined, how?: string): void {
+        self.adapter.log.debug(`found ${host}${how ? ` (${how})` : ''}`);
+
+        self.addDevice({
+            _addr: host,
+            _ping: {
+                alive: true,
+                ms,
+            },
+        });
+    }
+
     function pingBlock(ips: string[], _callback: ((...args: any[]) => void) | null): void {
         function callback(err: unknown): void {
-            _callback && _callback(err);
+            _callback?.(err);
             _callback = null;
         }
         ipCount = 0;
@@ -121,30 +182,43 @@ function pingAll(self: MethodInstance): void {
                 return pingIp(error);
             }
 
-            ping.probe(
-                ip,
-                { log: self.adapter.log.debug, timeout: self.options.pingTimeout },
-                (err: unknown, res: ProtocolData): void => {
+            pending++;
+            if (useFallback) {
+                // ICMP is not available here - a TCP connect tells us just as well whether
+                // somebody lives at this address
+                fallback.probeTcp(
+                    ip,
+                    fallbackPorts,
+                    self.options.pingTimeout * 1000,
+                    (alive: boolean, port?: number): void => {
+                        pending--;
+                        if (self.halt === true || self.halt.ping) {
+                            return pingIp('halt');
+                        }
+                        if (alive) {
+                            reportAlive(ip, undefined, `tcp/${port}`);
+                        }
+                    },
+                );
+            } else {
+                ping.probe(ip, pingConfig(), (err: unknown, res?: pingModule.PingResult): void => {
+                    pending--;
                     if (self.halt === true || self.halt.ping) {
                         return pingIp('halt');
                     }
 
                     err && self.adapter.log.error(String(err as any));
 
-                    if (!res || !res.alive) {
+                    // A single address may be blocked by a local firewall rule while the
+                    // loopback test passed - switch the rest of the scan over as well
+                    if (res?.denied) {
+                        noteDenied(res.error);
+                    }
+
+                    if (!res?.alive) {
                         return;
                     }
-                    self.adapter.log.debug(`found ${res.host}`);
-
-                    const obj = {
-                        _addr: res.host,
-                        _ping: {
-                            alive: res.alive,
-                            ms: res.ms,
-                        },
-                    };
-
-                    self.addDevice(obj);
+                    reportAlive(res.host, res.ms);
 
                     // dns.reverse(res.host, function (err, hostnames) {  will be done in main. Only for unknown names. Maybe ohter methods find a name before
                     //     const obj;
@@ -166,8 +240,8 @@ function pingAll(self: MethodInstance): void {
                     //
                     //     self.addDevice (obj);
                     // });
-                },
-            );
+                });
+            }
             setTimeout(pingIp, 50, error);
         })();
     }
@@ -211,15 +285,33 @@ function pingAll(self: MethodInstance): void {
         })();
     }
 
+    /** Let the probes that are still on the wire answer before the method reports itself done */
+    function finish(err?: unknown): void {
+        const deadline = Date.now() + self.options.pingTimeout * 1000 + 500;
+        (function wait(): void {
+            if (!pending || Date.now() > deadline || self.halt === true || self.halt.ping) {
+                return self.done(err);
+            }
+            setTimeout(wait, 100);
+        })();
+    }
+
     self.adapter.log.info('Discovering ping devices...');
     getRanges();
 
-    (function pingRanges(err?: unknown): void {
-        if (err || rangeCount >= ranges.length) {
-            return self.done(err);
+    checkPing((): void => {
+        if (denied && !useFallback) {
+            // nothing to do: every address would answer "not alive"
+            return self.done();
         }
-        pingRange(ranges[rangeCount++], pingRanges);
-    })();
+
+        (function pingRanges(err?: unknown): void {
+            if (err || rangeCount >= ranges.length) {
+                return finish(err);
+            }
+            pingRange(ranges[rangeCount++], pingRanges);
+        })();
+    });
 }
 
 export const browse = pingAll;

@@ -5,7 +5,7 @@ function addHue(ip: string, device: DiscoveryDevice, options: DetectOptions): bo
     let instance = tools.findInstance(
         options,
         'hue',
-        obj => obj && obj.native && (obj.native.bridge === ip || obj.native.webServer === device._name),
+        obj => obj?.native && (obj.native.bridge === ip || obj.native.webServer === device._name),
     );
 
     if (!instance) {

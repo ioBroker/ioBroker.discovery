@@ -37,8 +37,12 @@ export function detect(
         comName,
         { log: options.log, timeout: LISTEN_TIMEOUT },
         BAUD_RATE,
-        // nothing is sent - a reading head only listens, and so does this
-        null,
+        function onOpen(port: any, done: (error?: unknown) => void): void {
+            // Nothing is written - a reading head only listens, and so does this. The handler
+            // still has to exist: testSerialPort() takes a missing onOpen to mean "the port
+            // opened, so we are done" and would report every openable port as a meter.
+            done();
+        },
         function onAnswer(
             port: any,
             data: Buffer,

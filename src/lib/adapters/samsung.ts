@@ -65,7 +65,7 @@ export function detect(ip: string, device: DiscoveryDevice, options: DetectOptio
     let foundInstance = false;
 
     device._upnp.forEach((upnp: ProtocolData): void => {
-        if (!foundInstance && upnp._location && upnp._location.includes('Samsung TV.')) {
+        if (!foundInstance && upnp._location?.includes('Samsung TV.')) {
             //let meta = rexSamsung(upnp._location, rexTest);
             //if (meta)
             if (addInstance(ip, device, options /*, meta*/)) {

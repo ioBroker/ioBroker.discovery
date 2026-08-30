@@ -29,7 +29,7 @@ export function detect(ip: string, device: DiscoveryDevice, options: DetectOptio
     let foundInstance = false;
 
     device._upnp.forEach((upnp: ProtocolData): void => {
-        if (!foundInstance && upnp.USN && upnp.USN.includes('beckhoff.com')) {
+        if (!foundInstance && upnp.USN?.includes('beckhoff.com')) {
             options.log.debug(`Beckhoff Device detected at: ${ip}`);
             if (addBeckhoff(ip, device, options)) {
                 foundInstance = true;

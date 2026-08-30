@@ -3,7 +3,7 @@ import type { DetectCallback, DetectOptions, DiscoveryDevice, ProtocolData } fro
 const adapterName = 'valloxmv';
 
 function addValloxmv(ip: string, device: DiscoveryDevice, options: DetectOptions): boolean {
-    let instance = tools.findInstance(options, adapterName, obj => obj && obj.native && obj.native.host === ip);
+    let instance = tools.findInstance(options, adapterName, obj => obj?.native?.host === ip);
 
     if (!instance) {
         instance = {
@@ -28,7 +28,7 @@ function detect(ip: string, device: DiscoveryDevice, options: DetectOptions, cal
     let foundInstance = false;
 
     device._upnp.forEach((upnp: ProtocolData): void => {
-        if (!foundInstance && upnp.SERVER && upnp.SERVER.includes('vallox')) {
+        if (!foundInstance && upnp.SERVER?.includes('vallox')) {
             options.log.debug(`ValloxMV Device detected at: ${ip}`);
             if (addValloxmv(ip, device, options)) {
                 foundInstance = true;

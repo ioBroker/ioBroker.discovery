@@ -20,6 +20,8 @@ import type {
     MethodModule,
     MethodTimeoutOptions,
 } from './lib/types';
+import * as discoveryStates from './lib/discovery-states';
+import * as migration from './lib/migration';
 
 const getAdapterDir = commonTools.getAdapterDir;
 
@@ -331,18 +333,41 @@ class Browse implements MethodParent {
     };
 }
 
+/**
+ * Remember that a detection module claimed this device.
+ *
+ * The proposals themselves are collected globally in `options.newInstances`, which no longer
+ * says which address they came from. `writeDeviceStates()` needs that link to show, per
+ * device, which adapters would take it.
+ *
+ * @param device the device that was just tested
+ * @param adapterName name of the detection module that reported a find
+ */
+function noteDetection(device: DiscoveryDevice, adapterName: string): void {
+    device._detected ||= [];
+    if (!device._detected.includes(adapterName)) {
+        device._detected.push(adapterName);
+    }
+}
+
 class DiscoveryAdapter extends Adapter {
     gDevices: DiscoveredDevices = {};
     isRunning = false;
     adapters: Record<string, DetectionModule> = {};
+    /** Timer of the scheduled scan, `null` while it is switched off */
+    autoDetectTimer: NodeJS.Timeout | null = null;
 
     public constructor(options: Partial<AdapterOptions> = {}) {
         super({
             ...options,
             name: 'discovery',
             message: obj => this.processMessage(obj),
-            ready: (): void => this.main(),
+            ready: (): void => void this.onReady(),
             unload: callback => {
+                if (this.autoDetectTimer) {
+                    clearTimeout(this.autoDetectTimer);
+                    this.autoDetectTimer = null;
+                }
                 if (this.isRunning) {
                     void this.setState('scanRunning', false, true);
                     this.isRunning = false;
@@ -430,6 +455,71 @@ class DiscoveryAdapter extends Adapter {
                 }
                 break;
             }
+            case 'getFoundDevices': {
+                // The device tab of the settings dialog. `textSendTo` renders whatever HTML
+                // comes back, so the table is built here - see lib/discovery-states.
+                if (obj.callback) {
+                    void this.getForeignObjectAsync('system.discovery')
+                        .then(discovery => {
+                            const html = discoveryStates.deviceTableHtml(
+                                discovery?.native?.devices as DiscoveryDevice[] | undefined,
+                                discovery?.native?.lastScan as number | undefined,
+                            );
+                            this.sendTo(obj.from, obj.command, html, obj.callback);
+                        })
+                        .catch(e => {
+                            this.log.warn(`Cannot read the last scan: ${e}`);
+                            this.sendTo(obj.from, obj.command, 'Cannot read the last scan', obj.callback);
+                        });
+                }
+                break;
+            }
+            case 'startBrowse': {
+                // The button in the settings dialog. `browse` answers only when the scan is
+                // over, which can take minutes and outlives any sendTo timeout - this one
+                // starts the scan and answers straight away; the state components in the
+                // dialog show how it goes.
+                const message = (obj.message || {}) as { methods?: unknown };
+                const methodList = discoveryStates.autoDetectMethods({ autoDetectMethods: message.methods });
+
+                if (this.isRunning) {
+                    if (obj.callback) {
+                        this.sendTo(obj.from, obj.command, { result: 'A scan is already running' }, obj.callback);
+                    }
+                    break;
+                }
+
+                this.log.info(`Scan started from the settings (${methodList ? methodList.join(', ') : 'all methods'})`);
+                this.browse(methodList, (error, newInstances): void => {
+                    if (error) {
+                        this.log.warn(`Scan failed: ${error as any}`);
+                    } else {
+                        this.log.info(`Scan finished, ${newInstances?.length || 0} instance(s) proposed`);
+                    }
+                    // a scan out of turn moves the schedule along with it
+                    this.scheduleAutoDetect();
+                });
+
+                if (obj.callback) {
+                    this.sendTo(obj.from, obj.command, { result: 'Scan started' }, obj.callback);
+                }
+                break;
+            }
+            case 'getMethodList': {
+                // What the settings dialog offers for the scheduled scan. `listMethods` hands
+                // out the raw modules, which the `selectSendTo` control cannot use - this one
+                // answers the { label, value } pairs it expects.
+                if (obj.callback) {
+                    this.enumMethods();
+                    const list = Object.keys(methods || {})
+                        .filter(name => methods![name].browse)
+                        .sort()
+                        .map(name => ({ label: methods![name].source || name, value: name }));
+
+                    this.sendTo(obj.from, obj.command, list, obj.callback);
+                }
+                break;
+            }
             case 'listMethods': {
                 if (obj.callback) {
                     this.log.debug('Received "listMethods" event');
@@ -507,6 +597,7 @@ class DiscoveryAdapter extends Adapter {
 
                 if (isFound) {
                     this.log.debug(`Test ${device._type} ${device._addr} ${adpr} DETECTED!`);
+                    noteDetection(device, adpr);
                 }
                 if (timeout) {
                     clearTimeout(timeout);
@@ -553,6 +644,7 @@ class DiscoveryAdapter extends Adapter {
                     }
                     if (isFound) {
                         this.log.debug(`Test ${device._addr} ${adpr} DETECTED!`);
+                        noteDetection(device, adpr);
                     }
                 });
             } catch (e) {
@@ -615,6 +707,7 @@ class DiscoveryAdapter extends Adapter {
 
                         if (isFound) {
                             this.log.debug(`Test ${device._addr} ${adpr} DETECTED!`);
+                            noteDetection(device, adpr);
                         }
                     });
                 } catch (e) {
@@ -707,7 +800,7 @@ class DiscoveryAdapter extends Adapter {
             'instance',
             { startkey: 'system.adapter.', endkey: 'system.adapter.香' },
             (err, doc): void => {
-                if (err || !doc || !doc.rows || !doc.rows.length) {
+                if (err || !doc?.rows?.length) {
                     return callback?.([]);
                 }
                 const res: DiscoveryInstance[] = [];
@@ -835,6 +928,15 @@ class DiscoveryAdapter extends Adapter {
                                 }
 
                                 await this.setForeignObjectAsync('system.discovery', obj);
+
+                                try {
+                                    await this.writeDeviceStates(devices);
+                                } catch (e) {
+                                    // the scan result is already stored; a failed mirror must
+                                    // not turn a successful scan into an error
+                                    this.log.warn(`Cannot write the device states: ${e}`);
+                                }
+
                                 this.isRunning = false;
                                 this.log.info('Discovery finished');
                                 void this.setState('scanRunning', false, true);
@@ -866,6 +968,67 @@ class DiscoveryAdapter extends Adapter {
         }
     }
 
+    /**
+     * Mirror the devices of the last scan into this instance's own object tree.
+     *
+     * Until now a scan only wrote `system.discovery`, which the admin discovery dialog reads
+     * while it is open and nothing else ever sees. These states make the result visible in the
+     * object browser, usable in scripts and readable by vis.
+     *
+     * The tree shows the *last* scan, not a history: a channel whose device did not turn up
+     * again is removed, so nothing stale is left claiming to be there.
+     *
+     * @param devices what the scan found
+     */
+    async writeDeviceStates(devices: DiscoveryDevice[]): Promise<void> {
+        const wanted = discoveryStates.wantedChannels(devices);
+
+        // drop the channels of devices that did not show up this time
+        try {
+            const existing = await this.getAdapterObjectsAsync();
+            for (const channel of discoveryStates.staleChannels(Object.keys(existing), this.namespace, wanted)) {
+                await this.delObjectAsync(`devices.${channel}`, { recursive: true });
+            }
+        } catch (e) {
+            this.log.debug(`Cannot clean up the device tree: ${e}`);
+        }
+
+        if (wanted.size) {
+            await this.setObjectNotExistsAsync('devices', {
+                type: 'channel',
+                common: { name: 'Devices found by the last scan' },
+                native: {},
+            });
+        }
+
+        const now = Date.now();
+        for (const [id, device] of wanted) {
+            await this.setObjectAsync(`devices.${id}`, {
+                type: 'channel',
+                common: { name: discoveryStates.deviceChannelName(device) },
+                native: {},
+            });
+
+            for (const row of discoveryStates.deviceStateRows(device, now)) {
+                await this.setObjectNotExistsAsync(`devices.${id}.${row.key}`, {
+                    type: 'state',
+                    common: {
+                        name: row.label,
+                        type: row.type,
+                        role: row.role,
+                        read: true,
+                        write: false,
+                    },
+                    native: {},
+                });
+                await this.setStateAsync(`devices.${id}.${row.key}`, { val: row.value, ack: true });
+            }
+        }
+
+        await this.setStateAsync('lastScan', { val: now, ack: true });
+        this.log.debug(`Wrote ${wanted.size} device(s) into the object tree`);
+    }
+
     browse(
         options: string[] | null,
         callback?: (error: unknown, newInstances?: DiscoveryInstance[], devices?: DiscoveryDevice[]) => void,
@@ -883,11 +1046,105 @@ class DiscoveryAdapter extends Adapter {
         new Browse(this, options, devices => this.discoveryEnd(devices, callback));
     }
 
+    /**
+     * Arm the timer for the next scheduled scan.
+     *
+     * @param delay ms until the scan, defaults to the configured interval
+     */
+    scheduleAutoDetect(delay?: number): void {
+        if (this.autoDetectTimer) {
+            clearTimeout(this.autoDetectTimer);
+            this.autoDetectTimer = null;
+        }
+        if (!this.config.autoDetect) {
+            return;
+        }
+
+        const interval = discoveryStates.autoDetectMinutes(this.config) * 60000;
+        this.autoDetectTimer = setTimeout(
+            (): void => {
+                this.autoDetectTimer = null;
+                this.runAutoDetect();
+            },
+            delay === undefined ? interval : delay,
+        );
+    }
+
+    /** Run one scheduled scan, then arm the timer again */
+    runAutoDetect(): void {
+        const methodList = discoveryStates.autoDetectMethods(this.config);
+
+        if (this.isRunning) {
+            // a scan started from the admin dialog is running - skip this turn rather than
+            // queueing, the next one comes soon enough
+            this.log.debug('Scheduled scan skipped, a scan is already running');
+            return this.scheduleAutoDetect();
+        }
+
+        this.log.info(`Scheduled scan started (${methodList ? methodList.join(', ') : 'all methods'})`);
+        this.browse(methodList, (error, newInstances): void => {
+            if (error) {
+                this.log.warn(`Scheduled scan failed: ${error as any}`);
+            } else {
+                this.log.info(`Scheduled scan finished, ${newInstances?.length || 0} instance(s) proposed`);
+            }
+            this.scheduleAutoDetect();
+        });
+    }
+
+    /**
+     * Put `common.adminUI.config` right on an installation that predates the settings dialog.
+     *
+     * js-controller does not carry that nested field over on an update, so an adapter that was
+     * installed while it still said `"none"` would never show a settings button - and the
+     * scheduled scan could not be switched on. See `lib/migration.ts`.
+     */
+    async migrateAdminUi(): Promise<void> {
+        for (const id of migration.adminUiObjectIds(this.namespace, this.name)) {
+            try {
+                const obj = await this.getForeignObjectAsync(id);
+                // the typed `common` of an object union is narrower than what this repair
+                // reads, so it is handed over as the loose shape lib/migration works with
+                const common = obj?.common as unknown as migration.AdminUiCommon | undefined;
+                if (!obj || !migration.needsAdminUiMigration(common)) {
+                    continue;
+                }
+
+                const before = common?.adminUI?.config ?? 'unset';
+                await this.extendForeignObjectAsync(id, migration.adminUiPatch(common));
+                this.log.info(`Migrated ${id}: adminUI.config "${before}" -> "${migration.ADMIN_UI_CONFIG}"`);
+            } catch (e) {
+                // a failed repair must not keep the adapter from doing its actual work; the
+                // settings dialog is then simply missing until the next update
+                this.log.warn(`Cannot migrate adminUI.config of ${id}: ${e}`);
+            }
+        }
+    }
+
+    /** Everything that has to happen before the first scan can be scheduled */
+    async onReady(): Promise<void> {
+        await this.migrateAdminUi();
+        this.main();
+    }
+
     main(): void {
         void this.setState('scanRunning', false, true);
         // The values may arrive as strings from an old instance configuration
         this.config.pingTimeout = parseInt(this.config.pingTimeout as unknown as string, 10) || 1000;
         this.config.pingBlock = parseInt(this.config.pingBlock as unknown as string, 10) || 20;
+
+        this.config.autoDetect = !!this.config.autoDetect;
+        this.config.autoDetectInterval = discoveryStates.autoDetectMinutes(this.config);
+
+        if (this.config.autoDetect) {
+            const methodList = discoveryStates.autoDetectMethods(this.config);
+            this.log.info(
+                `Scheduled scan every ${this.config.autoDetectInterval} minutes ` +
+                    `(${methodList ? methodList.join(', ') : 'all methods'})`,
+            );
+            // not right at start-up: the host is still busy and the network may not be up yet
+            this.scheduleAutoDetect(discoveryStates.FIRST_AUTO_DETECT_DELAY);
+        }
     }
 }
 

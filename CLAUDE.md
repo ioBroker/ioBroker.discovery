@@ -6,7 +6,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ioBroker.discovery is an ioBroker adapter that automatically detects devices and services on the local network (via ping, UPnP/SSDP, mDNS, TR-064, UDP, serial ports, etc.) and suggests appropriate ioBroker adapters for them. It is a singleton adapter (one instance per host).
 
-The adapter has **no configuration dialog** (`common.adminUI.config = "none"`); the discovery UI lives in ioBroker.admin and talks to this adapter over `sendTo`.
+The discovery UI lives in ioBroker.admin and talks to this adapter over `sendTo`. The instance itself has a small
+settings dialog (`admin/jsonConfig.json`, `common.adminUI.config = "json"`) for the scheduled scan and the ping
+parameters - it was `"none"` until the scheduled scan needed somewhere to be switched on.
 
 ## Commands
 
@@ -41,18 +43,23 @@ src/
   lib/adapter-config.d.ts  typed this.config, mirrors io-package.json native
   lib/tools.ts             helpers used by the detection modules
   lib/words.ts             translation dictionary
-  lib/methods/*.ts         10 discovery methods
-  lib/adapters/*.ts        101 detection modules
+  lib/methods/*.ts         11 discovery methods
+  lib/adapters/*.ts        156 detection modules
+  lib/discovery-states.ts  the decisions behind the device tree and the scheduled scan
   types/*.d.ts             ambient declarations for npm packages without typings
 lib/i18n/*.json            translation data, not read by any code (Weblate target)
 ```
 
 ### Entry Point: src/main.ts
 
-`DiscoveryAdapter extends utils.Adapter`. It listens for two messages from the admin UI:
+`DiscoveryAdapter extends utils.Adapter`. It listens for five messages:
 
-- **`browse`**: triggers a full network discovery scan
-- **`listMethods`**: returns available discovery methods
+- **`browse`**: runs a full network discovery scan and answers when it is over
+- **`listMethods`**: returns available discovery methods (the raw modules, for the admin discovery dialog)
+- **`getMethodList`**: the same methods as `{ label, value }` pairs, for the `selectSendTo` control in the settings
+- **`startBrowse`**: starts a scan and answers straight away - a scan outlives any sendTo timeout, so the button in
+  the settings cannot use `browse`
+- **`getFoundDevices`**: the devices of the last scan as HTML, for the `textSendTo` control on the device tab
 
 The compact-mode export at the end of the file (`require.main !== module`) must stay.
 
@@ -64,9 +71,36 @@ The compact-mode export at the end of the file (`require.main !== module`) must 
 4. Detection runs in two phases: first modules with `dependencies=false` (in parallel for IP, sequential for serial), then modules with `dependencies=true`
 5. Results are stored in the `system.discovery` object with sensitive fields encrypted
 
+### Scheduled scan and the device tree
+
+Two things happen around a scan besides writing `system.discovery`:
+
+- `writeDeviceStates()` mirrors the devices of the last scan into `discovery.0.devices.<address>`, one channel per
+  device with `address`, `name`, `type`, `source`, `suggested` and `lastSeen`, plus `discovery.0.lastScan`. It shows
+  the *last* scan, not a history: channels of devices that did not turn up again are deleted.
+- `scheduleAutoDetect()` / `runAutoDetect()` repeat a scan on a timer when `native.autoDetect` is set. A scan started
+  from the admin dialog wins; the scheduled one skips that turn.
+
+The settings dialog (`admin/jsonConfig.json`) has two tabs: the settings themselves, with a button that sends
+`startBrowse` and `state` controls showing `scanRunning`, the two progress states and the two counters live; and a
+device tab whose `textSendTo` renders the answer of `getFoundDevices`.
+
+`onReady()` runs `migrateAdminUi()` before `main()`. js-controller does not carry a nested `common.adminUI` over on
+an update, so an installation from before the dialog existed would keep `config: "none"` and never show a settings
+button - `lib/migration.ts` repairs the adapter object and this instance.
+
+The decisions of all of it (id sanitising, the state rows, which channels are stale, the interval floor, which
+methods to run, the device table HTML) live in `src/lib/discovery-states.ts` and `src/lib/migration.ts`, covered by
+`test/discovery-states.test.js` and `test/migration.test.js`. They are there and not
+in `main.ts` because `main.ts` replaces its own `module.exports` for compact mode and can therefore export nothing a
+test could reach.
+
+Which detection modules claimed a device is recorded by `noteDetection()` at the three places where a module reports
+a find - the proposals in `options.newInstances` no longer say which address they came from.
+
 ### Discovery Methods (`src/lib/methods/`)
 
-10 method modules (ping, upnp, mdns, tr064, udp, serial, speedwire, wifi-mi-light, hf-lpb100, vbus) plus a ping helper in `methods/ping/`. Each exports:
+11 method modules (ping, upnp, mdns, tr064, udp, serial, speedwire, wifi-mi-light, hf-lpb100, vbus, bambulab) plus a ping helper in `methods/ping/`. Each exports:
 
 - `browse(self)` - receives a `MethodInstance` wrapper with `addDevice()`, `done()`, `updateProgress()`, timeout helpers
 - `source` - method identifier string
@@ -75,9 +109,19 @@ The compact-mode export at the end of the file (`require.main !== module`) must 
 
 Methods are auto-loaded from `build/lib/methods/` by filename (excluding files starting with `_`).
 
+#### When ping may not be used
+
+`methods/ping.ts` asks the loopback once per scan whether this host may send ICMP at all. An unprivileged LXC
+container may not - `/bin/ping` there has neither `cap_net_raw` nor a `ping_group_range` that covers the ioBroker
+user - and the scan would otherwise report the whole range as offline without a word in the log (issue #247).
+`methods/ping/ping.ts` therefore reads stderr as well and marks such an answer as `denied`;
+`methods/ping/fallback.ts` carries the warning text and the TCP connect sweep that then replaces the echo requests.
+A refused connection counts as a find, so a closed port is not a wasted probe. `pingFallbackTcp` and
+`pingFallbackPorts` switch it, `test/ping-fallback.test.js` covers it.
+
 ### Detection Modules (`src/lib/adapters/`)
 
-101 modules, each detecting a specific device/service type. Each exports:
+156 modules, each detecting a specific device/service type. Each exports:
 
 - `detect(ip, device, options, callback)` - tests if a device matches; adds to `options.newInstances` if found
 - `type` - string or array of device types to match against (e.g. `['ip']`, `['upnp']`, `'serial'`, `'advice'`)

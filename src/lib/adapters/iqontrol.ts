@@ -24,7 +24,7 @@ export function detect(ignore1: unknown, ignore2: unknown, options: DetectOption
     let instance = tools.findInstance(options, 'iqontrol');
     if (!instance) {
         // iqontrol requires a web instance so check and install it too
-        let webInstance = tools.findInstance(options, 'web', obj => obj && obj.native);
+        let webInstance = tools.findInstance(options, 'web', obj => obj?.native);
 
         const id = tools.getNextInstanceID('iqontrol', options);
 

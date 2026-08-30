@@ -11,8 +11,19 @@ declare global {
             pingOwnNetmask: string;
             /** How many addresses are pinged at once */
             pingBlock: number;
+            /** Sweep the range with a TCP connect when this host may not send ICMP (issue #247) */
+            pingFallbackTcp: boolean;
+            /** Ports the TCP fallback tries, comma separated */
+            pingFallbackPorts: string;
             /** Propose only adapters that are installed on this host */
             onlyLocal: boolean;
+
+            /** Run a scan on a timer, without anyone opening the discovery dialog */
+            autoDetect: boolean;
+            /** Minutes between two scheduled scans; below five it is not accepted */
+            autoDetectInterval: number;
+            /** Methods a scheduled scan runs - an empty list means all of them */
+            autoDetectMethods: string[];
 
             /**
              * Not part of `native`: the core sets this before a scan so that the ping method

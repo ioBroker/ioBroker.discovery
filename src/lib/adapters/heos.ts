@@ -7,14 +7,14 @@ const searchDeviceType = 'urn:schemas-denon-com:device:ACT-Denon:1';
 function addHeos(ip: string, data: ProtocolData, options: DetectOptions): boolean {
     let instance;
     for (let j = 0; j < options.newInstances.length; j++) {
-        if (options.newInstances[j].common && options.newInstances[j].common.name === adapterName) {
+        if (options.newInstances[j].common?.name === adapterName) {
             instance = options.newInstances[j];
             break;
         }
     }
     if (!instance) {
         for (let i = 0; i < options.existingInstances.length; i++) {
-            if (options.existingInstances[i].common && options.existingInstances[i].common.name === adapterName) {
+            if (options.existingInstances[i].common?.name === adapterName) {
                 instance = JSON.parse(JSON.stringify(options.existingInstances[i])); // do not modify existing instance
                 break;
             }

@@ -30,7 +30,7 @@ function addInstance(ip: string, options: DetectOptions): boolean {
 }
 
 export function detect(ip: string, device: DiscoveryDevice, options: DetectOptions, callback: DetectCallback): void {
-    if (device?._mdns?.PTR && device._mdns.PTR.datax.includes('_wled._tcp.local')) {
+    if (device?._mdns?.PTR?.datax.includes('_wled._tcp.local')) {
         callback(null, addInstance(ip, options), ip);
     } else {
         callback(null, false, ip);

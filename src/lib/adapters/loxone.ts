@@ -5,7 +5,7 @@ import type { DetectCallback, DetectOptions, DiscoveryDevice, ProtocolData } fro
 const portRegex = /<presentationURL>https?:\/\/[^:]+:(\d+)[^\d<]*<\/presentationURL>/;
 
 function addLoxone(ip: string, port: number, device: DiscoveryDevice, options: DetectOptions): boolean {
-    let instance = tools.findInstance(options, 'loxone', obj => obj && obj.native && obj.native.host === ip);
+    let instance = tools.findInstance(options, 'loxone', obj => obj?.native?.host === ip);
 
     if (!instance) {
         instance = {
@@ -45,7 +45,7 @@ export function detect(ip: string, device: DiscoveryDevice, options: DetectOptio
     let foundInstance = false;
 
     device._upnp.forEach((upnp: ProtocolData): void => {
-        if (!foundInstance && upnp._location && upnp._location.includes('loxone')) {
+        if (!foundInstance && upnp._location?.includes('loxone')) {
             const portArr = upnp._location.match(portRegex) || ['', '80'];
             if (addLoxone(ip, portArr[1], device, options)) {
                 foundInstance = true;

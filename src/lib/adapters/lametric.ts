@@ -27,7 +27,7 @@ export function detect(ip: string, device: DiscoveryDevice, options: DetectOptio
     let foundInstance = false;
 
     device._upnp.forEach((upnp: ProtocolData): void => {
-        if (!foundInstance && upnp._location && upnp._location.includes('LaMetric Time')) {
+        if (!foundInstance && upnp._location?.includes('LaMetric Time')) {
             options.log.debug(`LaMetric device detected at: ${ip}`);
             if (addInstance(ip, device, options)) {
                 foundInstance = true;

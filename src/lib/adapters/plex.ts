@@ -39,7 +39,7 @@ export function detect(
     const options = { method: 'HEAD', host: ip, port: 32400, path: '/' };
     const request = http
         .request(options, res => {
-            if (res && res.headers !== undefined && res.headers['x-plex-protocol'] !== undefined) {
+            if (res?.headers?.['x-plex-protocol'] !== undefined) {
                 addInstance(ip, instances, {}, callback);
             } else {
                 res.resume();

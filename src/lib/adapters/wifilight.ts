@@ -32,8 +32,7 @@ function addInstance(
     }
     let nDevices;
     let dev =
-        instance &&
-        instance.native &&
+        instance?.native &&
         (nDevices = instance.native.devices) &&
         nDevices.find((dev: ProtocolData): boolean => dev.ip === ip);
     if (!dev) {
@@ -46,7 +45,7 @@ function addInstance(
 
         if (instance._existing) {
             options.newInstances.push(instance);
-            instance.comment = instance.comment || {};
+            instance.comment ||= {};
         }
         if (instance.comment!.ack) {
             instance.comment!.ack = false;

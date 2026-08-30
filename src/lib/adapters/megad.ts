@@ -57,7 +57,7 @@ export function detect(
             }
         } else {
             tools.httpGet(`http://${ip}/sec/`, (err, data): void => {
-                if (data && data.includes('MegaD-328')) {
+                if (data?.includes('MegaD-328')) {
                     // todo read config and distinguish between megad, megadd, megaesp
                     addMegaDDevice(
                         ip,
@@ -68,7 +68,7 @@ export function detect(
                         },
                         callback,
                     );
-                } else if (data && data.includes('MegaD-2561')) {
+                } else if (data?.includes('MegaD-2561')) {
                     // todo read config and distinguish between megad, megadd, megaesp
                     addMegaDDevice(
                         ip,
@@ -79,7 +79,7 @@ export function detect(
                         },
                         callback,
                     );
-                } else if (data && data.includes('MegaESP')) {
+                } else if (data?.includes('MegaESP')) {
                     // todo read config and distinguish between megad, megadd, megaesp
                     addMegaDDevice(
                         ip,

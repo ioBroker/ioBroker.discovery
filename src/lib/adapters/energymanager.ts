@@ -3,7 +3,7 @@ import type { DetectCallback, DetectOptions, DiscoveryDevice } from '../types';
 
 export function detect(ip: string, device: DiscoveryDevice, options: DetectOptions, callback: DetectCallback): void {
     tools.httpGet(`http://${ip}/rest/kiwigrid/wizard/devices`, 1400, (err, data): void => {
-        if (err == null && data && data.includes('urn:kiwigrid:')) {
+        if (err == null && data?.includes('urn:kiwigrid:')) {
             //const managerData = JSON.parse(body);
             //if (managerData.hasOwnProperty("result")){
             let instance = tools.findInstance(options, 'energymanager', obj => obj.native.managerAddress === ip);

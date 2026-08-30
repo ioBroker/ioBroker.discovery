@@ -23,8 +23,7 @@ function addInstance(
         options,
         adapterName,
         obj =>
-            obj &&
-            obj.native &&
+            obj?.native &&
             (obj.native.host === ip ||
                 obj.native.host.localeCompare(hostname, undefined, { sensitivity: 'base' }) === 0),
     );
@@ -64,8 +63,7 @@ function detect(ip: string, device: DiscoveryDevice, options: DetectOptions, cal
     );
 
     if (
-        !device._mdns ||
-        !device._mdns.PTR ||
+        !device._mdns?.PTR ||
         !isHttpTcpLocal(device._mdns.PTR.data) ||
         !device._mdns.PTR.datax ||
         !Array.isArray(device._mdns.PTR.datax) ||

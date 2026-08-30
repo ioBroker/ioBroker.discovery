@@ -28,7 +28,7 @@ export function detect(ip: string, device: DiscoveryDevice, options: DetectOptio
     let foundInstance = false;
 
     device._upnp.forEach((upnp: ProtocolData): void => {
-        if (!foundInstance && upnp._location && upnp._location.includes('HP-iLO')) {
+        if (!foundInstance && upnp._location?.includes('HP-iLO')) {
             if (addInstance(ip, device, options)) {
                 foundInstance = true;
             }

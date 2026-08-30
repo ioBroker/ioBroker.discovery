@@ -26,7 +26,7 @@ function addInstance(ip: string, options: DetectOptions): boolean {
 }
 
 export function detect(ip: string, device: DiscoveryDevice, options: DetectOptions, callback: DetectCallback): void {
-    if (device._mdns && device._mdns.name && device._mdns.name.indexOf('BSB-LAN') === 0) {
+    if (device._mdns?.name?.indexOf('BSB-LAN') === 0) {
         callback(null, addInstance(ip, options), ip);
     } else {
         callback(null, false, ip);

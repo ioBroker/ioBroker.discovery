@@ -9,7 +9,7 @@ function discoverUpnp(self: MethodInstance): void {
     self.timeout = ~~self.timeout || 15000; // 15 seconds because of HUE
 
     try {
-        UPnPClient = UPnPClient || require('node-ssdp').Client;
+        UPnPClient ||= require('node-ssdp').Client;
     } catch (e) {
         console.error(`Cannot init discoverUpnp: ${e.message}`);
         self.done.bind(self);
@@ -43,7 +43,7 @@ function discoverUpnp(self: MethodInstance): void {
     );
 
     self.parseMessage = async function (headers: ProtocolData, statusCode: unknown, rinfo: RemoteInfo): Promise<void> {
-        if (!rinfo || !rinfo.address) {
+        if (!rinfo?.address) {
             return;
         }
 

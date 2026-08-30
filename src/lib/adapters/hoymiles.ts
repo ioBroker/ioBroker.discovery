@@ -69,12 +69,12 @@ function addInstance(ip: string, dtuSn: string, options: DetectOptions): boolean
 
 export function detect(ip: string, device: DiscoveryDevice, options: DetectOptions, callback: DetectCallback): void {
     const isDuplicate = tools.findInstance(options, 'hoymiles', obj => {
-        const devices = obj.native && obj.native.devices;
-        if (Array.isArray(devices) && devices.some(d => d && d.host === ip)) {
+        const devices = obj.native?.devices;
+        if (Array.isArray(devices) && devices.some(d => d?.host === ip)) {
             return true;
         }
         // legacy v0.2.0 flat config (host as top-level native field)
-        return obj.native && obj.native.host === ip;
+        return obj.native?.host === ip;
     });
     if (isDuplicate) {
         callback(null, false, ip);

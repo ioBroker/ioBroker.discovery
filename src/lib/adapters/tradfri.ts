@@ -36,7 +36,7 @@ function addInstance(
     const instance = tools.findInstance(
         options,
         adapterName,
-        obj => obj && obj.native && (obj.native.host === ip || obj.native.host === hostname),
+        obj => obj?.native && (obj.native.host === ip || obj.native.host === hostname),
     );
 
     if (!instance) {

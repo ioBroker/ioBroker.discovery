@@ -89,7 +89,7 @@ export function matchCoordinator(port: ProtocolData): CoordinatorMatch | null {
         if (print.manufacturer && manufacturer.toLowerCase().startsWith(print.manufacturer.toLowerCase())) {
             score += 1;
         }
-        if (print.pathRegex && print.pathRegex.test(haystack)) {
+        if (print.pathRegex?.test(haystack)) {
             score += 1;
         }
 

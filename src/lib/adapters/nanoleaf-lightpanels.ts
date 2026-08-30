@@ -36,7 +36,7 @@ export function detect(ip: string, device: DiscoveryDevice, options: DetectOptio
         if (!foundInstance && upnp.ST && SSDP_ST.includes(upnp.ST)) {
             // parse location string to get port
             const locationGroup = locationPattern.exec(upnp.LOCATION);
-            if (locationGroup && locationGroup.length == 3) {
+            if (locationGroup?.length == 3) {
                 port = locationGroup[2];
             }
             // if NL-DEVICENAME present use this for device information

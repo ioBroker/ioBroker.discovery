@@ -160,7 +160,7 @@ export function detect(ip: string, device: DiscoveryDevice, options: DetectOptio
         }
 
         const info = parseStatus0(data);
-        if (!info || !info.isEsp32) {
+        if (!info?.isEsp32) {
             // every NSPanel is an ESP32; anything else is some other Tasmota and stays with sonoff
             return finish(false);
         }

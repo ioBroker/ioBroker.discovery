@@ -23,14 +23,14 @@ export function detect(ip: string, device: DiscoveryDevice, options: DetectOptio
     let instance;
     let fromOldInstances = false;
     for (let j = 0; j < options.newInstances.length; j++) {
-        if (options.newInstances[j].common && options.newInstances[j].common.name === 'ping') {
+        if (options.newInstances[j].common?.name === 'ping') {
             instance = options.newInstances[j];
             break;
         }
     }
     if (!instance) {
         for (let i = 0; i < options.existingInstances.length; i++) {
-            if (options.existingInstances[i].common && options.existingInstances[i].common.name === 'ping') {
+            if (options.existingInstances[i].common?.name === 'ping') {
                 instance = JSON.parse(JSON.stringify(options.existingInstances[i])); // do not modify existing instance
                 fromOldInstances = true;
                 break;
@@ -72,13 +72,13 @@ export function detect(ip: string, device: DiscoveryDevice, options: DetectOptio
         isNew = true;
         if (fromOldInstances) {
             options.newInstances.push(instance);
-            instance.comment = instance.comment || {};
+            instance.comment ||= {};
         }
         if (instance.comment.ack) {
             instance.comment.ack = false;
         }
         if (!instance.comment.add) {
-            instance.comment.extended = instance.comment.extended || [];
+            instance.comment.extended ||= [];
             instance.comment.extended.push(device._name || ip);
         } else {
             instance.comment.add.push(device._name || ip);

@@ -38,7 +38,7 @@ export function detect(
     callback: DetectCallback | null,
 ): void {
     http.get(`http://${ip}/bha-api/info.cgi`, res => {
-        if (res && res.headers['www-authenticate'] && res.headers['www-authenticate'].includes('DoorBird')) {
+        if (res?.headers['www-authenticate']?.includes('DoorBird')) {
             addInstance(ip, device, options, { ip }, callback);
         } else {
             res.resume();

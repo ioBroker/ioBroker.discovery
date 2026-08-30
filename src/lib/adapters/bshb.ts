@@ -104,7 +104,7 @@ export function detect(
                             parsedData = JSON.parse(dataString);
                         }
 
-                        if (parsedData && parsedData.shcIpAddress) {
+                        if (parsedData?.shcIpAddress) {
                             let instance = tools.findInstance(options, adapterName, obj => obj.native.host === ip);
                             if (instance == null || typeof instance === 'undefined') {
                                 options.log.debug('No bshb instance found');
