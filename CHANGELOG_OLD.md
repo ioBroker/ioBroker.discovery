@@ -1,4 +1,7 @@
 # Older changes
+## 4.3.0 (2024-02-21)
+* (bluefox) Replaced vis with vis-2
+
 ## 4.2.0 (2023-10-09)
 * (pdbjjens) Changed detection of myvbus and resol
 

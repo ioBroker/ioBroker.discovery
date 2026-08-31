@@ -1,78 +1,78 @@
 {
-    "name": "iobroker.discovery",
-    "description": "This adapter tries to detect devices in local network.",
-    "version": "5.1.0",
-    "author": "bluefox <dogafox@gmail.com>",
-    "contributors": [
-        "bluefox <dogafox@gmail.com>",
-        "Apollon77 <ingo@fischer-ka.de>"
-    ],
-    "homepage": "https://github.com/ioBroker/ioBroker.discovery",
-    "license": "MIT",
-    "keywords": [
-        "ioBroker",
-        "discovery",
-        "home automation",
-        "iot"
-    ],
-    "optionalDependencies": {
-        "mdns-discovery": "^0.2.6",
-        "serialport": "^13.0.0"
-    },
-    "dependencies": {
-        "@iobroker/adapter-core": "^3.4.3",
-        "ipaddr.js": "^2.5.0",
-        "netmask": "^2.1.1",
-        "node-mndp": "^0.0.3",
-        "node-ssdp": "^4.0.1"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/ioBroker/ioBroker.discovery"
-    },
-    "devDependencies": {
-        "@alcalzone/release-script": "^5.2.1",
-        "@alcalzone/release-script-plugin-iobroker": "^5.2.0",
-        "@alcalzone/release-script-plugin-license": "^5.2.2",
-        "@iobroker/build-tools": "^3.0.1",
-        "@iobroker/eslint-config": "^2.3.4",
-        "@iobroker/testing": "^5.3.0",
-        "@iobroker/types": "^7.2.2",
-        "@tsconfig/node22": "^22.0.6",
-        "@types/mocha": "^10.0.10",
-        "@types/netmask": "^2.0.6",
-        "@types/node": "^22.20.1",
-        "@types/node-ssdp": "^4.0.5",
-        "typescript": "~6.0.3"
-    },
-    "bugs": {
-        "url": "https://github.com/ioBroker/ioBroker.discovery/issues"
-    },
-    "main": "build/main.js",
-    "files": [
-        "build/",
-        "admin/",
-        "lib/i18n/",
-        "io-package.json",
-        "LICENSE"
-    ],
-    "engines": {
-        "node": ">=22.19.0"
-    },
-    "scripts": {
-        "build": "npm run build:tsc && node tasks",
-        "build:tsc": "tsc -p tsconfig.build.json",
-        "watch": "tsc -p tsconfig.build.json --watch",
-        "check": "tsc -p tsconfig.json --noEmit",
-        "test:package": "mocha --require ./test/mocha.setup.js test/packageFiles.js --exit",
-        "test:integration": "mocha --require ./test/mocha.setup.js test/**/*.test.js --exit",
-        "test": "npm run test:package",
-        "lint": "eslint -c eslint.config.mjs",
-        "release": "release-script",
-        "release-patch": "release-script patch --yes",
-        "release-minor": "release-script minor --yes",
-        "release-major": "release-script major --yes",
-        "update-packages": "npx -y npm-check-updates --upgrade && cd src-admin && npx -y npm-check-updates --upgrade",
-        "npm": "npm i && cd src-admin && npm i -f"
-    }
+  "name": "iobroker.discovery",
+  "description": "This adapter tries to detect devices in local network.",
+  "version": "5.1.1",
+  "author": "bluefox <dogafox@gmail.com>",
+  "contributors": [
+    "bluefox <dogafox@gmail.com>",
+    "Apollon77 <ingo@fischer-ka.de>"
+  ],
+  "homepage": "https://github.com/ioBroker/ioBroker.discovery",
+  "license": "MIT",
+  "keywords": [
+    "ioBroker",
+    "discovery",
+    "home automation",
+    "iot"
+  ],
+  "optionalDependencies": {
+    "mdns-discovery": "^0.2.6",
+    "serialport": "^13.0.0"
+  },
+  "dependencies": {
+    "@iobroker/adapter-core": "^3.4.3",
+    "ipaddr.js": "^2.5.0",
+    "netmask": "^2.1.1",
+    "node-mndp": "^0.0.3",
+    "node-ssdp": "^4.0.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ioBroker/ioBroker.discovery"
+  },
+  "devDependencies": {
+    "@alcalzone/release-script": "^5.2.1",
+    "@alcalzone/release-script-plugin-iobroker": "^5.2.0",
+    "@alcalzone/release-script-plugin-license": "^5.2.2",
+    "@iobroker/build-tools": "^3.0.1",
+    "@iobroker/eslint-config": "^2.3.4",
+    "@iobroker/testing": "^5.3.0",
+    "@iobroker/types": "^7.2.2",
+    "@tsconfig/node22": "^22.0.6",
+    "@types/mocha": "^10.0.10",
+    "@types/netmask": "^2.0.6",
+    "@types/node": "^22.20.1",
+    "@types/node-ssdp": "^4.0.5",
+    "typescript": "~6.0.3"
+  },
+  "bugs": {
+    "url": "https://github.com/ioBroker/ioBroker.discovery/issues"
+  },
+  "main": "build/main.js",
+  "files": [
+    "build/",
+    "admin/",
+    "lib/i18n/",
+    "io-package.json",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=22.19.0"
+  },
+  "scripts": {
+    "build": "npm run build:tsc && node tasks",
+    "build:tsc": "tsc -p tsconfig.build.json",
+    "watch": "tsc -p tsconfig.build.json --watch",
+    "check": "tsc -p tsconfig.json --noEmit",
+    "test:package": "mocha --require ./test/mocha.setup.js test/packageFiles.js --exit",
+    "test:integration": "mocha --require ./test/mocha.setup.js test/**/*.test.js --exit",
+    "test": "npm run test:package",
+    "lint": "eslint -c eslint.config.mjs",
+    "release": "release-script",
+    "release-patch": "release-script patch --yes",
+    "release-minor": "release-script minor --yes",
+    "release-major": "release-script major --yes",
+    "update-packages": "npx -y npm-check-updates --upgrade && cd src-admin && npx -y npm-check-updates --upgrade",
+    "npm": "npm i && cd src-admin && npm i -f"
+  }
 }

@@ -249,7 +249,7 @@ in the `system.discovery` object.
 	### **WORK IN PROGRESS**
 -->
 ## Changelog
-### **WORK IN PROGRESS**
+### 5.1.1 (2026-08-31)
 * (bluefox) The ping scan says so when this host may not send ICMP and sweeps the range over TCP instead (#247)
 * (bluefox) The scan can now run on a timer, with a selectable set of methods - mdns, ping, udp and upnp by default
 * (bluefox) Every finished scan writes the devices it found below `discovery.0.devices`
@@ -282,9 +282,6 @@ in the `system.discovery` object.
 * (klein0r) Added WLED
 * (klein0r) Added LaMetric
 * (Jey-Cee) Removed net-tools from proposals
-
-### 4.3.0 (2024-02-21)
-* (bluefox) Replaced vis with vis-2
 
 [Older changelogs can be found there](CHANGELOG_OLD.md)
 
