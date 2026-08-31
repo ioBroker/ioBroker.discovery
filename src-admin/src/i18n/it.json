@@ -1,0 +1,18 @@
+{
+    "custom_discovery_title": "Dispositivi dell'ultima scansione",
+    "custom_discovery_last_scan": "Ultima scansione",
+    "custom_discovery_never": "ancora nessuna scansione",
+    "custom_discovery_running": "Una scansione è in corso, la tabella si riempie quando è finita",
+    "custom_discovery_filter": "Filtro",
+    "custom_discovery_address": "Indirizzo",
+    "custom_discovery_name": "Nome",
+    "custom_discovery_type": "Tipo",
+    "custom_discovery_source": "Trovato da",
+    "custom_discovery_detected": "Adattatori che lo hanno riconosciuto",
+    "custom_discovery_empty": "Ancora nessun dispositivo - avvia una scansione nella scheda delle impostazioni.",
+    "custom_discovery_no_match": "Nessun dispositivo corrisponde al filtro.",
+    "custom_discovery_count": "%s dispositivi",
+    "custom_discovery_count_filtered": "%s di %s dispositivi",
+    "custom_discovery_installed": "installato su questo host",
+    "custom_discovery_not_installed": "non installato"
+}

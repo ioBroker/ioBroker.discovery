@@ -259,12 +259,12 @@
                 },
                 "foundDevices": {
                     "newLine": true,
-                    "type": "textSendTo",
-                    "command": "getFoundDevices",
-                    "container": "html",
-                    "alsoDependsOn": [
-                        "startBrowse"
-                    ],
+                    "type": "custom",
+                    "url": "custom/customComponents.js",
+                    "name": "ConfigCustomDiscoverySet/Components/DiscoveryDevicesComponent",
+                    "i18n": true,
+                    "guiApi": 2,
+                    "bundlerType": "module",
                     "xs": 12,
                     "sm": 12,
                     "md": 12,

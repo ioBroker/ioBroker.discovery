@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "discovery",
-    "version": "5.0.1",
+    "version": "5.1.0",
     "news": {
       "5.0.1": {
         "en": "Adapter requires js-controller >= 6.0.11 now.\nFix Hoymiles HMS discovery: correct a require path and align native config with hoymiles 0.3.4 device-array schema\nAdapter requires node.js >= 20 now.\nRemove obsolete squeezebox adapter\nPackages were updated\nAdded victron-cerbo",
@@ -134,6 +134,11 @@
         "js-controller": ">=6.0.11"
       }
     ],
+    "globalDependencies": [
+      {
+        "admin": ">=8.0.0"
+      }
+    ],
     "loglevel": "info",
     "icon": "discovery.png",
     "keywords": [
@@ -171,6 +176,71 @@
     "autoDetectInterval": 240,
     "autoDetectMethods": ["mdns", "ping", "udp", "upnp"]
   },
+  "notifications": [
+    {
+      "scope": "discovery",
+      "name": {
+        "en": "discovery",
+        "de": "discovery",
+        "ru": "discovery",
+        "pt": "discovery",
+        "nl": "discovery",
+        "fr": "discovery",
+        "it": "discovery",
+        "es": "discovery",
+        "pl": "discovery",
+        "uk": "discovery",
+        "zh-cn": "discovery"
+      },
+      "description": {
+        "en": "These notifications inform about what a scheduled scan found.",
+        "de": "Diese Benachrichtigungen informieren darüber, was ein zeitgesteuerter Suchlauf gefunden hat.",
+        "ru": "Эти уведомления сообщают о том, что нашло запланированное сканирование.",
+        "pt": "Estas notificações informam sobre o que uma verificação programada encontrou.",
+        "nl": "Deze meldingen informeren over wat een geplande scan heeft gevonden.",
+        "fr": "Ces notifications informent de ce qu’une recherche planifiée a trouvé.",
+        "it": "Queste notifiche informano su ciò che ha trovato una scansione pianificata.",
+        "es": "Estas notificaciones informan sobre lo que encontró una búsqueda programada.",
+        "pl": "Te powiadomienia informują o tym, co znalazło zaplanowane wyszukiwanie.",
+        "uk": "Ці сповіщення інформують про те, що знайшов запланований пошук.",
+        "zh-cn": "这些通知告知定时扫描发现了什么。"
+      },
+      "categories": [
+        {
+          "category": "newInstances",
+          "name": {
+            "en": "New adapter proposals",
+            "de": "Neue Adaptervorschläge",
+            "ru": "Новые предложения адаптеров",
+            "pt": "Novas propostas de adaptadores",
+            "nl": "Nieuwe adaptervoorstellen",
+            "fr": "Nouvelles propositions d’adaptateurs",
+            "it": "Nuove proposte di adattatori",
+            "es": "Nuevas propuestas de adaptadores",
+            "pl": "Nowe propozycje adapterów",
+            "uk": "Нові пропозиції адаптерів",
+            "zh-cn": "新的适配器建议"
+          },
+          "severity": "notify",
+          "description": {
+            "en": "A scan that ran on a timer proposed adapters that were not proposed before.",
+            "de": "Ein zeitgesteuerter Suchlauf hat Adapter vorgeschlagen, die vorher nicht vorgeschlagen waren.",
+            "ru": "Сканирование по расписанию предложило адаптеры, которых раньше не было.",
+            "pt": "Uma verificação por temporizador propôs adaptadores que antes não eram propostos.",
+            "nl": "Een scan op een timer stelde adapters voor die eerder niet werden voorgesteld.",
+            "fr": "Une recherche planifiée a proposé des adaptateurs qui ne l’étaient pas auparavant.",
+            "it": "Una scansione a tempo ha proposto adattatori che prima non erano proposti.",
+            "es": "Una búsqueda programada propuso adaptadores que antes no se proponían.",
+            "pl": "Zaplanowane wyszukiwanie zaproponowało adaptery, których wcześniej nie proponowano.",
+            "uk": "Запланований пошук запропонував адаптери, яких раніше не пропонували.",
+            "zh-cn": "定时扫描给出了此前未曾出现过的适配器建议。"
+          },
+          "regex": [],
+          "limit": 1
+        }
+      ]
+    }
+  ],
   "_objects": [
     {
       "_id": "system.discovery",

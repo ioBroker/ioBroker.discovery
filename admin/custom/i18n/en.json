@@ -1,0 +1,18 @@
+{
+    "custom_discovery_title": "Devices of the last scan",
+    "custom_discovery_last_scan": "Last scan",
+    "custom_discovery_never": "no scan yet",
+    "custom_discovery_running": "A scan is running, the table fills up when it is over",
+    "custom_discovery_filter": "Filter",
+    "custom_discovery_address": "Address",
+    "custom_discovery_name": "Name",
+    "custom_discovery_type": "Type",
+    "custom_discovery_source": "Found by",
+    "custom_discovery_detected": "Adapters that recognised it",
+    "custom_discovery_empty": "No devices yet - start a scan on the settings tab.",
+    "custom_discovery_no_match": "No device matches the filter.",
+    "custom_discovery_count": "%s devices",
+    "custom_discovery_count_filtered": "%s of %s devices",
+    "custom_discovery_installed": "installed on this host",
+    "custom_discovery_not_installed": "not installed"
+}

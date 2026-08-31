@@ -1,0 +1,18 @@
+{
+    "custom_discovery_title": "Устройства последнего сканирования",
+    "custom_discovery_last_scan": "Последнее сканирование",
+    "custom_discovery_never": "сканирования ещё не было",
+    "custom_discovery_running": "Сканирование выполняется, таблица заполнится, когда оно закончится",
+    "custom_discovery_filter": "Фильтр",
+    "custom_discovery_address": "Адрес",
+    "custom_discovery_name": "Имя",
+    "custom_discovery_type": "Тип",
+    "custom_discovery_source": "Найдено методом",
+    "custom_discovery_detected": "Адаптеры, которые его распознали",
+    "custom_discovery_empty": "Устройств пока нет - запустите сканирование на вкладке настроек.",
+    "custom_discovery_no_match": "Ни одно устройство не подходит под фильтр.",
+    "custom_discovery_count": "Устройств: %s",
+    "custom_discovery_count_filtered": "%s из %s устройств",
+    "custom_discovery_installed": "установлен на этом хосте",
+    "custom_discovery_not_installed": "не установлен"
+}

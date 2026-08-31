@@ -1,0 +1,18 @@
+{
+    "custom_discovery_title": "Apparaten van de laatste scan",
+    "custom_discovery_last_scan": "Laatste scan",
+    "custom_discovery_never": "nog geen scan",
+    "custom_discovery_running": "Er loopt een scan, de tabel vult zich als hij klaar is",
+    "custom_discovery_filter": "Filter",
+    "custom_discovery_address": "Adres",
+    "custom_discovery_name": "Naam",
+    "custom_discovery_type": "Type",
+    "custom_discovery_source": "Gevonden door",
+    "custom_discovery_detected": "Adapters die het herkenden",
+    "custom_discovery_empty": "Nog geen apparaten - start een scan op het tabblad Instellingen.",
+    "custom_discovery_no_match": "Geen apparaat voldoet aan het filter.",
+    "custom_discovery_count": "%s apparaten",
+    "custom_discovery_count_filtered": "%s van %s apparaten",
+    "custom_discovery_installed": "op deze host geïnstalleerd",
+    "custom_discovery_not_installed": "niet geïnstalleerd"
+}

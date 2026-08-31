@@ -22,6 +22,7 @@ import type {
 } from './lib/types';
 import * as discoveryStates from './lib/discovery-states';
 import * as migration from './lib/migration';
+import * as notification from './lib/notification';
 
 const getAdapterDir = commonTools.getAdapterDir;
 
@@ -353,6 +354,10 @@ function noteDetection(device: DiscoveryDevice, adapterName: string): void {
 class DiscoveryAdapter extends Adapter {
     gDevices: DiscoveredDevices = {};
     isRunning = false;
+    /** The proposals of the last scan that were not there before - see lib/notification.ts */
+    lastNewProposals: DiscoveryInstance[] = [];
+    /** Language of this installation, read from `system.config` with every scan */
+    systemLanguage: ioBroker.Languages = 'en';
     adapters: Record<string, DetectionModule> = {};
     /** Timer of the scheduled scan, `null` while it is switched off */
     autoDetectTimer: NodeJS.Timeout | null = null;
@@ -455,22 +460,18 @@ class DiscoveryAdapter extends Adapter {
                 }
                 break;
             }
-            case 'getFoundDevices': {
-                // The device tab of the settings dialog. `textSendTo` renders whatever HTML
-                // comes back, so the table is built here - see lib/discovery-states.
+            case 'admin:getNotificationSchema':
+            case 'getNotificationSchema': {
+                // Admin hands the `contextData.admin.notification` of the notification back and
+                // renders whatever jsonConfig comes out - see lib/notification.ts
                 if (obj.callback) {
-                    void this.getForeignObjectAsync('system.discovery')
-                        .then(discovery => {
-                            const html = discoveryStates.deviceTableHtml(
-                                discovery?.native?.devices as DiscoveryDevice[] | undefined,
-                                discovery?.native?.lastScan as number | undefined,
-                            );
-                            this.sendTo(obj.from, obj.command, html, obj.callback);
-                        })
-                        .catch(e => {
-                            this.log.warn(`Cannot read the last scan: ${e}`);
-                            this.sendTo(obj.from, obj.command, 'Cannot read the last scan', obj.callback);
-                        });
+                    const message = (obj.message || {}) as { newInstances?: notification.ProposalSummary[] };
+                    this.sendTo(
+                        obj.from,
+                        obj.command,
+                        { schema: notification.notificationSchema(message.newInstances) },
+                        obj.callback,
+                    );
                 }
                 break;
             }
@@ -899,6 +900,10 @@ class DiscoveryAdapter extends Adapter {
                                     } as ioBroker.Object;
                                 }
                                 const oldInstances = (obj.native.newInstances || []) as (DiscoveryInstance | string)[];
+                                // before the acknowledge block below empties and rewrites this
+                                // array: what does this scan propose that the one before did not?
+                                this.lastNewProposals = notification.newProposals(oldInstances, options.newInstances);
+                                this.systemLanguage = options.language;
                                 obj.native.newInstances = options.newInstances;
                                 obj.native.devices = devices;
                                 obj.native.lastScan = new Date().getTime();
@@ -1087,9 +1092,48 @@ class DiscoveryAdapter extends Adapter {
                 this.log.warn(`Scheduled scan failed: ${error as any}`);
             } else {
                 this.log.info(`Scheduled scan finished, ${newInstances?.length || 0} instance(s) proposed`);
+                void this.notifyNewProposals();
             }
             this.scheduleAutoDetect();
         });
+    }
+
+    /**
+     * Tell the user about what a scheduled scan turned up.
+     *
+     * Nobody is watching a scan on a timer: admin subscribes to `system.discovery` only while
+     * the discovery dialog is open, so without this the find of a nightly scan would sit in the
+     * object until somebody happens to look. Only what is new since the scan before is worth a
+     * notification - see `lib/notification.ts`.
+     */
+    async notifyNewProposals(): Promise<void> {
+        const proposals = this.lastNewProposals;
+        if (!proposals.length) {
+            return;
+        }
+
+        try {
+            await this.registerNotification(
+                notification.NOTIFICATION_SCOPE,
+                notification.NOTIFICATION_CATEGORY,
+                notification.message(proposals.length, this.systemLanguage),
+                {
+                    contextData: {
+                        admin: {
+                            notification: {
+                                offlineMessage: notification.OFFLINE_MESSAGE,
+                                newInstances: notification.summarise(proposals),
+                            },
+                        },
+                    },
+                },
+            );
+            this.log.info(`Notified about ${proposals.length} new proposal(s)`);
+        } catch (e) {
+            // a notification is a nicety; a js-controller that cannot take it must not turn a
+            // successful scan into a failed one
+            this.log.warn(`Cannot register the notification: ${e}`);
+        }
     }
 
     /**

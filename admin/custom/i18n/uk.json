@@ -1,0 +1,18 @@
+{
+    "custom_discovery_title": "Пристрої останнього пошуку",
+    "custom_discovery_last_scan": "Останній пошук",
+    "custom_discovery_never": "пошуку ще не було",
+    "custom_discovery_running": "Пошук триває, таблиця заповниться, коли він завершиться",
+    "custom_discovery_filter": "Фільтр",
+    "custom_discovery_address": "Адреса",
+    "custom_discovery_name": "Назва",
+    "custom_discovery_type": "Тип",
+    "custom_discovery_source": "Знайдено методом",
+    "custom_discovery_detected": "Адаптери, які його розпізнали",
+    "custom_discovery_empty": "Пристроїв ще немає - запустіть пошук на вкладці налаштувань.",
+    "custom_discovery_no_match": "Жоден пристрій не підходить під фільтр.",
+    "custom_discovery_count": "Пристроїв: %s",
+    "custom_discovery_count_filtered": "%s з %s пристроїв",
+    "custom_discovery_installed": "встановлено на цьому хості",
+    "custom_discovery_not_installed": "не встановлено"
+}

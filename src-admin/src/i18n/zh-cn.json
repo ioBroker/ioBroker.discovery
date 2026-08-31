@@ -1,0 +1,18 @@
+{
+    "custom_discovery_title": "上次扫描找到的设备",
+    "custom_discovery_last_scan": "上次扫描",
+    "custom_discovery_never": "尚未扫描",
+    "custom_discovery_running": "扫描正在进行，结束后表格会填充",
+    "custom_discovery_filter": "过滤",
+    "custom_discovery_address": "地址",
+    "custom_discovery_name": "名称",
+    "custom_discovery_type": "类型",
+    "custom_discovery_source": "发现方式",
+    "custom_discovery_detected": "识别出它的适配器",
+    "custom_discovery_empty": "还没有设备 — 请在设置选项卡启动一次扫描。",
+    "custom_discovery_no_match": "没有设备符合过滤条件。",
+    "custom_discovery_count": "%s 个设备",
+    "custom_discovery_count_filtered": "%s / %s 个设备",
+    "custom_discovery_installed": "已安装在本机",
+    "custom_discovery_not_installed": "未安装"
+}

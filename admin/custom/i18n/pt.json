@@ -1,0 +1,18 @@
+{
+    "custom_discovery_title": "Dispositivos da última verificação",
+    "custom_discovery_last_scan": "Última verificação",
+    "custom_discovery_never": "ainda sem verificação",
+    "custom_discovery_running": "Uma verificação está a decorrer, a tabela enche-se quando terminar",
+    "custom_discovery_filter": "Filtro",
+    "custom_discovery_address": "Endereço",
+    "custom_discovery_name": "Nome",
+    "custom_discovery_type": "Tipo",
+    "custom_discovery_source": "Encontrado por",
+    "custom_discovery_detected": "Adaptadores que o reconheceram",
+    "custom_discovery_empty": "Ainda não há dispositivos - inicie uma verificação no separador das definições.",
+    "custom_discovery_no_match": "Nenhum dispositivo corresponde ao filtro.",
+    "custom_discovery_count": "%s dispositivos",
+    "custom_discovery_count_filtered": "%s de %s dispositivos",
+    "custom_discovery_installed": "instalado neste host",
+    "custom_discovery_not_installed": "não instalado"
+}

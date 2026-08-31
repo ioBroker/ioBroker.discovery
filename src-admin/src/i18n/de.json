@@ -1,0 +1,18 @@
+{
+    "custom_discovery_title": "Geräte des letzten Suchlaufs",
+    "custom_discovery_last_scan": "Letzter Suchlauf",
+    "custom_discovery_never": "noch kein Suchlauf",
+    "custom_discovery_running": "Ein Suchlauf läuft, die Tabelle füllt sich, wenn er fertig ist",
+    "custom_discovery_filter": "Filter",
+    "custom_discovery_address": "Adresse",
+    "custom_discovery_name": "Name",
+    "custom_discovery_type": "Typ",
+    "custom_discovery_source": "Gefunden von",
+    "custom_discovery_detected": "Adapter, die es erkannt haben",
+    "custom_discovery_empty": "Noch keine Geräte - starte einen Suchlauf auf dem Reiter Einstellungen.",
+    "custom_discovery_no_match": "Kein Gerät passt zum Filter.",
+    "custom_discovery_count": "%s Geräte",
+    "custom_discovery_count_filtered": "%s von %s Geräten",
+    "custom_discovery_installed": "auf diesem Host installiert",
+    "custom_discovery_not_installed": "nicht installiert"
+}

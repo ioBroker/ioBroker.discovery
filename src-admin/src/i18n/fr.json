@@ -1,0 +1,18 @@
+{
+    "custom_discovery_title": "Appareils de la dernière recherche",
+    "custom_discovery_last_scan": "Dernière recherche",
+    "custom_discovery_never": "aucune recherche pour l'instant",
+    "custom_discovery_running": "Une recherche est en cours, le tableau se remplira à la fin",
+    "custom_discovery_filter": "Filtre",
+    "custom_discovery_address": "Adresse",
+    "custom_discovery_name": "Nom",
+    "custom_discovery_type": "Type",
+    "custom_discovery_source": "Trouvé par",
+    "custom_discovery_detected": "Adaptateurs qui l'ont reconnu",
+    "custom_discovery_empty": "Aucun appareil pour l'instant - lancez une recherche dans l'onglet des paramètres.",
+    "custom_discovery_no_match": "Aucun appareil ne correspond au filtre.",
+    "custom_discovery_count": "%s appareils",
+    "custom_discovery_count_filtered": "%s sur %s appareils",
+    "custom_discovery_installed": "installé sur cet hôte",
+    "custom_discovery_not_installed": "non installé"
+}

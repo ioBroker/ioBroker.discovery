@@ -1,0 +1,18 @@
+{
+    "custom_discovery_title": "Dispositivos de la última búsqueda",
+    "custom_discovery_last_scan": "Última búsqueda",
+    "custom_discovery_never": "todavía sin búsqueda",
+    "custom_discovery_running": "Hay una búsqueda en curso, la tabla se llenará cuando termine",
+    "custom_discovery_filter": "Filtro",
+    "custom_discovery_address": "Dirección",
+    "custom_discovery_name": "Nombre",
+    "custom_discovery_type": "Tipo",
+    "custom_discovery_source": "Encontrado por",
+    "custom_discovery_detected": "Adaptadores que lo reconocieron",
+    "custom_discovery_empty": "Todavía no hay dispositivos - inicia una búsqueda en la pestaña de ajustes.",
+    "custom_discovery_no_match": "Ningún dispositivo coincide con el filtro.",
+    "custom_discovery_count": "%s dispositivos",
+    "custom_discovery_count_filtered": "%s de %s dispositivos",
+    "custom_discovery_installed": "instalado en este host",
+    "custom_discovery_not_installed": "no instalado"
+}
