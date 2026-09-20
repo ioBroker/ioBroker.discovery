@@ -41,7 +41,7 @@
     "@tsconfig/node22": "^22.0.6",
     "@types/mocha": "^10.0.10",
     "@types/netmask": "^2.0.6",
-    "@types/node": "^22.20.1",
+    "@types/node": "^22.20.2",
     "@types/node-ssdp": "^4.0.5",
     "typescript": "~6.0.3"
   },
