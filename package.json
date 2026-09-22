@@ -43,7 +43,7 @@
     "@types/netmask": "^2.0.6",
     "@types/node": "^22.20.2",
     "@types/node-ssdp": "^4.0.5",
-    "typescript": "~6.0.3"
+    "typescript": "~7.0.2"
   },
   "bugs": {
     "url": "https://github.com/ioBroker/ioBroker.discovery/issues"
