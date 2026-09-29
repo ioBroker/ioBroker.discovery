@@ -194,6 +194,10 @@ describe('SIKU discovery proposals and lifecycle', function () {
         assert.equal(new Set(instance.native.devices.map(row => row.id)).size, 3);
         assert.ok(instance.native.devices.every(row => row.enabled && !('password' in row)));
         assert.deepEqual(instance.native.devicePasswords, []);
+        assert.equal(instance.native.pollIntervalSec, 30);
+        assert.equal(instance.native.timeCheckIntervalHours, 24);
+        assert.equal(instance.native.timeSyncThresholdSec, 10);
+        assert.equal(instance.native.discoveryBroadcastAddress, '255.255.255.255');
         assert.equal(socket.request.toString('hex'), REQUEST);
         assert.equal(socket.boundPort, 4000);
         assert.equal(socket.broadcast, true);

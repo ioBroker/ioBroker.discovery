@@ -140,8 +140,8 @@ UDP reply port 4000 is skipped rather than shared with another application.
 - Schwörer VentCube
 - Shelly
 - Siegenia
-- SIKU / Oxxify Smart ventilation (RV V2 UDP protocol)
 - Sigenergy
+- SIKU / Oxxify Smart ventilation (RV V2 UDP protocol)
 - SMA SEMP gateway (Sunny Home Manager)
 - Sma-em
 - Smappee

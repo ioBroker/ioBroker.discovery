@@ -16,7 +16,7 @@ export interface SikuDevice {
 
 /**
  * RV V2 read-only discovery used by ioBroker.siku (SIKU and compatible Oxxify Smart fans).
- * Request and checksum reference: ioBroker.siku/src/lib/siku-protocol.ts.
+ * Protocol reference: https://github.com/ChrMaass/ioBroker.siku/blob/main/src/lib/siku-protocol.ts.
  * No write, mode, clock or setup command is sent. Only the factory PIN 1111 is tried.
  */
 export function discoveryRequest(): Buffer {
@@ -106,6 +106,11 @@ function propose(devices: Map<string, SikuDevice>, options: DetectOptions): bool
         _id: tools.getNextInstanceID('siku', options),
         common: { name: 'siku', title: 'SIKU / Oxxify Smart' },
         native: {
+            // Mirror siku's defaults so the proposal is also valid before admin merges metadata.
+            pollIntervalSec: 30,
+            discoveryBroadcastAddress: '255.255.255.255',
+            timeCheckIntervalHours: 24,
+            timeSyncThresholdSec: 10,
             devices: rows.map(row => ({
                 ...row,
                 name: `SIKU / Oxxify ${row.id.slice(-4)}`,
@@ -125,7 +130,11 @@ export function detect(ip: string, _device: DiscoveryDevice, options: DetectOpti
     // One instance already manages every fan. Leave its names, disabled rows and encrypted
     // credentials untouched; its own admin discovery can add additional devices.
     // This also avoids competing with an installed adapter for the fixed reply port.
-    if (tools.findInstance(options, 'siku')) {
+    // common.name is a display label and may have been changed; the object ID is stable.
+    const hasSikuId = [...options.existingInstances, ...options.newInstances].some(instance =>
+        /^system\.adapter\.siku\.\d+$/.test(instance._id),
+    );
+    if (hasSikuId || tools.findInstance(options, 'siku')) {
         callback(null, false, ip);
         return;
     }
@@ -181,7 +190,12 @@ export function detect(ip: string, _device: DiscoveryDevice, options: DetectOpti
             fail(error instanceof Error ? error : new Error(String(error)));
         }
     });
-    socket.bind(PORT);
+    try {
+        socket.bind(PORT);
+    } catch (error) {
+        // A synchronous bind failure must cancel the scan, not leak a later callback into the core.
+        fail(error instanceof Error ? error : new Error(String(error)));
+    }
 }
 
 // The existing UDP method supplies one broadcast address, not one probe per ping result.
