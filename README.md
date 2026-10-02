@@ -20,14 +20,6 @@ For more details and for information on how to disable the error reporting, see 
 
 ### Automatically Discovered
 
-SIKU / Oxxify Smart ventilation is detected via a read-only UDP broadcast on port 4000
-when the UDP discovery method is selected. Devices must use the factory PIN `1111`
-and be reachable in the same broadcast domain. Changed PINs, VLANs and routed
-networks require manual discovery/configuration in the [siku adapter](https://github.com/ChrMaass/ioBroker.siku).
-A single proposed instance contains all discovered fans. Existing siku instances
-are left untouched; their own discovery manages additional fans. An occupied
-UDP reply port 4000 is skipped rather than shared with another application.
-
 - Agent DVR
 - Air-Q
 - Autodarts
@@ -141,7 +133,7 @@ UDP reply port 4000 is skipped rather than shared with another application.
 - Shelly
 - Siegenia
 - Sigenergy
-- SIKU / Oxxify Smart ventilation (RV V2 UDP protocol)
+- SIKU / Oxxify Smart ventilation (RV V2 UDP protocol, factory PIN only)
 - SMA SEMP gateway (Sunny Home Manager)
 - Sma-em
 - Smappee
@@ -260,6 +252,8 @@ in the `system.discovery` object.
 ## Changelog
 ### **WORK IN PROGRESS**
 * (ChrMaass) Detect SIKU / Oxxify Smart fans with a read-only UDP broadcast and propose one siku instance for all fans
+* (bluefox) The SIKU probe no longer demands both identifying parameters - the siku adapter does not either, and a fan that answers only one was being hidden from it
+* (bluefox) The SIKU probe asks from a free port when UDP 4000 is taken, instead of dropping the whole detection
 
 ### 5.1.1 (2026-08-31)
 * (bluefox) The ping scan says so when this host may not send ICMP and sweeps the range over TCP instead (#247)

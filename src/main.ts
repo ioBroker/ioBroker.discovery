@@ -900,7 +900,7 @@ class DiscoveryAdapter extends Adapter {
                                     } as ioBroker.Object;
                                 }
                                 const oldInstances = (obj.native.newInstances || []) as (DiscoveryInstance | string)[];
-                                // before the acknowledge block below empties and rewrites this
+                                // before the acknowledgment, block below empties and rewrites this
                                 // array: what does this scan propose that the one before did not?
                                 this.lastNewProposals = notification.newProposals(oldInstances, options.newInstances);
                                 this.systemLanguage = options.language;

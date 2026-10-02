@@ -105,6 +105,7 @@
       "it": "Dispositivi di scoperta",
       "es": "Dispositivos de descubrimiento",
       "pl": "Urządzenia Discovery",
+      "uk": "Пристрої Discovery",
       "zh-cn": "发现设备"
     },
     "desc": {
@@ -117,6 +118,7 @@
       "it": "Questo adattatore tenta di rilevare tutti i dispositivi noti nella rete e sulla macchina",
       "es": "Este adaptador intenta descubrir todos los dispositivos conocidos en su red y en su máquina",
       "pl": "Ten adapter próbuje wykryć wszystkie znane urządzenia w sieci i na twoim komputerze",
+      "uk": "Цей адаптер намагається виявити всі відомі пристрої у вашій мережі та на вашому комп’ютері",
       "zh-cn": "这个适配器将尝试发现在您局域网和主机上的所有已知设备"
     },
     "authors": [
@@ -153,6 +155,7 @@
         "dsn": "https://464b38d930eb4ee7b3e426620f52d256@sentry.iobroker.net/31"
       }
     },
+    "nogit": true,
     "adminUI": {
       "config": "json"
     },
@@ -244,20 +247,6 @@
           "limit": 1
         }
       ]
-    }
-  ],
-  "_objects": [
-    {
-      "_id": "system.discovery",
-      "common": {
-        "name": "Information about found devices"
-      },
-      "native": {
-        "devices": [],
-        "lastScan": 0,
-        "newInstances": []
-      },
-      "type": "config"
     }
   ],
   "instanceObjects": [

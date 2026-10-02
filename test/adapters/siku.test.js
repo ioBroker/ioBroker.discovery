@@ -134,40 +134,64 @@ describe('SIKU read-only discovery protocol', () => {
         for (let n = 0; n < complete.length; n++) {
             assert.equal(siku.parseResponse(complete.subarray(0, n), '192.0.2.10'), null);
         }
-        for (const payload of [
-            Buffer.from([0xfe]),
-            Buffer.from([0xff]),
-            Buffer.from([0xfe, 200, 0x7c, 1]),
-            Buffer.from([0xfd, 0x7c]),
-        ]) {
+        for (const payload of [Buffer.from([0xfe]), Buffer.from([0xff]), Buffer.from([0xfe, 200, 0x7c, 1])]) {
             assert.equal(siku.parseResponse(packet(ID, payload), '192.0.2.10'), null);
         }
     });
-    it('requires matching hexadecimal header and payload IDs and a device type', () => {
-        const wrongId = Buffer.concat([
+    it('needs a hexadecimal device ID, wherever in the frame it stands', () => {
+        // The adapter reads the payload parameter and falls back to the frame header
+        // (readDiscoveryAnswer), so neither of the two alone may decide the find.
+        const payloadOnly = Buffer.concat([
             Buffer.from([0xfe, 16, 0x7c]),
             Buffer.from('0000000000000000'),
-            Buffer.from([0xb9, 14]),
+            Buffer.from([0xfe, 2, 0xb9, 14, 0]),
         ]);
-        assert.equal(siku.parseResponse(packet(ID, wrongId), '192.0.2.10'), null);
+        assert.equal(siku.parseResponse(packet(ID, payloadOnly), '192.0.2.10').id, '0000000000000000');
+        const headerOnly = Buffer.from([0xfe, 2, 0xb9, 14, 0]);
+        assert.equal(siku.parseResponse(packet(ID, headerOnly), '192.0.2.10').id, ID);
+        // Neither one hexadecimal: not a fan.
         assert.equal(siku.parseResponse(packet('NOT_A_DEVICE_ID!'), '192.0.2.10'), null);
-        const noType = Buffer.concat([Buffer.from([0xfe, 16, 0x7c]), Buffer.from(ID)]);
-        assert.equal(siku.parseResponse(packet(ID, noType), '192.0.2.10'), null);
     });
-    it('understands page markers and rejects unsupported or non-response parameter data', () => {
+    it('proposes a fan that answers no device type, and any width of one', () => {
+        // The adapter leaves deviceTypeCode null when 0xb9 is missing and decodes whatever
+        // width it gets, so demanding exactly two bytes would hide a fan it can talk to.
+        const noType = Buffer.concat([Buffer.from([0xfe, 16, 0x7c]), Buffer.from(ID)]);
+        assert.deepEqual(siku.parseResponse(packet(ID, noType), '192.0.2.10'), {
+            id: ID,
+            host: '192.0.2.10',
+            discoveredType: '',
+        });
+        const oneByte = Buffer.concat([Buffer.from([0xfe, 16, 0x7c]), Buffer.from(ID), Buffer.from([0xb9, 14])]);
+        assert.equal(siku.parseResponse(packet(ID, oneByte), '192.0.2.10').discoveredType, '0E (14)');
+        const fourByte = Buffer.concat([
+            Buffer.from([0xfe, 16, 0x7c]),
+            Buffer.from(ID),
+            Buffer.from([0xfe, 4, 0xb9, 14, 0, 0, 0]),
+        ]);
+        assert.equal(siku.parseResponse(packet(ID, fourByte), '192.0.2.10').discoveredType, '0E000000 (14)');
+    });
+    it('understands page markers, skips unsupported parameters, rejects non-response data', () => {
         const payload = Buffer.concat([
             Buffer.from([0xff, 0, 0xfe, 16, 0x7c]),
             Buffer.from(ID),
             Buffer.from([0xff, 0, 0xfe, 2, 0xb9, 14, 0]),
         ]);
         assert.ok(siku.parseResponse(packet(ID, payload), '192.0.2.10'));
+        // 0xfd says "I do not support that parameter" - an answer, not a disqualification.
         for (const tail of [
             [0xfd, 0xb9],
-            [0xfc, 2, 0xb9, 14],
+            [0xfd, 0x7c],
         ]) {
-            const invalid = Buffer.concat([Buffer.from([0xfe, 16, 0x7c]), Buffer.from(ID), Buffer.from(tail)]);
-            assert.equal(siku.parseResponse(packet(ID, invalid), '192.0.2.10'), null);
+            const sparse = Buffer.concat([Buffer.from([0xfe, 16, 0x7c]), Buffer.from(ID), Buffer.from(tail)]);
+            assert.equal(siku.parseResponse(packet(ID, sparse), '192.0.2.10').id, ID);
         }
+        // 0xfc switching to a function other than "response" is a disqualification.
+        const written = Buffer.concat([
+            Buffer.from([0xfe, 16, 0x7c]),
+            Buffer.from(ID),
+            Buffer.from([0xfc, 2, 0xb9, 14]),
+        ]);
+        assert.equal(siku.parseResponse(packet(ID, written), '192.0.2.10'), null);
     });
 });
 
@@ -193,6 +217,8 @@ describe('SIKU discovery proposals and lifecycle', function () {
         assert.equal(instance.native.devices.length, 3);
         assert.equal(new Set(instance.native.devices.map(row => row.id)).size, 3);
         assert.ok(instance.native.devices.every(row => row.enabled && !('password' in row)));
+        // The scan time is not a contact time - the adapter fills this in when it talks to the fan.
+        assert.ok(instance.native.devices.every(row => row.lastSeen === ''));
         assert.deepEqual(instance.native.devicePasswords, []);
         assert.equal(instance.native.pollIntervalSec, 30);
         assert.equal(instance.native.timeCheckIntervalHours, 24);
@@ -262,6 +288,44 @@ describe('SIKU discovery proposals and lifecycle', function () {
             assert.equal(socket.closed, true);
             assert.equal(settings.newInstances.length, 0);
             assert.doesNotThrow(() => socket.emit('error', new Error('late error')));
+        }
+    });
+    it('asks from a free port when UDP 4000 is taken, instead of giving up on the fans', async () => {
+        const settings = options();
+        const ports = [];
+        // One socket per bind attempt, as dgram requires - a socket that failed to bind is spent.
+        const sockets = [];
+        const original = dgram.createSocket;
+        dgram.createSocket = () => {
+            const socket = new FakeSocket();
+            sockets.push(socket);
+            socket.bind = port => {
+                ports.push(port);
+                if (port === 4000) {
+                    queueMicrotask(() => socket.emit('error', new Error('EADDRINUSE')));
+                } else {
+                    socket.boundPort = port;
+                    queueMicrotask(() => socket.emit('listening'));
+                }
+            };
+            socket.reply = socket => socket.emit('message', packet(), { address: '192.0.2.10', port: 4000 });
+            return socket;
+        };
+        try {
+            const result = await new Promise(resolve =>
+                siku.detect('255.255.255.255', {}, settings, (error, found) => resolve({ error, found })),
+            );
+            assert.deepEqual(ports, [4000, 0], 'port 4000 first, then whatever is free');
+            assert.equal(result.found, true, 'an occupied reply port must not cost the proposal');
+            assert.equal(settings.newInstances[0].native.devices[0].id, ID);
+            // The request still goes to the fans on 4000, only the local port differs.
+            assert.deepEqual(sockets[1].target, { port: 4000, ip: '255.255.255.255' });
+            assert.ok(
+                sockets.every(socket => socket.closed),
+                'both the spent and the working socket are closed',
+            );
+        } finally {
+            dgram.createSocket = original;
         }
     });
     it('communicates with a real loopback UDP responder without using household fans', async () => {

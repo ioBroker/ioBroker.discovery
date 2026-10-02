@@ -11,6 +11,7 @@ const DEVICE_ID = /^[0-9A-F]{16}$/;
 export interface SikuDevice {
     id: string;
     host: string;
+    /** `''` when the fan did not answer parameter 0xb9 - the adapter treats it as optional too */
     discoveredType: string;
 }
 
@@ -21,6 +22,15 @@ export interface SikuDevice {
  */
 export function discoveryRequest(): Buffer {
     return Buffer.from('fdfd021044454641554c545f44455649434549440431313131017cb9b106', 'hex');
+}
+
+/** The device type is a little-endian unsigned of whatever width the firmware answers with. */
+function readUnsignedLE(value: Buffer): number {
+    let result = 0;
+    for (let i = value.length - 1; i >= 0; i--) {
+        result = result * 256 + value[i];
+    }
+    return result;
 }
 
 /** Validate the complete binary envelope before interpreting any parameter data. */
@@ -63,9 +73,10 @@ export function parseResponse(message: Buffer, host: string): SikuDevice | null 
                 page = value;
             } else if (marker === 0xfc && value !== 6) {
                 return null; // do not mistake write/read data for an answer
-            } else if (marker === 0xfd && page === 0 && (value === 0x7c || value === 0xb9)) {
-                return null; // both identifying parameters must be supported
             }
+            // 0xfd says the fan does not support that parameter. Skip the entry, the way the
+            // adapter does with its `!entry.unsupported` filter - neither of the two parameters
+            // is required below.
             continue;
         }
         let size = 1;
@@ -88,13 +99,27 @@ export function parseResponse(message: Buffer, host: string): SikuDevice | null 
         position += size;
     }
 
-    const id = parameters.get(0x7c);
-    const model = parameters.get(0xb9);
-    // Requiring both parameters and matching IDs avoids recommendations for unrelated UDP services.
-    if (!id || id.length !== 16 || id.toString('latin1').toUpperCase() !== headerId || model?.length !== 2) {
+    // The envelope is the fingerprint, and it is a long one: 0xfdfd, protocol type 2, an ID
+    // length field of exactly 16, a checksum over the whole frame, function code 6 and a data
+    // block that parses as RV V2 to exactly the frame end. Nothing else on the network produces
+    // that by accident.
+    //
+    // The two parameters are asked for but not demanded, because the adapter that is being
+    // proposed does not demand them either: in `readDiscoveryAnswer()` the ID falls back to the
+    // frame header and the device type may stay `null`. A firmware that answers only one of them
+    // is still a fan worth proposing - insisting on both would hide it from the one adapter that
+    // can talk to it.
+    const payloadId = parameters.get(0x7c);
+    const id = payloadId?.length === 16 ? payloadId.toString('latin1').toUpperCase() : headerId;
+    if (!DEVICE_ID.test(id)) {
         return null;
     }
-    return { id: headerId, host, discoveredType: `${model.toString('hex').toUpperCase()} (${model.readUInt16LE(0)})` };
+    const model = parameters.get(0xb9);
+    return {
+        id,
+        host,
+        discoveredType: model?.length ? `${model.toString('hex').toUpperCase()} (${readUnsignedLE(model)})` : '',
+    };
 }
 
 function propose(devices: Map<string, SikuDevice>, options: DetectOptions): boolean {
@@ -115,7 +140,9 @@ function propose(devices: Map<string, SikuDevice>, options: DetectOptions): bool
                 ...row,
                 name: `SIKU / Oxxify ${row.id.slice(-4)}`,
                 enabled: true,
-                lastSeen: new Date().toISOString(),
+                // Left to the adapter on purpose: a proposal can sit unacknowledged for days,
+                // and the scan time would then read as a contact that never happened.
+                lastSeen: '',
             })),
             // The adapter resolves an absent per-device credential to factory PIN 1111.
             // Do not embed passwords into native.devices or discovery metadata.
@@ -129,22 +156,37 @@ function propose(devices: Map<string, SikuDevice>, options: DetectOptions): bool
 export function detect(ip: string, _device: DiscoveryDevice, options: DetectOptions, callback: DetectCallback): void {
     // One instance already manages every fan. Leave its names, disabled rows and encrypted
     // credentials untouched; its own admin discovery can add additional devices.
-    // This also avoids competing with an installed adapter for the fixed reply port.
-    // common.name is a display label and may have been changed; the object ID is stable.
-    const hasSikuId = [...options.existingInstances, ...options.newInstances].some(instance =>
+    // The object ID carries the adapter name, so this covers an instance that already exists and
+    // one another module proposed earlier in this scan alike - which is what
+    // `tools.findInstance()` would look up through `common.name`: the same name by a longer road.
+    const hasSiku = [...options.existingInstances, ...options.newInstances].some(instance =>
         /^system\.adapter\.siku\.\d+$/.test(instance._id),
     );
-    if (hasSikuId || tools.findInstance(options, 'siku')) {
+    if (hasSiku) {
         callback(null, false, ip);
         return;
     }
 
-    // Do not reuse the shared text udpScan helper: UTF-8 conversion corrupts binary frames.
-    // Do not reuse port 4000 either: another application must not lose its UDP replies.
-    const socket = dgram.createSocket({ type: 'udp4', reuseAddr: false });
     const devices = new Map<string, SikuDevice>();
+    let socket: dgram.Socket | null = null;
     let finished = false;
     let timer: NodeJS.Timeout | null = null;
+
+    const closeSocket = (): void => {
+        if (!socket) {
+            return;
+        }
+        const dead = socket;
+        socket = null;
+        dead.removeAllListeners();
+        dead.on('error', () => undefined); // a pending send may fail after close
+        try {
+            dead.close();
+        } catch {
+            // A failed bind may already have closed the socket.
+        }
+    };
+
     const finish = (success: boolean): void => {
         if (finished) {
             return;
@@ -154,13 +196,7 @@ export function detect(ip: string, _device: DiscoveryDevice, options: DetectOpti
             clearTimeout(timer);
             timer = null;
         }
-        socket.removeAllListeners();
-        socket.on('error', () => undefined); // a pending send may fail after close
-        try {
-            socket.close();
-        } catch {
-            // A failed bind may already have closed the socket.
-        }
+        closeSocket();
         callback(null, success && propose(devices, options), ip);
     };
     timer = setTimeout(() => finish(true), PROBE_TIMEOUT);
@@ -168,34 +204,60 @@ export function detect(ip: string, _device: DiscoveryDevice, options: DetectOpti
         options.log.debug(`SIKU discovery on UDP ${PORT} skipped: ${error.message}`);
         finish(false);
     };
-    socket.on('error', fail);
-    socket.on('message', (message, remote) => {
-        if (finished || devices.size >= MAX_DEVICES) {
+
+    // Do not reuse the shared text udpScan helper: UTF-8 conversion corrupts binary frames.
+    //
+    // `reuseAddr` stays off: on Windows SO_REUSEADDR lets a second bind take the datagrams of the
+    // first, and no application is going to lose its UDP replies to a discovery scan. So a taken
+    // port 4000 really does fail here - and is then asked from a free port instead, because the
+    // fans answer whichever port the request came from. The adapter does the same thing in
+    // `bindSocketWithFallback()`, which tries [PORT, 0].
+    const ask = (port: number): void => {
+        closeSocket();
+        if (finished) {
             return;
         }
-        const entry = parseResponse(message, remote.address);
-        if (entry && !devices.has(entry.id)) {
-            devices.set(entry.id, entry);
-        }
-    });
-    socket.on('listening', () => {
+        const own = dgram.createSocket({ type: 'udp4', reuseAddr: false });
+        socket = own;
+        own.on('error', (error: Error): void => {
+            if (port === PORT) {
+                options.log.debug(`SIKU discovery: UDP ${PORT} is taken (${error.message}), asking from a free port`);
+                ask(0);
+            } else {
+                fail(error);
+            }
+        });
+        own.on('message', (message, remote) => {
+            if (finished || devices.size >= MAX_DEVICES) {
+                return;
+            }
+            const entry = parseResponse(message, remote.address);
+            if (entry && !devices.has(entry.id)) {
+                devices.set(entry.id, entry);
+            }
+        });
+        own.on('listening', () => {
+            try {
+                own.setBroadcast(true);
+                own.send(discoveryRequest(), PORT, ip, error => {
+                    if (error) {
+                        fail(error);
+                    }
+                });
+            } catch (error) {
+                // Not an address conflict, so this one does not get a second port.
+                fail(error instanceof Error ? error : new Error(String(error)));
+            }
+        });
         try {
-            socket.setBroadcast(true);
-            socket.send(discoveryRequest(), PORT, ip, error => {
-                if (error) {
-                    fail(error);
-                }
-            });
+            own.bind(port);
         } catch (error) {
-            fail(error instanceof Error ? error : new Error(String(error)));
+            // A synchronous bind failure must cancel the scan, not leak a later callback into the
+            // core - and it has earned the free port just as much as an asynchronous one.
+            own.emit('error', error instanceof Error ? error : new Error(String(error)));
         }
-    });
-    try {
-        socket.bind(PORT);
-    } catch (error) {
-        // A synchronous bind failure must cancel the scan, not leak a later callback into the core.
-        fail(error instanceof Error ? error : new Error(String(error)));
-    }
+    };
+    ask(PORT);
 }
 
 // The existing UDP method supplies one broadcast address, not one probe per ping result.
