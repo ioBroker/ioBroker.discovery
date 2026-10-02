@@ -1,4 +1,9 @@
 # Older changes
+## 4.4.0 (2024-02-23)
+* (klein0r) Added WLED
+* (klein0r) Added LaMetric
+* (Jey-Cee) Removed net-tools from proposals
+
 ## 4.3.0 (2024-02-21)
 * (bluefox) Replaced vis with vis-2
 

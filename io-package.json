@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "discovery",
-    "version": "5.1.1",
+    "version": "5.1.2",
     "news": {
+      "5.1.2": {
+        "en": "Detect SIKU / Oxxify Smart fans with a read-only UDP broadcast and propose one siku instance for all fans\nThe SIKU probe no longer demands both identifying parameters - the siku adapter does not either, and a fan that answers only one was being hidden from it\nThe SIKU probe asks from a free port when UDP 4000 is taken, instead of dropping the whole detection",
+        "de": "Erkennt SIKU/Oxxify Smart-Fans mit UDP-Broadcast und schlage eine SIKU-Instanz für alle Fans vor\nDie SIKU-Sonde verlangt nicht mehr beide Identifikationsparameter — der Siku-Adapter auch nicht, und ein Lüfter, der nur einen empfängt, war versteckt\nDie SIKU-Probe fragt an einem freien Port, ob UDP 4000 belegt ist, statt alles zu löschen",
+        "ru": "Обнаруживайте поклонников SIKU/Oxxify Smart с помощью трансляции UDP, доступной только для чтения, и предложите всем фанатам один экземпляр siku\nЗонд SIKU больше не требует обоих идентифицирующих параметров — адаптер siku тоже не требует, а вентилятор, отвечающий только на один из них, был скрыт от него\nЗонд SIKU запрашивает протокол UDP 4000 через свободный порт, а не отбрасывает все обнаружение",
+        "pt": "Detecte fãs SIKU/Oxxify Smart com UDP de leitura e proponha uma instância siku para todos os fãs\nA sonda SIKU não exige mais os dois parâmetros de identificação - o adaptador siku também não, e uma ventoinha que atende apenas um está oculta\nA sonda SIKU solicita de uma porta livre o UDP 4000, em vez de eliminar toda a detecção",
+        "nl": "Detecteer SIKU/Oxxify Smart-fans met een UDP-uitzending die alleen kan worden gelezen en stel alle fans één siku-exemplaar voor\nDe SIKU-sonde heeft niet langer beide identificatieparameters nodig - de siku-adapter ook niet, en een ventilator die slechts één antwoord geeft, werd voor de sonde verborgen\nDe SIKU-sonde vraagt vanaf een vrije poort wanneer UDP 4000 is opgenomen, in plaats van de hele detectie te laten vallen",
+        "fr": "Détectez les fans de SIKU/Oxxify Smart grâce à une diffusion UDP en lecture seule et proposez une instance Siku\nLa sonde SIKU n'exige plus les deux paramètres d'identification, pas l'adaptateur Siku non plus, et un ventilateur qui ne répond qu'à un seul était caché\nLa sonde SIKU demande depuis un port libre quand l'UDP 4000 est utilisé, au lieu de tout arrêter",
+        "it": "Rileva i fan di SIKU/Oxxify Smart con UDP in sola lettura e propone un'istanza siku per tutti i fan\nLa sonda SIKU non richiede più entrambi i parametri identificativi, né l'adattatore siku, e una ventola che risponde solo a uno era nascosta\nLa sonda SIKU chiede da una porta libera se l'UDP 4000 è in corso, invece di perdere",
+        "es": "Detecte los ventiladores SIKU/Oxify Smart con una emisión UDP de solo lectura y proponga una instancia de Siku para todos\nLa sonda SIKU ya no exige ambos parámetros de identificación, el adaptador Siku tampoco, y se le ocultaba un ventilador que solo responde a uno\nLa sonda SIKU pregunta desde un puerto libre cuando se toma UDP 4000, en lugar de perder toda la detección",
+        "pl": "Wykryj wentylatory SIKU/Oxxify Smart za pomocą transmisji UDP tylko do odczytu i zaproponuj jedną instancję siku dla wszystkich fanów\nSonda SIKU nie wymaga już obu parametrów identyfikacyjnych - adapter siku też nie ma, a wentylator odpowiadający tylko na jeden był przed nią ukryty\nSonda SIKU pyta z wolnego portu, kiedy zostanie pobrany UDP 4000, zamiast upuszczać całą detekcję",
+        "uk": "Виявляйте вентилятори SIKU/Oxxify Smart за допомогою UDP-трансляції лише для читання та запропонуйте один екземпляр siku для всіх шанувальників\nЗонд SIKU більше не вимагає обох ідентифікаційних параметрів - адаптер siku теж не вимагає, і вентилятор, який відповідає лише одному, ховався від нього\nЗонд SIKU запитує з вільного порту, коли приймається UDP 4000, замість того, щоб скинути все виявлення",
+        "zh-cn": "使用只读 UDP 广播检测 SIKU/Oxxify Smart 风扇，并为所有粉丝推荐一个 siku 实例\nSIKU 探测器不再需要两个识别参数——siku 适配器也不需要，而且只回答一个参数的风扇被隐藏了\n当使用 UDP 4000 时，SIKU 探测器会从空闲端口询问，而不是丢弃整个检测"
+      },
       "5.1.1": {
         "en": "The ping scan says so when this host may not send ICMP and sweeps the range over TCP instead (#247)\nThe scan can now run on a timer, with a selectable set of methods - mdns, ping, udp and upnp by default\nEvery finished scan writes the devices it found below `discovery.0.devices`\nThe instance has settings again: two tabs with a start button, the live scan state and the device list\nThe device tab is a real table now: sortable, filterable, and it fills itself from `system.discovery`\nThe device table shows the icon of every proposed adapter that is installed on this host\nA scheduled scan raises a notification when it proposes something that was not proposed before\nThe texts of the settings dialog moved into `admin/i18n`, complete in all eleven languages\n`adminUI.config` is repaired at start-up, js-controller does not update that field on an upgrade\nThe adapter was refactored to TypeScript: sources moved to `src/`, the build output to `build/`\nMinimum node.js version is 22.19.0 now",
         "de": "Der Ping-Scan meldet dies, wenn dieser Host möglicherweise kein ICMP sendet und stattdessen den Bereich über TCP durchsucht (#247).\nDer Scan kann nun zeitgesteuert mit einer auswählbaren Auswahl an Methoden ausgeführt werden – standardmäßig mdns, ping, udp und upnp.\nNach jedem abgeschlossenen Scan werden die gefundenen Geräte unter `discovery.0.devices` gespeichert.\nDie Instanz verfügt wieder über Einstellungen: zwei Registerkarten mit einer Startschaltfläche, dem Live-Scan-Status und der Geräteliste.\nDie Registerkarte „Geräte“ ist jetzt eine echte Tabelle: sortierbar, filterbar und sie füllt sich automatisch aus `system.discovery`.\nDie Gerätetabelle zeigt das Symbol jedes vorgeschlagenen Adapters, der auf diesem Host installiert ist.\nEin geplanter Scan löst eine Benachrichtigung aus, wenn er etwas vorschlägt, das zuvor noch nicht vorgeschlagen wurde.\nDie Texte des Einstellungsdialogs wurden in das Verzeichnis `admin/i18n` verschoben und sind nun in allen elf Sprachen vollständig verfügbar.\nDie Datei `adminUI.config` wird beim Start repariert, der js-Controller aktualisiert dieses Feld jedoch nicht bei einem Upgrade.\nDer Adapter wurde auf TypeScript umgestellt: Die Quelldateien wurden nach `src/` verschoben, die Build-Ausgabe nach `build/`.\nDie Mindestversion von Node.js ist jetzt 22.19.0.",
@@ -80,19 +93,6 @@
         "pl": "Zastąpione vis vis-2",
         "uk": "Замінені віси з вісом-2",
         "zh-cn": "改为:"
-      },
-      "4.2.0": {
-        "en": "Changed detection of myvbus and resol",
-        "de": "Geänderte Erkennung von Myvbus und Resol",
-        "ru": "Изменено обнаружение myvbus и resol",
-        "pt": "Detecção alterada de myvbus e resol",
-        "nl": "Veranderde detectie van myvbus en resolutie",
-        "fr": "Détection modifiée de myvbus et de résolve",
-        "it": "Rilevamento modificato di myvbus e risol",
-        "es": "Detección modificada de mivbus y resol",
-        "pl": "Zmiany wykrycia myvbusa i resolu",
-        "uk": "Змінене виявлення мівбусів і розчину",
-        "zh-cn": "B. 改变对我的布局和溶解的探测"
       }
     },
     "titleLang": {

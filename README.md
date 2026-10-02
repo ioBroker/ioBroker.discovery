@@ -250,7 +250,7 @@ in the `system.discovery` object.
 	### **WORK IN PROGRESS**
 -->
 ## Changelog
-### **WORK IN PROGRESS**
+### 5.1.2 (2026-10-02)
 * (ChrMaass) Detect SIKU / Oxxify Smart fans with a read-only UDP broadcast and propose one siku instance for all fans
 * (bluefox) The SIKU probe no longer demands both identifying parameters - the siku adapter does not either, and a fan that answers only one was being hidden from it
 * (bluefox) The SIKU probe asks from a free port when UDP 4000 is taken, instead of dropping the whole detection
@@ -283,11 +283,6 @@ in the `system.discovery` object.
 
 ### 4.5.0 (2024-04-21)
 * (pr0crstntr) Added Air-Q
-
-### 4.4.0 (2024-02-23)
-* (klein0r) Added WLED
-* (klein0r) Added LaMetric
-* (Jey-Cee) Removed net-tools from proposals
 
 [Older changelogs can be found there](CHANGELOG_OLD.md)
 
