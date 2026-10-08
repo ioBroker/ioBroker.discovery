@@ -40,9 +40,9 @@
     "@iobroker/types": "^7.2.5",
     "@tsconfig/node22": "^22.0.6",
     "@types/netmask": "^2.0.6",
-    "@types/node": "^26.6.4",
+    "@types/node": "^22.20.5",
     "@types/node-ssdp": "^4.0.5",
-    "typescript": "~7.0.2"
+    "typescript": "~6.0.3"
   },
   "bugs": {
     "url": "https://github.com/ioBroker/ioBroker.discovery/issues"
