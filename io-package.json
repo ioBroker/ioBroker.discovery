@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "discovery",
-    "version": "5.1.2",
+    "version": "5.2.0",
     "news": {
+      "5.2.0": {
+        "en": "Detect Zendure SolarFlow, Hyper and AIO devices with the local zenSDK API via mDNS and propose the zendure-solarflow adapter\nThe Zendure proposal sets `connectionMode: local` - in the default cloud mode the instance stops at the missing cloud key and never looks for devices",
+        "de": "Erkennt Zendure SolarFlow-, Hyper- und AIO-Geräte mit der lokalen ZenSDK-API über mDNS und schlage den Zendure-Solarflow vor\nDas Zendure-Angebot setzt `connectionMode: local` — im Standard-Cloud-Modus stoppt die Instanz am fehlenden Cloud Key und sucht nie nach Geräten",
+        "ru": "Обнаруживайте устройства Zendure SolarFlow, Hyper и AIO с помощью локального API ZenSDK через mDNS и предложите адаптер zendure-solarflow\nВ предложении Zendure установлено значение `ConnectionMode: local` — в облачном режиме по умолчанию инстанс останавливается на недостающем ключе облака и не ищет устройства",
+        "pt": "Detecte dispositivos Zendure SolarFlow, Hyper e AIO com a API local via mDNS e proponha o adaptador zendure-solarflow\nA proposta do Zendure define `connectionMode: local` - no modo nuvem padrão, a instância para na chave ausente e nunca procura dispositivos",
+        "nl": "Detecteer Zventure SolarFlow-, Hyper- en AIO-apparaten met de lokale ZenSDK API via mDNS en stel de zendure-solarflow-adapter voor\nIn het Zdure-voorstel wordt `ConnectionMode: local` ingesteld - in de standaardcloudmodus stopt de instantie bij de ontbrekende cloudsleutel en zoekt nooit naar apparaten",
+        "fr": "Détectez les appareils Zendure SolarFlow, Hyper et AIO avec l'API ZenSDK locale via mDNS et proposez l'adaptateur Zendure-Solarflow\nLa proposition de Zendure définit « ConnectionMode : local ». En mode cloud par défaut, l'instance s'arrête à la clé manquante et ne cherche jamais d'appareil",
+        "it": "Rileva i dispositivi Zendure SolarFlow, Hyper e AIO con l'API ZenSDK locale tramite mDNS e proponga l'adattatore\nLa proposta Zendure imposta `ConnectionMode: local`: in modalità cloud predefinita, l'istanza si ferma alla chiave cloud mancante",
+        "es": "Detecte los dispositivos Zendure SolarFlow, Hyper y AIO con la API ZenSDK local mediante mDNS y proponga el adaptador zendure-solarflow\nLa propuesta de Zendure establece `ConnectionMode: local`. En el modo nube por defecto, la instancia se detiene en la clave de nube que falta y nunca busca dispositivos",
+        "pl": "Wykrywaj urządzenia Ztolerance SolarFlow, Hyper i AIO za pomocą lokalnego interfejsu API ZenSDK za pośrednictwem mDNS i zaproponuj adapter zendure-solarflow\nPropozycja Zendre ustawia `ConnectionMode: local` - w domyślnym trybie chmury instancja zatrzymuje się na brakującym klawiszu chmury i nigdy nie szuka urządzeń",
+        "uk": "Виявлення пристроїв Zendura SolarFlow, Hyper та AIO за допомогою локального API ZenSDK через mDNS та запропонуйте адаптер zendure-solarflow\nПропозиція Zendura встановлює `ConnectionMode: local` - у хмарному режимі за замовчуванням екземпляр зупиняється на відсутньому ключі хмари і ніколи не шукає пристроїв",
+        "zh-cn": "通过 mDNS 使用本地 ZenSDK API 检测 Zendure SolarFlow、Hyper 和 AIO 设备，并提出 zendure-solarflow 适配器\nZendure 提案设置了 “ConnectionMode: local” ——在默认的云模式下，实例在丢失的云密钥处停止，从不寻找设备"
+      },
       "5.1.2": {
         "en": "Detect SIKU / Oxxify Smart fans with a read-only UDP broadcast and propose one siku instance for all fans\nThe SIKU probe no longer demands both identifying parameters - the siku adapter does not either, and a fan that answers only one was being hidden from it\nThe SIKU probe asks from a free port when UDP 4000 is taken, instead of dropping the whole detection",
         "de": "Erkennt SIKU/Oxxify Smart-Fans mit UDP-Broadcast und schlage eine SIKU-Instanz für alle Fans vor\nDie SIKU-Sonde verlangt nicht mehr beide Identifikationsparameter — der Siku-Adapter auch nicht, und ein Lüfter, der nur einen empfängt, war versteckt\nDie SIKU-Probe fragt an einem freien Port, ob UDP 4000 belegt ist, statt alles zu löschen",
@@ -80,19 +93,6 @@
         "pl": "Dodano WLED\nDodano LaMetric\nUsunięcie narzędzi sieciowych z wniosków",
         "uk": "Додати WLED\nДоданий LaMetric\nВидаліть net-tools з пропозицій",
         "zh-cn": "已添加 WLED\n添加的实验室\n从提案中删除净工具"
-      },
-      "4.3.0": {
-        "en": "Replaced vis with vis-2",
-        "de": "Ersatz vis mit vis-2",
-        "ru": "Заменить vis на vis-2",
-        "pt": "Vis deslocado com vis-2",
-        "nl": "Vervangen vis door vis-2",
-        "fr": "Remplacé vis par vis-2",
-        "it": "Vis sostituito con vis-2",
-        "es": "Sustitúyase por vis-2",
-        "pl": "Zastąpione vis vis-2",
-        "uk": "Замінені віси з вісом-2",
-        "zh-cn": "改为:"
       }
     },
     "titleLang": {

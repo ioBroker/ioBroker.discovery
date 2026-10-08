@@ -250,7 +250,7 @@ in the `system.discovery` object.
 	### **WORK IN PROGRESS**
 -->
 ## Changelog
-### **WORK IN PROGRESS**
+### 5.2.0 (2026-10-08)
 * (nograx) Detect Zendure SolarFlow, Hyper and AIO devices with the local zenSDK API via mDNS and propose the zendure-solarflow adapter
 * (@GermanBluefox) The Zendure proposal sets `connectionMode: local` - in the default cloud mode the instance stops at the missing cloud key and never looks for devices
 
@@ -284,9 +284,6 @@ in the `system.discovery` object.
 * (bluefox) Packages updated
 * (bluefox) Minimum node.js version is 18.x
 * (bluefox) Updated licenses for knx and jarvis
-
-### 4.5.0 (2024-04-21)
-* (pr0crstntr) Added Air-Q
 
 [Older changelogs can be found there](CHANGELOG_OLD.md)
 

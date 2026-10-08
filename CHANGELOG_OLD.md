@@ -1,4 +1,7 @@
 # Older changes
+## 4.5.0 (2024-04-21)
+* (pr0crstntr) Added Air-Q
+
 ## 4.4.0 (2024-02-23)
 * (klein0r) Added WLED
 * (klein0r) Added LaMetric
