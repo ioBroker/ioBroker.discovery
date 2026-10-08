@@ -51,6 +51,8 @@ describe('zendure-solarflow detection', () => {
         assert.strictEqual(found, true);
         assert.strictEqual(options.newInstances.length, 1);
         assert.strictEqual(options.newInstances[0].common.name, 'zendure-solarflow');
+        // the default `authKey` mode never starts the mDNS browser without a cloud key
+        assert.strictEqual(options.newInstances[0].native.connectionMode, 'local');
         assert.ok(options.newInstances[0].comment.add[0].includes('Zendure-SolarFlow800-WOB1NHMAMXXXXX3'));
     });
 

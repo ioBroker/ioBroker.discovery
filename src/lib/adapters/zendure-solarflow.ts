@@ -14,8 +14,14 @@ export function detect(ip: string, device: DiscoveryDevice, options: DetectOptio
 
     const name = tools.mdnsName(device);
     options.log.debug(`Zendure device detected at ${ip}`);
-    // `native` is empty by design - one instance handles all devices and finds them itself via mDNS
-    callback(null, tools.proposeSharedInstance(adapterName, name ? `${name} (${ip})` : ip, options), ip);
+    // One instance handles all devices and finds them itself via mDNS - but only outside the default
+    // `authKey` mode: without a cloud key that one logs an error and stops before its mDNS browser starts.
+    // `local` starts it without an MQTT server in 5.3.x and 6.x; `zenSDK` would be cleaner but needs 6.0.
+    callback(
+        null,
+        tools.proposeSharedInstance(adapterName, name ? `${name} (${ip})` : ip, options, { connectionMode: 'local' }),
+        ip,
+    );
 }
 
 export const type = ['mdns'];
