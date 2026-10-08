@@ -53,6 +53,7 @@ export function browse(this: MethodInstance, self: MethodInstance): void {
             '_matterc._udp.local', // Matter node waiting to be commissioned
             '_matter._tcp.local', // Matter node already in a fabric
             '_siegenia._tcp.local', // Siegenia windows and ventilation, the type its own browser matches on
+            '_zendure._tcp.local', // Zendure SolarFlow / Hyper / AIO with the local zenSDK API
         ],
         find: '*',
         broadcast: false,
