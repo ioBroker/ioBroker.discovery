@@ -134,6 +134,7 @@ For more details and for information on how to disable the error reporting, see 
 - Siegenia
 - Sigenergy
 - SIKU / Oxxify Smart ventilation (RV V2 UDP protocol, factory PIN only)
+- Sky Q / Sky+HD set-top boxes (sky-remote)
 - SMA SEMP gateway (Sunny Home Manager)
 - Sma-em
 - Smappee
@@ -251,6 +252,7 @@ in the `system.discovery` object.
 -->
 ## Changelog
 ### **WORK IN PROGRESS**
+* (AlanSRU) Detect Sky Q and Sky+HD boxes from the greeting on their remote-control port 49160 and propose the sky-remote adapter
 * (@GermanBluefox) The ping on Windows no longer reads `process.env`, which does not go with compact mode
 * (@GermanBluefox) `npm run test:integration` now runs every test file on Linux and macOS too - the shell had been expanding the pattern to `test/adapters` only
 
