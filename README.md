@@ -134,6 +134,7 @@ For more details and for information on how to disable the error reporting, see 
 - Siegenia
 - Sigenergy
 - SIKU / Oxxify Smart ventilation (RV V2 UDP protocol, factory PIN only)
+- Sky Q / Sky+HD set-top boxes (sky-remote)
 - SMA SEMP gateway (Sunny Home Manager)
 - Sma-em
 - Smappee
@@ -250,6 +251,9 @@ in the `system.discovery` object.
 	### **WORK IN PROGRESS**
 -->
 ## Changelog
+### **WORK IN PROGRESS**
+* (AlanSRU) Detect Sky Q and Sky+HD boxes from the greeting on their remote-control port 49160 and propose the sky-remote adapter
+
 ### 5.2.0 (2026-10-08)
 * (nograx) Detect Zendure SolarFlow, Hyper and AIO devices with the local zenSDK API via mDNS and propose the zendure-solarflow adapter
 * (@GermanBluefox) The Zendure proposal sets `connectionMode: local` - in the default cloud mode the instance stops at the missing cloud key and never looks for devices
