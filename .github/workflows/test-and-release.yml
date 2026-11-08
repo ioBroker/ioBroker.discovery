@@ -47,13 +47,14 @@ jobs:
     strategy:
       matrix:
         node-version: [22.x, 24.x, 26.x]
-
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        
     steps:
       - uses: ioBroker/testing-action-adapter@v1
         with:
-          build: true
-          os: 'ubuntu-latest'
           node-version: ${{ matrix.node-version }}
+          os: ${{ matrix.os }}
+          build: true
 
   # Deploys the final package to NPM
   deploy:
