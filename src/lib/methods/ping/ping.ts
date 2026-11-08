@@ -132,21 +132,13 @@ export function probe(addr: string, config: ProtocolData, callback: PingCallback
 
                 _args.push(ip);
 
-                args = [
-                    '/s', // leave quotes as they are
-                    '/c', // run and exit
-                    // !!! the order of c and s is important - c must come last!!!
-                    '"', // enforce starting quote
-                    `${process.env.SystemRoot}\\system32\\ping.exe`, // command itself. Notice that you'll have to pass it quoted if it contains spaces
-                ]
-                    .concat(_args)
-                    .concat('"'); // enforce closing quote
+                // cmd resolves %SystemRoot% itself: reading the environment does not go with compact mode.
+                args = ['"%SystemRoot%\\system32\\ping.exe"'].concat(_args);
 
-                // log('System command: ' + (process.env.comspec || 'cmd.exe') + ' ' + allArgs.join(' '));
-                // switch the command to cmd shell instead of the original command
+                // `shell` picks the command shell and wraps the line as /d /s /c "..."
                 init = function (ip: string): cp.ChildProcessWithoutNullStreams {
-                    args[args.length - 2] = ip;
-                    return cp.spawn(process.env.comspec || 'cmd.exe', args, { windowsVerbatimArguments: true });
+                    args[args.length - 1] = ip;
+                    return cp.spawn(args.join(' '), { shell: true });
                 };
             } else if (p === 'darwin' || p === 'freebsd') {
                 // Mac OS X or freebsd
