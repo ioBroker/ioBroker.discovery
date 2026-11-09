@@ -1,40 +1,24 @@
 import * as tools from '../tools';
-import type { DetectCallback, DetectOptions, DiscoveryDevice, ProtocolData } from '../types';
+import type { DetectCallback, DetectOptions, DiscoveryDevice } from '../types';
 
-function addInstance(ip: string, options: DetectOptions): boolean {
-    let instance = tools.findInstance(options, 'wled', obj =>
-        obj.native.devices.filter((device: ProtocolData): boolean => device.ip === ip),
-    );
+const adapterName = 'wled';
 
-    if (!instance) {
-        instance = {
-            _id: tools.getNextInstanceID('wled', options),
-            common: {
-                name: 'wled',
-            },
-            native: {
-                devices: {
-                    wled: {
-                        ip,
-                    },
-                },
-            },
-            comment: {
-                add: ['WLED', ip],
-            },
-        };
-        options.newInstances.push(instance);
-        return true;
-    }
-    return false;
-}
+// Read out of the adapter's own scanDevices(): it browses for the `wled` service
+const WLED_SERVICE = '_wled._tcp';
 
 export function detect(ip: string, device: DiscoveryDevice, options: DetectOptions, callback: DetectCallback): void {
-    if (device?._mdns?.PTR?.datax.includes('_wled._tcp.local')) {
-        callback(null, addInstance(ip, options), ip);
-    } else {
-        callback(null, false, ip);
+    if (!tools.hasMdnsService(device, WLED_SERVICE)) {
+        return callback(null, false, ip);
     }
+
+    options.log.debug(`WLED detected at ${ip}`);
+    // One instance finds every WLED on the network itself and keeps them as device objects,
+    // nothing in `native` says which devices it has
+    callback(
+        null,
+        tools.proposeSharedInstance(adapterName, `${tools.mdnsName(device) || 'WLED'} (${ip})`, options),
+        ip,
+    );
 }
 
 export const type = ['mdns'];
