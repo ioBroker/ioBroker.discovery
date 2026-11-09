@@ -61,6 +61,16 @@ function startResponder(answerFactory) {
     });
 }
 
+// macOS only has 127.0.0.1 on its loopback interface, a second address has to be set up by hand.
+function addressUsable(address) {
+    return new Promise(resolve => {
+        const probe = dgram.createSocket('udp4');
+
+        probe.once('error', () => resolve(false));
+        probe.bind(0, address, () => probe.close(() => resolve(true)));
+    });
+}
+
 // Receives on the probed address but answers from a second loopback address, so that the
 // detection sees a valid GoodWe frame with a foreign remote.address.
 function startSpoofingResponder(answerFactory) {
@@ -151,6 +161,10 @@ describe('GoodWe detection', () => {
 
     it('ignores a valid answer that comes from another address', async function () {
         this.timeout(5000);
+
+        if (!(await addressUsable('127.0.0.2'))) {
+            return this.skip();
+        }
 
         const responder = await startSpoofingResponder(() => buildIdInfoResponse('GW10K-ET', '9010KETU231W1723'));
         const options = freshOptions();
