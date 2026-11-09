@@ -26,6 +26,7 @@ For more details and for information on how to disable the error reporting, see 
 - Awtrix 3 / Awtrix Light
 - Bambu Lab 3D printers
 - Beckhoff PLC
+- Blackmagic ATEM switchers
 - BleBox
 - Bosch Smart Home
 - Bose Soundtouch
@@ -249,6 +250,7 @@ in the `system.discovery` object.
 <!--
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
+* (AlanSRU) Detect Blackmagic ATEM switchers from their `_switcher_ctrl._udp` mDNS announcement and propose the blackmagic-atem adapter
 -->
 ## Changelog
 ### **WORK IN PROGRESS**
