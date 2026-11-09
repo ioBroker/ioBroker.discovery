@@ -252,7 +252,7 @@ in the `system.discovery` object.
 	### **WORK IN PROGRESS**
 -->
 ## Changelog
-### **WORK IN PROGRESS**
+### 5.3.0 (2026-11-09)
 * (AlanSRU) Detect Sky Q and Sky+HD boxes from the greeting on their remote-control port 49160 and propose the sky-remote adapter
 * (AlanSRU) Detect Blackmagic ATEM switchers from their `_switcher_ctrl._udp` mDNS announcement and propose the blackmagic-atem adapter
 * (@GermanBluefox) The WLED detection no longer logs an error for every device with a single mDNS PTR record, finds a WLED that announces only its own service, and proposes one instance for all WLEDs, which is how the adapter works
@@ -288,11 +288,6 @@ in the `system.discovery` object.
 * (UncleSamSwiss) Remove obsolete squeezebox adapter
 * (GermanBluefox) Packages were updated
 * (GermanBluefox) Added victron-cerbo
-
-### 5.0.0 (2024-07-21)
-* (bluefox) Packages updated
-* (bluefox) Minimum node.js version is 18.x
-* (bluefox) Updated licenses for knx and jarvis
 
 [Older changelogs can be found there](CHANGELOG_OLD.md)
 

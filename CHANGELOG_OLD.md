@@ -1,4 +1,9 @@
 # Older changes
+## 5.0.0 (2024-07-21)
+* (bluefox) Packages updated
+* (bluefox) Minimum node.js version is 18.x
+* (bluefox) Updated licenses for knx and jarvis
+
 ## 4.5.0 (2024-04-21)
 * (pr0crstntr) Added Air-Q
 
