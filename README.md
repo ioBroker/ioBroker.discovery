@@ -28,6 +28,7 @@ For more details and for information on how to disable the error reporting, see 
 - Beckhoff PLC
 - Blackmagic ATEM switchers
 - BleBox
+- Blustream presentation switchers, HDBaseT/HDMI matrices and video-wall processors (blustream-mfp)
 - Bosch Smart Home
 - Bose Soundtouch
 - Broadlink
@@ -252,6 +253,9 @@ in the `system.discovery` object.
 	### **WORK IN PROGRESS**
 -->
 ## Changelog
+### **WORK IN PROGRESS**
+* (AlanSRU) Detect Blustream presentation switchers, matrices and video-wall processors from their `STATUS` header on telnet port 23 and propose the blustream-mfp adapter with the matching device model
+
 ### 5.3.0 (2026-11-09)
 * (AlanSRU) Detect Sky Q and Sky+HD boxes from the greeting on their remote-control port 49160 and propose the sky-remote adapter
 * (AlanSRU) Detect Blackmagic ATEM switchers from their `_switcher_ctrl._udp` mDNS announcement and propose the blackmagic-atem adapter
