@@ -15,6 +15,22 @@ export function detect(ip: string, device: DiscoveryDevice, options: DetectOptio
     //      enum.functions: {}
     // }
 
+    // openccu-lite has no ReGa. Its 8181 is closed, but that is not what decides it: hm-rpc
+    // recognised the system (an instance in openccu-lite mode for this address, existing or
+    // proposed), so there is nothing for hm-rega to do there.
+    if (
+        tools.findInstance(
+            options,
+            'hm-rpc',
+            obj =>
+                obj.native.daemon === 'openccu-lite' &&
+                (obj.native.homematicAddress === ip || obj.native.homematicAddress === device._name),
+        )
+    ) {
+        callback(null, false, ip);
+        return;
+    }
+
     tools.testPort(ip, 8181, function (err, found, ip: string): void {
         if (found) {
             let instance = tools.findInstance(
