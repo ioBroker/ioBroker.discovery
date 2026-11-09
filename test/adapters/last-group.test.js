@@ -43,7 +43,8 @@ function portUsable(port, udp) {
         if (udp) {
             const probe = dgram.createSocket({ type: 'udp4', reuseAddr: true });
             probe.once('error', () => resolve(false));
-            probe.bind(port, () => probe.close(() => resolve(true)));
+            // the address the test binds to: macOS lets anybody have a low port on the wildcard only
+            probe.bind(port, '127.0.0.1', () => probe.close(() => resolve(true)));
             return;
         }
         const probe = net.createServer();
