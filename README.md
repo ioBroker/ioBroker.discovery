@@ -26,6 +26,7 @@ For more details and for information on how to disable the error reporting, see 
 - Awtrix 3 / Awtrix Light
 - Bambu Lab 3D printers
 - Beckhoff PLC
+- Blackmagic ATEM switchers
 - BleBox
 - Bosch Smart Home
 - Bose Soundtouch
@@ -253,6 +254,7 @@ in the `system.discovery` object.
 ## Changelog
 ### **WORK IN PROGRESS**
 * (AlanSRU) Detect Sky Q and Sky+HD boxes from the greeting on their remote-control port 49160 and propose the sky-remote adapter
+* (AlanSRU) Detect Blackmagic ATEM switchers from their `_switcher_ctrl._udp` mDNS announcement and propose the blackmagic-atem adapter
 * (@GermanBluefox) The ping on Windows no longer reads `process.env`, which does not go with compact mode
 * (@GermanBluefox) `npm run test:integration` now runs every test file on Linux and macOS too - the shell had been expanding the pattern to `test/adapters` only
 

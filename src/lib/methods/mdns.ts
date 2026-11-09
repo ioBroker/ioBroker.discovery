@@ -54,6 +54,7 @@ export function browse(this: MethodInstance, self: MethodInstance): void {
             '_matter._tcp.local', // Matter node already in a fabric
             '_siegenia._tcp.local', // Siegenia windows and ventilation, the type its own browser matches on
             '_zendure._tcp.local', // Zendure SolarFlow / Hyper / AIO with the local zenSDK API
+            '_switcher_ctrl._udp.local', // Blackmagic ATEM switchers, control port 9910
         ],
         find: '*',
         broadcast: false,
