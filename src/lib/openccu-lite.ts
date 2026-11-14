@@ -9,7 +9,7 @@ import type { ProtocolData } from './types';
  * classic RPC ports, and it has no ReGa at all. The one thing it answers without a credential is
  * the feature detection of its metadata API: `GET /api/meta/v1/version`, JSON with
  * `api: "meta"`. A classic CCU, RaspberryMatic or OpenCCU answers that path with its WebUI's 404
- * page. See https://github.com/hobbyquaker/occulited/blob/master/docs/meta-api.md
+ * page. See https://github.com/openccu-lite/occulited/blob/master/docs/meta-api.md
  */
 
 /** The open feature detection of openccu-lite's metadata API */
