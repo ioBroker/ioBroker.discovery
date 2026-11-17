@@ -18,6 +18,12 @@ export const VERSION_PATH = '/api/meta/v1/version';
 /** A version answer is a few hundred bytes - anything much larger is some other web server */
 const MAX_BODY = 64 * 1024;
 
+/**
+ * How long the probe waits for a TCP connection - the same as `tools.testPort` gives a port. A
+ * host that lets the SYN go unanswered costs a scan no more than one of its port tests does.
+ */
+export const CONNECT_TIMEOUT = 500;
+
 /** What the probe learned about an openccu-lite system */
 export interface OpenccuLiteSystem {
     /** Where the version answer came from, e.g. `https://192.168.1.20` */
@@ -72,7 +78,8 @@ export function portOf(url: URL): number {
  * as `http://127.0.0.1:8080`. A redirect is followed once - the system sends plain HTTP to HTTPS
  * when its redirect is on - and the certificate is not checked: the probe sends nothing but the
  * GET, and the default certificate of a CCU is self-signed. `timeout` covers the whole probe,
- * the redirect included. The callback gets `null` for anything that is not openccu-lite's
+ * the redirect included; a connection that is not there after `CONNECT_TIMEOUT` ends it earlier.
+ * The callback gets `null` for anything that is not openccu-lite's
  * version answer, and is called exactly once.
  */
 export function probe(address: string, timeout: number, callback: OpenccuLiteCallback | null): void {
@@ -85,12 +92,21 @@ export function probe(address: string, timeout: number, callback: OpenccuLiteCal
 
     let request: http.ClientRequest | null = null;
     let timer: NodeJS.Timeout | null = setTimeout((): void => finish(null), timeout);
+    let connectTimer: NodeJS.Timeout | null = null;
+
+    function connected(): void {
+        if (connectTimer) {
+            clearTimeout(connectTimer);
+            connectTimer = null;
+        }
+    }
 
     function finish(system: OpenccuLiteSystem | null): void {
         if (timer) {
             clearTimeout(timer);
             timer = null;
         }
+        connected();
         request?.destroy();
         request = null;
         callback?.(system);
@@ -146,6 +162,13 @@ export function probe(address: string, timeout: number, callback: OpenccuLiteCal
         };
         const req = isHttps ? https.get(url, options, onResponse) : http.get(url, options, onResponse);
         req.on('error', (): void => finish(null));
+        req.on('socket', (socket): void => {
+            connected();
+            if (socket.connecting) {
+                connectTimer = setTimeout((): void => finish(null), CONNECT_TIMEOUT);
+                socket.once('connect', connected);
+            }
+        });
         request = req;
     }
 

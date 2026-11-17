@@ -307,6 +307,60 @@ describe('openccu-lite: the probe', () => {
         }
     });
 
+    it('gives a connection no longer than a port test gets, whatever the timeout', async function () {
+        this.timeout(5000);
+        // a host that lets the SYN go unanswered: the socket never gets its connection
+        const connect = net.Socket.prototype.connect;
+        net.Socket.prototype.connect = function () {
+            this.connecting = true;
+            return this;
+        };
+        try {
+            const started = Date.now();
+            assert.strictEqual(await probe('http://127.0.0.1:8', 4000), null);
+            const took = Date.now() - started;
+            assert.ok(took >= lite.CONNECT_TIMEOUT - 50, `gave up after ${took} ms already`);
+            assert.ok(took < lite.CONNECT_TIMEOUT + 700, `waited ${took} ms for a connection`);
+        } finally {
+            net.Socket.prototype.connect = connect;
+        }
+        assert.strictEqual(lite.CONNECT_TIMEOUT, 500);
+    });
+
+    for (const tls of [false, true]) {
+        it(`waits longer than that for the answer once the connection is there (${tls ? 'HTTPS' : 'HTTP'})`, async function () {
+            this.timeout(5000);
+            const { server, origin } = await serve((req, res) => {
+                setTimeout(() => json(VERSION)(req, res), lite.CONNECT_TIMEOUT + 200);
+            }, tls);
+            try {
+                const system = await probe(origin, 3000);
+                assert.strictEqual(system?.url, origin);
+            } finally {
+                await close(server);
+            }
+        });
+    }
+
+    it('waits for the answer behind a redirect as well', async function () {
+        this.timeout(5000);
+        const secure = await serve((req, res) => {
+            setTimeout(() => json(VERSION)(req, res), lite.CONNECT_TIMEOUT + 200);
+        }, true);
+        const plain = await serve((req, res) => {
+            res.writeHead(301, { Location: `${secure.origin}${req.url}` });
+            res.end();
+        });
+        try {
+            const system = await probe(plain.origin, 3000);
+            assert.strictEqual(system?.url, secure.origin);
+            assert.strictEqual(system.https, true);
+        } finally {
+            await close(plain.server);
+            await close(secure.server);
+        }
+    });
+
     it('answers null for a port nothing listens on', async () => {
         const port = await freePort();
         assert.strictEqual(await probe(`http://127.0.0.1:${port}`), null);
