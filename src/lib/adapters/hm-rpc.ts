@@ -77,13 +77,56 @@ const CLASSIC_DAEMON: Record<string, string> = {
  */
 export const DEFAULT_LITE_INTERFACES = ['HmIP-RF', 'BidCos-RF'];
 
-/** Budget of the openccu-lite probe, the redirect to HTTPS included */
-const LITE_PROBE_TIMEOUT = 2000;
+/**
+ * Budget of the openccu-lite probe, the redirect to HTTPS included. A system answers within
+ * 0.1 s; the budget is what a host costs that accepts on port 80 and then says nothing.
+ */
+const LITE_PROBE_TIMEOUT = 1500;
 
 const PAIRING_HINT =
     'Pair the instance with the system in its settings - the request is approved on the Status page of openccu-lite';
 const NO_PAIRING_HINT =
     'Pairing is switched off on this openccu-lite: create a token on its Remote access page and enter it in the instance settings';
+
+/** The openccu-lite probes of one scan, by address; `waiting` while the answer is not in */
+interface LiteAnswer {
+    system: openccuLite.OpenccuLiteSystem | null;
+    waiting: openccuLite.OpenccuLiteCallback[] | null;
+}
+
+const scans = new WeakMap<DetectOptions, Map<string, LiteAnswer>>();
+
+/**
+ * Whether an address is openccu-lite, asked once per scan.
+ *
+ * `options` is the scan: hm-rpc and hm-rega both need the answer for the same address, and
+ * whichever asks first sends the probe - the other one gets the same answer, also while the
+ * probe is still on its way. Nothing depends on the order the two are run in.
+ */
+export function liteSystem(ip: string, options: DetectOptions, callback: openccuLite.OpenccuLiteCallback): void {
+    let scan = scans.get(options);
+    if (!scan) {
+        scan = new Map();
+        scans.set(options, scan);
+    }
+    const known = scan.get(ip);
+    if (known) {
+        if (known.waiting) {
+            known.waiting.push(callback);
+        } else {
+            callback(known.system);
+        }
+        return;
+    }
+    const answer: LiteAnswer = { system: null, waiting: [callback] };
+    scan.set(ip, answer);
+    openccuLite.probe(ip, LITE_PROBE_TIMEOUT, (system): void => {
+        const waiting = answer.waiting || [];
+        answer.system = system;
+        answer.waiting = null;
+        waiting.forEach(cb => cb(system));
+    });
+}
 
 function getVersionRequest(ip: string, port: number): string {
     return (
@@ -258,12 +301,13 @@ export function detect(ip: string, device: DiscoveryDevice, options: DetectOptio
         }
     }
 
-    openccuLite.probe(ip, LITE_PROBE_TIMEOUT, (result): void => {
+    liteSystem(ip, options, (result): void => {
         system = result;
         settle();
     });
 }
 
 export const type = ['ip']; // make type=serial for USB sticks
-// The openccu-lite probe may take its whole budget - a redirect and a TLS handshake with a Pi
+// The openccu-lite probe may take its whole budget - a redirect and a TLS handshake with a Pi.
+// With it this is the 2 s every module without a timeout of its own gets.
 export const timeout = LITE_PROBE_TIMEOUT + 500;

@@ -1,4 +1,5 @@
 import * as tools from '../tools';
+import { liteSystem } from './hm-rpc';
 import type { DetectCallback, DetectOptions, DiscoveryDevice } from '../types';
 
 export function detect(ip: string, device: DiscoveryDevice, options: DetectOptions, callback: DetectCallback): void {
@@ -15,9 +16,10 @@ export function detect(ip: string, device: DiscoveryDevice, options: DetectOptio
     //      enum.functions: {}
     // }
 
-    // openccu-lite has no ReGa. Its 8181 is closed, but that is not what decides it: hm-rpc
-    // recognised the system (an instance in openccu-lite mode for this address, existing or
-    // proposed), so there is nothing for hm-rega to do there.
+    // openccu-lite has no ReGa. Its 8181 is closed, but that is not what decides it: an hm-rpc
+    // instance in openccu-lite mode for this address (existing or proposed) says so, and where
+    // 8181 is open the system is asked itself (below) - hm-rpc may have proposed nothing there,
+    // because every interface has an instance already.
     if (
         tools.findInstance(
             options,
@@ -31,7 +33,7 @@ export function detect(ip: string, device: DiscoveryDevice, options: DetectOptio
         return;
     }
 
-    tools.testPort(ip, 8181, function (err, found, ip: string): void {
+    const onPort = function (_err: unknown, found: boolean, ip: string): void {
         if (found) {
             let instance = tools.findInstance(
                 options,
@@ -239,6 +241,15 @@ export function detect(ip: string, device: DiscoveryDevice, options: DetectOptio
         } else {
             callback(null, false, ip);
         }
+    };
+
+    tools.testPort(ip, 8181, (err, found, ip): void => {
+        if (!found) {
+            return onPort(err, false, ip);
+        }
+        // The answer of the scan's one openccu-lite probe for this address: hm-rpc asked it
+        // already, and if it did not, it is asked now - not a question of who ran first
+        liteSystem(ip, options, (system): void => onPort(err, !system, ip));
     });
 }
 

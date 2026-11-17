@@ -168,7 +168,9 @@ openccu-lite has no ReGa and does not forward `init`: it gets hm-rpc proposals w
 `liteInterface` - the interfaces the version answer names (`interfaces`), on an older system the ones whose classic
 port answered, else HmIP-RF and BidCos-RF - and never the classic ones,
 even when its classic RPC is on. The token cannot be discovered; the proposal's `comment.text` says to pair the instance.
-`adapters/hm-rega.ts` proposes nothing for an address that has such an instance. Covered by
+`adapters/hm-rega.ts` proposes nothing for an address that has such an instance, and where 8181 is open it asks
+`hm-rpc.ts`'s `liteSystem()` - the scan's one probe per address, sent by whichever module asks first, so the order of
+the two does not matter. The probe gives a connection 500 ms, like `tools.testPort`, and 1.5 s in all. Covered by
 `test/openccu-lite.test.js` and `test/adapters/homematic.test.js`.
 
 ### Discovery Methods (`src/lib/methods/`)

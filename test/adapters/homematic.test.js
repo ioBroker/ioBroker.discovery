@@ -170,7 +170,7 @@ describe('hm-rpc on a classic CCU', () => {
         await detect(hmRpc, freshOptions());
 
         assert.deepStrictEqual(network.ports.sort(), [2000, 2001, 2010, 8701]);
-        assert.deepStrictEqual(network.probe, [{ address: IP, timeout: 2000 }]);
+        assert.deepStrictEqual(network.probe, [{ address: IP, timeout: 1500 }]);
         // CUxD is a plain port test, the other three are asked for their version
         assert.deepStrictEqual(Object.keys(network.probeOptions).map(Number).sort(), [2000, 2001, 2010]);
     });
@@ -234,7 +234,8 @@ describe('hm-rpc on a classic CCU', () => {
 
     it('keeps budget for the openccu-lite probe and looks at IP devices', () => {
         assert.deepStrictEqual(hmRpc.type, ['ip']);
-        assert.ok(hmRpc.timeout > 2000, 'the watchdog must not win against the probe');
+        assert.ok(hmRpc.timeout > 1500, 'the watchdog must not win against the probe');
+        assert.ok(hmRpc.timeout <= 2000, 'no more than a module without a timeout of its own gets');
     });
 });
 
@@ -520,7 +521,7 @@ describe('hm-rega', () => {
         assert.strictEqual(rega.native.rfdAdapter, 'hm-rpc.0');
     });
 
-    it('proposes nothing where 8181 is closed', async () => {
+    it('proposes nothing where 8181 is closed, and does not ask the system then', async () => {
         network = stubNetwork();
         const options = freshOptions();
         options.newInstances.push(instance(0, { homematicAddress: IP, homematicPort: 2001, daemon: 'rfd' }));
@@ -528,5 +529,110 @@ describe('hm-rega', () => {
 
         assert.strictEqual(found, false);
         assert.strictEqual(options.newInstances.length, 1);
+        assert.deepStrictEqual(network.probe, []);
+    });
+});
+
+/**
+ * hm-rega must stay away from openccu-lite whatever hm-rpc did before it - nothing, because it
+ * has not run yet, or no proposal, because every interface has an instance already. The cases
+ * here have an open 8181 and classic hm-rpc instances for the address, which is all hm-rega
+ * needs to propose itself: an installation that moved from a CCU to openccu-lite on the same
+ * address.
+ */
+describe('hm-rega and hm-rpc, in any order', () => {
+    let network;
+    afterEach(() => network?.restore());
+
+    const classicInstances = () => [
+        instance(0, { homematicAddress: IP, homematicPort: 2001, daemon: 'rfd' }),
+        instance(1, { homematicAddress: IP, homematicPort: 2010, daemon: 'HMIP' }),
+    ];
+    const named = { ...VERSION, interfaces: ['BidCos-RF', 'HmIP-RF'] };
+    const proposed = options => options.newInstances.map(i => `${i.common.name}:${i.native.daemon || ''}`);
+
+    it('hm-rega first: asks the system itself and proposes nothing for openccu-lite', async () => {
+        network = stubNetwork({ open: [2001, 2010, 8181], system: liteSystem(named) });
+        const options = freshOptions(classicInstances());
+
+        const rega = await detect(hmRega, options);
+        assert.strictEqual(rega.found, false);
+        assert.strictEqual(rega.calls, 1);
+        assert.deepStrictEqual(proposed(options), []);
+
+        const rpc = await detect(hmRpc, options);
+        assert.strictEqual(rpc.found, false);
+        assert.deepStrictEqual(proposed(options), []);
+        // one probe for the address in this scan, whoever asked first
+        assert.deepStrictEqual(network.probe, [{ address: IP, timeout: 1500 }]);
+    });
+
+    it('hm-rpc first: the same, with the answer hm-rpc got', async () => {
+        network = stubNetwork({ open: [2001, 2010, 8181], system: liteSystem(named) });
+        const options = freshOptions(classicInstances());
+
+        const rpc = await detect(hmRpc, options);
+        assert.strictEqual(rpc.found, false);
+        const rega = await detect(hmRega, options);
+        assert.strictEqual(rega.found, false);
+        assert.deepStrictEqual(proposed(options), []);
+        assert.deepStrictEqual(network.probe, [{ address: IP, timeout: 1500 }]);
+    });
+
+    it('both at once: hm-rega waits for the probe that is on its way', async () => {
+        network = stubNetwork({ open: [2001, 2010, 8181], system: liteSystem(named), delays: { lite: 60 } });
+        const options = freshOptions(classicInstances());
+
+        const [rega, rpc] = await Promise.all([detect(hmRega, options), detect(hmRpc, options)]);
+        assert.strictEqual(rega.found, false);
+        assert.strictEqual(rega.calls, 1);
+        assert.strictEqual(rpc.found, false);
+        assert.deepStrictEqual(proposed(options), []);
+        assert.strictEqual(network.probe.length, 1);
+    });
+
+    it('proposes openccu-lite instances and no hm-rega when hm-rega runs first on a fresh installation', async () => {
+        network = stubNetwork({ open: [2001, 2010, 8181], system: liteSystem(named) });
+        const options = freshOptions();
+
+        await detect(hmRega, options);
+        await detect(hmRpc, options);
+        assert.deepStrictEqual(proposed(options), ['hm-rpc:openccu-lite', 'hm-rpc:openccu-lite']);
+    });
+
+    for (const order of ['hm-rega first', 'hm-rpc first']) {
+        it(`a classic CCU gets its ReGa as before (${order})`, async () => {
+            network = stubNetwork({ open: [2001, 8181] });
+            const options = freshOptions(classicInstances());
+            const modules = order === 'hm-rega first' ? [hmRega, hmRpc] : [hmRpc, hmRega];
+
+            const results = [];
+            for (const module of modules) {
+                results.push(await detect(module, options));
+            }
+            const rega = results[modules.indexOf(hmRega)];
+            assert.strictEqual(rega.found, true);
+            assert.deepStrictEqual(proposed(options), ['hm-rega:']);
+            assert.strictEqual(options.newInstances[0].native.rfdEnabled, true);
+            assert.strictEqual(network.probe.length, 1);
+        });
+    }
+
+    it('asks again in the next scan, and for another address', async () => {
+        network = stubNetwork({ open: [8181], system: liteSystem(named) });
+        const first = freshOptions(classicInstances());
+        await detect(hmRega, first);
+        await detect(hmRega, first);
+        assert.strictEqual(network.probe.length, 1);
+
+        await detect(hmRega, freshOptions(classicInstances()));
+        assert.strictEqual(network.probe.length, 2);
+
+        const other = '192.168.1.21';
+        await detect(hmRega, first, { _addr: other, _name: other }, other);
+        assert.deepStrictEqual(
+            network.probe.map(p => p.address),
+            [IP, IP, other],
+        );
     });
 });
