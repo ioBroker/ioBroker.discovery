@@ -103,6 +103,7 @@ For more details and for information on how to disable the error reporting, see 
 - Mi Home Smarthome
 - Miele
 - Miele Cloud Service
+- Miele@home appliances, local (miele-local)
 - Mikrotik
 - MiLight bridge (v6)
 - Mpd
@@ -254,6 +255,7 @@ in the `system.discovery` object.
 -->
 ## Changelog
 ### **WORK IN PROGRESS**
+* (SmarthomeElektroniker) Detect Miele@home appliances from their `_mieleathome._tcp` mDNS announcement and propose one miele-local instance for the household, with the appliance addresses in its device list
 * (AlanSRU) Detect Blustream presentation switchers, matrices and video-wall processors from their `STATUS` header on telnet port 23 and propose the blustream-mfp adapter with the matching device model
 
 ### 5.3.0 (2026-11-09)
