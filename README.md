@@ -106,6 +106,7 @@ For more details and for information on how to disable the error reporting, see 
 - Miele@home appliances, local (miele-local)
 - Mikrotik
 - MiLight bridge (v6)
+- Möhlenhoff Alpha 2 floor heating base station (alpha2)
 - Mpd
 - Musiccast
 - myDlink
@@ -257,6 +258,7 @@ in the `system.discovery` object.
 ### **WORK IN PROGRESS**
 * (SmarthomeElektroniker) Detect Miele@home appliances from their `_mieleathome._tcp` mDNS announcement and propose one miele-local instance for the household, with the appliance addresses in its device list
 * (AlanSRU) Detect Blustream presentation switchers, matrices and video-wall processors from their `STATUS` header on telnet port 23 and propose the blustream-mfp adapter with the matching device model
+* (djlex83) Detect the Möhlenhoff Alpha 2 floor heating base station from the `<TYPE>EZRCTRL…</TYPE>` of its `/data/static.xml` and propose the alpha2 adapter
 
 ### 5.3.0 (2026-11-09)
 * (AlanSRU) Detect Sky Q and Sky+HD boxes from the greeting on their remote-control port 49160 and propose the sky-remote adapter
