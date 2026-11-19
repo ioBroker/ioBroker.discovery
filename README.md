@@ -251,6 +251,10 @@ not a history: a device that does not turn up again is removed, so nothing stale
 behind. The full result, including the proposed instance configurations, stays where it was -
 in the `system.discovery` object.
 
+## Development
+
+Your device is not found? How to add the detection for an adapter is described in [DEVELOPMENT.md](DEVELOPMENT.md).
+
 <!--
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
