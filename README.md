@@ -256,7 +256,7 @@ in the `system.discovery` object.
 	### **WORK IN PROGRESS**
 -->
 ## Changelog
-### **WORK IN PROGRESS**
+### 5.4.0 (2026-11-19)
 * (hobbyquaker) Detect openccu-lite from its open version answer and propose hm-rpc instances in openccu-lite mode instead of the classic ones - it has no ReGa and does not forward `init`, so neither hm-rega nor an init-based hm-rpc instance is proposed for it, even when its classic RPC ports are switched on. One instance is proposed per interface the system names in its version answer (on older systems: the interfaces its classic ports show, else HmIP-RF and BidCos-RF); the instance is then paired in its settings
 * (SmarthomeElektroniker) Detect Miele@home appliances from their `_mieleathome._tcp` mDNS announcement and propose one miele-local instance for the household, with the appliance addresses in its device list
 * (AlanSRU) Detect Blustream presentation switchers, matrices and video-wall processors from their `STATUS` header on telnet port 23 and propose the blustream-mfp adapter with the matching device model
@@ -290,14 +290,6 @@ in the `system.discovery` object.
 * (bluefox) `adminUI.config` is repaired at start-up, js-controller does not update that field on an upgrade
 * (bluefox) The adapter was refactored to TypeScript: sources moved to `src/`, the build output to `build/`
 * (bluefox) Minimum node.js version is 22.19.0 now
-
-### 5.0.1 (2026-07-03)
-* (ioBroker-Bot) Adapter requires js-controller >= 6.0.11 now.
-* (Eistee82) Fix Hoymiles HMS discovery: correct a require path and align native config with hoymiles 0.3.4 device-array schema
-* (iobroker-bot) Adapter requires node.js >= 20 now.
-* (UncleSamSwiss) Remove obsolete squeezebox adapter
-* (GermanBluefox) Packages were updated
-* (GermanBluefox) Added victron-cerbo
 
 [Older changelogs can be found there](CHANGELOG_OLD.md)
 

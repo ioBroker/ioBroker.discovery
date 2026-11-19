@@ -1,4 +1,12 @@
 # Older changes
+## 5.0.1 (2026-07-03)
+* (ioBroker-Bot) Adapter requires js-controller >= 6.0.11 now.
+* (Eistee82) Fix Hoymiles HMS discovery: correct a require path and align native config with hoymiles 0.3.4 device-array schema
+* (iobroker-bot) Adapter requires node.js >= 20 now.
+* (UncleSamSwiss) Remove obsolete squeezebox adapter
+* (GermanBluefox) Packages were updated
+* (GermanBluefox) Added victron-cerbo
+
 ## 5.0.0 (2024-07-21)
 * (bluefox) Packages updated
 * (bluefox) Minimum node.js version is 18.x
