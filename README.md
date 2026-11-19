@@ -73,6 +73,7 @@ For more details and for information on how to disable the error reporting, see 
 - Heos
 - Home Assistant
 - Homematic CCU (hm-rpc, hm-rega)
+- openccu-lite (hm-rpc in openccu-lite mode, one instance per interface; pair it in its settings)
 - Homepilot
 - HomeWizard Energy
 - Hoymiles HMS inverters (hoymiles)
@@ -256,6 +257,7 @@ in the `system.discovery` object.
 -->
 ## Changelog
 ### **WORK IN PROGRESS**
+* (hobbyquaker) Detect openccu-lite from its open version answer and propose hm-rpc instances in openccu-lite mode instead of the classic ones - it has no ReGa and does not forward `init`, so neither hm-rega nor an init-based hm-rpc instance is proposed for it, even when its classic RPC ports are switched on. One instance is proposed per interface the system names in its version answer (on older systems: the interfaces its classic ports show, else HmIP-RF and BidCos-RF); the instance is then paired in its settings
 * (SmarthomeElektroniker) Detect Miele@home appliances from their `_mieleathome._tcp` mDNS announcement and propose one miele-local instance for the household, with the appliance addresses in its device list
 * (AlanSRU) Detect Blustream presentation switchers, matrices and video-wall processors from their `STATUS` header on telnet port 23 and propose the blustream-mfp adapter with the matching device model
 * (djlex83) Detect the Möhlenhoff Alpha 2 floor heating base station from the `<TYPE>EZRCTRL…</TYPE>` of its `/data/static.xml` and propose the alpha2 adapter
