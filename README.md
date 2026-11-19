@@ -257,7 +257,7 @@ Your device is not found? How to add the detection for an adapter is described i
 	### **WORK IN PROGRESS**
 -->
 ## Changelog
-### **WORK IN PROGRESS**
+### 5.4.1 (2026-11-19)
 * (@GermanBluefox) The build checks that every adapter discovery can propose exists in the latest repository, and a weekly workflow opens an issue when one leaves it (#508). The detections for hue-extended, landroid and zwave are removed: none of these adapters exists any more
 * (@GermanBluefox) A scan runs the detection for an adapter only when the adapter is in the active repository. With several active repositories their adapters now add up (before, every detection ran), a change of the active repository applies from the next scan on, and "Propose only adapters that are installed here" also holds while the repository has not been downloaded yet
 
@@ -282,19 +282,6 @@ Your device is not found? How to add the detection for an adapter is described i
 * (ChrMaass) Detect SIKU / Oxxify Smart fans with a read-only UDP broadcast and propose one siku instance for all fans
 * (@GermanBluefox) The SIKU probe no longer demands both identifying parameters - the siku adapter does not either, and a fan that answers only one was being hidden from it
 * (@GermanBluefox) The SIKU probe asks from a free port when UDP 4000 is taken, instead of dropping the whole detection
-
-### 5.1.1 (2026-08-31)
-* (bluefox) The ping scan says so when this host may not send ICMP and sweeps the range over TCP instead (#247)
-* (bluefox) The scan can now run on a timer, with a selectable set of methods - mdns, ping, udp and upnp by default
-* (bluefox) Every finished scan writes the devices it found below `discovery.0.devices`
-* (bluefox) The instance has settings again: two tabs with a start button, the live scan state and the device list
-* (bluefox) The device tab is a real table now: sortable, filterable, and it fills itself from `system.discovery`
-* (bluefox) The device table shows the icon of every proposed adapter that is installed on this host
-* (bluefox) A scheduled scan raises a notification when it proposes something that was not proposed before
-* (bluefox) The texts of the settings dialog moved into `admin/i18n`, complete in all eleven languages
-* (bluefox) `adminUI.config` is repaired at start-up, js-controller does not update that field on an upgrade
-* (bluefox) The adapter was refactored to TypeScript: sources moved to `src/`, the build output to `build/`
-* (bluefox) Minimum node.js version is 22.19.0 now
 
 [Older changelogs can be found there](CHANGELOG_OLD.md)
 

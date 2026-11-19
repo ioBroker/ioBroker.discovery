@@ -1,4 +1,17 @@
 # Older changes
+## 5.1.1 (2026-08-31)
+* (bluefox) The ping scan says so when this host may not send ICMP and sweeps the range over TCP instead (#247)
+* (bluefox) The scan can now run on a timer, with a selectable set of methods - mdns, ping, udp and upnp by default
+* (bluefox) Every finished scan writes the devices it found below `discovery.0.devices`
+* (bluefox) The instance has settings again: two tabs with a start button, the live scan state and the device list
+* (bluefox) The device tab is a real table now: sortable, filterable, and it fills itself from `system.discovery`
+* (bluefox) The device table shows the icon of every proposed adapter that is installed on this host
+* (bluefox) A scheduled scan raises a notification when it proposes something that was not proposed before
+* (bluefox) The texts of the settings dialog moved into `admin/i18n`, complete in all eleven languages
+* (bluefox) `adminUI.config` is repaired at start-up, js-controller does not update that field on an upgrade
+* (bluefox) The adapter was refactored to TypeScript: sources moved to `src/`, the build output to `build/`
+* (bluefox) Minimum node.js version is 22.19.0 now
+
 ## 5.0.1 (2026-07-03)
 * (ioBroker-Bot) Adapter requires js-controller >= 6.0.11 now.
 * (Eistee82) Fix Hoymiles HMS discovery: correct a require path and align native config with hoymiles 0.3.4 device-array schema
