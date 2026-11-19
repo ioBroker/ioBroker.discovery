@@ -23,6 +23,7 @@ import type {
 import * as discoveryStates from './lib/discovery-states';
 import * as migration from './lib/migration';
 import * as notification from './lib/notification';
+import * as repository from './lib/repository';
 
 const getAdapterDir = commonTools.getAdapterDir;
 
@@ -386,12 +387,14 @@ class DiscoveryAdapter extends Adapter {
     }
 
     /**
-     * Load every detection module of `lib/adapters`.
+     * Pick the detection modules of `lib/adapters` this scan runs.
      *
-     * `repository` limits the result to adapters that actually exist in the active
-     * repository, so that discovery never proposes something the user cannot install.
+     * `mayRun` decides by the adapter a module detects - its file name - whether the user can
+     * install it (see `lib/repository.ts`), so that discovery never proposes something that
+     * cannot be installed. The choice is made for every scan anew: the active repository may
+     * have changed since the last one, and a module chosen then must not keep running.
      */
-    enumAdapters(repository: string[] | null): void {
+    enumAdapters(mayRun: (adapterName: string) => boolean): void {
         let dir: string[];
         try {
             dir = readdirSync(`${__dirname}/lib/adapters`);
@@ -399,6 +402,10 @@ class DiscoveryAdapter extends Adapter {
             this.log.warn(`Adapter scan classes not found: ${err}`);
             dir = [];
         }
+
+        const previous = this.adapters;
+        const skipped: string[] = [];
+        this.adapters = {};
 
         for (let f = 0; f < dir.length; f++) {
             const parts = dir[f].split('.');
@@ -408,17 +415,20 @@ class DiscoveryAdapter extends Adapter {
                 const moduleName = `${__dirname}/lib/adapters/${dir[f]}`;
                 const aName = parts.join('.');
 
-                if (this.adapters?.[aName]?.reloadModule) {
-                    const module = require.resolve(moduleName);
-                    delete require.cache[module];
-                    delete this.adapters[aName];
+                if (!mayRun(aName)) {
+                    skipped.push(aName);
+                    continue;
                 }
 
-                // check if this adapter available in repository
-                if (!this.adapters[aName] && (!repository || repository.includes(aName))) {
-                    this.adapters[aName] = require(moduleName) as DetectionModule;
+                if (previous[aName]?.reloadModule) {
+                    delete require.cache[require.resolve(moduleName)];
                 }
+                this.adapters[aName] = require(moduleName) as DetectionModule;
             }
+        }
+
+        if (skipped.length) {
+            this.log.debug(`Not scanning for ${skipped.sort().join(', ')}: not in the active repository`);
         }
     }
 
@@ -819,24 +829,14 @@ class DiscoveryAdapter extends Adapter {
 
         void this.getForeignObject('system.repositories', (_err, repo): void => {
             void this.getForeignObject('system.config', (_err, systemConfig): void => {
-                let repository: string[] | null = null;
-                // `activeRepo` is a string on older and a string list on newer js-controllers.
-                // The original code used it as an object key directly, which stringifies a
-                // one-element list to its only entry - `String()` reproduces exactly that.
-                const activeRepo = systemConfig?.common?.activeRepo
-                    ? String(systemConfig.common.activeRepo)
-                    : undefined;
-                if (repo?.native && activeRepo && repo.native.repositories?.[activeRepo]?.json) {
-                    repository = Object.keys(repo.native.repositories[activeRepo].json);
+                const available = repository.activeRepositoryAdapters(repo?.native, systemConfig?.common?.activeRepo);
+                if (!available) {
+                    this.log.debug('The active repository is not loaded yet, every detection module runs');
                 }
+                // with onlyLocal, only adapters that are installed on this host are proposed
+                const installed = this.config.onlyLocal ? (name: string): boolean => !!getAdapterDir(name) : undefined;
 
-                // use only installed adapter if onlyLocal flag activated
-                if (this.config.onlyLocal) {
-                    repository = repository?.filter(a => getAdapterDir(a)) || null;
-                }
-
-                // Get the list of adapters with auto-discovery
-                this.enumAdapters(repository);
+                this.enumAdapters(name => repository.mayDetect(name, available, installed));
 
                 this.getInstances(instances => {
                     // `null` asks for every enum - the signature only knows the filtered form

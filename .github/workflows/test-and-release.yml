@@ -37,6 +37,22 @@ jobs:
           type-checking: true
           lint: true
 
+  # Every adapter discovery can propose has to exist in the latest repository (#508). Its own
+  # job, so that an adapter leaving the repository blocks the release, not the tests of a PR.
+  check-proposed-adapters:
+    if: contains(github.event.head_commit.message, '[skip ci]') == false
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24.x'
+      - run: npm ci
+      - name: Compare the proposed adapters with the latest repository
+        run: node scripts/proposedAdapters.js
+
   # Runs adapter tests on all supported node versions and OSes
   adapter-tests:
     if: contains(github.event.head_commit.message, '[skip ci]') == false
@@ -60,7 +76,7 @@ jobs:
 
   # Deploys the final package to NPM
   deploy:
-    needs: [check-and-lint, adapter-tests]
+    needs: [check-and-lint, check-proposed-adapters, adapter-tests]
 
     # Permissions are required to create GitHub releases and npm trusted publishing
     permissions:

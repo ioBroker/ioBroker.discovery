@@ -79,7 +79,6 @@ For more details and for information on how to disable the error reporting, see 
 - Hoymiles HMS inverters (hoymiles)
 - HP-lio
 - Huawei SUN2000 (sun2000, sun2000-modbus)
-- Hue extended
 - Hyperion.NG
 - iiyama ProLite displays
 - InfluxDB
@@ -90,7 +89,6 @@ For more details and for information on how to disable the error reporting, see 
 - KNX (disabled actually)
 - Kodi
 - LaMetric
-- Landroid
 - LGTV
 - Lightify
 - Loxone
@@ -169,7 +167,6 @@ For more details and for information on how to disable the error reporting, see 
 - WLED
 - Yamaha
 - Yeelight
-- Z-Wave USB (Tested with Aeon Labs)
 - Zigbee coordinators (Serial)
 - Zigbee2MQTT
 
@@ -260,6 +257,10 @@ Your device is not found? How to add the detection for an adapter is described i
 	### **WORK IN PROGRESS**
 -->
 ## Changelog
+### **WORK IN PROGRESS**
+* (@GermanBluefox) The build checks that every adapter discovery can propose exists in the latest repository, and a weekly workflow opens an issue when one leaves it (#508). The detections for hue-extended, landroid and zwave are removed: none of these adapters exists any more
+* (@GermanBluefox) A scan runs the detection for an adapter only when the adapter is in the active repository. With several active repositories their adapters now add up (before, every detection ran), a change of the active repository applies from the next scan on, and "Propose only adapters that are installed here" also holds while the repository has not been downloaded yet
+
 ### 5.4.0 (2026-11-19)
 * (hobbyquaker) Detect openccu-lite from its open version answer and propose hm-rpc instances in openccu-lite mode instead of the classic ones - it has no ReGa and does not forward `init`, so neither hm-rega nor an init-based hm-rpc instance is proposed for it, even when its classic RPC ports are switched on. One instance is proposed per interface the system names in its version answer (on older systems: the interfaces its classic ports show, else HmIP-RF and BidCos-RF); the instance is then paired in its settings
 * (SmarthomeElektroniker) Detect Miele@home appliances from their `_mieleathome._tcp` mDNS announcement and propose one miele-local instance for the household, with the appliance addresses in its device list

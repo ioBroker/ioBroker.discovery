@@ -41,8 +41,15 @@ discovery methods            devices, grouped by type          detection modules
 ## Before you start
 
 **The adapter must be in the ioBroker repository.** Discovery proposes an instance, and admin installs the
-adapter from the repository to create it. The module is only active for users whose repository contains
-the adapter: while it is in latest only, users on stable do not get the proposal.
+adapter from the repository to create it. Two checks see to that:
+
+- **The build** reads every adapter name a module can propose and fails when one is not in the latest
+  repository (`node scripts/proposedAdapters.js`, also run once a week, which opens an issue). It reads the
+  first argument of `tools.getNextInstanceID()` and `tools.proposeSharedInstance()` - pass a string literal
+  or a `const`, and build every proposal with one of the two, or the module drops out of the check.
+- **At run time** a module runs only when its adapter is in the repository the installation is set to:
+  while it is in latest only, users on stable do not get the proposal. It goes by the **file name** - name
+  the module after the adapter it detects (`src/lib/adapters/<adaptername>.ts`), or it never runs.
 
 **Find out how the device can be recognised.** Pick the first option that works, in this order:
 
@@ -302,6 +309,7 @@ npm run build:tsc          # TypeScript -> build/
 npm run test:integration   # all tests in test/**/*.test.js
 npm run lint
 npm run check              # type check
+node scripts/proposedAdapters.js   # is every proposed adapter in the latest repository? (network)
 ```
 
 ### On a real installation

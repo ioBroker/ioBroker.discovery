@@ -22,6 +22,7 @@ npm run lint      # ESLint with @iobroker/eslint-config (flat config in eslint.c
 npm run test:package      # validates package.json / io-package.json consistency
 npm run test:integration  # mocha test/**/*.test.js - the detection module unit tests
 npm test          # alias for test:package
+node scripts/proposedAdapters.js  # every proposed adapter in the latest repository? (network; --list, --repo <file>)
 
 node tasks --admin-0-clean    # the steps of the admin build on their own
 node tasks --admin-1-npm
@@ -53,10 +54,12 @@ src/
   lib/tools.ts             helpers used by the detection modules
   lib/words.ts             translation dictionary
   lib/methods/*.ts         11 discovery methods
-  lib/adapters/*.ts        156 detection modules
+  lib/adapters/*.ts        160 detection modules
   lib/discovery-states.ts  the decisions behind the device tree and the scheduled scan
   lib/notification.ts      what a scheduled scan tells the user about, and in which words
+  lib/repository.ts        which detection modules a scan runs - those of the active repository
   types/*.d.ts             ambient declarations for npm packages without typings
+scripts/proposedAdapters.js  the build check of #508, not shipped
 lib/i18n/*.json            translation data for the discovery results, not read by any code (Weblate target)
 admin/jsonConfig.json      the settings dialog, English texts only
 admin/i18n/*.json          those texts in 11 languages, keyed by the English one
@@ -196,7 +199,7 @@ A refused connection counts as a find, so a closed port is not a wasted probe. `
 
 ### Detection Modules (`src/lib/adapters/`)
 
-156 modules, each detecting a specific device/service type. Each exports:
+160 modules, each detecting a specific device/service type. Each exports:
 
 - `detect(ip, device, options, callback)` - tests if a device matches; adds to `options.newInstances` if found
 - `type` - string or array of device types to match against (e.g. `['ip']`, `['upnp']`, `'serial'`, `'advice'`)
@@ -204,6 +207,23 @@ A refused connection counts as a find, so a closed port is not a wasted probe. `
 - `dependencies` - if `true`, runs after the base detection phase
 
 Modules are auto-loaded from `build/lib/adapters/` by filename. The `options` object passed to `detect()` is a `DetectOptions` and contains `newInstances`, `existingInstances`, `enums`, `language`, and `log`.
+
+#### Which modules exist, and which run (#508)
+
+Two checks keep discovery from proposing an adapter that cannot be installed:
+
+- **At build time** `scripts/proposedAdapters.js` reads every name a module can propose - the first argument of
+  `tools.getNextInstanceID()` and `tools.proposeSharedInstance()`, resolved by the TypeScript checker - and fails
+  when one is not in the **latest** repository (`sources-dist.json` of ioBroker.repositories). It is the
+  `check-proposed-adapters` job of `test-and-release.yml`, which the deploy needs, and the weekly
+  `check-proposed-adapters.yml`, which opens, updates and closes an issue. Latest, not stable: a detection may
+  come before its adapter reaches stable. `test/proposedAdapters.test.js` makes sure every name resolves and
+  every module is seen.
+- **At run time** `enumAdapters()` picks the modules of every scan anew with `lib/repository.ts`: a module runs
+  only when its **file name** is an adapter of the active repositories (`system.config common.activeRepo`, a
+  string or a list, read from `system.repositories`; several active ones add up). While a repository has not
+  been downloaded yet, every module runs. `mihome.1.ts` and `sql_sqlite.ts` are not named after an adapter
+  and therefore never run once the repository is known - which has been so for years.
 
 ### Shared Utilities (`src/lib/tools.ts`)
 
