@@ -128,6 +128,9 @@ list, and an existing instance is offered as "extended":
 callback(null, tools.proposeSharedInstance(adapterName, `${name} (${ip})`, options), ip);
 ```
 
+The `ipp` detector only proposes the shared adapter instance. It does not populate `native.printers` or write
+`printer-config.json`; add each printer in the IPP Device Manager.
+
 **Values the detection cannot know** (an access code, a user name) are asked in the dialog with
 `comment.inputs`. The value goes to the attribute named in `name`:
 

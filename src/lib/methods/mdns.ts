@@ -35,6 +35,8 @@ export function browse(this: MethodInstance, self: MethodInstance): void {
             '_homekit._tcp',
             '_amzn-wplay._tcp.local',
             '_http._tcp.local',
+            '_ipp._tcp.local', // IPP printers (RFC 6763 DNS-SD service type)
+            '_ipps._tcp.local', // IPP over HTTPS (RFC 7472)
             '_mieleathome._tcp',
             '_services._dns-sd._udp.local',
             '_touch-able._udp',

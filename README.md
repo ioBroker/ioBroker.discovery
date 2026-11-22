@@ -82,6 +82,7 @@ For more details and for information on how to disable the error reporting, see 
 - Hyperion.NG
 - iiyama ProLite displays
 - InfluxDB
+- IPP printers (configure individual printers in the IPP Device Manager)
 - IOmeter
 - Janitza GridVis
 - Keba KeContact P30
@@ -257,6 +258,9 @@ Your device is not found? How to add the detection for an adapter is described i
 	### **WORK IN PROGRESS**
 -->
 ## Changelog
+### **WORK IN PROGRESS**
+- (Voodoo2man) Detected IPP/IPPS printers through DNS-SD and proposed one shared ipp instance; individual printers remain configured in the IPP Device Manager.
+
 ### 5.4.1 (2026-11-19)
 * (@GermanBluefox) The build checks that every adapter discovery can propose exists in the latest repository, and a weekly workflow opens an issue when one leaves it (#508). The detections for hue-extended, landroid and zwave are removed: none of these adapters exists any more
 * (@GermanBluefox) A scan runs the detection for an adapter only when the adapter is in the active repository. With several active repositories their adapters now add up (before, every detection ran), a change of the active repository applies from the next scan on, and "Propose only adapters that are installed here" also holds while the repository has not been downloaded yet
