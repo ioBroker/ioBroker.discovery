@@ -259,7 +259,7 @@ Your device is not found? How to add the detection for an adapter is described i
 	### **WORK IN PROGRESS**
 -->
 ## Changelog
-### **WORK IN PROGRESS**
+### 5.5.0 (2026-11-23)
 * (SmarthomeElektroniker) Detect Faikout (formerly Faikin) air-conditioner modules from their bare `_http._tcp` mDNS announcement and the RevK firmware footer of their start page (one `GET /`), and propose one faikout instance for all of them, with nothing pre-filled
 * (@Voodoo2man) Detect IPP and IPPS network printers from their `_ipp._tcp` / `_ipps._tcp` mDNS announcement and propose one ipp instance for all of them, with nothing pre-filled - the printers themselves are added in the Device Manager of the ipp adapter
 
@@ -283,11 +283,6 @@ Your device is not found? How to add the detection for an adapter is described i
 ### 5.2.0 (2026-10-08)
 * (nograx) Detect Zendure SolarFlow, Hyper and AIO devices with the local zenSDK API via mDNS and propose the zendure-solarflow adapter
 * (@GermanBluefox) The Zendure proposal sets `connectionMode: local` - in the default cloud mode the instance stops at the missing cloud key and never looks for devices
-
-### 5.1.2 (2026-10-02)
-* (ChrMaass) Detect SIKU / Oxxify Smart fans with a read-only UDP broadcast and propose one siku instance for all fans
-* (@GermanBluefox) The SIKU probe no longer demands both identifying parameters - the siku adapter does not either, and a fan that answers only one was being hidden from it
-* (@GermanBluefox) The SIKU probe asks from a free port when UDP 4000 is taken, instead of dropping the whole detection
 
 [Older changelogs can be found there](CHANGELOG_OLD.md)
 

@@ -1,4 +1,9 @@
 # Older changes
+## 5.1.2 (2026-10-02)
+* (ChrMaass) Detect SIKU / Oxxify Smart fans with a read-only UDP broadcast and propose one siku instance for all fans
+* (@GermanBluefox) The SIKU probe no longer demands both identifying parameters - the siku adapter does not either, and a fan that answers only one was being hidden from it
+* (@GermanBluefox) The SIKU probe asks from a free port when UDP 4000 is taken, instead of dropping the whole detection
+
 ## 5.1.1 (2026-08-31)
 * (bluefox) The ping scan says so when this host may not send ICMP and sweeps the range over TCP instead (#247)
 * (bluefox) The scan can now run on a timer, with a selectable set of methods - mdns, ping, udp and upnp by default
