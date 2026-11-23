@@ -55,6 +55,8 @@ export function browse(this: MethodInstance, self: MethodInstance): void {
             '_siegenia._tcp.local', // Siegenia windows and ventilation, the type its own browser matches on
             '_zendure._tcp.local', // Zendure SolarFlow / Hyper / AIO with the local zenSDK API
             '_switcher_ctrl._udp.local', // Blackmagic ATEM switchers, control port 9910
+            '_ipp._tcp.local', // IPP printers, the types ioBroker.ipp browses in printerDiscovery.ts
+            '_ipps._tcp.local', // IPP over TLS, same source
         ],
         find: '*',
         broadcast: false,

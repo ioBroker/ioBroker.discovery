@@ -84,6 +84,7 @@ For more details and for information on how to disable the error reporting, see 
 - iiyama ProLite displays
 - InfluxDB
 - IOmeter
+- IPP/IPPS network printers (ipp)
 - Janitza GridVis
 - Keba KeContact P30
 - KLF-200
@@ -260,6 +261,7 @@ Your device is not found? How to add the detection for an adapter is described i
 ## Changelog
 ### **WORK IN PROGRESS**
 * (SmarthomeElektroniker) Detect Faikout (formerly Faikin) air-conditioner modules from their bare `_http._tcp` mDNS announcement and the RevK firmware footer of their start page (one `GET /`), and propose one faikout instance for all of them, with nothing pre-filled
+* (@Voodoo2man) Detect IPP and IPPS network printers from their `_ipp._tcp` / `_ipps._tcp` mDNS announcement and propose one ipp instance for all of them, with nothing pre-filled - the printers themselves are added in the Device Manager of the ipp adapter
 
 ### 5.4.1 (2026-11-19)
 * (@GermanBluefox) The build checks that every adapter discovery can propose exists in the latest repository, and a weekly workflow opens an issue when one leaves it (#508). The detections for hue-extended, landroid and zwave are removed: none of these adapters exists any more
