@@ -261,7 +261,7 @@ Your device is not found? How to add the detection for an adapter is described i
 -->
 ## Changelog
 ### **WORK IN PROGRESS**
-* (@Schimi1983) Detect OpenDTU from its `_opendtu._tcp` mDNS announcement and propose one opendtu instance per OpenDTU, with its address filled in
+* (@Schimi1983) Detect OpenDTU from its `_opendtu._tcp` mDNS announcement and propose one opendtu instance per OpenDTU, with its address filled in. The address is checked first, so an mDNS reflector never ends up as the OpenDTU's address
 
 ### 5.5.0 (2026-11-23)
 * (SmarthomeElektroniker) Detect Faikout (formerly Faikin) air-conditioner modules from their bare `_http._tcp` mDNS announcement and the RevK firmware footer of their start page (one `GET /`), and propose one faikout instance for all of them, with nothing pre-filled
