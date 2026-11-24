@@ -259,6 +259,9 @@ Your device is not found? How to add the detection for an adapter is described i
 	### **WORK IN PROGRESS**
 -->
 ## Changelog
+### **WORK IN PROGRESS**
+* (GermanBluefox) Fixed crash of sma-em detection (addMembership EADDRINUSE) when several interfaces share the same IPv4 address (#513)
+
 ### 5.5.0 (2026-11-23)
 * (SmarthomeElektroniker) Detect Faikout (formerly Faikin) air-conditioner modules from their bare `_http._tcp` mDNS announcement and the RevK firmware footer of their start page (one `GET /`), and propose one faikout instance for all of them, with nothing pre-filled
 * (@Voodoo2man) Detect IPP and IPPS network printers from their `_ipp._tcp` / `_ipps._tcp` mDNS announcement and propose one ipp instance for all of them, with nothing pre-filled - the printers themselves are added in the Device Manager of the ipp adapter
