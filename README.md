@@ -121,6 +121,7 @@ For more details and for information on how to disable the error reporting, see 
 - Nut
 - Onkyo
 - ONVIF cameras
+- OpenDTU for Hoymiles inverters (opendtu, when mDNS is switched on in OpenDTU)
 - OpenHAB
 - OpenKNX
 - Philips HUE
@@ -259,6 +260,9 @@ Your device is not found? How to add the detection for an adapter is described i
 	### **WORK IN PROGRESS**
 -->
 ## Changelog
+### **WORK IN PROGRESS**
+* (@Schimi1983) Detect OpenDTU from its `_opendtu._tcp` mDNS announcement and propose one opendtu instance per OpenDTU, with its address filled in
+
 ### 5.5.0 (2026-11-23)
 * (SmarthomeElektroniker) Detect Faikout (formerly Faikin) air-conditioner modules from their bare `_http._tcp` mDNS announcement and the RevK firmware footer of their start page (one `GET /`), and propose one faikout instance for all of them, with nothing pre-filled
 * (@Voodoo2man) Detect IPP and IPPS network printers from their `_ipp._tcp` / `_ipps._tcp` mDNS announcement and propose one ipp instance for all of them, with nothing pre-filled - the printers themselves are added in the Device Manager of the ipp adapter
