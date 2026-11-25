@@ -59,6 +59,7 @@ export function browse(this: MethodInstance, self: MethodInstance): void {
             '_ipps._tcp.local', // IPP over TLS, same source
             '_opendtu._tcp.local', // OpenDTU, announced next to _http._tcp in its NetworkSettings.cpp (mDNS off by default)
             '_snapmaker._tcp.local', // Snapmaker U1; TXT machine_type identifies the model, SRV is MQTT
+            '_androidtvremote2._tcp.local', // Android TV Remote Service (SHIELD, Google TV), ioBroker.androidtv
         ],
         find: '*',
         broadcast: false,
