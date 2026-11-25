@@ -262,15 +262,13 @@ Your device is not found? How to add the detection for an adapter is described i
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
-* (Schimi1983) Detect Jellyfin media servers by their client discovery on UDP 7359 (`who is JellyfinServer?`) and propose a jellyfin instance with the server address filled in - the API key still has to be entered
-
 ## Changelog
 ### **WORK IN PROGRESS**
 * (GermanBluefox) Fixed crash of sma-em detection (addMembership EADDRINUSE) when several interfaces share the same IPv4 address (#513)
 * (@Schimi1983) Detect OpenDTU from its `_opendtu._tcp` mDNS announcement and propose one opendtu instance per OpenDTU, with its address filled in. The address is checked first, so an mDNS reflector never ends up as the OpenDTU's address
 * (Negalein) Detect Snapmaker U1 printers from their model-specific mDNS announcement or a read-only Moonraker system-info request, and propose one snapmaker-u1 instance per printer
 * (Schimi1983) Detect Android TV / Google TV devices (NVIDIA SHIELD, Google TV, Android TV sets) from their `_androidtvremote2._tcp` mDNS announcement and an open remote port 6466, and propose one androidtv instance with all of them as device type "standard" - pairing is done in the Devices tab of the adapter
+* (Schimi1983) Detect Jellyfin media servers by their client discovery on UDP 7359 (`who is JellyfinServer?`) and propose a jellyfin instance with the server address filled in - the API key still has to be entered
 
 ### 5.5.0 (2026-11-23)
 * (SmarthomeElektroniker) Detect Faikout (formerly Faikin) air-conditioner modules from their bare `_http._tcp` mDNS announcement and the RevK firmware footer of their start page (one `GET /`), and propose one faikout instance for all of them, with nothing pre-filled
