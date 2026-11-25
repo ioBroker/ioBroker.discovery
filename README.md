@@ -22,6 +22,7 @@ For more details and for information on how to disable the error reporting, see 
 
 - Agent DVR
 - Air-Q
+- Android TV / Google TV, incl. NVIDIA SHIELD (androidtv)
 - Autodarts
 - Awtrix 3 / Awtrix Light
 - Bambu Lab 3D printers
@@ -259,6 +260,9 @@ Your device is not found? How to add the detection for an adapter is described i
 	### **WORK IN PROGRESS**
 -->
 ## Changelog
+### **WORK IN PROGRESS**
+* (Schimi1983) Detect Android TV / Google TV devices (NVIDIA SHIELD, Google TV, Android TV sets) from their `_androidtvremote2._tcp` mDNS announcement and an open remote port 6466, and propose one androidtv instance with all of them as device type "standard" - pairing is done in the Devices tab of the adapter
+
 ### 5.5.0 (2026-11-23)
 * (SmarthomeElektroniker) Detect Faikout (formerly Faikin) air-conditioner modules from their bare `_http._tcp` mDNS announcement and the RevK firmware footer of their start page (one `GET /`), and propose one faikout instance for all of them, with nothing pre-filled
 * (@Voodoo2man) Detect IPP and IPPS network printers from their `_ipp._tcp` / `_ipps._tcp` mDNS announcement and propose one ipp instance for all of them, with nothing pre-filled - the printers themselves are added in the Device Manager of the ipp adapter
