@@ -80,7 +80,7 @@ export function detect(ip: string, device: DiscoveryDevice, options: DetectOptio
                 return;
             }
             if (!isOpenDtuManifest(body)) {
-                // @KI_HINWEIS: typical for an mDNS reflector - the OpenDTU is in another network and its
+                // Typical for an mDNS reflector - the OpenDTU is in another network and its
                 // real address is not in the answers. Nothing is proposed rather than a wrong address.
                 options.log.debug(`OpenDTU "${name}" announced via ${ip}, but ${ip} is no OpenDTU - not proposed`);
                 return finish(false);
