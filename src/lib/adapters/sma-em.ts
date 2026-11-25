@@ -55,7 +55,8 @@ export function detect(
 
     // options.log.debug(`Detecting SMA Energy Meters broadcasting on ${MULTICAST_IP}/${MULTICAST_PORT}...`);
     // Listen for EM broadcasts until timeout
-    client = dgram.createSocket({ type: 'udp4', reuseAddr: true });
+    const socket = dgram.createSocket({ type: 'udp4', reuseAddr: true });
+    client = socket;
 
     client.on('error', err => {
         options.log.error(`SMA-EM rxSocket error:${err.stack}`);
@@ -91,13 +92,35 @@ export function detect(
 
     // Bind socket to the multicast address on all ipv4 devices except localhost
     client.bind(MULTICAST_PORT, (): void => {
+        // cleanup already ran (timeout or error), the socket is closed
+        if (client !== socket) {
+            return;
+        }
         const addresses = tools.getIP4addresses();
+        // several interfaces may share the same IPv4 address, join only once per address
+        const seen = new Set<string>();
+        let joined = 0;
         for (const dev of addresses) {
+            if (seen.has(dev.ip)) {
+                continue;
+            }
+            seen.add(dev.ip);
             debug &&
                 options.log.debug(
                     `Listen via UDP on Device ${dev.name} with IP ${dev.ip} on Port ${MULTICAST_PORT} for Multicast IP ${MULTICAST_IP}`,
                 );
-            client!.addMembership(MULTICAST_IP, dev.ip);
+            try {
+                socket.addMembership(MULTICAST_IP, dev.ip);
+                joined++;
+            } catch (e) {
+                options.log.warn(
+                    `sma-em: cannot join multicast group ${MULTICAST_IP} on ${dev.name} (${dev.ip}): ${(e as Error).message}`,
+                );
+            }
+        }
+        if (!joined) {
+            cleanup(ip, callback, false);
+            callback = null;
         }
     });
 
