@@ -57,6 +57,8 @@ export function browse(this: MethodInstance, self: MethodInstance): void {
             '_switcher_ctrl._udp.local', // Blackmagic ATEM switchers, control port 9910
             '_ipp._tcp.local', // IPP printers, the types ioBroker.ipp browses in printerDiscovery.ts
             '_ipps._tcp.local', // IPP over TLS, same source
+            '_opendtu._tcp.local', // OpenDTU, announced next to _http._tcp in its NetworkSettings.cpp (mDNS off by default)
+            '_snapmaker._tcp.local', // Snapmaker U1; TXT machine_type identifies the model, SRV is MQTT
             '_androidtvremote2._tcp.local', // Android TV Remote Service (SHIELD, Google TV), ioBroker.androidtv
         ],
         find: '*',
