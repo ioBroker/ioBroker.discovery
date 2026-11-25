@@ -86,6 +86,7 @@ For more details and for information on how to disable the error reporting, see 
 - IOmeter
 - IPP/IPPS network printers (ipp)
 - Janitza GridVis
+- Jellyfin media servers (jellyfin)
 - Keba KeContact P30
 - KLF-200
 - KNX (disabled actually)
@@ -258,6 +259,9 @@ Your device is not found? How to add the detection for an adapter is described i
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* (Schimi1983) Detect Jellyfin media servers by their client discovery on UDP 7359 (`who is JellyfinServer?`) and propose a jellyfin instance with the server address filled in - the API key still has to be entered
+
 ## Changelog
 ### 5.5.0 (2026-11-23)
 * (SmarthomeElektroniker) Detect Faikout (formerly Faikin) air-conditioner modules from their bare `_http._tcp` mDNS announcement and the RevK firmware footer of their start page (one `GET /`), and propose one faikout instance for all of them, with nothing pre-filled
