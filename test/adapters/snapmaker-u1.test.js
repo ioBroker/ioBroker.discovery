@@ -1,7 +1,6 @@
 'use strict';
 
 const assert = require('node:assert');
-const path = require('node:path');
 const mod = require('../../build/lib/adapters/snapmaker-u1');
 const tools = require('../../build/lib/tools');
 // Sanitized real /machine/system_info response: U1, reported base firmware/software 2.0.0,
