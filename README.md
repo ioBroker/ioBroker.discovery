@@ -264,7 +264,7 @@ Your device is not found? How to add the detection for an adapter is described i
 	### **WORK IN PROGRESS**
 -->
 ## Changelog
-### **WORK IN PROGRESS**
+### 5.6.0 (2026-11-26)
 * (GermanBluefox) Fixed crash of sma-em detection (addMembership EADDRINUSE) when several interfaces share the same IPv4 address (#513)
 * (@Schimi1983) Detect OpenDTU from its `_opendtu._tcp` mDNS announcement and propose one opendtu instance per OpenDTU, with its address filled in. The address is checked first, so an mDNS reflector never ends up as the OpenDTU's address
 * (Negalein) Detect Snapmaker U1 printers from their model-specific mDNS announcement or a read-only Moonraker system-info request, and propose one snapmaker-u1 instance per printer
@@ -292,10 +292,6 @@ Your device is not found? How to add the detection for an adapter is described i
 * (@GermanBluefox) The WLED detection no longer logs an error for every device with a single mDNS PTR record, finds a WLED that announces only its own service, and proposes one instance for all WLEDs, which is how the adapter works
 * (@GermanBluefox) The ping on Windows no longer reads `process.env`, which does not go with compact mode
 * (@GermanBluefox) `npm run test:integration` now runs every test file on Linux and macOS too - the shell had been expanding the pattern to `test/adapters` only
-
-### 5.2.0 (2026-10-08)
-* (nograx) Detect Zendure SolarFlow, Hyper and AIO devices with the local zenSDK API via mDNS and propose the zendure-solarflow adapter
-* (@GermanBluefox) The Zendure proposal sets `connectionMode: local` - in the default cloud mode the instance stops at the missing cloud key and never looks for devices
 
 [Older changelogs can be found there](CHANGELOG_OLD.md)
 
